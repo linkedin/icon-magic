@@ -1,0 +1,17 @@
+{
+  "name": "@icon-magic/blueprint",
+  "version": "2.0.0",
+  "description": "Icon magic blueprint package.",
+  "main": "dist/src/index.js",
+  "author": "Adam Miller <adam@pages.me>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "yarn run watch",
+    "watch": "watch 'yarn run test' './src' './test' --wait=1",
+    "test": "yarn run build & mocha --opts test/mocha.opts dist/test",
+    "build": "yarn run lint & tsc -p tsconfig.json & cp -r ./test/fixtures ./dist/test",
+    "lint": "tslint -t msbuild --project . -c tslint.json"
+  },
+  "dependencies": {}
+}
