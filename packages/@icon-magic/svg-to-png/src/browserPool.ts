@@ -1,30 +1,33 @@
 import * as os from "os";
 
+import * as debug from "debug";
 import * as puppeteer from "puppeteer";
 
-const MAX_CPUS = 1;
+const DEBUG = debug('icon-magic:svg-to-png');
 const NUM_CPUS = os.cpus().length - 1;
-
 let WIN_POOL: puppeteer.Browser[] = [];
 let PAGE_POOL: Promise<puppeteer.Page>[] = [];
-let hasBeenInit = false;
+let hasBeenInit: boolean | Promise<boolean | void> = false;
 
-async function init(options: puppeteer.LaunchOptions): Promise<void> {
+async function init(options: puppeteer.LaunchOptions): Promise<boolean | void> {
+  if (hasBeenInit) { return hasBeenInit; }
+  DEBUG(`Running browser pool init.`);
 
-  if (hasBeenInit) { return; }
-  hasBeenInit = true;
-
-  for (let i = 0; i < (MAX_CPUS || NUM_CPUS); i++) {
+  for (let i = 0; i < (NUM_CPUS); i++) {
     let win = await puppeteer.launch(options);
     let pagePromise = win.newPage();
     WIN_POOL.push(win);
     PAGE_POOL.push(pagePromise);
   }
+
+  DEBUG(`Browser pool init complete.`);
+  return hasBeenInit = true;
 }
 
 let idx = 0;
 export async function run<K=any>(func: (page: puppeteer.Page) => Promise<K>): Promise<K> {
-  await init({ headless: true }); // Ensure pool is init
+  hasBeenInit = init({ headless: true }); // Ensure pool is init
+  await hasBeenInit;
   let res: K;
   let index = idx;
   idx = (idx + 1) % PAGE_POOL.length;
@@ -37,9 +40,12 @@ export async function run<K=any>(func: (page: puppeteer.Page) => Promise<K>): Pr
 }
 
 async function clean() {
+  DEBUG(`Cleaning browser pool.`);
   for (let window of WIN_POOL) { await window.close(); }
+  hasBeenInit = false;
   WIN_POOL = [];
   PAGE_POOL = [];
+  DEBUG(`Browser pool cleaned.`);
 }
 
 //do something when app is closing

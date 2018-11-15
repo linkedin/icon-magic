@@ -1,7 +1,11 @@
 import * as assert from "assert";
 
-describe("Test test", function () {
+import { app, start, stop } from "../src";
+
+describe("Test test", async function () {
   it("rust tests", async () => {
-    assert.ok(true, "Accesses exports");
+    start();
+    assert.ok(app, "Accesses exports");
+    await stop();
   });
 });

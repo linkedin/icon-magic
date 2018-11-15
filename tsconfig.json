@@ -5,7 +5,7 @@
     // Compilation Configuration
     "outDir": "dist",
     "baseUrl": "dist",
-    "target": "es2015",
+    "target": "es2017",
     "inlineSources": true,
     "inlineSourceMap": true,
     "declaration": true,

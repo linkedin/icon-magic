@@ -23,11 +23,7 @@ export async function convert(contents: string, options: SVGToPNGOptions): Promi
     throw new Error("No contents discovered.");
   }
   return await run(async (page) => {
-    await page.setContent(`
-      <div id="container" style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;">
-        ${contents.toString()}
-      </div>
-    `);
+    await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `));
     return await page.screenshot({
       encoding: "binary",
       omitBackground: true,
