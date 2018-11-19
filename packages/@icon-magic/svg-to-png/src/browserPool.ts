@@ -7,9 +7,9 @@ const DEBUG = debug('icon-magic:svg-to-png');
 const NUM_CPUS = os.cpus().length - 1;
 let WIN_POOL: puppeteer.Browser[] = [];
 let PAGE_POOL: Promise<puppeteer.Page>[] = [];
-let hasBeenInit: boolean | Promise<boolean | void> = false;
+let hasBeenInit: false | Promise<boolean> = false;
 
-async function init(options: puppeteer.LaunchOptions): Promise<boolean | void> {
+async function init(options: puppeteer.LaunchOptions): Promise<boolean> {
   if (hasBeenInit) { return hasBeenInit; }
   DEBUG(`Running browser pool init.`);
 
@@ -21,7 +21,7 @@ async function init(options: puppeteer.LaunchOptions): Promise<boolean | void> {
   }
 
   DEBUG(`Browser pool init complete.`);
-  return hasBeenInit = true;
+  return true;
 }
 
 let idx = 0;

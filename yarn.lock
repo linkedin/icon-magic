@@ -5926,6 +5926,10 @@ webidl-conversions@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
 
+webp-converter@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/webp-converter/-/webp-converter-2.1.6.tgz#90318c28382df90128ec8bb46f5420850047d8d5"
+
 whatwg-url@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-7.0.0.tgz#fde926fa54a599f3adf82dff25a9f7be02dc6edd"

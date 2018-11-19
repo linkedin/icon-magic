@@ -9,6 +9,7 @@ import { convert } from '@icon-magic/svg-to-png';
 import { minify, subscribe, ProcessStatus } from '@icon-magic/imagemin-farm';
 
 import { encode, decode } from './png-metadata';
+import { convertToWebp } from './png-to-webp';
 
 const DEBUG = debug('icon-magic:library');
 
@@ -102,7 +103,8 @@ function getHeight(size: number | MaxMin | AssetSize): MaxMin {
 async function processIcon(svg: string, width: number, height: number, hash: string, out: string): Promise<void> {
   let png = await convert(svg, { width, height });
   await fs.writeFile(out, png);
-  await minify(out);
+  let webpOut = await convertToWebp(out);
+  await Promise.all([minify(out), minify(webpOut)]);
   png = await fs.readFile(out);
   png = encode(png, HASH_KEY, hash);
   await fs.writeFile(out, png);
