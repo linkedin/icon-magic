@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",

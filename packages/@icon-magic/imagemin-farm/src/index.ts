@@ -131,14 +131,16 @@ if (cluster.isMaster) {
   });
 
 } else {
-
+  let JOB_CHAIN = Promise.resolve();
   process.on('message', async function(message: ParentMessage) {
     switch(message.cmd) {
       case 'minify':
         DEBUG(`Worker '${process.pid}' receives message '${message.cmd}'.\n${JSON.stringify(message.msg, null, 2)}`);
         process.send!({ cmd: 'ack', msg: message.msg });
-        await minifyFile(message.msg.path);
-        process.send!({ cmd: 'done', msg: message.msg });
+        JOB_CHAIN = JOB_CHAIN.then(async () => {
+          await minifyFile(message.msg.path);
+          process.send!({ cmd: 'done', msg: message.msg });
+        });
         break;
       case 'kill':
         process.kill(0);
