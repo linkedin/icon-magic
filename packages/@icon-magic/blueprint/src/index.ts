@@ -1,3 +1,3 @@
-let foo: string = "test";
+let foo = "test";
 
-export default foo;
+export { foo };
