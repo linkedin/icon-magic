@@ -1,0 +1,15 @@
+{
+  "iconPath": "*",
+  "variants": [
+    {
+      "path": "./filled.svg"
+    },
+    {
+      "name": "someOtherName",
+      "path": "./outline.svg"
+    }
+  ],
+  "build": {
+    "outputPath": "./../dist"
+  }
+}
