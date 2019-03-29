@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "repository": "git@github.com:amiller-gh/icon-magic.git",
   "author": "Adam Miller <ammiller@linkedin.com>",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "scripts": {
     "start": "yarn run watch",
     "build": "tsc -p tsconfig.json",

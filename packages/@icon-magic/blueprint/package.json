@@ -4,7 +4,7 @@
   "description": "Icon magic blueprint package.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "private": true,
   "scripts": {
     "start": "yarn run watch",
@@ -16,5 +16,7 @@
     "postbuild": "cp -r ./test/fixtures ./dist/test",
     "lint": "tslint -t msbuild --project . -c tslint.json"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "debug": "^4.1.1"
+  }
 }

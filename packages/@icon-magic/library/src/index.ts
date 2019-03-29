@@ -18,7 +18,7 @@ const HASH_KEY = 'icon-magic-hash';
 export type Type = 'regular' | 'inverse' | 'color';
 export type Platform = 'ios' | 'android' | 'web';
 
-export const MANIFEST_NAME = 'icon.json';
+export const MANIFEST_NAME = 'iconrc.json';
 
 export interface MaxMin {
   max: number;
@@ -61,8 +61,12 @@ export function hasAssetCoverage(icon: Icon): boolean {
   return !!icon;
 }
 
-export function validateAssetManifest(manifest: any): manifest is Asset | never {
-  if (!manifest.path) { throw new Error(`Invalid asset path ${manifest.asset}`); }
+export function validateAssetManifest(
+  manifest: any
+): manifest is Asset | never {
+  if (!manifest.path) {
+    throw new Error(`Invalid asset path ${manifest.asset}`);
+  }
 
   // TODO: Write full validator
 
@@ -70,37 +74,74 @@ export function validateAssetManifest(manifest: any): manifest is Asset | never 
 }
 
 export function validateIconManifest(manifest: any): manifest is Icon | never {
-  if (!manifest.name) { throw new Error(`Invalid icon name ${manifest.name}`); }
-  for (let asset of manifest.assets){ validateAssetManifest(asset); }
+  if (!manifest.name) {
+    throw new Error(`Invalid icon name ${manifest.name}`);
+  }
+  for (let asset of manifest.assets) {
+    validateAssetManifest(asset);
+  }
   return true;
 }
 
 export function readIcon(dir: string): Icon {
-  let manifest: Icon = JSON.parse((fs.readFileSync(path.join(dir, MANIFEST_NAME))).toString());
+  let manifest: Icon = JSON.parse(
+    fs.readFileSync(path.join(dir, MANIFEST_NAME)).toString()
+  );
   validateIconManifest(manifest);
   manifest.path = dir;
   return manifest;
 }
 
-function isNumber(val: any): val is number { return typeof val === 'number'; }
-function isMaxMin(val: any): val is MaxMin { return isNumber(val.max) && isNumber(val.min); }
-function isAssetSize(val: any): val is MaxMin { return (isNumber(val.width) || isMaxMin(val.width)) && (isNumber(val.height) || isMaxMin(val.height)); }
+function isNumber(val: any): val is number {
+  return typeof val === 'number';
+}
+function isMaxMin(val: any): val is MaxMin {
+  return isNumber(val.max) && isNumber(val.min);
+}
+function isAssetSize(val: any): val is MaxMin {
+  return (
+    (isNumber(val.width) || isMaxMin(val.width)) &&
+    (isNumber(val.height) || isMaxMin(val.height))
+  );
+}
 
 function getWidth(size: number | MaxMin | AssetSize): MaxMin {
-  if (isNumber(size)) { return { max: size, min: size }; }
-  if (isMaxMin(size)) { return size; }
-  if (isAssetSize(size)) { return isMaxMin(size.width) ? size.width : { max: size.width, min: size.width }; }
+  if (isNumber(size)) {
+    return { max: size, min: size };
+  }
+  if (isMaxMin(size)) {
+    return size;
+  }
+  if (isAssetSize(size)) {
+    return isMaxMin(size.width)
+      ? size.width
+      : { max: size.width, min: size.width };
+  }
   throw new Error('Invalid asset width.');
 }
 
 function getHeight(size: number | MaxMin | AssetSize): MaxMin {
-  if (isNumber(size)) { return { max: size, min: size }; }
-  if (isMaxMin(size)) { return size; }
-  if (isAssetSize(size)) { return isMaxMin(size.height) ? size.height : { max: size.height, min: size.height }; }
+  if (isNumber(size)) {
+    return { max: size, min: size };
+  }
+  if (isMaxMin(size)) {
+    return size;
+  }
+  if (isAssetSize(size)) {
+    return isMaxMin(size.height)
+      ? size.height
+      : { max: size.height, min: size.height };
+  }
   throw new Error('Invalid asset height.');
 }
 
-async function processIcon(svg: string, width: number, height: number, hash: string, out: string): Promise<void> {
+async function processIcon(
+  svg: string,
+  width: number,
+  height: number,
+  hash: string,
+  out: string
+): Promise<void> {
   let png = await convert(svg, { width, height });
   await fs.writeFile(out, png);
   let webpOut = await convertToWebp(out);
@@ -111,13 +152,20 @@ async function processIcon(svg: string, width: number, height: number, hash: str
 }
 
 export async function iconToPNGs(icon: string | Icon) {
-  if (typeof icon === 'string') { icon = readIcon(icon); }
+  if (typeof icon === 'string') {
+    icon = readIcon(icon);
+  }
   const tmpDir = path.join(icon.path, 'tmp');
   await fs.mkdirp(tmpDir);
   const iconPromises: Promise<void>[] = [];
   for (let asset of icon.assets) {
-    let svg = await fs.readFile(path.join(icon.path, asset.path), { encoding: 'utf8' });
-    let hash = crypto.createHash('md5').update(svg).digest('hex');
+    let svg = await fs.readFile(path.join(icon.path, asset.path), {
+      encoding: 'utf8'
+    });
+    let hash = crypto
+      .createHash('md5')
+      .update(svg)
+      .digest('hex');
     let done: Set<string> = new Set();
     for (let res of asset.resolutions) {
       for (let size of asset.sizes) {
@@ -130,8 +178,14 @@ export async function iconToPNGs(icon: string | Icon) {
               continue;
             }
             done.add(realSize);
-            if (fs.existsSync(out) && decode(fs.readFileSync(out), HASH_KEY) === hash) {
-              DEBUG(`Skipping ${icon.name}_${w * res}x${h * res}: Identical exists from previous run.`);
+            if (
+              fs.existsSync(out) &&
+              decode(fs.readFileSync(out), HASH_KEY) === hash
+            ) {
+              DEBUG(
+                `Skipping ${icon.name}_${w * res}x${h *
+                  res}: Identical exists from previous run.`
+              );
               continue;
             }
             iconPromises.push(processIcon(svg, w * res, h * res, hash, out));
