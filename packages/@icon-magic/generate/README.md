@@ -3,10 +3,10 @@
 This package is responsible for generating the flavors of the icon in all the
 different types in which it can be consumed. At the end of the build step, we
 have each flavor in it's .svg format, but after generate, we will have more
-optmized .svg files, .png files that can be consumed by iOS and .webp files that
+optimized .svg files, .png files that can be consumed by iOS and .webp files that
 can be consumed by android.
 
-Generate transorms the set of .svg flavors to their types by running a set of
+Generate transforms the set of .svg flavors to their types by running a set of
 plugins based on the type in which we want the output. For example, we can have
 a different set of plugins to obtain the optimized svg and a different set to
 get a .png "type".
@@ -38,9 +38,10 @@ this:
 
 ### generate(iconSet: IconSet): Promise<void>
 
-It primary exposes the generate function that takes in a mapping of the path to the
-icon directory and the Icon class corresponding to the icon. This allows it to
-be chained to the build step in the following manner:
+This package's primary interface is the generate function that takes in a
+mapping of the path to the icon directory and the Icon class corresponding to
+the icon. This allows it to be chained to the build step in the following
+manner:
 
 ```typescript
 // build all the icons

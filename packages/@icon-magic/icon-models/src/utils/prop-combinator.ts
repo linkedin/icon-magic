@@ -27,7 +27,7 @@ export function propCombinator(props: {}) {
     const currentValuesArr = props[propName];
     // we don't want to change `results` while iterating over it,
     // so stash work for this prop in `temp`
-    const temp: {}[] | {}[] = [];
+    const temp: {}[] = [];
     // ...iterate through the current set of results...
     results.forEach(res => {
       // ...and iterate through all the possible values for the current prop...
@@ -43,6 +43,12 @@ export function propCombinator(props: {}) {
   return results;
 }
 
+/**
+ * Returns a name appended by a list of object values passed into it's params
+ * @param flavorName Name of the flavor to which the props have to be appended
+ * @param params object containing propCombo, the combination of props from
+ * which to generate a name
+ */
 export function getNameFromPropCombo(
   flavorName: string,
   params?: { propCombo?: object }

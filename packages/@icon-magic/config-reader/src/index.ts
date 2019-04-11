@@ -1,17 +1,11 @@
-import * as path from 'path';
+import { IconConfigHash } from '@icon-magic/icon-models';
 import * as glob from 'glob';
+import * as path from 'path';
+
 import { Config } from './config';
 import { exists, isDirectory } from './helpers/files';
-import { IconConfigHash } from '@icon-magic/icon-models';
 
-const CONFIG_FILES = [
-  '.iconrc.json',
-  '.iconrc.js',
-  '.iconrc',
-  'iconrc.json',
-  'iconrc.js',
-  'iconrc'
-];
+const CONFIG_FILES = ['iconrc.json', 'iconrc.js'];
 
 /**
  * Constructs a map of the icon and closest config to the icon traversing up
@@ -28,8 +22,8 @@ export function getIconConfigSet(inputPaths: string[]): IconConfigHash {
   }
 
   // find the set of config files within each input path (deduping as we go along)
-  let configFiles: Set<string> = new Set();
-  for (let inputDir of validInputDirs) {
+  const configFiles: Set<string> = new Set();
+  for (const inputDir of validInputDirs) {
     // add each file to the set, deduping along the way
     findFilesSync(inputDir, CONFIG_FILES).forEach(file =>
       configFiles.add(file)
@@ -46,10 +40,10 @@ export function getIconConfigSet(inputPaths: string[]): IconConfigHash {
  * @returns list of valid directories amongst them
  */
 function processPaths(inputPaths: string[]): string[] {
-  let inputDirs: string[] = [];
+  const inputDirs: string[] = [];
   if (inputPaths && inputPaths.length) {
-    for (let dir of inputPaths) {
-      let normalizedPath = path.resolve(path.normalize(dir));
+    for (const dir of inputPaths) {
+      const normalizedPath = path.resolve(path.normalize(dir));
       if (exists(normalizedPath) && isDirectory(normalizedPath)) {
         inputDirs.push(normalizedPath);
       }

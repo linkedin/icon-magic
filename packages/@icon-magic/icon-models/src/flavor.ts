@@ -1,6 +1,7 @@
-import { FlavorConfig } from './interface';
-import { Asset } from './asset';
 import * as path from 'path';
+
+import { Asset } from './asset';
+import { FlavorConfig } from './interface';
 
 /**
  * In it's simplist definition, a Flavor is an Asset with types This class
@@ -22,8 +23,8 @@ export class Flavor extends Asset {
     if (config.types) {
       //if types is an object, convert it to a map
       if (!(config.types instanceof Map)) {
-        let types = new Map();
-        for (let [key, asset] of Object.entries(config.types)) {
+        const types = new Map();
+        for (const [key, asset] of Object.entries(config.types)) {
           if (asset) {
             types.set(key, new Asset(iconPath, asset));
           }
@@ -47,7 +48,7 @@ export class Flavor extends Asset {
     // return only flavor data
     if (this.types) {
       flavorTypes = {};
-      for (let [key, asset] of this.types) {
+      for (const [key, asset] of this.types) {
         flavorTypes[key] = asset.config;
       }
     }

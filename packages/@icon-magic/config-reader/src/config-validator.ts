@@ -1,7 +1,8 @@
-import { configSchema } from './schemas/config-schema';
 import * as Ajv from 'ajv';
 
-let metaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
+import { configSchema } from './schemas/config-schema';
+
+const metaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
 /**
  * Validates the top level properties of the icon config
@@ -18,7 +19,7 @@ export function validateConfigSchema(config: object): Boolean {
  * @param schema The schema against which we validate the config object
  * @returns whether or not the config satisfies the schema
  */
-export function validateSchema(data: object, schema: object) {
+export function validateSchema(data: object, schema: object): Boolean {
   const ajv = new Ajv({
     meta: false,
     useDefaults: true,

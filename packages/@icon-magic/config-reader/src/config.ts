@@ -1,9 +1,10 @@
-import * as path from 'path';
-import * as glob from 'glob';
+import { IconConfig, IconConfigHash } from '@icon-magic/icon-models';
 import * as debugGenerator from 'debug';
+import * as glob from 'glob';
+import * as path from 'path';
+
 import { loadConfigFile } from './config-loader';
 import { validateConfigSchema } from './config-validator';
-import { IconConfig, IconConfigHash } from '@icon-magic/icon-models';
 import { isDirectory } from './helpers/files';
 
 /**
@@ -27,7 +28,7 @@ export class Config {
   private debug: debugGenerator.IDebugger;
 
   /**
-   * Takes in a set of config files and extracts icons from it Creating an
+   * Takes in a set of config files and extracts icons from it. Creating an
    * instance of this will automatically populate it's publicly exposed
    * iconConfigHash
    * @param configFiles Takes in a set of config files
@@ -37,7 +38,7 @@ export class Config {
 
     this.iconConfigHash = new Map();
     // For each config file, find the icons and it stands for and add them to the map
-    for (let configFile of configFiles) {
+    for (const configFile of configFiles) {
       // but first, validate the config file
       const configJson = loadConfigFile(configFile);
       try {
@@ -73,7 +74,7 @@ export class Config {
     this.debug(`Resolving the icon path: ${resolvedIconPaths}`);
 
     // TODO: Determine if we can cache the stats for all the glob files via an option
-    let iconPaths = glob
+    const iconPaths = glob
       .sync(resolvedIconPaths)
       .filter(iconPath => isDirectory(iconPath));
     this.debug(
@@ -81,9 +82,9 @@ export class Config {
     );
 
     // determine the source config files for each icon and make a deep copy
-    for (let iconPath of iconPaths) {
+    for (const iconPath of iconPaths) {
       // create a deep clone of the config so we're not overriding the main one
-      let newConfig: IconConfig = JSON.parse(JSON.stringify(configJson));
+      const newConfig: IconConfig = JSON.parse(JSON.stringify(configJson));
 
       // extend the generic config data with data specific to this iconPath
       this.add(
@@ -105,16 +106,16 @@ export class Config {
    * @param iconConfig the config file that can potentially pertain to the icon
    */
   private add(iconPath: string, iconConfig: IconConfig): void {
-    let existingConfig = this.iconConfigHash.get(iconPath);
+    const existingConfig = this.iconConfigHash.get(iconPath);
     // if it exists determine whether or not to override
     if (existingConfig) {
       // get the distance between the icon dir and the existing config file
-      let existingConfigDistance = this.getDistanceBetweenPaths(
+      const existingConfigDistance = this.getDistanceBetweenPaths(
         existingConfig.sourceConfigFile,
         iconPath
       );
       // get the distance between the icon dir and the new config file
-      let newConfigDistance = this.getDistanceBetweenPaths(
+      const newConfigDistance = this.getDistanceBetweenPaths(
         iconConfig.sourceConfigFile,
         iconPath
       );
@@ -131,7 +132,7 @@ export class Config {
   }
 
   /**
-   * Counts the no. of levels between tßwo directories within a file system
+   * Counts the no. of levels between two directories within a file system
    * @param path1 path to first directory
    * @param path2 path to the second directory
    * @returns the no. of levels

@@ -1,6 +1,7 @@
-import * as path from 'path';
-import { Content } from '../interface';
 import * as fs from 'fs-extra';
+import * as path from 'path';
+
+import { Content } from '../interface';
 
 export type FileType = 'svg' | 'png' | 'webp';
 
@@ -45,7 +46,7 @@ export async function saveContentToFile(
 }
 
 async function getSvgFromFile(filePath: string): Promise<string> {
-  let svgContent = await fs.readFile(filePath, { encoding: 'utf8' });
+  const svgContent = await fs.readFile(filePath, { encoding: 'utf8' });
   // remove trailing new lines and whitespaces from the string
   return svgContent.trim();
 }

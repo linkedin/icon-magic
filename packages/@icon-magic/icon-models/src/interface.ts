@@ -43,7 +43,8 @@ export type BuildPlugin = Plugin<Asset>;
 export type GeneratePlugin = Plugin<Flavor>;
 
 /**
- * Properties related t
+ * Properties related to the build phase of an icon
+ * Please refer to packages/build/README.md for more details
  */
 export interface BuildConfig {
   outputPath?: string;

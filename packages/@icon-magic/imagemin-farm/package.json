@@ -14,7 +14,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "imagemin": "^6.0.0",
@@ -22,8 +22,5 @@
     "imagemin-optipng": "^6.0.0",
     "imagemin-pngcrush": "^5.1.0",
     "imagemin-zopfli": "^5.1.0"
-  },
-  "devDependencies": {
-    "debug": "^4.1.1"
   }
 }

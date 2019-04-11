@@ -14,7 +14,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "@icon-magic/svg-to-png": "^2.0.0",
@@ -27,7 +27,6 @@
     "webp-converter": "^2.1.6"
   },
   "devDependencies": {
-    "@types/cli-progress": "^1.8.0",
-    "debug": "^4.1.1"
+    "@types/cli-progress": "^1.8.0"
   }
 }

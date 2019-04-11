@@ -1,17 +1,17 @@
 import {
-  BuildPlugin,
-  Icon,
   Asset,
+  BuildPlugin,
   Flavor,
-  applyPluginsOnAsset,
+  Icon,
   IconConfigHash,
-  IconSet
-} from '@icon-magic/icon-models/';
+  IconSet,
+  applyPluginsOnAsset
+} from '@icon-magic/icon-models';
+import * as debugGenerator from 'debug';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as debugGenerator from 'debug';
 
-let debug = debugGenerator('icon-magic:build:index');
+const debug = debugGenerator('icon-magic:build:index');
 
 /**
  * The build is responsible for constructing all the various flavors that an
@@ -29,55 +29,32 @@ let debug = debugGenerator('icon-magic:build:index');
 export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
   debug('Icon build has begun');
   // Create icons for all icons within the iconConfig
-  let iconSet = new IconSet(iconConfig);
-  let outputIconSet: IconSet = new IconSet();
+  const iconSet = new IconSet(iconConfig);
+  const outputIconSet: IconSet = new IconSet();
 
-  for (let icon of iconSet.hash.values()) {
+  for (const icon of iconSet.hash.values()) {
     // runs the plugins on each icon
     let assets: Asset[];
-    let buildConfig = icon.build;
+    const buildConfig = icon.build;
     if (buildConfig && buildConfig.plugins) {
       assets = await applyBuildPluginsOnVariants(icon, buildConfig.plugins);
     } else {
-      // if the plugins weren't applied, then move all variants to flavors as is
+      // if there are no build plugins, then move all variants to flavors as is
       assets = icon.variants;
     }
     // get the output directory with respect to the current working directory
     // and then create a directory with the iconName
-    let outputPath = icon.buildOutputPath;
+    const outputPath = icon.buildOutputPath;
 
     // create the directory if it doesn't already exist
     await fs.mkdirp(outputPath);
-    let promises = [];
 
-    // for each new asset that was returned from the build plugins, write them
-    // to the output directory
-    for (let asset of assets) {
-      // write contents to outputPath
-      let content = await asset.getContents();
-      // write the file as the name specified in flavor.name
-      let writePromise = await fs.writeFile(
-        `${path.join(outputPath, asset.name)}.svg`,
-        content,
-        {
-          encoding: 'utf8'
-        }
-      );
-      debug(`Asset ${asset.name} has been written to ${outputPath}`);
+    // create a new flavor to the icon from each asset obtained by applying the
+    // build plugins
+    await Promise.all(
+      assets.map(asset => saveAssetAsFlavor(asset, icon, outputPath))
+    );
 
-      // create a new Flavor instance with the asset
-      let flavor = new Flavor(icon.iconPath, asset);
-
-      // set the path to point to the newly created file as it oculd've been
-      // renamed in above if it's name was different from the file name
-      flavor.path = `./${asset.name}.svg`;
-
-      // push this asset as a flavor onto the icon
-      await icon.flavors.set(flavor.name, flavor);
-      debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
-
-      promises.push(writePromise);
-    }
     // in the icon, update the iconPath to be that of the output path
     icon.iconPath = outputPath;
     // add it to the outputIconSet's hash map
@@ -86,14 +63,47 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
       `Icon ${icon.iconName} has been written to the hash as ${icon.iconPath}`
     );
 
-    await Promise.all(promises);
-
     // write the config to the output directory
-    icon.writeConfigToDisk(icon.buildOutputPath);
+    await icon.writeConfigToDisk(icon.buildOutputPath);
   }
 
   //return the outputIconSet
   return outputIconSet;
+}
+
+/**
+ * Takes an asset and adds it to the icon by
+ * first, writing the asset's contents onto the outputPath
+ * and then, updating the icon config to contain a new flavor with this newly
+ * written asset
+ * @param asset The asset to be added to the icon as a new flavor of the icon
+ * @param icon The icon to which the new asset is to be added
+ * @param outputPath The path to which the asset is to be written to on disk
+ */
+async function saveAssetAsFlavor(
+  asset: Asset,
+  icon: Icon,
+  outputPath: string
+): Promise<void> {
+  // write contents to outputPath
+  const content = await asset.getContents();
+  // write the file as the name specified in flavor.name
+  await fs.writeFile(`${path.join(outputPath, asset.name)}.svg`, content, {
+    encoding: 'utf8'
+  });
+  debug(`Asset ${asset.name} has been written to ${outputPath}`);
+
+  // create a new Flavor instance with the asset once the asset is written to
+  // disk
+  const flavor = new Flavor(icon.iconPath, asset);
+
+  // set the path to point to the newly created file as it could've been
+  // renamed in above if it's name was different from the file name
+  flavor.path = `./${asset.name}.svg`;
+
+  // push this asset as a flavor onto the icon
+  icon.flavors.set(flavor.name, flavor);
+  debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
 }
 
 /**
@@ -103,16 +113,16 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
  * @returns a promise that resolves to the assets obtained after applying the
  * plugins
  */
-async function applyBuildPluginsOnVariants(
+export async function applyBuildPluginsOnVariants(
   icon: Icon,
   plugins: BuildPlugin[]
-): Promise<Asset[] | Flavor[]> {
-  let promises = [] as Asset[];
-  for (let iconVariant of icon.variants) {
-    promises = promises.concat(
+): Promise<Asset[]> {
+  let assets: Asset[] = [];
+  for (const iconVariant of icon.variants) {
+    assets = assets.concat(
       // TODO: fork off a separate node process for each variant here
       await applyPluginsOnAsset(iconVariant, icon, plugins)
     );
   }
-  return Promise.all(promises);
+  return assets;
 }

@@ -14,9 +14,6 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
-  },
-  "devDependencies": {
-    "debug": "^4.1.1"
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
   }
 }

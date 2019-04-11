@@ -17,18 +17,18 @@ memory. Primary, it's path, name and contents, if it's already read into memory
 
 ### Flavor
 
-In it's simplist definition, a Flavor is an Asset with types This class contains
-Assets for all the different types in which it can exist For example, a Flavor
-consists of it's source svg as well as paths to it's png and webp assets
+In it's simplist definition, a Flavor is an Asset with types. This class
+contains Assets for all the different types in which it can exist For example, a
+Flavor consists of it's source svg as well as paths to it's png and webp assets
 
 ### Icon
 
-Encapsulates what an Icon means It is referenced by a path to it's directory and
-the directory of icons can be assumed to contain all the different variants and
-flavors in which the icon is available, in all of it's different types. The
-config itself is generally more concise and human readable but this class
-supplements it by providing methods on it and filling in the gaps where they
-don't exist
+Encapsulates what an Icon means. An Icon is referenced by a path to it's
+directory and this directory can be assumed to contain all the different
+variants and flavors in which the icon is available, in all of it's different
+types(extensions). The config itself is generally more concise and human
+readable but this class supplements it by providing methods on it and filling in
+the gaps where they don't exist
 
 ### Icon Set
 

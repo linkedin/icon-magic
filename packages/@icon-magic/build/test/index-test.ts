@@ -1,11 +1,12 @@
+import { Asset, Icon } from '@icon-magic/icon-models';
 import * as assert from 'assert';
+
 import { applyBuildPluginsOnVariants } from './../src/index';
-import { Icon, Asset } from '@icon-magic/icon-models';
 import { idealIcon } from './helpers/ideal-icon';
 
 describe('Build tests', function() {
   it('applyBuildPluginsOnVariants() applies all sorts of plugins', async () => {
-    let sampleIcon = new Icon(idealIcon);
+    const sampleIcon = new Icon(idealIcon);
     let assets: Asset[] = [];
 
     if (sampleIcon.build && sampleIcon.build.plugins) {

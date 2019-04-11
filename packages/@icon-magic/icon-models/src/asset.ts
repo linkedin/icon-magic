@@ -1,5 +1,6 @@
-import * as path from 'path';
 import * as debugGenerator from 'debug';
+import * as path from 'path';
+
 import { AssetConfig, Content } from './interface';
 import { getFileContents } from './utils/files';
 
@@ -77,7 +78,7 @@ export class Asset {
    * Returns the content stored in the path of this asset
    */
   async getContents(): Promise<Content> {
-    // if it isn't already retieved, read the file from disk
+    // if it isn't already retrieved, read the file from disk
     if (!this.contents) {
       this.debug(`Reading ${this.path}'s file contents from the disk`);
       this.contents = await getFileContents(this.path);

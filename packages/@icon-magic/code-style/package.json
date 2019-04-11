@@ -10,8 +10,5 @@
   "keywords": [
     "tslint",
     "tslint-plugin"
-  ],
-  "devDependencies": {
-    "debug": "^4.1.1"
-  }
+  ]
 }

@@ -13,10 +13,10 @@
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
 
+import { Asset, Flavor, GeneratePlugin, Icon } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
-import { Icon, Flavor, GeneratePlugin, Asset } from '@icon-magic/icon-models';
 
 // TODO: check if we should add more properties here
 export interface SvgGenerateOptions {
@@ -30,9 +30,9 @@ export interface SvgGenerateOptions {
 export const svgGenerate: GeneratePlugin = {
   name: 'svg-generate',
   fn: async (flavor: Flavor, icon: Icon, _params?: object): Promise<Flavor> => {
-    let svgo = new Svgo();
-    let asset = await svgo.optimize(flavor.contents as string);
-    let outputPath = icon.generateOutputPath;
+    const svgo = new Svgo();
+    const asset = await svgo.optimize(flavor.contents as string);
+    const outputPath = icon.generateOutputPath;
 
     // write the optimized svg to the output directory
     await fs.mkdirp(outputPath);

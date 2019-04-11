@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Icon magic blueprint package.",
   "main": "dist/src/index.js",
-  "author": "Adam Miller <adam@pages.me>",
+  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
   "license": "BSD-2-Clause",
   "private": true,
   "scripts": {
@@ -14,16 +14,15 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "@icon-magic/icon-models": "^2.0.0",
     "@icon-magic/imagemin-farm": "^2.0.0",
     "@icon-magic/svg-to-png": "^2.0.0",
-    "@types/svgo": "^1.0.1",
     "svgo": "^1.2.0"
   },
   "devDependencies": {
-    "debug": "^4.1.1"
+    "@types/svgo": "^1.0.1"
   }
 }

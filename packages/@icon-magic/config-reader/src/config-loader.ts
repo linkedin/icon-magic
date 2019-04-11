@@ -1,9 +1,9 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import * as debugGenerator from 'debug';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 const importFresh = require('import-fresh');
 
-let debug = debugGenerator('icon-magic:icon-models:plugin-manager');
+const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
 
 /**
  * Loads a JavaScript configuration from a file.

@@ -7,7 +7,7 @@ describe('@icon-magic/config-reader/index', function() {
   it('Resolves all paths in the config files correctly', async () => {
     const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 
-    let expectedOutput = new Map([
+    const expectedOutput = new Map([
       [
         '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/home',
         {
@@ -17,7 +17,16 @@ describe('@icon-magic/config-reader/index', function() {
             { path: './filled.svg' },
             { name: 'someOtherName', path: './outline.svg' }
           ],
+          sizes: [24],
+          resolutions: [1],
           build: { outputPath: './out' },
+          generate: {
+            outputPath: './out',
+            types: [
+              { name: 'svg', plugins: [] },
+              { name: 'raster', plugins: [] }
+            ]
+          },
           sourceConfigFile:
             '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/iconrc.json'
         }
@@ -32,8 +41,8 @@ describe('@icon-magic/config-reader/index', function() {
             { name: 'filled', path: './filled.svg' },
             { name: 'modifiedOutline', path: './modifiedOutline.svg' }
           ],
-          sizes: [16],
-          resolutions: [1],
+          sizes: [8, 16],
+          resolutions: [1, 2],
           build: { outputPath: './out' },
           generate: {
             outputPath: './out',
@@ -47,7 +56,7 @@ describe('@icon-magic/config-reader/index', function() {
         }
       ]
     ]);
-    let configSet = getIconConfigSet([FIXTURES]);
+    const configSet = getIconConfigSet([FIXTURES]);
 
     assert.deepEqual(configSet, new Map(expectedOutput));
   });

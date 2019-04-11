@@ -1,20 +1,21 @@
+import * as path from 'path';
+
 import {
-  IconConfig,
+  Asset,
+  AssetConfig,
+  BuildConfig,
+  BuildPlugin,
+  FlavorConfig,
   FlavorTypeMap,
   GenerateConfig,
-  BuildConfig,
-  AssetConfig,
-  FlavorConfig,
   Icon,
-  BuildPlugin,
-  Asset
+  IconConfig
 } from '../../src';
 import { getNameFromPropCombo } from '../../src/utils/prop-combinator';
-import * as path from 'path';
 
 const FIXTURES = path.resolve(__dirname, '..', '..', '..', 'test', 'fixtures');
 
-let sampleExt: FlavorTypeMap = {
+const sampleExt: FlavorTypeMap = {
   svg: {
     name: 'filled-a.svg',
     path: './filled-a.svg'
@@ -29,7 +30,7 @@ let sampleExt: FlavorTypeMap = {
   }
 };
 
-let buildPlugins: BuildPlugin[] = [
+const buildPlugins: BuildPlugin[] = [
   {
     name: 'p1',
     fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {

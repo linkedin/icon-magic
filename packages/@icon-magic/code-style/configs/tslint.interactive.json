@@ -3,7 +3,7 @@
   "rules": {
     "no-var-keyword": true,
     "adjacent-overload-signatures": true,
-    "no-for-in-array":true,
+    "no-for-in-array": true,
     "no-reference": true,
     "no-eval": true,
     "no-floating-promises": true,
@@ -30,9 +30,15 @@
     "no-redundant-jsdoc": true,
     "binary-expression-operand-order": true,
     "prefer-for-of": true,
-    "max-line-length": [
-      false,
-      {"limit": 120}
+    "max-line-length": [false, { "limit": 120 }],
+    "prefer-const": true,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "lowercase-last",
+        "grouped-imports": true
+      }
     ]
   }
 }

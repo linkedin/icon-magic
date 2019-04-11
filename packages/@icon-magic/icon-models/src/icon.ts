@@ -1,18 +1,19 @@
-import {
-  IconConfig,
-  AssetSize,
-  AssetResolution,
-  BuildConfig,
-  GenerateConfig,
-  DistributeConfig,
-  FlavorConfig
-} from './interface';
-import { exists, isTypeSVG } from './utils/files';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import * as debugGenerator from 'debug';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+
 import { Asset } from './asset';
 import { Flavor } from './flavor';
+import {
+  AssetResolution,
+  AssetSize,
+  BuildConfig,
+  DistributeConfig,
+  FlavorConfig,
+  GenerateConfig,
+  IconConfig
+} from './interface';
+import { exists, isTypeSVG } from './utils/files';
 
 /**
  * Encapsulates what an Icon means It is referenced by a path to it's directory
@@ -53,10 +54,10 @@ export class Icon {
     }
 
     // iterate through the variants and create Asset instances for each variant
-    let variants: Asset[] = [];
-    for (let variant of config.variants) {
+    const variants: Asset[] = [];
+    for (const variant of config.variants) {
       if (!(variant instanceof Asset)) {
-        let variantAsset = new Asset(config.iconPath, variant);
+        const variantAsset = new Asset(config.iconPath, variant);
 
         // check to see if the file exists
         try {
@@ -76,10 +77,10 @@ export class Icon {
     this.variants = variants;
 
     // if the config has flavors, create Flavor instances for each flavor
-    let flavors: Map<string, Flavor> = new Map();
-    for (let flavor of config.flavors || []) {
+    const flavors: Map<string, Flavor> = new Map();
+    for (const flavor of config.flavors || []) {
       if (!(flavor instanceof Flavor)) {
-        let tmpFlavor = new Flavor(config.iconPath, flavor);
+        const tmpFlavor = new Flavor(config.iconPath, flavor);
         flavors.set(tmpFlavor.name, tmpFlavor);
       }
     }
@@ -94,7 +95,7 @@ export class Icon {
    */
 
   get buildOutputPath(): string {
-    let configOutputPath = path.join(
+    const configOutputPath = path.join(
       this.build ? this.build.outputPath || this.outputPath : this.outputPath,
       this.iconName || path.basename(this.iconPath)
     );
@@ -108,7 +109,7 @@ export class Icon {
    * @returns the output path with respect to a config
    */
   get generateOutputPath(): string {
-    let configOutputPath = path.join(
+    const configOutputPath = path.join(
       this.generate
         ? this.generate.outputPath || this.outputPath
         : this.outputPath,
@@ -134,7 +135,7 @@ export class Icon {
    */
   get config(): IconConfig {
     // copy all properties have to be defined
-    let config: IconConfig = {
+    const config: IconConfig = {
       iconPath: this.iconPath,
       variants: [], // by instantiaing variants to be an empty array
       sourceConfigFile: this.sourceConfigFile,
@@ -145,14 +146,14 @@ export class Icon {
     };
 
     // fill out the variant data by getting the config from each
-    for (let variant of this.variants) {
+    for (const variant of this.variants) {
       config.variants.push(variant.config);
     }
 
     // if there are flavors, iterate and add each one
     if (this.flavors) {
-      let flavors: FlavorConfig[] = [];
-      for (let flavor of this.flavors.values()) {
+      const flavors: FlavorConfig[] = [];
+      for (const flavor of this.flavors.values()) {
         flavors.push(flavor.config);
       }
       config.flavors = flavors;

@@ -1,13 +1,14 @@
-import { Iterant, GeneratePlugin, BuildPlugin } from './interface';
-import { Icon } from './icon';
-import { saveContentToFile } from './utils/files';
+import * as debugGenerator from 'debug';
 import * as path from 'path';
-import { propCombinator } from './utils/prop-combinator';
+
 import { Asset } from './asset';
 import { Flavor } from './flavor';
-import * as debugGenerator from 'debug';
+import { Icon } from './icon';
+import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
+import { saveContentToFile } from './utils/files';
+import { propCombinator } from './utils/prop-combinator';
 
-let debug = debugGenerator('icon-magic:icon-models:plugin-manager');
+const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
 
 /**
  * Applies the set of plugins on the given asset and returns all the
@@ -27,26 +28,23 @@ export async function applyPluginsOnAsset(
   plugins: BuildPlugin[] | GeneratePlugin[]
 ): Promise<Asset[] | Flavor[]> {
   // create a two dimensional matrix that stores the result of each plugin
-  let pluginResults: Asset[][] | Flavor[][] = [];
+  const pluginResults: Asset[][] | Flavor[][] = [];
 
   // iterate over all the plugins, applying them one at a time
-  for (let [index, plugin] of plugins.entries()) {
+  for (const [index, plugin] of plugins.entries()) {
     pluginResults[index] = new Array();
     debug(`applyPluginsOnAsset: Applying ${plugin.name} on ${asset.name}`);
     // if it is the first plugin, then set the plugin input as the asset itself
     // push the asset into an array as we iterate over it in the next step
-    let pluginInput: Asset[] | Flavor[] =
+    const pluginInput: Asset[] | Flavor[] =
       pluginResults[index - 1] || new Array(asset);
 
     // for each input asset, run the plugin and add the results to the matrix
-    for (let input of pluginInput) {
-      let output = await applySinglePluginOnAsset(input, icon, plugin);
+    for (const input of pluginInput) {
+      const output = await applySinglePluginOnAsset(input, icon, plugin);
 
       pluginResults[index] = pluginResults[index].concat(output);
     }
-
-    // wait for all the plugins to finish running
-    await Promise.all(pluginResults[index]);
   }
   // return the contents of the last result
   return pluginResults[plugins.length - 1];
@@ -72,7 +70,8 @@ async function applySinglePluginOnAsset(
 ): Promise<Asset[] | Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
-    for (let propCombo of getAllPropCombinations(icon, plugin.iterants) || []) {
+    for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
+      []) {
       debug(
         `applySinglePluginOnFlavor: Applying ${plugin.name} on ${
           asset.name
@@ -94,9 +93,9 @@ async function applySinglePluginOnAsset(
     );
   }
 
-  let promises = [];
+  const promises = [];
   if (plugin.writeToOutput) {
-    for (let outputFlavor of output) {
+    for (const outputFlavor of output) {
       if (outputFlavor.contents) {
         promises.push(
           saveContentToFile(
@@ -122,8 +121,8 @@ async function applySinglePluginOnAsset(
  * are iterant values
  */
 export function getAllPropCombinations(icon: Icon, iterants: Iterant) {
-  let props = {};
-  for (let iterant of iterants) {
+  const props = {};
+  for (const iterant of iterants) {
     if (!icon.hasOwnProperty(iterant)) {
       throw new Error(
         `Could not find ${iterant} in the config file of ${icon.iconName}`

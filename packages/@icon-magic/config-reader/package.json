@@ -14,15 +14,12 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "@icon-magic/icon-models": "^2.0.0",
     "@types/glob": "^7.1.1",
     "ajv": "^6.9.2",
     "import-fresh": "^3.0.0"
-  },
-  "devDependencies": {
-    "debug": "^4.1.1"
   }
 }

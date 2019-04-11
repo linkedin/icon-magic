@@ -1,5 +1,5 @@
-import { IconConfigHash, IconSetHash } from './interface';
 import { Icon } from './icon';
+import { IconConfigHash, IconSetHash } from './interface';
 
 /**
  * This class encapsulates a set of icons
@@ -20,7 +20,7 @@ export class IconSet {
 
     if (iconConfigHash) {
       // iterate through all the entires and add it to the map
-      for (let [iconPath, config] of iconConfigHash) {
+      for (const [iconPath, config] of iconConfigHash) {
         this.hash.set(iconPath, new Icon(config));
       }
     }

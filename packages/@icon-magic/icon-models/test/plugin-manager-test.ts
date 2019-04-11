@@ -1,20 +1,22 @@
 import * as assert from 'assert';
+
+import { Asset, BuildPlugin, Flavor } from '../src';
+import { Icon } from '../src/icon';
 import {
   applyPluginsOnAsset,
   getAllPropCombinations
 } from '../src/plugin-manager';
-import {
-  simpleIterantProps,
-  complexIterantProps
-} from './helpers/iterant-properties';
-import { Icon } from '../src/icon';
-import { idealIcon } from './helpers/ideal-icon';
 import { getNameFromPropCombo } from '../src/utils/prop-combinator';
-import { Flavor, BuildPlugin, Asset } from '../src';
+
+import { idealIcon } from './helpers/ideal-icon';
+import {
+  complexIterantProps,
+  simpleIterantProps
+} from './helpers/iterant-properties';
 
 describe('plugin-manager', function() {
   it('getAllPropCombinations() works with simple iterants', async () => {
-    let sampleIcon = new Icon(idealIcon);
+    const sampleIcon = new Icon(idealIcon);
 
     assert.deepEqual(
       getAllPropCombinations(sampleIcon, ['sizes', 'resolutions']),
@@ -23,10 +25,10 @@ describe('plugin-manager', function() {
   });
 
   it('getAllPropCombinations() works with objects as iterants', async () => {
-    let idealIconWithAnExtraProp = Object.assign(idealIcon, {
+    const idealIconWithAnExtraProp = Object.assign(idealIcon, {
       iterant3: [{ a: 'object here' }]
     });
-    let sampleIcon = new Icon(idealIconWithAnExtraProp);
+    const sampleIcon = new Icon(idealIconWithAnExtraProp);
     assert.deepEqual(
       getAllPropCombinations(sampleIcon, ['sizes', 'resolutions', 'iterant3']),
       complexIterantProps
@@ -34,7 +36,7 @@ describe('plugin-manager', function() {
   });
 
   it('applyPluginsOnIcon() for simple iterants', async () => {
-    let sampleIcon = new Icon(idealIcon);
+    const sampleIcon = new Icon(idealIcon);
 
     let results: Asset[] = [];
     if (sampleIcon.build && sampleIcon.build.plugins) {
@@ -49,7 +51,7 @@ describe('plugin-manager', function() {
 
   it("applyPluginsOnIcon() throws an error if the iterants aren't present in the config", async () => {
     try {
-      let sampleIcon = new Icon(idealIcon);
+      const sampleIcon = new Icon(idealIcon);
       await applyPluginsOnAsset(sampleIcon.variants[0], sampleIcon, [
         {
           name: 'p1',
@@ -69,7 +71,7 @@ describe('plugin-manager', function() {
   });
 
   it('applyPluginsOnIcon() Iterates through a series of iterants', async () => {
-    let sampleIcon = new Icon(idealIcon);
+    const sampleIcon = new Icon(idealIcon);
     let results = [];
 
     if (
@@ -88,7 +90,7 @@ describe('plugin-manager', function() {
   });
 
   it('applyPluginsOnIcon() Applies multiple plugins', async () => {
-    let sampleIcon = new Icon(idealIcon);
+    const sampleIcon = new Icon(idealIcon);
     let results = [];
 
     if (

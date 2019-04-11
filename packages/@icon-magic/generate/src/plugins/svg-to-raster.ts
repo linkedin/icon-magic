@@ -1,12 +1,12 @@
+import { Flavor, GeneratePlugin, Icon } from '@icon-magic/icon-models';
+import { minify } from '@icon-magic/imagemin-farm';
+import { convert } from '@icon-magic/svg-to-png';
+import * as debugGenerator from 'debug';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { GeneratePlugin, Icon, Flavor } from '@icon-magic/icon-models';
-import { convert } from '@icon-magic/svg-to-png';
-import { minify } from '@icon-magic/imagemin-farm';
-import * as debugGenerator from 'debug';
 
 const webp = require('webp-converter');
-let debug = debugGenerator('icon-magic:generate:svg-to-raster');
+const debug = debugGenerator('icon-magic:generate:svg-to-raster');
 
 // TODO: typescript check how to specify this interface for params when the
 // plugin interface takes in object
@@ -38,20 +38,20 @@ export const svgToRaster: GeneratePlugin = {
   fn: async (flavor: Flavor, icon: Icon, params?: any): Promise<Flavor> => {
     // get the size and resolution from the params passed in
     if (params && params.propCombo) {
-      let w = params.propCombo.sizes.width || params.propCombo.sizes;
-      let h = params.propCombo.sizes.height || params.propCombo.sizes;
-      let res = params.propCombo.resolutions;
+      const w = params.propCombo.sizes.width || params.propCombo.sizes;
+      const h = params.propCombo.sizes.height || params.propCombo.sizes;
+      const res = params.propCombo.resolutions;
 
       // get the generateOutputPath from the icon and make it if it doesn't exist
       // alraedy
-      let outputPath = icon.generateOutputPath;
+      const outputPath = icon.generateOutputPath;
       await fs.mkdirp(outputPath);
 
-      let realSize = `${w * res}x${h * res}`;
-      let assetName = `${flavor.name}-${realSize}`;
+      const realSize = `${w * res}x${h * res}`;
+      const assetName = `${flavor.name}-${realSize}`;
 
       // First, we generate the png and store it in the output directory
-      let pngOutput = `${path.join(outputPath, assetName)}.png`;
+      const pngOutput = `${path.join(outputPath, assetName)}.png`;
       debug(`Creating ${pngOutput}`);
       await generatePng(
         flavor.contents as string, // svg is always in a string format
@@ -62,7 +62,7 @@ export const svgToRaster: GeneratePlugin = {
 
       // Convert the png to webp
       debug(`Creating ${pngOutput} webp`);
-      let webpOut = await convertToWebp(
+      const webpOut = await convertToWebp(
         pngOutput,
         `${path.join(outputPath, assetName)}.webp`
       );
@@ -72,7 +72,7 @@ export const svgToRaster: GeneratePlugin = {
       await Promise.all([minify(pngOutput), minify(webpOut)]);
 
       // create a new flavor with this sizexresolution combination
-      let flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
+      const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
         path: `./${flavor.name}.svg`,
         types: {
@@ -104,7 +104,7 @@ async function generatePng(
   height: number,
   outputPath: string
 ): Promise<void> {
-  let png = await convert(svg, { width, height });
+  const png = await convert(svg, { width, height });
   await fs.writeFile(outputPath, png);
 }
 

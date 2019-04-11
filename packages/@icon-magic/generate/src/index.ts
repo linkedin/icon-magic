@@ -1,16 +1,17 @@
 import {
-  Icon,
   Asset,
   Flavor,
-  applyPluginsOnAsset,
   GeneratePlugin,
-  IconSet
+  Icon,
+  IconSet,
+  applyPluginsOnAsset
 } from '@icon-magic/icon-models';
-import { svgGenerate } from './plugins/svg-generate';
-import { svgToRaster } from './plugins/svg-to-raster';
 import * as debugGenerator from 'debug';
 
-let debug = debugGenerator('icon-magic:generate:index');
+import { svgGenerate } from './plugins/svg-generate';
+import { svgToRaster } from './plugins/svg-to-raster';
+
+const debug = debugGenerator('icon-magic:generate:index');
 
 /**
  * Generate transorms the set of .svg flavors to their types by running a set of
@@ -25,13 +26,13 @@ let debug = debugGenerator('icon-magic:generate:index');
  */
 export async function generate(iconSet: IconSet): Promise<void> {
   debug('Icon generation has begun');
-  for (let icon of iconSet.hash.values()) {
+  for (const icon of iconSet.hash.values()) {
     // runs the plugins on each icon
-    let generateConfig = icon.generate;
+    const generateConfig = icon.generate;
     if (generateConfig) {
       let svgAssets: Asset[] = [];
       let rasterAssets: Asset[] = [];
-      for (let generateType of generateConfig && generateConfig.types) {
+      for (const generateType of generateConfig && generateConfig.types) {
         switch (generateType.name) {
           case 'svg': {
             svgAssets = svgAssets.concat(
@@ -73,7 +74,7 @@ async function applyGeneratePluginsOnFlavors(
 ): Promise<Asset[] | Flavor[]> {
   let promises: Asset[] = [];
   if (icon.flavors) {
-    for (let iconFlavor of icon.flavors.values()) {
+    for (const iconFlavor of icon.flavors.values()) {
       debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
       promises = promises.concat(
         // TODO: fork off a separate node process for each variant here

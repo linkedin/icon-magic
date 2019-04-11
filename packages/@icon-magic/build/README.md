@@ -1,4 +1,4 @@
-# @icon-magic/generate
+# @icon-magic/build
 
 The build is responsible for constructing all the various flavors that an icon
 can exist in from it's different variants, after applying the build plugins on
@@ -15,8 +15,23 @@ the icons config. @param iconConfig a map of the iconPaths to it's config json
 
 ### build(iconConfig: IconConfigHash): Promise<IconSet>
 
-It primary exposes the build function that takes in a mapping of the path to the
-icon directory and a configuration of the icon itself.
+The build function that takes in a mapping of the path to the icon directory and
+a configuration of the icon itself. For example, we contain a directory (as
+below) for `nav-icons` (navigation icons). This directory contains one icon, the
+`home` icon which has two variants - `filled.svg` and `outline.svg`.
+
+```bash
+nav-icons
+├── home
+│   ├── filled.svg
+│   └── outline.svg
+├── iconrc.json
+```
+
+`nav-icons` also contains an `iconrc.json` that is applicable to all the icons
+within `nav-icons` including the `home` icon. After we get the config from
+`config-reader`'s `getIconConfigSet()`, each Icon will have it's own config with
+resolved iconPaths as below:
 
 ```typescript
 [
@@ -45,7 +60,7 @@ to form an icon bundle consisting of
 1. The icon config file (iconrc.json)
 2. The various flavors of the icon in their svg formats
 
-build() then return a map of the path to the icon directory and it's
+build() then returns a Map of the path to the icon directory and it's
 corresponding Icon class so it can be chained to the next steps of the icon
 generation process
 
