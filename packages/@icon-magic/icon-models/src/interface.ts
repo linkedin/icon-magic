@@ -47,7 +47,6 @@ export type GeneratePlugin = Plugin<Flavor>;
  * Please refer to packages/build/README.md for more details
  */
 export interface BuildConfig {
-  outputPath?: string;
   plugins?: BuildPlugin[];
 }
 
@@ -71,7 +70,6 @@ interface GenerateTypeConfig {
  */
 export interface GenerateConfig {
   types: GenerateTypeConfig[];
-  outputPath?: string;
 }
 
 /**
@@ -91,7 +89,7 @@ export type IconConfig = {
   resolutions: AssetResolution[];
   iconName?: string;
   flavors?: FlavorConfig[];
-  outputPath: string;
+  outputPath: string; // path where the generated assets go
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;

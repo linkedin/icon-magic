@@ -1,23 +1,26 @@
-import { Flavor, GeneratePlugin, Icon } from '@icon-magic/icon-models';
+import {
+  AssetResolution,
+  AssetSize,
+  Flavor,
+  GeneratePlugin,
+  Icon
+} from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
+import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
-import * as debugGenerator from 'debug';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 const webp = require('webp-converter');
-const debug = debugGenerator('icon-magic:generate:svg-to-raster');
+const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
-// TODO: typescript check how to specify this interface for params when the
-// plugin interface takes in object
-// export type SvgToRasterOptions = {
-//   propCombo: {
-//     sizes: AssetSize;
-//     resolutions: AssetResolution;
-//   } & {
-//     [prop: string]: any;
-//   };
-// };
+export interface SvgToRasterOptions {
+  useNameSizeMapping?: { [name: string]: AssetSize };
+  propCombo?: {
+    sizes?: AssetSize;
+    resolutions: AssetResolution;
+  };
+}
 
 /**
  * This plugin converts and .svg image to .webp and .png images by going over
@@ -35,46 +38,78 @@ const debug = debugGenerator('icon-magic:generate:svg-to-raster');
 export const svgToRaster: GeneratePlugin = {
   name: 'svg-to-raster',
   iterants: ['sizes', 'resolutions'],
-  fn: async (flavor: Flavor, icon: Icon, params?: any): Promise<Flavor> => {
+  fn: async (
+    flavor: Flavor,
+    icon: Icon,
+    params?: SvgToRasterOptions
+  ): Promise<Flavor> => {
     // get the size and resolution from the params passed in
     if (params && params.propCombo) {
-      const w = params.propCombo.sizes.width || params.propCombo.sizes;
-      const h = params.propCombo.sizes.height || params.propCombo.sizes;
+      let w: number;
+      let h: number;
+      // if a nameSizeMapping should be used, get the size from the matching name pattern
+      if (params.useNameSizeMapping) {
+        let sizeFromMapping: AssetSize;
+        const flavorName = path.basename(flavor.name);
+
+        // get the size from the mapping that is passed in
+        for (const key in params.useNameSizeMapping) {
+          if (flavorName.match(key))
+            sizeFromMapping = params.useNameSizeMapping[key];
+        }
+
+        if (sizeFromMapping) {
+          w = sizeFromMapping.width || sizeFromMapping;
+          h = sizeFromMapping.height || sizeFromMapping;
+        } else {
+          throw new Error(
+            `${flavorName} does not match a size in ${
+              params.useNameSizeMapping
+            }`
+          );
+        }
+      } else {
+        if (!params.propCombo.sizes) {
+          throw new Error(
+            `svg-to-raster: 'sizes' has to be set for ${flavor.name} `
+          );
+        }
+        w = params.propCombo.sizes.width || params.propCombo.sizes;
+        h = params.propCombo.sizes.height || params.propCombo.sizes;
+      }
       const res = params.propCombo.resolutions;
 
-      // get the generateOutputPath from the icon and make it if it doesn't exist
-      // alraedy
-      const outputPath = icon.getOutputPath();
+      // create the icon output path if it doesn't exist already
+      const outputPath = icon.getIconOutputPath();
       await fs.mkdirp(outputPath);
 
-      const realSize = `${w * res}x${h * res}`;
-      const assetName = `${flavor.name}-${realSize}`;
+      const assetName = `${flavor.name}-${w}x${h}@${res}`;
 
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
-      debug(`Creating ${pngOutput}`);
+      LOGGER.debug(`Creating ${pngOutput}`);
       await generatePng(
-        flavor.contents as string, // svg is always in a string format
+        (await flavor.getContents()) as string, // .svg asset's getContents() returns a string
         w * res,
         h * res,
         pngOutput
       );
 
       // Convert the png to webp
-      debug(`Creating ${pngOutput} webp`);
-      const webpOut = await convertToWebp(
+      LOGGER.debug(`Creating webp from ${pngOutput} `);
+      await convertToWebp(
         pngOutput,
         `${path.join(outputPath, assetName)}.webp`
       );
 
-      // minify both the png and webp assets
-      debug(`Minifying ${pngOutput} and .webp`);
-      await Promise.all([minify(pngOutput), minify(webpOut)]);
+      // minify the png. webp minification doesn't help
+      LOGGER.debug(`Minifying png: ${pngOutput}`);
+      await minify(pngOutput);
 
       // create a new flavor with this sizexresolution combination
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
-        path: `./${flavor.name}.svg`,
+        path: flavor.getPath(),
         types: {
           png: {
             name: assetName,
@@ -88,6 +123,7 @@ export const svgToRaster: GeneratePlugin = {
       });
       return flavorWithRasterAssets;
     }
+    return flavor;
   }
 };
 

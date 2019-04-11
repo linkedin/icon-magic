@@ -48,7 +48,7 @@ const generateConfigProperties = {
       properties: {
         name: {
           type: 'string',
-          enum: ["svg", "raster"]
+          enum: ['svg', 'raster']
         },
         plugins: {
           type: ['array'],
@@ -82,9 +82,9 @@ const topLevelConfigProperties = {
     minItems: 1,
     items: {
       type: ['number', 'object'],
-      properties:  {
-        'width': { type: 'number' },
-        'height': { type: 'number' }
+      properties: {
+        width: { type: 'number' },
+        height: { type: 'number' }
       },
       required: ['width', 'height'],
       additionalProperties: false
@@ -97,6 +97,9 @@ const topLevelConfigProperties = {
       type: 'number'
     }
   },
+  flavors: { type: 'array' },
+  outputPath: { type: ['string', 'null'] },
+  sourceConfigFile: { type: ['string', 'null'] },
   build: {
     type: 'object',
     properties: buildConfigProperties,

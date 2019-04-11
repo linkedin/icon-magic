@@ -3,16 +3,12 @@ import * as assert from 'assert';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { svgToRaster } from './../src/plugins/svg-to-raster';
+import {
+  SvgToRasterOptions,
+  svgToRaster
+} from './../src/plugins/svg-to-raster';
 
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
-
-const options = {
-  propCombo: {
-    sizes: { width: 24, height: 12 },
-    resolutions: 2
-  }
-};
 
 const file = fs.readFileSync(
   path.resolve(`${FIXTURES}/nav-icons/home/filled.svg`).toString()
@@ -38,19 +34,55 @@ const icon = new Icon({
   ],
   sizes: [8, 16],
   resolutions: [1, 2, 3],
-  outputPath: './out',
+  outputPath: `/${FIXTURES}/out`,
   iconName: 'home',
   sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
 });
 
-const flavorWithTypes: FlavorTypeMap = {
-  png: { name: 'filled-48x24', path: './filled-48x24.png' },
-  webp: { name: 'filled-48x24', path: './filled-48x24.webp' }
-};
-
 describe('svgToRaster()', function() {
   it('Creates all the raster assets and updates the icon correctly', async () => {
-    const flavors = await svgToRaster.fn(flavor, icon, options);
-    assert.deepEqual(flavorWithTypes, flavors.getFlavorConfig().types);
+    const options: SvgToRasterOptions = {
+      propCombo: {
+        sizes: { width: 24, height: 12 },
+        resolutions: 2
+      }
+    };
+    const flavorWithTypes: FlavorTypeMap = {
+      png: {
+        name: 'filled-24x12@2',
+        path: './filled-24x12@2.png'
+      },
+      webp: {
+        name: 'filled-24x12@2',
+        path: './filled-24x12@2.webp'
+      }
+    };
+    const output: Flavor = await svgToRaster.fn(flavor, icon, options);
+    assert.deepEqual(flavorWithTypes, output.getConfig().types);
+  });
+
+  it('Uses the size mapping if it is passed in as a parameter', async () => {
+    const options: SvgToRasterOptions = {
+      useNameSizeMapping: {
+        filled: 60,
+        outline: 40
+      },
+      propCombo: {
+        resolutions: 2
+      }
+    };
+
+    const flavorWithTypes: FlavorTypeMap = {
+      png: {
+        name: 'filled-60x60@2',
+        path: './filled-60x60@2.png'
+      },
+      webp: {
+        name: 'filled-60x60@2',
+        path: './filled-60x60@2.webp'
+      }
+    };
+    const output: Flavor = await svgToRaster.fn(flavor, icon, options);
+    assert.deepEqual(flavorWithTypes, output.getConfig().types);
   });
 });

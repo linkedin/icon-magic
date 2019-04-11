@@ -1,18 +1,10 @@
-import {
-  Asset,
-  Flavor,
-  GeneratePlugin,
-  Icon,
-  IconSet,
-  applyPluginsOnAsset,
-  saveContentToFile
-} from '@icon-magic/icon-models';
-import * as debugGenerator from 'debug';
+import { IconConfigHash, IconSet } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
+import * as path from 'path';
+import * as workerpool from 'workerpool';
 
-import { svgGenerate } from './plugins/svg-generate';
-import { svgToRaster } from './plugins/svg-to-raster';
-
-const debug = debugGenerator('icon-magic:generate:index');
+const LOGGER: Logger = logger('icon-magic:generate:index');
+const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
 
 /**
  * Generate transorms the set of .svg flavors to their types by running a set of
@@ -23,72 +15,45 @@ const debug = debugGenerator('icon-magic:generate:index');
  * After generate has applied all the plugins based on type, we now get flavors
  * with types that contain paths to the newly created .type asset. Generate also
  * updates the icon config with the newly generated types.
+ *
+ * If no plugins are passed for the type, then by default, svgToRaster is
+ * applion raster and svgGenerate is applied on svg types
  * @param iconSet mapping of the iconPath to the Icon class
  */
 export async function generate(iconSet: IconSet): Promise<void> {
-  debug('Icon generation has begun');
-  for (const icon of iconSet.hash.values()) {
-    // runs the plugins on each icon
-    const generateConfig = icon.generate;
-    if (generateConfig) {
-      let svgAssets: Asset[] = [];
-      let rasterAssets: Asset[] = [];
-      for (const generateType of generateConfig && generateConfig.types) {
-        switch (generateType.name) {
-          case 'svg': {
-            svgAssets = svgAssets.concat(
-              await applyGeneratePluginsOnFlavors(icon, new Array(svgGenerate))
-            );
-            break;
-          }
-          case 'raster': {
-            rasterAssets = await applyGeneratePluginsOnFlavors(
-              icon,
-              new Array(svgToRaster)
-            );
-            break;
-          }
-          default: {
-            // do nothing
-            break;
-          }
-        }
-      }
-      await Promise.all(svgAssets);
-      await Promise.all(rasterAssets);
-    }
+  LOGGER.debug('Icon generation has begun');
 
-    // write the icon config to disk
-    debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
-    await saveContentToFile(
-      icon.getOutputPath(),
-      'iconrc',
-      JSON.stringify(icon.getConfig(), null, 2),
-      'json'
+  LOGGER.debug('Creating the worker pool');
+  const poolPromises = [];
+
+  // runs the plugins on each icon using the pool
+  for (const icon of iconSet.hash.values()) {
+    poolPromises.push(
+      // TODO: workerpool has a bug with passing in a class instace as a
+      // parameter to pool.exec params. Hence we're passing the icon.getConfig()
+      // and then constructing the Icon class within the worker. Not ideal, but
+      // I'll file a bug and follow up with them on it. TODO: Create an issue
+      // for workerpool
+      pool.exec('generateSingleIcon', [
+        Object.assign(icon.getConfig(), { iconPath: icon.iconPath })
+      ])
     );
   }
+  await Promise.all(poolPromises).then(() => {
+    if (poolPromises.length > 0) {
+      pool.terminate();
+    }
+  });
 }
 
 /**
- * Iterates through the flavors of the icon and applies the plugins passed into
- * this function on all the flavors of the icon
- * @param icon the icon on whose flavors the plugins have to be applied
- * @param plugins Set of plugins to be be applied on all flavors of the icon
+ * This is a wrapper around the generate() function above that takes in an
+ * iconConfigHash instead of an iconset. It can be used to invoke generate()
+ * directly from the CLI
  */
-async function applyGeneratePluginsOnFlavors(
-  icon: Icon,
-  plugins: GeneratePlugin[]
-): Promise<Asset[] | Flavor[]> {
-  let promises: Asset[] = [];
-  if (icon.flavors) {
-    for (const iconFlavor of icon.flavors.values()) {
-      debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
-      promises = promises.concat(
-        // TODO: fork off a separate node process for each variant here
-        await applyPluginsOnAsset(iconFlavor, icon, plugins)
-      );
-    }
-  }
-  promises.forEach(flavor => icon.flavors.set(flavor.name, flavor as Flavor));
-  return Promise.all(promises);
+export async function generateFromConfigHash(
+  iconConfig: IconConfigHash
+): Promise<void> {
+  const iconSet = new IconSet(iconConfig, true);
+  return generate(iconSet);
 }

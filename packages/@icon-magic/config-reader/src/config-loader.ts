@@ -1,9 +1,9 @@
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 const importFresh = require('import-fresh');
 
-const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
+const LOGGER: Logger = logger('icon-magic:config-reader:config-loader');
 
 /**
  * Loads a JavaScript configuration from a file.
@@ -11,11 +11,11 @@ const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
  * @returns  The configuration object from the file.
  */
 function loadJSConfigFile(filePath: string) {
-  debug(`Loading JS config file: ${filePath}`);
+  LOGGER.debug(`Loading JS config file: ${filePath}`);
   try {
     return importFresh(filePath);
   } catch (e) {
-    debug(`Error reading JavaScript file: ${filePath}`);
+    LOGGER.debug(`Error reading JavaScript file: ${filePath}`);
     throw new Error(
       `Cannot read config file: ${filePath}\nError: ${e.message}`
     );
@@ -28,12 +28,12 @@ function loadJSConfigFile(filePath: string) {
  * @returns The configuration object from the file.
  */
 function loadJSONConfigFile(filePath: string) {
-  debug(`Loading JSON config file: ${filePath}`);
+  LOGGER.debug(`Loading JSON config file: ${filePath}`);
 
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch (e) {
-    debug(`Error reading JSON file: ${filePath}`);
+    LOGGER.debug(`Error reading JSON file: ${filePath}`);
     throw new Error(
       `Cannot read config file: ${filePath}\nError: ${e.message}`
     );

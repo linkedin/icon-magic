@@ -1,4 +1,4 @@
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -8,7 +8,7 @@ import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
 
-const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
+const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 
 /**
  * Applies the set of plugins on the given asset and returns all the
@@ -33,7 +33,9 @@ export async function applyPluginsOnAsset(
   // iterate over all the plugins, applying them one at a time
   for (const [index, plugin] of plugins.entries()) {
     pluginResults[index] = new Array();
-    debug(`applyPluginsOnAsset: Applying ${plugin.name} on ${asset.name}`);
+    LOGGER.debug(
+      `applyPluginsOnAsset: Applying ${plugin.name} on ${asset.name}`
+    );
     // if it is the first plugin, then set the plugin input as the asset itself
     // push the asset into an array as we iterate over it in the next step
     const pluginInput: Asset[] | Flavor[] =
@@ -72,7 +74,7 @@ async function applySinglePluginOnAsset(
   if (plugin.iterants) {
     for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
       []) {
-      debug(
+      LOGGER.debug(
         `applySinglePluginOnFlavor: Applying ${plugin.name} on ${
           asset.name
         } with`
@@ -88,6 +90,7 @@ async function applySinglePluginOnAsset(
     }
   } else {
     // when the plugin does not have any or iterants
+    LOGGER.debug('Running the plugin without iterants');
     output = output.concat(
       await plugin.fn.call(icon, asset, icon, plugin.params)
     );
