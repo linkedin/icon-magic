@@ -4,7 +4,8 @@ import {
   GeneratePlugin,
   Icon,
   IconSet,
-  applyPluginsOnAsset
+  applyPluginsOnAsset,
+  saveContentToFile
 } from '@icon-magic/icon-models';
 import * as debugGenerator from 'debug';
 
@@ -58,7 +59,13 @@ export async function generate(iconSet: IconSet): Promise<void> {
     }
 
     // write the icon config to disk
-    await icon.writeConfigToDisk(icon.generateOutputPath);
+    debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
+    await saveContentToFile(
+      icon.generateOutputPath,
+      'iconrc',
+      JSON.stringify(icon.config, null, 2),
+      'json'
+    );
   }
 }
 

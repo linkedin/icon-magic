@@ -5,3 +5,4 @@ export { IconSet } from './icon-set';
 
 export { applyPluginsOnAsset } from './plugin-manager';
 export * from './interface';
+export * from './utils/files';

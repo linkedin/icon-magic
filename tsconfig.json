@@ -28,7 +28,7 @@
     "noUnusedLocals": true,
     "strictFunctionTypes": true,
     "alwaysStrict": true,
-    "strictPropertyInitialization": false, // to support Object.assign in the constructor of a class
+    "strictPropertyInitialization": true,
 
     // output options
     "preserveConstEnums": false,

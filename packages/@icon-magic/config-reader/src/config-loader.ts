@@ -31,9 +31,7 @@ function loadJSONConfigFile(filePath: string) {
   debug(`Loading JSON config file: ${filePath}`);
 
   try {
-    return JSON.parse(
-      fs.readFileSync(filePath, 'utf8').replace(/^\ufeff/u, '')
-    );
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch (e) {
     debug(`Error reading JSON file: ${filePath}`);
     throw new Error(

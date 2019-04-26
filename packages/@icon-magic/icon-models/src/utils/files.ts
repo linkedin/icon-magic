@@ -3,7 +3,7 @@ import * as path from 'path';
 
 import { Content } from '../interface';
 
-export type FileType = 'svg' | 'png' | 'webp';
+export type FileType = 'svg' | 'png' | 'webp' | 'json';
 
 export function isDirectory(path: string): boolean {
   return fs.statSync(path).isDirectory();
@@ -39,7 +39,7 @@ export async function saveContentToFile(
   }
   await fs.mkdirp(filePath);
   return await fs.writeFile(
-    `${filePath}/${fileName}.${type}`,
+    path.join(`${filePath}/${fileName}.${type}`),
     content,
     options
   );

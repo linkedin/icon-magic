@@ -5,7 +5,8 @@ import {
   Icon,
   IconConfigHash,
   IconSet,
-  applyPluginsOnAsset
+  applyPluginsOnAsset,
+  saveContentToFile
 } from '@icon-magic/icon-models';
 import * as debugGenerator from 'debug';
 import * as fs from 'fs-extra';
@@ -64,7 +65,13 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     );
 
     // write the config to the output directory
-    await icon.writeConfigToDisk(icon.buildOutputPath);
+    debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
+    await saveContentToFile(
+      icon.buildOutputPath,
+      'iconrc',
+      JSON.stringify(icon.config, null, 2),
+      'json'
+    );
   }
 
   //return the outputIconSet

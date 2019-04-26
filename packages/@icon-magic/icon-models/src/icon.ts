@@ -1,5 +1,4 @@
 import * as debugGenerator from 'debug';
-import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -46,7 +45,9 @@ export class Icon {
   constructor(config: IconConfig) {
     this.debug = debugGenerator('icon-magic:icon-models:icon');
     // copy over all the properties in the config
-    Object.assign(this, config);
+    for (const key of Object.keys(config)) {
+      this[key] = config[key];
+    }
 
     // sets a name to the icon if it doesn't exist already
     if (!config.iconName) {
@@ -116,17 +117,6 @@ export class Icon {
       this.iconName || path.basename(this.iconPath)
     );
     return path.join(process.cwd(), configOutputPath || './tmp');
-  }
-
-  async writeConfigToDisk(filePath: string): Promise<void> {
-    // create the directory if it doesn't exist
-    await fs.mkdirp(filePath);
-    // write the config to the output directory
-    this.debug(`Writing ${this.iconName}'s iconrc.json to ${filePath}`);
-    await fs.writeFile(
-      `${path.join(filePath, 'iconrc.json')}`,
-      JSON.stringify(this.config, null, 4)
-    );
   }
 
   /**

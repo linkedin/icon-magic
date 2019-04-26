@@ -14,7 +14,8 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json --fix",
+    "lint": "tslint -t msbuild --project . -c tslint.json",
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix",
     "cli": "yarn run build && icon-magic"
   },
   "dependencies": {
