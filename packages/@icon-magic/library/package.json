@@ -4,7 +4,7 @@
   "description": "Icon magic's icon library I/O utilities.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "private": false,
   "scripts": {
     "start": "yarn run watch",
@@ -14,13 +14,12 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json",
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "@icon-magic/svg-to-png": "^2.0.0",
-    "@types/debug": "^0.0.31",
     "cli-progress": "^2.1.0",
-    "debug": "^4.1.0",
     "fs-extra": "^7.0.1",
     "png-chunk-text": "^1.0.0",
     "png-chunks-encode": "^1.0.0",

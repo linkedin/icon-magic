@@ -4,7 +4,7 @@
   "description": "Icon magic blueprint package.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "scripts": {
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
@@ -13,12 +13,12 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json",
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "@types/fs-extra": "^5.0.4",
     "@types/puppeteer": "^1.10.0",
-    "debug": "^4.1.0",
     "fs-extra": "^7.0.1",
     "puppeteer": "^1.10.0"
   },

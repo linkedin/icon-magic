@@ -1,3 +1,3 @@
-let foo = "test";
+const foo = "test";
 
 export { foo };

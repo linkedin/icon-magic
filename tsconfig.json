@@ -1,6 +1,6 @@
 {
-  "include": [ ],
-  "exclude": [ "node_modules" ],
+  "include": [],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     // Compilation Configuration
     "outDir": "dist",
@@ -40,4 +40,3 @@
     "paths": {}
   }
 }
-

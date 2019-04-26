@@ -71,7 +71,7 @@ if (cluster.isMaster) {
   const numCPUs = require('os').cpus().length - 1;
   DEBUG(`Starting ${numCPUs} imagemin worker processes.`);
   for (let i = 0; i < numCPUs; i++) {
-    let worker = cluster.fork();
+    const worker = cluster.fork();
     WORKERS.push(worker);
     STATUS.set(worker.id, {
       total: 0,
@@ -84,11 +84,11 @@ if (cluster.isMaster) {
     DEBUG(`Master receives message '${message.cmd}' from worker ${worker.id}.\n${JSON.stringify(message.msg, null, 2)}`);
 
     // Fetch this worker's status object.
-    let workerStatus = STATUS.get(worker.id);
+    const workerStatus = STATUS.get(worker.id);
     if (!workerStatus) { throw new Error(`Received message from unknown child process ${process.pid}.`); }
 
     // Fetch the worker's completed job's promise resolver.
-    let promise = workerStatus.remaining.get(message.msg.uid);
+    const promise = workerStatus.remaining.get(message.msg.uid);
     if (!promise) {
       throw new Error(`Child process ${process.pid} attempted to resolve unknown minification promise: \n\n Message: \n${JSON.stringify(message, null, 2)} \n\n Promises: [${[...workerStatus.remaining.keys()]}]`);
     }
@@ -99,9 +99,9 @@ if (cluster.isMaster) {
     }
 
     // Compute latest stats across all workers and return.
-    let statuses = [...STATUS.values()].map(formatStatus);
-    let numWithJobs = statuses.reduce((count, s) => isNull(s.progress) ? count : count+1, 0);
-    let status: ProcessStatus = {
+    const statuses = [...STATUS.values()].map(formatStatus);
+    const numWithJobs = statuses.reduce((count, s) => isNull(s.progress) ? count : count+1, 0);
+    const status: ProcessStatus = {
       total: statuses.reduce((sum, s) => s.total + sum, 0),
       remaining: statuses.reduce((sum, s) => s.remaining + sum, 0),
       progress: statuses.map((s) => isNull(s.progress) ? null : s.progress / numWithJobs).reduce((sum: number, v) => isNull(v) ? sum : v + sum, 0),
@@ -118,7 +118,7 @@ if (cluster.isMaster) {
     }
 
     // Notify all subscribers of latest status. This happens on `ack` and `done`
-    for (let sub of SUBSCRIBERS) { sub(status); }
+    for (const sub of SUBSCRIBERS) { sub(status); }
 
   });
 
@@ -155,9 +155,9 @@ let idx = 0;
 let UID = 0; // TODO: Make incrementing hex so we don't run out at MAX_INT
 export function minify(path: string): Promise<Result> {
   DEBUG(`Starting minification task for ${path}.`);
-  let localId = UID++;
-  let worker = WORKERS[idx];
-  let state = STATUS.get(worker.id);
+  const localId = UID++;
+  const worker = WORKERS[idx];
+  const state = STATUS.get(worker.id);
   idx = (idx + 1) % WORKERS.length;
   if (!state) { throw new Error(`Can not find worker state for pid ${worker.id}.`); }
   return new Promise<Result>((resolve, reject) => {

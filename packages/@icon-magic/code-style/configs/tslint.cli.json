@@ -34,14 +34,13 @@
     "eofline": true,
     "import-spacing": true,
     "no-trailing-whitespace": true,
-    "align": [true, "parameters", "arguments", "statements", "members", "elements"],
-    "ordered-imports": [
+    "align": [
       true,
-      {
-        "import-sources-order": "case-insensitive",
-        "named-imports-order": "lowercase-last",
-        "grouped-imports": true
-      }
+      "parameters",
+      "arguments",
+      "statements",
+      "members",
+      "elements"
     ],
     "type-literal-delimiter": true,
     "whitespace": [
@@ -56,16 +55,10 @@
       "check-type-operator",
       "check-preblock"
     ],
-    "trailing-comma": [
-      true,
-      {"multiline": "always", "singleline": "never"}
-    ],
-
-
-
+    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
     "no-var-keyword": true,
     "adjacent-overload-signatures": true,
-    "no-for-in-array":true,
+    "no-for-in-array": true,
     "no-reference": true,
     "no-eval": true,
     "no-floating-promises": true,
@@ -92,11 +85,6 @@
     "no-redundant-jsdoc": true,
     "binary-expression-operand-order": true,
     "prefer-for-of": true,
-    "max-line-length": [
-      false,
-      {"limit": 120}
-    ]
-
-
+    "max-line-length": [false, { "limit": 120 }]
   }
 }

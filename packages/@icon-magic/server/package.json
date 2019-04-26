@@ -4,7 +4,7 @@
   "description": "Icon magic API server.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "scripts": {
     "serve": "node ./dist/src/index.js",
     "start": "yarn run watch",
@@ -14,7 +14,8 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
-    "lint": "tslint -t msbuild --project . -c tslint.json"
+    "lint": "tslint -t msbuild --project . -c tslint.json",
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
     "express": "^4.16.4"

@@ -1,0 +1,32 @@
+{
+  "iconPath": ".",
+  "iconName": "modified-small-home",
+  "variants": [
+    {
+      "name": "filled",
+      "path": "./filled.svg"
+    },
+    {
+      "name": "modifiedOutline",
+      "path": "./modifiedOutline.svg"
+    }
+  ],
+  "sizes": [8, 16],
+  "resolutions": [1, 2],
+  "build": {
+    "outputPath": "./out"
+  },
+  "generate": {
+    "outputPath": "./out",
+    "types": [
+      {
+        "name": "svg",
+        "plugins": []
+      },
+      {
+        "name": "raster",
+        "plugins": []
+      }
+    ]
+  }
+}
