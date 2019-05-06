@@ -19,7 +19,10 @@ const pluginProperties = {
 };
 
 const buildConfigProperties = {
-  outputPath: { type: ['string', 'null'] },
+  outputPath: {
+    type: ['string', 'null'],
+    minLength: 1
+  },
   plugins: {
     type: ['array', 'null'],
     items: {
@@ -33,7 +36,10 @@ const buildConfigProperties = {
 const distributeConfigProperties = {};
 
 const generateConfigProperties = {
-  outputPath: { type: ['string', 'null'] },
+  outputPath: {
+    type: ['string', 'null'],
+    minLength: 1
+  },
   types: {
     type: ['array'],
     items: {
