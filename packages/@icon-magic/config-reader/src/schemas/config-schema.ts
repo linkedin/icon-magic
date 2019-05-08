@@ -14,7 +14,7 @@ const pluginProperties = {
   params: ['object'],
   writeToOutput: {
     type: 'boolean',
-    default: true
+    default: false
   }
 };
 
@@ -27,6 +27,7 @@ const buildConfigProperties = {
     type: ['array', 'null'],
     items: {
       type: ['object'],
+      required: ['name'],
       properties: pluginProperties,
       additionalProperties: true
     }
@@ -50,6 +51,7 @@ const generateConfigProperties = {
           type: ['array'],
           items: {
             type: ['object'],
+            required: ['name'],
             properties: pluginProperties,
             additionalProperties: true
           }
