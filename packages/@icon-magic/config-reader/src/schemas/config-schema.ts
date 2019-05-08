@@ -3,14 +3,66 @@ const variantProperties = {
   path: { type: 'string', minLength: 1 }
 };
 
+const pluginProperties = {
+  name: { type: 'string' },
+  iterants: {
+    type: ['array'],
+    items: {
+      type: 'string'
+    }
+  },
+  params: ['object'],
+  writeToOutput: {
+    type: 'boolean',
+    default: false
+  }
+};
+
 const buildConfigProperties = {
-  outputPath: { type: ['string', 'null'] },
-  plugins: { type: ['array', 'null'] }
+  outputPath: {
+    type: ['string', 'null'],
+    minLength: 1
+  },
+  plugins: {
+    type: ['array', 'null'],
+    items: {
+      type: ['object'],
+      required: ['name'],
+      properties: pluginProperties,
+      additionalProperties: true
+    }
+  }
 };
 
 const distributeConfigProperties = {};
 
-const generateConfigProperties = {};
+const generateConfigProperties = {
+  outputPath: {
+    type: ['string', 'null'],
+    minLength: 1
+  },
+  types: {
+    type: ['array'],
+    items: {
+      type: ['object'],
+      properties: {
+        name: {
+          type: 'string',
+          enum: ["svg", "raster"]
+        },
+        plugins: {
+          type: ['array'],
+          items: {
+            type: ['object'],
+            required: ['name'],
+            properties: pluginProperties,
+            additionalProperties: true
+          }
+        }
+      }
+    }
+  }
+};
 
 const topLevelConfigProperties = {
   iconPath: { type: 'string', minLength: 1 },
@@ -25,8 +77,26 @@ const topLevelConfigProperties = {
       additionalProperties: false
     }
   },
-  sizes: { type: 'array', minItems: 1 },
-  resolutions: { type: 'array', minItems: 1 },
+  sizes: {
+    type: 'array',
+    minItems: 1,
+    items: {
+      type: ['number', 'object'],
+      properties:  {
+        'width': { type: 'number' },
+        'height': { type: 'number' }
+      },
+      required: ['width', 'height'],
+      additionalProperties: false
+    }
+  },
+  resolutions: {
+    type: 'array',
+    minItems: 1,
+    items: {
+      type: 'number'
+    }
+  },
   build: {
     type: 'object',
     properties: buildConfigProperties,
