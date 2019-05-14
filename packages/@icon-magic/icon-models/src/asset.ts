@@ -12,8 +12,10 @@ export class Asset {
   name: string;
   contents: Content;
   iconPath: string;
+  private path: string;
   private debug: debugGenerator.IDebugger;
   private unresolvedPath: string;
+  private config: AssetConfig;
 
   /**
    * Creates a new asset
@@ -49,7 +51,7 @@ export class Asset {
    * If an absolute path is passed in, store the relative path relative to the
    * iconPath
    */
-  set path(filePath: string) {
+  setPath(filePath: string) {
     if (path.isAbsolute(filePath)) {
       this.unresolvedPath = path.relative(this.iconPath, filePath);
     } else {
@@ -60,14 +62,14 @@ export class Asset {
   /**
    * The path of an asset is always relative to the iconpath
    */
-  get path() {
+  getPath() {
     return path.resolve(this.iconPath, this.unresolvedPath);
   }
 
   /**
    * Returns the Asset data that needs to be stored in the config file
    */
-  get config(): AssetConfig {
+  getConfig(): AssetConfig {
     return {
       name: this.name,
       path: `./${path.relative(this.iconPath, this.path)}`

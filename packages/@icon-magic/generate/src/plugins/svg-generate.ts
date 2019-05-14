@@ -32,7 +32,7 @@ export const svgGenerate: GeneratePlugin = {
   fn: async (flavor: Flavor, icon: Icon, _params?: object): Promise<Flavor> => {
     const svgo = new Svgo();
     const asset = await svgo.optimize(flavor.contents as string);
-    const outputPath = icon.generateOutputPath;
+    const outputPath = icon.generateOutputPath();
 
     // write the optimized svg to the output directory
     await fs.mkdirp(outputPath);

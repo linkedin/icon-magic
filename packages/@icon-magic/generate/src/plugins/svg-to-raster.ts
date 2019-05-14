@@ -44,7 +44,7 @@ export const svgToRaster: GeneratePlugin = {
 
       // get the generateOutputPath from the icon and make it if it doesn't exist
       // alraedy
-      const outputPath = icon.generateOutputPath;
+      const outputPath = icon.generateOutputPath();
       await fs.mkdirp(outputPath);
 
       const realSize = `${w * res}x${h * res}`;

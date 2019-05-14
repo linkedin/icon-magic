@@ -36,7 +36,7 @@ describe('@icon-magic/icon-models/flavor', function() {
     }
 
     assert.deepEqual(
-      flavor.config,
+      flavor.getConfig(),
       flavors[0],
       'config is the original content'
     );

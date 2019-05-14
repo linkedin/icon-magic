@@ -17,10 +17,10 @@ describe('@icon-magic/icon-models/asset', function() {
     };
     const asset = new Asset(path.resolve(__dirname, iconPath), assetContent);
 
-    assert.ok(path.isAbsolute(asset.path), 'always returns an absolute path');
+    assert.ok(path.isAbsolute(asset.getPath()), 'always returns an absolute path');
 
     assert.equal(
-      asset.path,
+      asset.getPath(),
       path.join(__dirname, './fixtures/nav-icons/home/filled.svg'),
       'is resolved with respect to the iconPath'
     );
@@ -32,7 +32,7 @@ describe('@icon-magic/icon-models/asset', function() {
     );
 
     assert.deepEqual(
-      asset.config,
+      asset.getConfig(),
       assetContent,
       'config is the original content'
     );

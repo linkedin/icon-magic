@@ -45,7 +45,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     }
     // get the output directory with respect to the current working directory
     // and then create a directory with the iconName
-    const outputPath = icon.buildOutputPath;
+    const outputPath = icon.getBuildOutputPath();
 
     // create the directory if it doesn't already exist
     await fs.mkdirp(outputPath);
@@ -67,9 +67,9 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     // write the config to the output directory
     debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
     await saveContentToFile(
-      icon.buildOutputPath,
+      icon.getBuildOutputPath(),
       'iconrc',
-      JSON.stringify(icon.config, null, 2),
+      JSON.stringify(icon.getConfig(), null, 2),
       'json'
     );
   }
