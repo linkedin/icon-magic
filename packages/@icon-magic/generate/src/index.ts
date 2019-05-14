@@ -63,7 +63,7 @@ export async function generate(iconSet: IconSet): Promise<void> {
     await saveContentToFile(
       icon.generateOutputPath(),
       'iconrc',
-      JSON.stringify(icon.config, null, 2),
+      JSON.stringify(icon.getConfig(), null, 2),
       'json'
     );
   }

@@ -16,9 +16,9 @@ describe('@icon-magic/icon-models/flavor', function() {
       { encoding: 'utf8' }
     );
     const flavor = new Flavor(path.resolve(__dirname, iconPath), flavors[0]);
-    assert.ok(path.isAbsolute(flavor.path), 'always returns an absolute path');
+    assert.ok(path.isAbsolute(flavor.getPath()), 'always returns an absolute path');
     assert.equal(
-      flavor.path,
+      flavor.getPath(),
       path.join(`${FIXTURES}/nav-icons/home/filled-a.svg`),
       'is resolved with respect to the iconPath'
     );
