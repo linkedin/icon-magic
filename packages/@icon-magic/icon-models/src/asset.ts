@@ -12,7 +12,7 @@ export class Asset {
   name: string;
   contents: Content | undefined;
   iconPath: string;
-  private path: string;
+  protected path: string;
   private debug: debugGenerator.IDebugger;
   private assetConfig: AssetConfig;
 
@@ -36,7 +36,7 @@ export class Asset {
     // the file itself
     this.name = config.name ? config.name : path.parse(config.path).name;
 
-    // set the path (this automatically calls the setter defined on path)
+    // set the path
     this.path = config.path;
 
     // set the contents only if it is passed in the config
@@ -45,7 +45,7 @@ export class Asset {
     }
     this.assetConfig =  {
       name: this.name,
-      path: `./${path.relative(this.iconPath, this.path)}`
+      path: this.path
     };
     this.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
