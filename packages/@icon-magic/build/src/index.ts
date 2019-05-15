@@ -102,11 +102,11 @@ async function saveAssetAsFlavor(
 
   // create a new Flavor instance with the asset once the asset is written to
   // disk
-  const flavor = new Flavor(icon.iconPath, asset);
+  const flavor = new Flavor(icon.iconPath, asset.getAssetConfig());
 
   // set the path to point to the newly created file as it could've been
   // renamed in above if it's name was different from the file name
-  flavor.path = `./${asset.name}.svg`;
+  flavor.setPath(`./${asset.name}.svg`);
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);
