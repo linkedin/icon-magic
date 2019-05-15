@@ -61,7 +61,7 @@ export async function generate(iconSet: IconSet): Promise<void> {
     // write the icon config to disk
     debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
     await saveContentToFile(
-      icon.generateOutputPath(),
+      icon.getOutputPath(),
       'iconrc',
       JSON.stringify(icon.getConfig(), null, 2),
       'json'

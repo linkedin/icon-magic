@@ -10,12 +10,11 @@ import { getFileContents } from './utils/files';
  */
 export class Asset {
   name: string;
-  contents: Content;
+  contents: Content | undefined;
   iconPath: string;
   private path: string;
   private debug: debugGenerator.IDebugger;
-  private unresolvedPath: string;
-  private config: AssetConfig;
+  private assetConfig: AssetConfig;
 
   /**
    * Creates a new asset
@@ -44,36 +43,25 @@ export class Asset {
     if (config.contents) {
       this.contents = config.contents;
     }
+    this.assetConfig =  {
+      name: this.name,
+      path: `./${path.relative(this.iconPath, this.path)}`
+    };
     this.debug(`Asset ${this.name} created in ${this.iconPath}`);
-  }
-
-  /**
-   * If an absolute path is passed in, store the relative path relative to the
-   * iconPath
-   */
-  setPath(filePath: string) {
-    if (path.isAbsolute(filePath)) {
-      this.unresolvedPath = path.relative(this.iconPath, filePath);
-    } else {
-      this.unresolvedPath = filePath;
-    }
   }
 
   /**
    * The path of an asset is always relative to the iconpath
    */
   getPath() {
-    return path.resolve(this.iconPath, this.unresolvedPath);
+    return path.resolve(this.iconPath, this.path);
   }
 
   /**
    * Returns the Asset data that needs to be stored in the config file
    */
   getConfig(): AssetConfig {
-    return {
-      name: this.name,
-      path: `./${path.relative(this.iconPath, this.path)}`
-    };
+    return this.assetConfig;
   }
 
   /**

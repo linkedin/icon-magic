@@ -31,7 +31,7 @@ export class Icon {
   iconName: string;
   flavors: Map<string, Flavor>;
   outputPath: string;
-  config: IconConfig;
+  iconConfig: IconConfig;
 
   build?: BuildConfig;
   generate?: GenerateConfig;
@@ -88,6 +88,7 @@ export class Icon {
       }
     }
     this.flavors = flavors;
+    this.iconConfig = this.configureConfig();
   }
 
   /**
@@ -111,7 +112,7 @@ export class Icon {
    * it returns a path to the tmp folder in the current directory
    * @returns the output path with respect to a config
    */
-  generateOutputPath(): string {
+  getOutputPath(): string {
     const configOutputPath = path.join(
       this.generate
         ? this.generate.outputPath || this.outputPath
@@ -121,11 +122,15 @@ export class Icon {
     return path.join(process.cwd(), configOutputPath || './tmp');
   }
 
+  getConfig(): IconConfig {
+    return this.iconConfig;
+  }
+
   /**
    * @returns All Icon data as an object so it can be written to the output
    * directory
    */
-  getConfig(): IconConfig {
+  configureConfig(): IconConfig {
     // copy all properties have to be defined
     const config: IconConfig = {
       iconPath: this.iconPath,
