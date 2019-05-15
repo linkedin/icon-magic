@@ -60,7 +60,7 @@ export class Asset {
   /**
    * Returns the Asset data that needs to be stored in the config file
    */
-  getConfig(): AssetConfig {
+  getAssetConfig(): AssetConfig {
     return this.assetConfig;
   }
 

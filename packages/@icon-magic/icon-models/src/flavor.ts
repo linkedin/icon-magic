@@ -48,7 +48,7 @@ export class Flavor extends Asset {
     if (this.types) {
       flavorTypes = {};
       for (const [key, asset] of this.types) {
-        flavorTypes[key] = asset.getConfig();
+        flavorTypes[key] = asset.getAssetConfig();
       }
     }
 
@@ -61,7 +61,7 @@ export class Flavor extends Asset {
   /**
    * returns flavor data that needs to be stored in the config file
    */
-  getConfig(): FlavorConfig {
+  getFlavorConfig(): FlavorConfig {
     return this.flavorConfig;
   }
 }

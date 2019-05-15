@@ -145,14 +145,14 @@ export class Icon {
 
     // fill out the variant data by getting the config from each
     for (const variant of this.variants) {
-      config.variants.push(variant.getConfig());
+      config.variants.push(variant.getAssetConfig());
     }
 
     // if there are flavors, iterate and add each one
     if (this.flavors) {
       const flavors: FlavorConfig[] = [];
       for (const flavor of this.flavors.values()) {
-        flavors.push(flavor.getConfig());
+        flavors.push(flavor.getFlavorConfig());
       }
       config.flavors = flavors;
     }

@@ -51,6 +51,6 @@ const flavorWithTypes: FlavorTypeMap = {
 describe('svgToRaster()', function() {
   it('Creates all the raster assets and updates the icon correctly', async () => {
     const flavors = await svgToRaster.fn(flavor, icon, options);
-    assert.deepEqual(flavorWithTypes, flavors.config.types);
+    assert.deepEqual(flavorWithTypes, flavors.getFlavorConfig().types);
   });
 });

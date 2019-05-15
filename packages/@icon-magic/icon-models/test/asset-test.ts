@@ -32,7 +32,7 @@ describe('@icon-magic/icon-models/asset', function() {
     );
 
     assert.deepEqual(
-      asset.getConfig(),
+      asset.getAssetConfig(),
       assetContent,
       'config is the original content'
     );
