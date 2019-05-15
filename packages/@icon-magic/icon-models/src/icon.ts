@@ -131,6 +131,7 @@ export class Icon {
    * directory
    */
   configureConfig(): IconConfig {
+    this.debug(`Creating the config for ${this.iconPath}`);
     // copy all properties have to be defined
     const config: IconConfig = {
       iconPath: this.iconPath,

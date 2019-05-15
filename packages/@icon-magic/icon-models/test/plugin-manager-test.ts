@@ -72,7 +72,7 @@ describe('plugin-manager', function() {
 
   it('applyPluginsOnIcon() Iterates through a series of iterants', async () => {
     const sampleIcon = new Icon(idealIcon);
-    let results = [];
+    let results: Asset[] = [];
 
     if (
       sampleIcon.build &&
@@ -91,7 +91,7 @@ describe('plugin-manager', function() {
 
   it('applyPluginsOnIcon() Applies multiple plugins', async () => {
     const sampleIcon = new Icon(idealIcon);
-    let results = [];
+    let results: Asset[] = [];
 
     if (
       sampleIcon.build &&
