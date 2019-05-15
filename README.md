@@ -10,7 +10,9 @@ In the root directory run:
 - `yarn install`
 - `yarn lerna run build`
 
-You can use `yarn lerna run` to run a script in each package that contains that script. i.e `yarn lerna run test` to run the tests for all packages.
+or you can install lerna globally using `yarn global add lerna` and run `lerna` directly using `lerna run build`.
+
+You can use `yarn lerna run` to run a script in each package that contains that script. i.e `yarn lerna run test` to run the tests for all packages. You'll need to run a build on all the packages when you switch branches.
 
 ## Glossary
 
