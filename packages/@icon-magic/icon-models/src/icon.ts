@@ -121,14 +121,17 @@ export class Icon {
     );
     return path.join(process.cwd(), configOutputPath || './tmp');
   }
-
+  /**
+   * @returns All Icon data as an object so it can be written to the output
+   * directory
+   */
   getConfig(): IconConfig {
     return this.iconConfig;
   }
 
   /**
-   * @returns All Icon data as an object so it can be written to the output
-   * directory
+   * Populates object with all Icon data as an object so it can be written to the output
+   * directory and @returns object to be set as the config
    */
   configureConfig(): IconConfig {
     this.debug(`Creating the config for ${this.iconPath}`);

@@ -42,6 +42,10 @@ export class Flavor extends Asset {
     this.flavorConfig = this.configureConfig();
   }
 
+  /**
+   * Populates FlavorConfig with flavor data that needs to be stored and
+   * @returnsobject to be set as the config
+   */
   configureConfig() {
     let flavorTypes;
     // return only flavor data
@@ -59,7 +63,7 @@ export class Flavor extends Asset {
     };
   }
   /**
-   * returns flavor data that needs to be stored in the config file
+   * Returns FlavorConfig object
    */
   getFlavorConfig(): FlavorConfig {
     return this.flavorConfig;

@@ -57,12 +57,15 @@ export class Asset {
     return path.resolve(this.iconPath, this.path);
   }
 
+  /**
+   * Sets the path property to a path passed in
+   */
   setPath(path: string) {
     this.path = path;
   }
 
   /**
-   * Returns the Asset data that needs to be stored in the config file
+   * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
     return this.assetConfig;
