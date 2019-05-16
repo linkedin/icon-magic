@@ -51,7 +51,7 @@ export class Asset {
   }
 
   /**
-   * The path of an asset is always relative to the iconpath
+   * @returns The path of an asset which is always relative to the iconpath
    */
   getPath() {
     return path.resolve(this.iconPath, this.path);
