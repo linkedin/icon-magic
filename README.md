@@ -1,6 +1,18 @@
 # icon-magic
 
-Automated icon build system for iOS, Android and Web
+Automated icon build system for iOS, Android and Web.
+
+## Getting Started
+
+Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory.
+
+In the root directory run:
+- `yarn install`
+- `yarn lerna run build`
+
+or you can install lerna globally using `yarn global add lerna` and run `lerna` directly using `lerna run build`.
+
+You can use `yarn lerna run` to run a script in each package that contains that script. i.e `yarn lerna run test` to run the tests for all packages. You'll need to run a build on all the packages when you switch branches.
 
 ## Glossary
 
@@ -23,7 +35,7 @@ Automated icon build system for iOS, Android and Web
 
 ## Packages
 
-Icon Magic is structured as a Lerna monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory. A brief description of its contents is as follows:
+A brief description of the packages in `icon-magic`:
 
 ### @icon-magic/blueprint
 
