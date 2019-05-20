@@ -18,6 +18,7 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
+    "@icon-magic/logger": "^2.0.0",
     "@icon-magic/svg-to-png": "^2.0.0",
     "cli-progress": "^2.1.0",
     "fs-extra": "^7.0.1",

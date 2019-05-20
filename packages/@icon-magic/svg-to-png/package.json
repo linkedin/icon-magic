@@ -17,12 +17,15 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
+    "@icon-magic/logger": "^2.0.0",
     "@types/fs-extra": "^5.0.4",
     "@types/puppeteer": "^1.10.0",
+    "debug": "^4.1.1",
     "fs-extra": "^7.0.1",
     "puppeteer": "^1.10.0"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.4",
     "image-comparer": "^1.1.3"
   }
 }
