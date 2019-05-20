@@ -1,0 +1,29 @@
+{
+  "name": "@icon-magic/cli",
+  "version": "2.0.0",
+  "description": "Icon magic CLI package.",
+  "main": "dist/src/index.js",
+  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
+  "license": "BSD-2-Clause",
+  "private": true,
+  "scripts": {
+    "start": "yarn run watch",
+    "watch": "watch 'yarn run test' './src' './test' --wait=1",
+    "pretest": "yarn run build & yarn run lint",
+    "test": "mocha --opts test/mocha.opts dist/test",
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc -p tsconfig.json",
+    "postbuild": "cp -r ./test/fixtures ./dist/test",
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
+  },
+  "bin": {
+    "icon-magic": "dist/src/index.js"
+  },
+  "dependencies": {
+    "@icon-magic/build": "^2.0.0",
+    "@icon-magic/generate": "^2.0.0",
+    "@icon-magic/distribute": "^2.0.0",
+    "commander": "^2.19.0",
+    "config-reader": "^0.1.1"
+  }
+}
