@@ -23,25 +23,25 @@ export const winstonLogger: winston.Logger = createLogger({
  * Wrapper around winston's logger
  */
 export interface Logger {
-  error: Function;
-  debug: Function;
-  info: Function;
+  error: (msg: string) => void;
+  debug: (msg: string) => void;
+  info: (msg: string) => void;
 }
 
 /**
  * Wrapper around winston's logger that takes in a fileName
  * @param fileName name of the file that's added as a label to the logging data
  */
-export const logger = (fileName: string): Logger => {
+export function logger(fileName: string): Logger {
   return {
-    error: function(msg: string) {
+    error: function(msg: string): void {
       winstonLogger.error({ message: msg, label: fileName });
     },
-    debug: function(msg: string) {
+    debug: function(msg: string): void {
       winstonLogger.debug({ message: msg, label: fileName });
     },
-    info: function(msg: string) {
+    info: function(msg: string): void {
       winstonLogger.info({ message: msg, label: fileName });
     }
   };
-};
+}
