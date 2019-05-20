@@ -1,0 +1,22 @@
+{
+  "name": "@icon-magic/distribute",
+  "version": "2.0.0",
+  "description": "Icon magic distribute package.",
+  "main": "dist/src/index.js",
+  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
+  "license": "BSD-2-Clause",
+  "private": true,
+  "scripts": {
+    "start": "yarn run watch",
+    "watch": "watch 'yarn run test' './src' './test' --wait=1",
+    "pretest": "yarn run build & yarn run lint",
+    "test": "mocha --opts test/mocha.opts dist/test",
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc -p tsconfig.json",
+    "postbuild": "cp -r ./test/fixtures ./dist/test",
+    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
+  },
+  "dependencies": {
+    "@icon-magic/icon-models": "^2.0.0"
+  }
+}
