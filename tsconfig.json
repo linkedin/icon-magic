@@ -10,7 +10,6 @@
     "inlineSourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
-
     // Environment Configuration
     "experimentalDecorators": true,
     "moduleResolution": "node",
