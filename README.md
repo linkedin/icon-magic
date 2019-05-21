@@ -35,7 +35,7 @@ You can use `yarn lerna run` to run a script in each package that contains that 
 
 ## Packages
 
-A brief description of the packages in `icon-magic`:
+Icon Magic is structured as a Lerna monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory. A brief description of its contents is as follows:
 
 ### @icon-magic/blueprint
 
