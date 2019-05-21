@@ -16,6 +16,6 @@ describe('@icon-magic/icon-models/icon', function() {
 
   it('Icon to config conversion works correctly', async () => {
     const icon = new Icon(idealIcon);
-    assert.deepEqual(icon.config.variants, idealIcon.variants);
+    assert.deepEqual(icon.getConfig().variants, idealIcon.variants);
   });
 });

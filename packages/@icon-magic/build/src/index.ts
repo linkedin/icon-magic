@@ -45,7 +45,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     }
     // get the output directory with respect to the current working directory
     // and then create a directory with the iconName
-    const outputPath = icon.buildOutputPath;
+    const outputPath = icon.getBuildOutputPath();
 
     // create the directory if it doesn't already exist
     await fs.mkdirp(outputPath);
@@ -67,9 +67,9 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     // write the config to the output directory
     debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
     await saveContentToFile(
-      icon.buildOutputPath,
+      icon.getBuildOutputPath(),
       'iconrc',
-      JSON.stringify(icon.config, null, 2),
+      JSON.stringify(icon.getConfig(), null, 2),
       'json'
     );
   }
@@ -102,11 +102,11 @@ async function saveAssetAsFlavor(
 
   // create a new Flavor instance with the asset once the asset is written to
   // disk
-  const flavor = new Flavor(icon.iconPath, asset);
+  const flavor = new Flavor(icon.iconPath, asset.getAssetConfig());
 
   // set the path to point to the newly created file as it could've been
   // renamed in above if it's name was different from the file name
-  flavor.path = `./${asset.name}.svg`;
+  flavor.setPath(`./${asset.name}.svg`);
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);

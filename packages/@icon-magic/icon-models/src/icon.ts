@@ -31,6 +31,8 @@ export class Icon {
   iconName: string;
   flavors: Map<string, Flavor>;
   outputPath: string;
+  iconConfig: IconConfig;
+
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
@@ -62,13 +64,13 @@ export class Icon {
 
         // check to see if the file exists
         try {
-          exists(variantAsset.path);
+          exists(variantAsset.getPath());
         } catch (err) {
           throw err;
         }
 
         // check that the asset is an svg file
-        if (!isTypeSVG(variantAsset.path)) {
+        if (!isTypeSVG(variantAsset.getPath())) {
           throw new Error(`Variant ${variant.path} should be an SVG file`);
         }
 
@@ -86,6 +88,7 @@ export class Icon {
       }
     }
     this.flavors = flavors;
+    this.iconConfig = this.configureConfig();
   }
 
   /**
@@ -95,7 +98,7 @@ export class Icon {
    * @returns the output path with respect to a config
    */
 
-  get buildOutputPath(): string {
+  getBuildOutputPath(): string {
     const configOutputPath = path.join(
       this.build ? this.build.outputPath || this.outputPath : this.outputPath,
       this.iconName || path.basename(this.iconPath)
@@ -109,7 +112,7 @@ export class Icon {
    * it returns a path to the tmp folder in the current directory
    * @returns the output path with respect to a config
    */
-  get generateOutputPath(): string {
+  getOutputPath(): string {
     const configOutputPath = path.join(
       this.generate
         ? this.generate.outputPath || this.outputPath
@@ -118,12 +121,20 @@ export class Icon {
     );
     return path.join(process.cwd(), configOutputPath || './tmp');
   }
-
   /**
    * @returns All Icon data as an object so it can be written to the output
    * directory
    */
-  get config(): IconConfig {
+  getConfig(): IconConfig {
+    return this.iconConfig;
+  }
+
+  /**
+   * Populates object with all Icon data as an object so it can be written to the output
+   * directory and @returns object to be set as the config
+   */
+  configureConfig(): IconConfig {
+    this.debug(`Creating the config for ${this.iconPath}`);
     // copy all properties have to be defined
     const config: IconConfig = {
       iconPath: this.iconPath,
@@ -137,14 +148,14 @@ export class Icon {
 
     // fill out the variant data by getting the config from each
     for (const variant of this.variants) {
-      config.variants.push(variant.config);
+      config.variants.push(variant.getAssetConfig());
     }
 
     // if there are flavors, iterate and add each one
     if (this.flavors) {
       const flavors: FlavorConfig[] = [];
       for (const flavor of this.flavors.values()) {
-        flavors.push(flavor.config);
+        flavors.push(flavor.getFlavorConfig());
       }
       config.flavors = flavors;
     }

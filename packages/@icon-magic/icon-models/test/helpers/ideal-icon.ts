@@ -36,7 +36,7 @@ const buildPlugins: BuildPlugin[] = [
     fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {
       return new Asset(icon.iconPath, {
         name: getNameFromPropCombo(asset.name, params),
-        path: asset.path,
+        path: asset.getPath(),
         contents: 'p1'
       });
     },
@@ -48,7 +48,7 @@ const buildPlugins: BuildPlugin[] = [
     fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {
       return new Asset(icon.iconPath, {
         name: getNameFromPropCombo(asset.name, params),
-        path: asset.path,
+        path: asset.getPath(),
         contents: 'p2'
       });
     },
@@ -59,7 +59,7 @@ const buildPlugins: BuildPlugin[] = [
     fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {
       return new Asset(icon.iconPath, {
         name: getNameFromPropCombo(asset.name, params),
-        path: asset.path,
+        path: asset.getPath(),
         contents: 'p3'
       });
     },

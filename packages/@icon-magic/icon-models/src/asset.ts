@@ -10,10 +10,11 @@ import { getFileContents } from './utils/files';
  */
 export class Asset {
   name: string;
-  contents: Content;
+  contents: Content | undefined;
   iconPath: string;
+  protected path: string;
   private debug: debugGenerator.IDebugger;
-  private unresolvedPath: string;
+  private assetConfig: AssetConfig;
 
   /**
    * Creates a new asset
@@ -35,43 +36,39 @@ export class Asset {
     // the file itself
     this.name = config.name ? config.name : path.parse(config.path).name;
 
-    // set the path (this automatically calls the setter defined on path)
+    // set the path
     this.path = config.path;
 
     // set the contents only if it is passed in the config
     if (config.contents) {
       this.contents = config.contents;
     }
+    this.assetConfig =  {
+      name: this.name,
+      path: this.path
+    };
     this.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
   /**
-   * If an absolute path is passed in, store the relative path relative to the
-   * iconPath
+   * @returns The path o an asset which is always relative to the iconpath
    */
-  set path(filePath: string) {
-    if (path.isAbsolute(filePath)) {
-      this.unresolvedPath = path.relative(this.iconPath, filePath);
-    } else {
-      this.unresolvedPath = filePath;
-    }
+  getPath(): string {
+    return path.resolve(this.iconPath, this.path);
   }
 
   /**
-   * The path of an asset is always relative to the iconpath
+   * Sets the path property to a path passed in
    */
-  get path() {
-    return path.resolve(this.iconPath, this.unresolvedPath);
+  setPath(path: string) {
+    this.path = path;
   }
 
   /**
-   * Returns the Asset data that needs to be stored in the config file
+   * @returns the Asset data that needs to be stored in the config file
    */
-  get config(): AssetConfig {
-    return {
-      name: this.name,
-      path: `./${path.relative(this.iconPath, this.path)}`
-    };
+  getAssetConfig(): AssetConfig {
+    return this.assetConfig;
   }
 
   /**
