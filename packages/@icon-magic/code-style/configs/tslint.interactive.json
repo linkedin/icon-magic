@@ -27,7 +27,6 @@
       "ban-keywords",
       "allow-leading-underscore"
     ],
-    "typedef": [true, "call-signature"],
     "no-redundant-jsdoc": true,
     "binary-expression-operand-order": true,
     "prefer-for-of": true,

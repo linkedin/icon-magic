@@ -13,7 +13,6 @@
     "space-within-parens": {
       "options": false
     },
-    "typedef": [true, "call-signature"],
     "typedef-whitespace": [
       true,
       {
