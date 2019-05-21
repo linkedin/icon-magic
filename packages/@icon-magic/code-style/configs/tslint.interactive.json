@@ -28,6 +28,7 @@
       "allow-leading-underscore"
     ],
     "no-redundant-jsdoc": true,
+    "typedef": [true, "call-signature"],
     "binary-expression-operand-order": true,
     "prefer-for-of": true,
     "max-line-length": [false, { "limit": 120 }],
