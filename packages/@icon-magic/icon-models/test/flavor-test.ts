@@ -8,7 +8,7 @@ import { flavors } from './helpers/ideal-icon';
 
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 
-describe('@icon-magic/icon-models/flavor', function() {
+describe('@icon-magic/icon-models/flavor', function(): void {
   it('instantiates the asset correctly', async () => {
     const iconPath = `${FIXTURES}/nav-icons/home/`;
     const filledContent = await fs.readFile(

@@ -20,7 +20,7 @@
  * @param props - A map of propname to Array of possible values.
  * @returns an array of all possible combinations of the properties
  */
-export function propCombinator(props: {}) {
+export function propCombinator(props: {}): {}[] {
   let results = [{}];
   // for each prop and it's potential values...
   Object.keys(props).forEach(propName => {
@@ -52,7 +52,7 @@ export function propCombinator(props: {}) {
 export function getNameFromPropCombo(
   flavorName: string,
   params?: { propCombo?: object }
-) {
+): string {
   return params && params.propCombo
     ? `${flavorName}-${Object.values(params.propCombo).join('x')}`
     : flavorName;

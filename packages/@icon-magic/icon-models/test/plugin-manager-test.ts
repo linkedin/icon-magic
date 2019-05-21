@@ -14,7 +14,7 @@ import {
   simpleIterantProps
 } from './helpers/iterant-properties';
 
-describe('plugin-manager', function() {
+describe('plugin-manager', function(): void {
   it('getAllPropCombinations() works with simple iterants', async () => {
     const sampleIcon = new Icon(idealIcon);
 

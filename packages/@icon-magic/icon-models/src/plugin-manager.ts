@@ -120,7 +120,7 @@ async function applySinglePluginOnAsset(
  * @returns an array of objects, where the keys are the iterant names and values
  * are iterant values
  */
-export function getAllPropCombinations(icon: Icon, iterants: Iterant) {
+export function getAllPropCombinations(icon: Icon, iterants: Iterant): {}[] {
   const props = {};
   for (const iterant of iterants) {
     if (!icon.hasOwnProperty(iterant)) {

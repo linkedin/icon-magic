@@ -17,7 +17,7 @@ export function isTypeSVG(filePath: string): boolean {
   return path.parse(filePath).ext === '.svg';
 }
 
-export async function getFileContents(filePath: string) {
+export async function getFileContents(filePath: string): Promise<string | Buffer> {
   switch (path.extname(filePath)) {
     case '.svg':
       return await getSvgFromFile(filePath);
@@ -32,7 +32,7 @@ export async function saveContentToFile(
   fileName: string,
   content: Content,
   type: FileType
-) {
+): Promise<void> {
   let options;
   if (type === 'svg') {
     options = { encoding: 'utf-8' };

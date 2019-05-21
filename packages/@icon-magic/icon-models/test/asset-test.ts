@@ -4,7 +4,7 @@ import * as path from 'path';
 
 import { Asset } from './../src/asset';
 
-describe('@icon-magic/icon-models/asset', function() {
+describe('@icon-magic/icon-models/asset', function(): void {
   it('Instantiates the asset correctly', async () => {
     const iconPath = './fixtures/nav-icons/home/';
     const filledContent = await fs.readFile(

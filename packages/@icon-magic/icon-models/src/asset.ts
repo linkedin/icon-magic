@@ -27,7 +27,7 @@ export class Asset {
     // if iconPath is not absolute, throw an error
     if (!path.isAbsolute(iconPath)) {
       throw new Error(
-        'AssetCreationError: iconPath must always be absolute: ${iconPath)'
+        `AssetCreationError: iconPath must always be absolute: ${iconPath}`
       );
     }
     this.iconPath = iconPath;
@@ -60,7 +60,7 @@ export class Asset {
   /**
    * Sets the path property to a path passed in
    */
-  setPath(path: string) {
+  setPath(path: string): void {
     this.path = path;
   }
 
