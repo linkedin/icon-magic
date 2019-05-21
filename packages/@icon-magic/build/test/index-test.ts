@@ -4,7 +4,7 @@ import * as assert from 'assert';
 import { applyBuildPluginsOnVariants } from './../src/index';
 import { idealIcon } from './helpers/ideal-icon';
 
-describe('Build tests', function() {
+describe('Build tests', function(): void {
   it('applyBuildPluginsOnVariants() applies all sorts of plugins', async () => {
     const sampleIcon = new Icon(idealIcon);
     let assets: Asset[] = [];

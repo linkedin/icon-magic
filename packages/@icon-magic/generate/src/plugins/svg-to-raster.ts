@@ -115,7 +115,7 @@ async function generatePng(
  */
 function convertToWebp(pathToPng: string, outputPath: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    webp.cwebp(pathToPng, outputPath, '-q 80', function(status: string) {
+    webp.cwebp(pathToPng, outputPath, '-q 80', function(status: string): void {
       !!~status.indexOf('100') ? resolve(outputPath) : reject();
     });
   });

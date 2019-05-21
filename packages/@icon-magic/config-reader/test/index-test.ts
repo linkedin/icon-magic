@@ -3,7 +3,7 @@ import * as path from 'path';
 
 import { getIconConfigSet } from '../src';
 
-describe('@icon-magic/config-reader/index', function() {
+describe('@icon-magic/config-reader/index', function(): void {
   it('Resolves all paths in the config files correctly', async () => {
     const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 

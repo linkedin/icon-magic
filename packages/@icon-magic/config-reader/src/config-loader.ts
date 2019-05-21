@@ -10,7 +10,7 @@ const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
  * @param filePath The filename to load.
  * @returns  The configuration object from the file.
  */
-function loadJSConfigFile(filePath: string) {
+function loadJSConfigFile(filePath: string): any {
   debug(`Loading JS config file: ${filePath}`);
   try {
     return importFresh(filePath);
@@ -27,7 +27,7 @@ function loadJSConfigFile(filePath: string) {
  * @param filePath The filename to load.
  * @returns The configuration object from the file.
  */
-function loadJSONConfigFile(filePath: string) {
+function loadJSONConfigFile(filePath: string): any {
   debug(`Loading JSON config file: ${filePath}`);
 
   try {
@@ -45,7 +45,7 @@ function loadJSONConfigFile(filePath: string) {
  * @param file The path to the configuration.
  * @returns The configuration information.
  */
-export function loadConfigFile(filePath: string) {
+export function loadConfigFile(filePath: string): any {
   let config;
   switch (path.extname(filePath)) {
     case '.js':

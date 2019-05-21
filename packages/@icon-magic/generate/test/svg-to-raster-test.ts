@@ -48,7 +48,7 @@ const flavorWithTypes: FlavorTypeMap = {
   webp: { name: 'filled-48x24', path: './filled-48x24.webp' }
 };
 
-describe('svgToRaster()', function() {
+describe('svgToRaster()', function(): void {
   it('Creates all the raster assets and updates the icon correctly', async () => {
     const flavors = await svgToRaster.fn(flavor, icon, options);
     assert.deepEqual(flavorWithTypes, flavors.getFlavorConfig().types);

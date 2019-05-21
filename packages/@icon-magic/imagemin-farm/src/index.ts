@@ -60,7 +60,7 @@ export interface Result {
 
 const SUBSCRIBERS: Set<Listener> = new Set();
 export type Listener = (res: ProcessStatus) => void;
-export function subscribe(func: Listener) { SUBSCRIBERS.add(func); }
+export function subscribe(func: Listener): void { SUBSCRIBERS.add(func); }
 
 if (cluster.isMaster) {
 
@@ -132,7 +132,7 @@ if (cluster.isMaster) {
 
 } else {
   let JOB_CHAIN = Promise.resolve();
-  process.on('message', async function(message: ParentMessage) {
+  process.on('message', async function(message: ParentMessage): Promise<void> {
     switch(message.cmd) {
       case 'minify':
         DEBUG(`Worker '${process.pid}' receives message '${message.cmd}'.\n${JSON.stringify(message.msg, null, 2)}`);
