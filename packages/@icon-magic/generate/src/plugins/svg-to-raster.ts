@@ -1,11 +1,10 @@
 import { Flavor, GeneratePlugin, Icon } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
-import { convert } from '@icon-magic/svg-to-png';
+import { convertToPng, convertToWebp } from '@icon-magic/svg-to-png';
 import * as debugGenerator from 'debug';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-const webp = require('webp-converter');
 const debug = debugGenerator('icon-magic:generate:svg-to-raster');
 
 // TODO: typescript check how to specify this interface for params when the
@@ -62,9 +61,10 @@ export const svgToRaster: GeneratePlugin = {
 
       // Convert the png to webp
       debug(`Creating ${pngOutput} webp`);
-      const webpOut = await convertToWebp(
-        pngOutput,
-        `${path.join(outputPath, assetName)}.webp`
+      const webpOut = `${path.join(outputPath, assetName)}.webp`;
+      await generateWebp(
+        flavor.contents as string, // svg is always in a string format
+        webpOut
       );
 
       // minify both the png and webp assets
@@ -104,19 +104,18 @@ async function generatePng(
   height: number,
   outputPath: string
 ): Promise<void> {
-  const png = await convert(svg, { width, height });
-  await fs.writeFile(outputPath, png);
+  await convertToPng(svg, { width, height }, outputPath);
 }
 
+
 /**
- * Converts a png file to webp and writes to the outputPath
- * @param input path to the input file in .png format
- * @param outputPath path where the output needs to go
+ * Generate a webp asset from an svg string
+ * @param svg the contents of an svg file that needs to be converted to png
+ * @param outputPath path to write the webp file after it's created
  */
-function convertToWebp(pathToPng: string, outputPath: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    webp.cwebp(pathToPng, outputPath, '-q 80', function(status: string) {
-      !!~status.indexOf('100') ? resolve(outputPath) : reject();
-    });
-  });
+async function generateWebp(
+  svg: string,
+  outputPath: string
+): Promise<void> {
+  await convertToWebp(svg, outputPath);
 }

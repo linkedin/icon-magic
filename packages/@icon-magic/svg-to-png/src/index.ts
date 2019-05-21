@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import * as fs from "fs-extra";
+import * as svgToImg from "svg-to-img";
 
 import { run } from "./browserPool";
 
@@ -36,4 +37,38 @@ export async function convert(contents: string, options: SVGToPNGOptions): Promi
       }
     });
   });
+}
+
+/**
+ * Converts a svg file to webp and writes to the outputPath
+ * @param input path to the input file in .png format
+ * @param options options for the conversion
+ * @param outputPath path where the output needs to go
+ */
+export async function convertToPng(contents: string, options: SVGToPNGOptions, outputPath: string): Promise<string | Buffer> {
+  if (!contents) {
+    throw new Error("No contents discovered.");
+  }
+  return await svgToImg.from(contents).toPng({
+    encoding: "binary",
+    clip: {
+      x: 0,
+      y: 0,
+      width: options.width,
+      height: options.height,
+    },
+    path: outputPath
+  });
+}
+
+/**
+ * Converts a svg file to webp and writes to the outputPath
+ * @param input path to the input file in .png format
+ * @param outputPath path where the output needs to go
+ */
+export async function convertToWebp(contents: string, outputPath: string): Promise<string | Buffer> {
+  if (!contents) {
+    throw new Error("No contents discovered.");
+  }
+  return await svgToImg.from(contents).toWebp({ path: outputPath });
 }

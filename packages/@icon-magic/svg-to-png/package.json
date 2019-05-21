@@ -20,7 +20,8 @@
     "@types/fs-extra": "^5.0.4",
     "@types/puppeteer": "^1.10.0",
     "fs-extra": "^7.0.1",
-    "puppeteer": "^1.10.0"
+    "puppeteer": "^1.10.0",
+    "svg-to-img": "^2.0.9"
   },
   "devDependencies": {
     "image-comparer": "^1.1.3"
