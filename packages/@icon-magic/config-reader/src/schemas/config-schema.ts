@@ -70,7 +70,8 @@ const topLevelConfigProperties = {
   iconLabels : {
     type: 'array',
     items: {
-      type: 'string'
+      type: 'string',
+      enum: ['nav', 'social', 'app', 'ui', 'reaction', 'illustration']
     }
   },
   iconCategory: {
