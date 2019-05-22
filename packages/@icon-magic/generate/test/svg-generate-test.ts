@@ -40,11 +40,7 @@ const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" id="home-filled" data
 
 describe('svgGenerate()', function() {
   it('Optimizes the svg file', async () => {
-    const outputFlavor: Flavor = (await svgGenerate.fn(
-      flavor,
-      icon,
-      {}
-    )) as Flavor;
+    const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {});
     const svgFromOutputFlavor = outputFlavor.types.get('svg');
     if (svgFromOutputFlavor) {
       assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);

@@ -49,7 +49,7 @@ export const svgToRaster: GeneratePlugin = {
       let h: number;
       // if a nameSizeMapping should be used, get the size from the matching name pattern
       if (params.useNameSizeMapping) {
-        let sizeFromMapping: AssetSize;
+        let sizeFromMapping!: AssetSize;
         const flavorName = path.basename(flavor.name);
 
         // get the size from the mapping that is passed in
@@ -59,8 +59,14 @@ export const svgToRaster: GeneratePlugin = {
         }
 
         if (sizeFromMapping) {
-          w = sizeFromMapping.width || sizeFromMapping;
-          h = sizeFromMapping.height || sizeFromMapping;
+          w =
+            typeof sizeFromMapping === 'number'
+              ? sizeFromMapping
+              : sizeFromMapping.width;
+          h =
+            typeof sizeFromMapping === 'number'
+              ? sizeFromMapping
+              : sizeFromMapping.height;
         } else {
           throw new Error(
             `${flavorName} does not match a size in ${
@@ -74,8 +80,14 @@ export const svgToRaster: GeneratePlugin = {
             `svg-to-raster: 'sizes' has to be set for ${flavor.name} `
           );
         }
-        w = params.propCombo.sizes.width || params.propCombo.sizes;
-        h = params.propCombo.sizes.height || params.propCombo.sizes;
+        w =
+          typeof params.propCombo.sizes === 'number'
+            ? params.propCombo.sizes
+            : params.propCombo.sizes.width;
+        h =
+          typeof params.propCombo.sizes === 'number'
+            ? params.propCombo.sizes
+            : params.propCombo.sizes.height;
       }
       const res = params.propCombo.resolutions;
 

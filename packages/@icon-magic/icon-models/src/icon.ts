@@ -24,14 +24,14 @@ import { exists, isTypeSVG } from './utils/files';
  */
 export class Icon {
   private LOGGER: Logger;
-  iconPath: string;
+  iconPath!: string;
   variants: Asset[];
-  sourceConfigFile: string;
-  sizes: AssetSize[];
-  resolutions: AssetResolution[];
-  iconName: string;
+  sourceConfigFile!: string;
+  sizes!: AssetSize[];
+  resolutions!: AssetResolution[];
+  iconName!: string;
   flavors: Map<string, Flavor>;
-  outputPath: string;
+  outputPath!: string;
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
