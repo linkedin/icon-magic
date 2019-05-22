@@ -41,6 +41,8 @@ const icon = new Icon({
 
 describe('svgToRaster()', function() {
   it('Creates all the raster assets and updates the icon correctly', async () => {
+    console.log('entering svg-generate');
+
     const options: SvgToRasterOptions = {
       propCombo: {
         sizes: { width: 24, height: 12 },

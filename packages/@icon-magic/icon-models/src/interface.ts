@@ -29,7 +29,7 @@ export type PluginFunctionType<T> = (
   flavor: T,
   icon: Icon,
   params?: object // set of iterant values to be passed into the plugin
-) => Promise<T | T[]>;
+) => Promise<T>;
 
 export interface Plugin<T> {
   name: string;

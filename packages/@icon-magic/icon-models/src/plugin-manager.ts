@@ -26,9 +26,9 @@ export async function applyPluginsOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
   plugins: BuildPlugin[] | GeneratePlugin[]
-): Promise<Asset[] | Flavor[]> {
+): Promise<Flavor[]> {
   // create a two dimensional matrix that stores the result of each plugin
-  const pluginResults: Asset[][] | Flavor[][] = [];
+  const pluginResults: Flavor[][] = [];
 
   // iterate over all the plugins, applying them one at a time
   for (const [index, plugin] of plugins.entries()) {
@@ -38,8 +38,7 @@ export async function applyPluginsOnAsset(
     );
     // if it is the first plugin, then set the plugin input as the asset itself
     // push the asset into an array as we iterate over it in the next step
-    const pluginInput: Asset[] | Flavor[] =
-      pluginResults[index - 1] || new Array(asset);
+    const pluginInput: Flavor[] = pluginResults[index - 1] || new Array(asset);
 
     // for each input asset, run the plugin and add the results to the matrix
     for (const input of pluginInput) {
@@ -69,7 +68,7 @@ async function applySinglePluginOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
   plugin: BuildPlugin | GeneratePlugin
-): Promise<Asset[] | Flavor[]> {
+): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
     for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||

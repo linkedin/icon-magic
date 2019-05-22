@@ -33,11 +33,7 @@ const sampleExt: FlavorTypeMap = {
 const buildPlugins: BuildPlugin[] = [
   {
     name: 'p1',
-    fn: async (
-      asset: Asset,
-      icon: Icon,
-      params?: object
-    ): Promise<Asset | Asset[]> => {
+    fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {
       return new Asset(icon.iconPath, {
         name: getNameFromPropCombo(asset.name, params),
         path: asset.getPath(),

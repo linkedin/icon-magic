@@ -41,7 +41,7 @@ export async function generate(iconSet: IconSet): Promise<void> {
   }
   await Promise.all(poolPromises).then(() => {
     if (poolPromises.length > 0) {
-      pool.terminate();
+      await pool.terminate();
     }
   });
 }
