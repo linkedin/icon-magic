@@ -26,6 +26,8 @@ export class Icon {
   iconPath: string;
   variants: Asset[];
   sourceConfigFile: string;
+  iconLabels: string[];
+  iconCategory: string;
   sizes: AssetSize[];
   resolutions: AssetResolution[];
   iconName: string;
