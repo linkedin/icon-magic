@@ -73,6 +73,15 @@ const generateConfigProperties = {
 const topLevelConfigProperties = {
   iconPath: { type: 'string', minLength: 1 },
   iconName: { type: ['string', 'null'] },
+  labels : {
+    type: 'array',
+    items: {
+      type: 'string'
+    }
+  },
+  category: {
+    type: 'string'
+  },
   variants: {
     type: 'array',
     minItems: 1,
