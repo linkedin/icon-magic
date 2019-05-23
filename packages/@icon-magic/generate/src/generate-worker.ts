@@ -16,7 +16,21 @@ import { svgToRaster } from './plugins/svg-to-raster';
 
 const LOGGER: Logger = logger('icon-magic:generate:index');
 
-async function generateSingleIcon(iconConfig: IconConfig) {
+/**
+ * generateSingleIcon transorms the set of .svg flavors of an icon to their
+ * types by running a set of plugins based on the type in which we want the
+ * output. For example, we can have a different set of plugins to obtain the
+ * optimized svg and a different set to get a .png "type".
+ *
+ * After generate has applied all the plugins based on type, we now get flavors
+ * with types that contain paths to the newly created .type asset. Generate also
+ * updates the icon config with the newly generated types.
+ *
+ * If no plugins are passed for the type, then by default, svgToRaster is and
+ * svgGenerate are applied on svg types
+ * @param iconConfig mapping of the iconPath to the Icon class
+ */
+async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
   // TODO: this function should take in an instance of Icon but due to an issue
   // in workerpool, I'm using a workaround where we're having to create this
   // instance by taking an iconConfig instead.

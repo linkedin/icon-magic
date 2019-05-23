@@ -3,6 +3,12 @@ const variantProperties = {
   path: { type: 'string', minLength: 1 }
 };
 
+const flavorProperties = {
+  name: { type: 'string' },
+  path: { type: 'string', minLength: 1 },
+  types: { type: ['object', 'null'] }
+};
+
 const pluginProperties = {
   name: { type: 'string' },
   iterants: {
@@ -97,7 +103,13 @@ const topLevelConfigProperties = {
       type: 'number'
     }
   },
-  flavors: { type: 'array' },
+  flavors: {
+    type: 'array',
+    items: {
+      type: ['object'],
+      properties: flavorProperties
+    }
+  },
   outputPath: { type: ['string', 'null'] },
   sourceConfigFile: { type: ['string', 'null'] },
   build: {
@@ -122,7 +134,3 @@ export const configSchema = {
   required: ['iconPath', 'variants'],
   additionalProperties: false
 };
-
-export const variantSchema = {};
-
-export const flavorSchema = {};

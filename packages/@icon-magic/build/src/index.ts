@@ -171,7 +171,8 @@ async function getPlugins(plugins: BuildPlugin[]): Promise<BuildPlugin[]> {
 
 /**
  * Convert a string from kebab-case to camelCase
- * @param s string to convert to camel case
+ * @param s string in kebab-case to convert to camelCase
+ * @returns string with in camelCase
  */
 function kebabToCamel(s: string): string {
   return s.replace(/(\-\w)/g, m => {

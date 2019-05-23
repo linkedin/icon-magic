@@ -12,12 +12,9 @@ const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
  * have a different set of plugins to obtain the optimized svg and a different
  * set to get a .png "type".
  *
- * After generate has applied all the plugins based on type, we now get flavors
- * with types that contain paths to the newly created .type asset. Generate also
- * updates the icon config with the newly generated types.
+ * generate-worker.js is used to paralellize the generation of icons using a
+ * workerpool
  *
- * If no plugins are passed for the type, then by default, svgToRaster is
- * applion raster and svgGenerate is applied on svg types
  * @param iconSet mapping of the iconPath to the Icon class
  */
 export async function generate(iconSet: IconSet): Promise<void> {
