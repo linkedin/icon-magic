@@ -1,10 +1,10 @@
 import * as cluster from 'cluster';
 
-import * as debug from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 
 import { minifyFile } from './minify';
 
-const DEBUG = debug('icon-magic:png-minify');
+const LOGGER: Logger = logger('icon-magic:png-minify');
 const WORKERS: cluster.Worker[] = [];
 const STATUS: Map<number, WorkerState> = new Map();
 
@@ -30,12 +30,11 @@ interface WorkerState {
   remaining: Map<number, Waiter>;
 }
 
-
 function formatStatus(status: WorkerState): WorkerStatus {
   return {
     total: status.total,
     remaining: status.remaining.size,
-    progress: ((status.total - status.remaining.size) / status.total) || null
+    progress: (status.total - status.remaining.size) / status.total || null
   };
 }
 
@@ -60,37 +59,54 @@ export interface Result {
 
 const SUBSCRIBERS: Set<Listener> = new Set();
 export type Listener = (res: ProcessStatus) => void;
-export function subscribe(func: Listener) { SUBSCRIBERS.add(func); }
+export function subscribe(func: Listener) {
+  SUBSCRIBERS.add(func);
+}
 
 if (cluster.isMaster) {
-
   // Run this file in child processes.
-  cluster.setupMaster({ exec: __filename, });
+  cluster.setupMaster({ exec: __filename });
 
   // Start workers.
   const numCPUs = require('os').cpus().length - 1;
-  DEBUG(`Starting ${numCPUs} imagemin worker processes.`);
+  LOGGER.debug(`Starting ${numCPUs} imagemin worker processes.`);
   for (let i = 0; i < numCPUs; i++) {
     const worker = cluster.fork();
     WORKERS.push(worker);
     STATUS.set(worker.id, {
       total: 0,
-      remaining: new Map(),
+      remaining: new Map()
     });
   }
 
   // Listen for messages
   cluster.on('message', (worker: cluster.Worker, message: ChildMessage) => {
-    DEBUG(`Master receives message '${message.cmd}' from worker ${worker.id}.\n${JSON.stringify(message.msg, null, 2)}`);
+    LOGGER.debug(
+      `Master receives message '${message.cmd}' from worker ${
+        worker.id
+      }.\n${JSON.stringify(message.msg, null, 2)}`
+    );
 
     // Fetch this worker's status object.
     const workerStatus = STATUS.get(worker.id);
-    if (!workerStatus) { throw new Error(`Received message from unknown child process ${process.pid}.`); }
+    if (!workerStatus) {
+      throw new Error(
+        `Received message from unknown child process ${process.pid}.`
+      );
+    }
 
     // Fetch the worker's completed job's promise resolver.
     const promise = workerStatus.remaining.get(message.msg.uid);
     if (!promise) {
-      throw new Error(`Child process ${process.pid} attempted to resolve unknown minification promise: \n\n Message: \n${JSON.stringify(message, null, 2)} \n\n Promises: [${[...workerStatus.remaining.keys()]}]`);
+      throw new Error(
+        `Child process ${
+          process.pid
+        } attempted to resolve unknown minification promise: \n\n Message: \n${JSON.stringify(
+          message,
+          null,
+          2
+        )} \n\n Promises: [${[...workerStatus.remaining.keys()]}]`
+      );
     }
 
     // If child is notifying us it's done with an image, update its state
@@ -100,11 +116,16 @@ if (cluster.isMaster) {
 
     // Compute latest stats across all workers and return.
     const statuses = [...STATUS.values()].map(formatStatus);
-    const numWithJobs = statuses.reduce((count, s) => isNull(s.progress) ? count : count+1, 0);
+    const numWithJobs = statuses.reduce(
+      (count, s) => (isNull(s.progress) ? count : count + 1),
+      0
+    );
     const status: ProcessStatus = {
       total: statuses.reduce((sum, s) => s.total + sum, 0),
       remaining: statuses.reduce((sum, s) => s.remaining + sum, 0),
-      progress: statuses.map((s) => isNull(s.progress) ? null : s.progress / numWithJobs).reduce((sum: number, v) => isNull(v) ? sum : v + sum, 0),
+      progress: statuses
+        .map(s => (isNull(s.progress) ? null : s.progress / numWithJobs))
+        .reduce((sum: number, v) => (isNull(v) ? sum : v + sum), 0),
       workers: statuses
     };
 
@@ -118,24 +139,28 @@ if (cluster.isMaster) {
     }
 
     // Notify all subscribers of latest status. This happens on `ack` and `done`
-    for (const sub of SUBSCRIBERS) { sub(status); }
-
+    for (const sub of SUBSCRIBERS) {
+      sub(status);
+    }
   });
 
   // TODO: Re-spawn worker if died unexpectedly.
   cluster.on('exit', (worker, code, _signal) => {
     if (worker.exitedAfterDisconnect === true) {
-      DEBUG('Oh, it was just voluntary – no need to worry');
+      LOGGER.debug('Oh, it was just voluntary – no need to worry');
     }
-    DEBUG(`Worker ${worker.id} exited unexpectedly with code ${code}.`);
+    LOGGER.debug(`Worker ${worker.id} exited unexpectedly with code ${code}.`);
   });
-
 } else {
   let JOB_CHAIN = Promise.resolve();
   process.on('message', async function(message: ParentMessage) {
-    switch(message.cmd) {
+    switch (message.cmd) {
       case 'minify':
-        DEBUG(`Worker '${process.pid}' receives message '${message.cmd}'.\n${JSON.stringify(message.msg, null, 2)}`);
+        LOGGER.debug(
+          `Worker '${process.pid}' receives message '${
+            message.cmd
+          }'.\n${JSON.stringify(message.msg, null, 2)}`
+        );
         process.send!({ cmd: 'ack', msg: message.msg });
         JOB_CHAIN = JOB_CHAIN.then(async () => {
           await minifyFile(message.msg.path);
@@ -145,21 +170,23 @@ if (cluster.isMaster) {
       case 'kill':
         process.kill(0);
         break;
-      default: break;
+      default:
+        break;
     }
   });
-
 }
 
 let idx = 0;
 let UID = 0; // TODO: Make incrementing hex so we don't run out at MAX_INT
 export function minify(path: string): Promise<Result> {
-  DEBUG(`Starting minification task for ${path}.`);
+  LOGGER.debug(`Starting minification task for ${path}.`);
   const localId = UID++;
   const worker = WORKERS[idx];
   const state = STATUS.get(worker.id);
   idx = (idx + 1) % WORKERS.length;
-  if (!state) { throw new Error(`Can not find worker state for pid ${worker.id}.`); }
+  if (!state) {
+    throw new Error(`Can not find worker state for pid ${worker.id}.`);
+  }
   return new Promise<Result>((resolve, reject) => {
     state!.remaining.set(localId, { resolve, reject });
     state!.total += 1;
