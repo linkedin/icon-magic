@@ -1,4 +1,5 @@
 import { IconConfigHash } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
 import * as glob from 'glob';
 import * as path from 'path';
 
@@ -6,6 +7,7 @@ import { Config } from './config';
 import { exists, isDirectory } from './helpers/files';
 
 const CONFIG_FILES = ['iconrc.json', 'iconrc.js'];
+const LOGGER: Logger = logger('icon-magic:config-reader/index');
 
 /**
  * Constructs a map of the icon and closest config to the icon traversing up
@@ -16,9 +18,11 @@ export function getIconConfigSet(inputPaths: string[]): IconConfigHash {
   // get all input paths that exist
   const validInputDirs = processPaths(inputPaths);
 
+  LOGGER.debug(`Valid Input Paths: ${validInputDirs}`);
+
   // check if there's atleast one valid input path
   if (!validInputDirs.length) {
-    throw new Error('Input paths are not found!');
+    throw new Error('No valid input directories');
   }
 
   // find the set of config files within each input path (deduping as we go along)
@@ -46,6 +50,8 @@ function processPaths(inputPaths: string[]): string[] {
       const normalizedPath = path.resolve(path.normalize(dir));
       if (exists(normalizedPath) && isDirectory(normalizedPath)) {
         inputDirs.push(normalizedPath);
+      } else {
+        throw new Error(`${normalizedPath} does not exist.`);
       }
     }
   } else {

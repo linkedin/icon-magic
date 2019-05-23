@@ -16,7 +16,10 @@ describe('@icon-magic/icon-models/flavor', function() {
       { encoding: 'utf8' }
     );
     const flavor = new Flavor(path.resolve(__dirname, iconPath), flavors[0]);
-    assert.ok(path.isAbsolute(flavor.getPath()), 'always returns an absolute path');
+    assert.ok(
+      path.isAbsolute(flavor.getPath()),
+      'always returns an absolute path'
+    );
     assert.equal(
       flavor.getPath(),
       path.join(`${FIXTURES}/nav-icons/home/filled-a.svg`),
@@ -36,7 +39,7 @@ describe('@icon-magic/icon-models/flavor', function() {
     }
 
     assert.deepEqual(
-      flavor.getFlavorConfig(),
+      flavor.getConfig(),
       flavors[0],
       'config is the original content'
     );

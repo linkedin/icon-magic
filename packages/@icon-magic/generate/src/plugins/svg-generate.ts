@@ -13,7 +13,13 @@
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
 
-import { Asset, Flavor, GeneratePlugin, Icon } from '@icon-magic/icon-models';
+import {
+  Asset,
+  AssetSize,
+  Flavor,
+  GeneratePlugin,
+  Icon
+} from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
@@ -30,15 +36,43 @@ export interface SvgGenerateOptions {
 export const svgGenerate: GeneratePlugin = {
   name: 'svg-generate',
   fn: async (flavor: Flavor, icon: Icon, _params?: object): Promise<Flavor> => {
-    const svgo = new Svgo();
-    const asset = await svgo.optimize(flavor.contents as string);
-    const outputPath = icon.getOutputPath();
+    const svgo = new Svgo({
+      plugins: [
+        {
+          removeViewBox: false
+        },
+        {
+          removeDimensions: true
+        },
+        {
+          removeAttrs: { attrs: '(data.*)' }
+        },
+        {
+          addAttributesToSVGElement: {
+            attributes: [
+              {
+                id: `${icon.iconName}-${flavor.name}`,
+                'data-supported-dps': getSupportedSizes(icon.sizes).join(' '),
+                fill: 'currentColor'
+              }
+            ]
+          }
+        },
+        { removeRasterImages: true }
+      ]
+    });
+    const asset = await svgo.optimize((await flavor.getContents()) as string); // .svg asset's getContents() returns a string
+    const outputPath = icon.getIconOutputPath();
 
     // write the optimized svg to the output directory
     await fs.mkdirp(outputPath);
-    await fs.writeFile(`${path.join(outputPath, flavor.name)}.svg`, asset, {
-      encoding: 'utf8'
-    });
+    await fs.writeFile(
+      `${path.join(outputPath, flavor.name)}.svg`,
+      asset.data,
+      {
+        encoding: 'utf8'
+      }
+    );
 
     // Create a new svg asset type and add it to the flavor
     flavor.types.set(
@@ -52,3 +86,16 @@ export const svgGenerate: GeneratePlugin = {
     return flavor;
   }
 };
+
+/**
+ * Converts the set of sizes from asset sizes to string values of the form:
+ * (width x height)
+ * @param sizes Array of icon asset sizes
+ */
+function getSupportedSizes(sizes: AssetSize[]): String[] {
+  return sizes.map(size => {
+    return typeof size === 'number'
+      ? `${size}x${size}`
+      : `${size.width}x${size.height}`;
+  });
+}

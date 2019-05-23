@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 
+import { IconConfig } from '../src';
 import { Icon } from '../src/icon';
 
 import { idealIcon } from './helpers/ideal-icon';
@@ -17,5 +18,42 @@ describe('@icon-magic/icon-models/icon', function() {
   it('Icon to config conversion works correctly', async () => {
     const icon = new Icon(idealIcon);
     assert.deepEqual(icon.getConfig().variants, idealIcon.variants);
+  });
+
+  it('skips a variant if it does not exit', async () => {
+    const modifiedIcon = JSON.parse(JSON.stringify(idealIcon));
+
+    Object.assign(modifiedIcon, {
+      variants: [
+        {
+          path: './filled.svg'
+        },
+        {
+          path: './abc.svg'
+        }
+      ]
+    });
+
+    const icon = new Icon(modifiedIcon as IconConfig);
+
+    // only has abc as a variant
+    assert(icon.variants.length === 1);
+  });
+
+  it('throws an error if there are no valid variants', async () => {
+    const modifiedIcon = JSON.parse(JSON.stringify(idealIcon));
+
+    Object.assign(modifiedIcon, {
+      variants: [
+        {
+          path: './abc.svg'
+        }
+      ]
+    });
+
+    assert.throws(() => {
+      const icon = new Icon(modifiedIcon as IconConfig);
+      assert(icon.variants.length === 0);
+    }, /NoValidVariants/);
   });
 });

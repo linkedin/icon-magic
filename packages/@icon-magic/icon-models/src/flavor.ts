@@ -11,7 +11,6 @@ import { FlavorConfig } from './interface';
  */
 export class Flavor extends Asset {
   types: Map<string, Asset>;
-  private flavorConfig: FlavorConfig ;
 
   /**
    *
@@ -39,14 +38,13 @@ export class Flavor extends Asset {
       // create a an empty map
       this.types = new Map();
     }
-    this.flavorConfig = this.configureConfig();
   }
 
   /**
    * Populates FlavorConfig with flavor data that needs to be stored and
    * @returns FlavorConfig object to be set as the config
    */
-  configureConfig(): FlavorConfig {
+  getConfig(): FlavorConfig {
     let flavorTypes;
     // return only flavor data
     if (this.types) {
@@ -61,11 +59,5 @@ export class Flavor extends Asset {
       path: `./${path.relative(this.iconPath, this.getPath())}`,
       types: flavorTypes
     };
-  }
-  /**
-   * Returns FlavorConfig object
-   */
-  getFlavorConfig(): FlavorConfig {
-    return this.flavorConfig;
   }
 }
