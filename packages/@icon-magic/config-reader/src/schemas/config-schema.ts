@@ -70,13 +70,11 @@ const topLevelConfigProperties = {
   iconLabels : {
     type: 'array',
     items: {
-      type: 'string',
-      enum: ['nav', 'social', 'app', 'ui', 'reaction', 'illustration']
+      type: 'string'
     }
   },
   iconCategory: {
-    type: 'string',
-    enum: ['background.svg', 'icons.svg']
+    type: 'string'
   },
   variants: {
     type: 'array',
