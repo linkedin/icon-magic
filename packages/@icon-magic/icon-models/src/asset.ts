@@ -1,4 +1,4 @@
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { AssetConfig, Content } from './interface';
@@ -13,8 +13,7 @@ export class Asset {
   contents: Content | undefined;
   iconPath: string;
   protected path: string;
-  private debug: debugGenerator.IDebugger;
-  private assetConfig: AssetConfig;
+  private LOGGER: Logger;
 
   /**
    * Creates a new asset
@@ -23,7 +22,8 @@ export class Asset {
    * @param config a config object to set the initial properties of the asset
    */
   constructor(iconPath: string, config: AssetConfig) {
-    this.debug = debugGenerator('icon-magic:icon-models:asset');
+    this.LOGGER = logger('icon-magic:icon-models:asset');
+
     // if iconPath is not absolute, throw an error
     if (!path.isAbsolute(iconPath)) {
       throw new Error(
@@ -43,11 +43,7 @@ export class Asset {
     if (config.contents) {
       this.contents = config.contents;
     }
-    this.assetConfig =  {
-      name: this.name,
-      path: this.path
-    };
-    this.debug(`Asset ${this.name} created in ${this.iconPath}`);
+    this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
   /**
@@ -68,7 +64,10 @@ export class Asset {
    * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
-    return this.assetConfig;
+    return {
+      name: this.name,
+      path: this.path
+    };
   }
 
   /**
@@ -77,8 +76,10 @@ export class Asset {
   async getContents(): Promise<Content> {
     // if it isn't already retrieved, read the file from disk
     if (!this.contents) {
-      this.debug(`Reading ${this.path}'s file contents from the disk`);
-      this.contents = await getFileContents(this.path);
+      this.LOGGER.debug(
+        `Reading ${this.getPath()}'s file contents from the disk`
+      );
+      this.contents = await getFileContents(this.getPath());
     }
     return this.contents;
   }

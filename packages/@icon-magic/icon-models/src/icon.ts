@@ -1,4 +1,4 @@
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -23,29 +23,31 @@ import { exists, isTypeSVG } from './utils/files';
  * they don't exist
  */
 export class Icon {
-  iconPath: string;
+  private LOGGER: Logger;
+  iconPath!: string;
   variants: Asset[];
-  sourceConfigFile: string;
-  sizes: AssetSize[];
-  resolutions: AssetResolution[];
-  iconName: string;
+  sourceConfigFile!: string;
+  sizes!: AssetSize[];
+  resolutions!: AssetResolution[];
+  iconName!: string;
   flavors: Map<string, Flavor>;
-  outputPath: string;
-  iconConfig: IconConfig;
-
+  outputPath!: string;
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
-  private debug: debugGenerator.IDebugger;
 
   /**
    * Creates an Icon instance by creating sub classes for it's variants and
    * flavors
    * @param config Config read from a config file containing all the icon's
    * information
+   * @param skipVariantCheck if true, skips the check to verify the existence of
+   * variants. This flag is normally set false for generate configs that don't
+   * have variants anymore
    */
-  constructor(config: IconConfig) {
-    this.debug = debugGenerator('icon-magic:icon-models:icon');
+  constructor(config: IconConfig, skipVariantCheck?: boolean) {
+    this.LOGGER = logger('icon-magic:icon-models:icon');
+
     // copy over all the properties in the config
     for (const key of Object.keys(config)) {
       this[key] = config[key];
@@ -62,21 +64,42 @@ export class Icon {
       if (!(variant instanceof Asset)) {
         const variantAsset = new Asset(config.iconPath, variant);
 
-        // check to see if the file exists
-        try {
-          exists(variantAsset.getPath());
-        } catch (err) {
-          throw err;
-        }
+        // only check the variants if the flag is true
+        if (!skipVariantCheck) {
+          // check to see if the file exists
+          if (!exists(variantAsset.getPath())) {
+            this.LOGGER.error(
+              `MissingVariantError: Variant ${variantAsset.getPath()} missing for icon ${
+                this.iconPath
+              }`
+            );
+            continue;
+          }
 
-        // check that the asset is an svg file
-        if (!isTypeSVG(variantAsset.getPath())) {
-          throw new Error(`Variant ${variant.path} should be an SVG file`);
+          // check that the asset is an svg file
+          if (!isTypeSVG(variantAsset.getPath())) {
+            this.LOGGER.error(
+              `InvalidVariantError: Variant ${variantAsset.getPath()} of ${
+                this.iconPath
+              } should be an SVG file`
+            );
+            continue;
+          }
         }
 
         variants.push(variantAsset);
       }
     }
+
+    // if there are no valid variants, throw an error
+    if (!variants.length) {
+      throw new Error(
+        `NoValidVariantsError: ${
+          this.iconPath
+        } does not have any valid variants`
+      );
+    }
+
     this.variants = variants;
 
     // if the config has flavors, create Flavor instances for each flavor
@@ -88,58 +111,39 @@ export class Icon {
       }
     }
     this.flavors = flavors;
-    this.iconConfig = this.configureConfig();
   }
 
   /**
-   * Extracts the output path from the build config, if present Otherwise it
-   * checks if the icon itself has an outputPath If the other two don't exist,
-   * it returns a path to the tmp folder in the current directory
-   * @returns the output path with respect to a config
+   * @returns the path to output the processed icons
    */
+  getIconOutputPath(): string {
+    const iconOutputPath = path.join(this.outputPath, this.iconName);
 
+    // unless it's absolute, the outputPath is relative to the cwd
+    return path.isAbsolute(iconOutputPath)
+      ? iconOutputPath
+      : path.join(process.cwd(), iconOutputPath);
+  }
+
+  /**
+   * @returns a path by appending '/build' to the icon's outputPath
+   */
   getBuildOutputPath(): string {
-    const configOutputPath = path.join(
-      this.build ? this.build.outputPath || this.outputPath : this.outputPath,
-      this.iconName || path.basename(this.iconPath)
-    );
-    return path.join(process.cwd(), configOutputPath || './tmp');
-  }
-
-  /**
-   * Extracts the output path from the generate config, if present Otherwise it
-   * checks if the icon itself has an outputPath If the other two don't exist,
-   * it returns a path to the tmp folder in the current directory
-   * @returns the output path with respect to a config
-   */
-  getOutputPath(): string {
-    const configOutputPath = path.join(
-      this.generate
-        ? this.generate.outputPath || this.outputPath
-        : this.outputPath,
-      this.iconName || path.basename(this.iconPath)
-    );
-    return path.join(process.cwd(), configOutputPath || './tmp');
-  }
-  /**
-   * @returns All Icon data as an object so it can be written to the output
-   * directory
-   */
-  getConfig(): IconConfig {
-    return this.iconConfig;
+    return path.join(this.getIconOutputPath(), 'build');
   }
 
   /**
    * Populates object with all Icon data as an object so it can be written to the output
-   * directory and @returns object to be set as the config
+   * directory and
+   * @returns object to be set as the config
    */
-  configureConfig(): IconConfig {
-    this.debug(`Creating the config for ${this.iconPath}`);
+  getConfig(): IconConfig {
+    this.LOGGER.debug(`Creating the config for ${this.iconPath}`);
     // copy all properties have to be defined
     const config: IconConfig = {
-      iconPath: this.iconPath,
+      iconPath: '.', // we assume that the config will be written to the icon directory itself
       variants: [], // by instantiaing variants to be an empty array
-      sourceConfigFile: this.sourceConfigFile,
+      sourceConfigFile: path.relative(this.iconPath, this.sourceConfigFile), // again, we resolve this path w.r.t. the icon directory
       sizes: this.sizes,
       resolutions: this.resolutions,
       iconName: this.iconName,
@@ -155,7 +159,7 @@ export class Icon {
     if (this.flavors) {
       const flavors: FlavorConfig[] = [];
       for (const flavor of this.flavors.values()) {
-        flavors.push(flavor.getFlavorConfig());
+        flavors.push(flavor.getConfig());
       }
       config.flavors = flavors;
     }

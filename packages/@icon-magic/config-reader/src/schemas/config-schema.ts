@@ -3,6 +3,12 @@ const variantProperties = {
   path: { type: 'string', minLength: 1 }
 };
 
+const flavorProperties = {
+  name: { type: 'string' },
+  path: { type: 'string', minLength: 1 },
+  types: { type: ['object', 'null'] }
+};
+
 const pluginProperties = {
   name: { type: 'string' },
   iterants: {
@@ -48,7 +54,7 @@ const generateConfigProperties = {
       properties: {
         name: {
           type: 'string',
-          enum: ["svg", "raster"]
+          enum: ['svg', 'raster']
         },
         plugins: {
           type: ['array'],
@@ -82,9 +88,9 @@ const topLevelConfigProperties = {
     minItems: 1,
     items: {
       type: ['number', 'object'],
-      properties:  {
-        'width': { type: 'number' },
-        'height': { type: 'number' }
+      properties: {
+        width: { type: 'number' },
+        height: { type: 'number' }
       },
       required: ['width', 'height'],
       additionalProperties: false
@@ -97,6 +103,15 @@ const topLevelConfigProperties = {
       type: 'number'
     }
   },
+  flavors: {
+    type: 'array',
+    items: {
+      type: ['object'],
+      properties: flavorProperties
+    }
+  },
+  outputPath: { type: ['string', 'null'] },
+  sourceConfigFile: { type: ['string', 'null'] },
   build: {
     type: 'object',
     properties: buildConfigProperties,
@@ -119,7 +134,3 @@ export const configSchema = {
   required: ['iconPath', 'variants'],
   additionalProperties: false
 };
-
-export const variantSchema = {};
-
-export const flavorSchema = {};

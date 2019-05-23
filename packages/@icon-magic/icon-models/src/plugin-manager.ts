@@ -1,4 +1,4 @@
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -8,7 +8,7 @@ import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
 
-const debug = debugGenerator('icon-magic:icon-models:plugin-manager');
+const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 
 /**
  * Applies the set of plugins on the given asset and returns all the
@@ -26,18 +26,19 @@ export async function applyPluginsOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
   plugins: BuildPlugin[] | GeneratePlugin[]
-): Promise<Asset[] | Flavor[]> {
+): Promise<Flavor[]> {
   // create a two dimensional matrix that stores the result of each plugin
-  const pluginResults: Asset[][] | Flavor[][] = [];
+  const pluginResults: Flavor[][] = [];
 
   // iterate over all the plugins, applying them one at a time
   for (const [index, plugin] of plugins.entries()) {
     pluginResults[index] = new Array();
-    debug(`applyPluginsOnAsset: Applying ${plugin.name} on ${asset.name}`);
+    LOGGER.debug(
+      `applyPluginsOnAsset: Applying ${plugin.name} on ${asset.name}`
+    );
     // if it is the first plugin, then set the plugin input as the asset itself
     // push the asset into an array as we iterate over it in the next step
-    const pluginInput: Asset[] | Flavor[] =
-      pluginResults[index - 1] || new Array(asset);
+    const pluginInput: Flavor[] = pluginResults[index - 1] || new Array(asset);
 
     // for each input asset, run the plugin and add the results to the matrix
     for (const input of pluginInput) {
@@ -67,12 +68,12 @@ async function applySinglePluginOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
   plugin: BuildPlugin | GeneratePlugin
-): Promise<Asset[] | Flavor[]> {
+): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
     for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
       []) {
-      debug(
+      LOGGER.debug(
         `applySinglePluginOnFlavor: Applying ${plugin.name} on ${
           asset.name
         } with`
@@ -88,6 +89,7 @@ async function applySinglePluginOnAsset(
     }
   } else {
     // when the plugin does not have any or iterants
+    LOGGER.debug('Running the plugin without iterants');
     output = output.concat(
       await plugin.fn.call(icon, asset, icon, plugin.params)
     );

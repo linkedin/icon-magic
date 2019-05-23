@@ -8,11 +8,11 @@ import {
   applyPluginsOnAsset,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import * as debugGenerator from 'debug';
+import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-const debug = debugGenerator('icon-magic:build:index');
+const LOGGER: Logger = logger('icon-magic:build:index');
 
 /**
  * The build is responsible for constructing all the various flavors that an
@@ -28,7 +28,7 @@ const debug = debugGenerator('icon-magic:build:index');
  * @param iconConfig a map of the iconPaths to it's config json
  */
 export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
-  debug('Icon build has begun');
+  LOGGER.debug('Icon build has begun');
   // Create icons for all icons within the iconConfig
   const iconSet = new IconSet(iconConfig);
   const outputIconSet: IconSet = new IconSet();
@@ -37,37 +37,43 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     // runs the plugins on each icon
     let assets: Asset[];
     const buildConfig = icon.build;
-    if (buildConfig && buildConfig.plugins) {
-      assets = await applyBuildPluginsOnVariants(icon, buildConfig.plugins);
+    if (buildConfig && buildConfig.plugins && buildConfig.plugins.length) {
+      assets = await applyBuildPluginsOnVariants(
+        icon,
+        await getPlugins(buildConfig.plugins)
+      );
     } else {
       // if there are no build plugins, then move all variants to flavors as is
       assets = icon.variants;
     }
+
     // get the output directory with respect to the current working directory
     // and then create a directory with the iconName
-    const outputPath = icon.getBuildOutputPath();
+    const buildOutputPath = icon.getBuildOutputPath();
+    const iconOutputPath = icon.getIconOutputPath();
 
     // create the directory if it doesn't already exist
-    await fs.mkdirp(outputPath);
+    await fs.mkdirp(buildOutputPath);
+
+    // in the icon, update the iconPath to be that of the output path
+    icon.iconPath = iconOutputPath;
 
     // create a new flavor to the icon from each asset obtained by applying the
     // build plugins
     await Promise.all(
-      assets.map(asset => saveAssetAsFlavor(asset, icon, outputPath))
+      assets.map(asset => saveAssetAsFlavor(asset, icon, buildOutputPath))
     );
 
-    // in the icon, update the iconPath to be that of the output path
-    icon.iconPath = outputPath;
     // add it to the outputIconSet's hash map
-    outputIconSet.hash.set(outputPath, icon);
-    debug(
-      `Icon ${icon.iconName} has been written to the hash as ${icon.iconPath}`
+    outputIconSet.hash.set(iconOutputPath, icon);
+    LOGGER.debug(
+      `Icon ${icon.iconName} has been written to the hash as ${iconOutputPath}`
     );
 
     // write the config to the output directory
-    debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
+    LOGGER.debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
     await saveContentToFile(
-      icon.getBuildOutputPath(),
+      buildOutputPath,
       'iconrc',
       JSON.stringify(icon.getConfig(), null, 2),
       'json'
@@ -94,11 +100,12 @@ async function saveAssetAsFlavor(
 ): Promise<void> {
   // write contents to outputPath
   const content = await asset.getContents();
+  const pathToAsset = `${path.join(outputPath, asset.name)}.svg`;
   // write the file as the name specified in flavor.name
-  await fs.writeFile(`${path.join(outputPath, asset.name)}.svg`, content, {
+  await fs.writeFile(pathToAsset, content, {
     encoding: 'utf8'
   });
-  debug(`Asset ${asset.name} has been written to ${outputPath}`);
+  LOGGER.debug(`Asset ${asset.name} has been written to ${pathToAsset}`);
 
   // create a new Flavor instance with the asset once the asset is written to
   // disk
@@ -106,11 +113,12 @@ async function saveAssetAsFlavor(
 
   // set the path to point to the newly created file as it could've been
   // renamed in above if it's name was different from the file name
-  flavor.setPath(`./${asset.name}.svg`);
+  // the path should always be relative to the iconPath
+  flavor.setPath(path.relative(icon.iconPath, pathToAsset));
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);
-  debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
+  LOGGER.debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
 }
 
 /**
@@ -132,4 +140,42 @@ export async function applyBuildPluginsOnVariants(
     );
   }
   return assets;
+}
+
+/**
+ * Returns an instance of plugins all with the fn property
+ * If the passed in plugin does not have fn defined on it, we attempt to find
+ * the plugin within generate/plugins folder by matching the name
+ * @param plugins Array of plugins to sanitize
+ */
+async function getPlugins(plugins: BuildPlugin[]): Promise<BuildPlugin[]> {
+  return await Promise.all(
+    plugins.map(async plugin => {
+      // if the plugin has a function, return the plugin
+      if (plugin.fn) return plugin;
+      // import the plugin from ./plugins
+      else {
+        let pluginFromFile: BuildPlugin;
+        try {
+          pluginFromFile = await import(`./plugins/${plugin.name}`);
+          // override the plugin's data with the missing fn
+          plugin.fn = pluginFromFile[`${kebabToCamel(plugin.name)}`].fn;
+          return plugin;
+        } catch (e) {
+          throw e;
+        }
+      }
+    })
+  );
+}
+
+/**
+ * Convert a string from kebab-case to camelCase
+ * @param s string in kebab-case to convert to camelCase
+ * @returns string with in camelCase
+ */
+function kebabToCamel(s: string): string {
+  return s.replace(/(\-\w)/g, m => {
+    return m[1].toUpperCase();
+  });
 }

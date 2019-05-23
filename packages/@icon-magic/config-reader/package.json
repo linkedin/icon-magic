@@ -21,6 +21,7 @@
     "@icon-magic/icon-models": "^2.0.0",
     "@types/glob": "^7.1.1",
     "ajv": "^6.9.2",
-    "import-fresh": "^3.0.0"
+    "import-fresh": "^3.0.0",
+    "glob": "^7.1.3"
   }
 }
