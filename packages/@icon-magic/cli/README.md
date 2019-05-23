@@ -37,7 +37,7 @@ yarn add @icon-magic/cli --dev
 
 ## Usage
 
-For a detailed list of the terminology, refer
+For a detailed list of the terminology, refer to the glossary above.
 
 ```
 Usage:
