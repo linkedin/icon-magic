@@ -31,7 +31,7 @@ export async function distributeByFlag(
 ): Promise<void> {
   LOGGER.debug(`entering distribute with ${flag}`);
   const iconSet = new IconSet(iconConfig, true);
-
+  createSprite(iconSet, outputPath);
   for (const icon of iconSet.hash.values()) {
     switch (flag) {
       case 'createImageSet': {
@@ -121,6 +121,49 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   return Promise.all(promises);
 }
 
+const createSVGDoc = () => {
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const doc = document.createElementNS(SVG_NS, 'svg');
+  doc.setAttribute('width', '24px');
+  doc.setAttribute('height', '390px');
+  doc.setAttribute('id', 'svg-source');
+  doc.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  doc.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  doc.setAttribute('version', '1.1');
+  return doc;
+};
+
+
+const writeSVGToDisk = (doc: SVGElement, filePath: string) => {
+  fs.writeFileSync(filePath, doc);
+};
+
+
+const appendToSvgDoc = (asset: Asset, doc: SVGSVGElement) => {
+  // Structure of SVG document? Currently we have a <defs> for each label (`ui-icons`, `nav-icons` etc)
+  // do we still want to organize that way? in that case, before we get here, we filter by label.
+  //  data-supported dps? what attributes to add?
+}
+
+async function createSprite(iconSet: IconSet, outputPath: string) {
+  const doc = createSVGDoc();
+  const outputSpriteDir = path.join(outputPath, 'icons.svg');
+  await fs.mkdirp(outputSpriteDir);
+  for (const icon of iconSet.hash.values()) {
+    // Handle icon that need to be made into a sprite
+    // TO:DO match category _or_ labels
+    if (icon.category === 'sprite') {
+      const spriteAssets = getIconFlavorsByType(icon, 'svg');
+      for (const asset of spriteAssets) {
+        appendToSvgDoc(asset, doc);
+      }
+    }
+  }
+
+  writeSVGToDisk(doc, outputPath);
+  // Write `icons.svg` to output directory
+}
+
 async function distributeSvg(icon: Icon, outputPath: string) {
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
@@ -198,242 +241,3 @@ async function writeJSONfile(filePath: string, data: object) {
   return fs.writeFile(`${path.join(filePath)}`, JSON.stringify(data, null, 2));
 }
 
-/**
- * DELETE EVERYTHING BELOW THIS
- */
-export async function moveIllustrations(inputPath: string, outputPath: string) {
-  const dirs = await getDirs(inputPath);
-
-  for (const dir of dirs) {
-    const files = await fs.readdir(`${inputPath}/${dir}`);
-    for (const file of files) {
-      let iconName = path.parse(file).name;
-      let fileName;
-      switch (true) {
-        case /premium/.test(iconName): {
-          fileName = `premium-${dir}.svg`;
-          iconName = iconName.replace('-premium', '');
-          break;
-        }
-        case /muted/.test(iconName): {
-          fileName = `muted-${dir}.svg`;
-          iconName = iconName.replace('-muted', '');
-          break;
-        }
-        case /inverse/.test(iconName): {
-          fileName = `inverse-${dir}.svg`;
-          iconName = iconName.replace('-inverse', '');
-          break;
-        }
-        default: {
-          fileName = `default-${dir}.svg`;
-          break;
-        }
-      }
-      const outputDir = `${outputPath}/${iconName}`;
-      await fs.mkdirp(outputDir);
-      console.log(`copying ${inputPath}/${dir}/${file} to ${outputDir}`);
-      await fs.copy(`${inputPath}/${dir}/${file}`, `${outputDir}/${fileName}`);
-    }
-  }
-}
-
-export async function moveReactions(inputPath: string, outputPath: string) {
-  const dirs = await getDirs(inputPath);
-
-  for (const dir of dirs) {
-    const files = await fs.readdir(`${inputPath}/${dir}`);
-    for (const file of files) {
-      let iconName = path.parse(file).name;
-      let fileName;
-      switch (true) {
-        case /inverse/.test(iconName): {
-          fileName = `inverse-${dir}.svg`;
-          iconName = iconName.replace('-inverse', '');
-          break;
-        }
-        default: {
-          fileName = `default-${dir}.svg`;
-          break;
-        }
-      }
-      const outputDir = `${outputPath}/${iconName}`;
-      await fs.mkdirp(outputDir);
-      console.log(`copying ${inputPath}/${dir}/${file} to ${outputDir}`);
-      await fs.copy(`${inputPath}/${dir}/${file}`, `${outputDir}/${fileName}`);
-    }
-  }
-}
-
-export async function moveLogos(inputPath: string, outputPath: string) {
-  const icons = await getDirs(inputPath);
-  for (const icon of icons) {
-    let iconName = path.parse(icon).name;
-    let fileName;
-
-    switch (true) {
-      case /color/.test(iconName): {
-        fileName = 'default.svg';
-        iconName = iconName.replace('-color', '');
-        iconName = iconName.replace('-app', '');
-        break;
-      }
-      case /black/.test(iconName): {
-        fileName = 'black.svg';
-        iconName = iconName.replace('-black', '');
-        iconName = iconName.replace('-app', '');
-        break;
-      }
-      default: {
-        fileName = 'default.svg';
-        iconName = iconName.replace('-app', '');
-        break;
-      }
-    }
-    const existingIcon = `${inputPath}/${icon}/@4x/40dp.svg`;
-    if (fileName) {
-      const outputFile = `${outputPath}/${iconName}/${fileName}`;
-      await fs.mkdirp(`${outputPath}/${iconName}`);
-      if (fs.existsSync(existingIcon)) {
-        console.log(`copying ${existingIcon} to ${outputFile}`);
-        await fs.copy(existingIcon, `${outputPath}/${iconName}/${fileName}`);
-      }
-    }
-  }
-}
-
-export async function moveSocial(inputPath: string, outputPath: string) {
-  const icons = await getDirs(inputPath);
-  for (const icon of icons) {
-    let iconName = path.parse(icon).name;
-    let fileName;
-    switch (true) {
-      case /color/.test(iconName): {
-        fileName = 'color.svg';
-        iconName = iconName.replace('-color', '');
-        break;
-      }
-      case /black/.test(iconName): {
-        fileName = 'solid.svg';
-        iconName = iconName.replace('-black', '');
-        break;
-      }
-      default:
-        break;
-    }
-    const existingIcon = `${inputPath}/${icon}/24dp.svg`;
-    if (fileName) {
-      const outputFile = `${outputPath}/${iconName}/${fileName}`;
-      await fs.mkdirp(`${outputPath}/${iconName}`);
-      if (fs.existsSync(existingIcon)) {
-        console.log(`copying ${existingIcon} to ${outputFile}`);
-        await fs.copy(existingIcon, `${outputPath}/${iconName}/${fileName}`);
-      }
-    }
-  }
-}
-
-export async function moveUi(inputPath: string, outputPath: string) {
-  const icons = await getDirs(inputPath);
-  for (const icon of icons) {
-    let iconName = path.parse(icon).name;
-    let fileName;
-    let existingIcon;
-    switch (true) {
-      case /filled/.test(iconName): {
-        fileName = 'filled.svg';
-        iconName = iconName.replace('-filled', '');
-        iconName = iconName.replace('-icon', '');
-        existingIcon = `${inputPath}/${icon}/24dp.svg`;
-
-        //if there is a filled add an iconrc file there
-        // await fs.copy(
-        //   `${outputPath}/iconrc.json`,
-        //   `${outputPath}/${iconName}/iconrc.json`
-        // );
-        break;
-      }
-      case /large/.test(iconName): {
-        fileName = 'default.svg';
-        iconName = iconName.replace('-icon', '');
-        //if there is a filled add an iconrc file there
-        await fs.copy(
-          `${outputPath}/iconrc.json`,
-          `${outputPath}/${iconName}/iconrc.json`
-        );
-        existingIcon = `${inputPath}/${icon}/48dp.svg`;
-        break;
-      }
-      default:
-        fileName = 'default.svg';
-        iconName = iconName.replace('-icon', '');
-        iconName = iconName;
-        existingIcon = `${inputPath}/${icon}/24dp.svg`;
-        break;
-    }
-    const outputFile = `${outputPath}/${iconName}/${fileName}`;
-    await fs.mkdirp(`${outputPath}/${iconName}`);
-    if (fs.existsSync(existingIcon)) {
-      console.log(`copying ${existingIcon} to ${outputFile}`);
-      await fs.copy(existingIcon, `${outputPath}/${iconName}/${fileName}`);
-    } else if (fs.existsSync(`${inputPath}/${icon}/16dp.svg`)) {
-      await fs.copy(
-        `${inputPath}/${icon}/16dp.svg`,
-        `${outputPath}/${iconName}/${fileName}`
-      );
-    }
-  }
-}
-
-export async function moveNav(inputPath: string, outputPath: string) {
-  const icons = await getDirs(inputPath);
-  for (const icon of icons) {
-    let iconName = path.parse(icon).name;
-    let fileName;
-    switch (true) {
-      case /inverse/.test(iconName): {
-        fileName = 'inverse.svg';
-        iconName = iconName.replace('-inverse', '');
-        break;
-      }
-      case /filled/.test(iconName): {
-        fileName = 'active.svg';
-        iconName = iconName.replace('-filled', '');
-        break;
-      }
-      case /outline/.test(iconName): {
-        fileName = 'inactive.svg';
-        iconName = iconName.replace('-outline', '');
-        break;
-      }
-      default:
-        fileName = 'active.svg';
-        iconName = iconName;
-        break;
-    }
-    const existingIcon = `${inputPath}/${icon}/32dp.svg`;
-    if (fileName) {
-      const outputFile = `${outputPath}/${iconName}/${fileName}`;
-      await fs.mkdirp(`${outputPath}/${iconName}`);
-      if (fs.existsSync(existingIcon)) {
-        console.log(`copying ${existingIcon} to ${outputFile}`);
-        await fs.copy(existingIcon, `${outputPath}/${iconName}/${fileName}`);
-      } else {
-        await fs.copy(
-          `${inputPath}/${icon}/24dp.svg`,
-          `${outputPath}/${iconName}/${fileName}`
-        );
-      }
-    }
-  }
-}
-
-async function getDirs(dir: string) {
-  let dirs: string[] = [];
-  for (const file of await fs.readdir(dir)) {
-    if ((await fs.stat(path.join(dir, file))).isDirectory()) {
-      dirs = [...dirs, file];
-    }
-  }
-  return dirs;
-}
