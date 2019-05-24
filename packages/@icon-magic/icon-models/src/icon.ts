@@ -30,8 +30,8 @@ export class Icon {
   sizes!: AssetSize[];
   resolutions!: AssetResolution[];
   iconName!: string;
-  labels: string[];
-  category: string;
+  labels!: string[];
+  category!: string;
   flavors: Map<string, Flavor>;
   outputPath!: string;
   build?: BuildConfig;
