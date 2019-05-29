@@ -11,8 +11,6 @@ const iconSet = configReader.getIconConfigSet(new Array(input));
 
 describe('Test test', function() {
   it('Moves all .png files to the output directory', async () => {
-
-
     await distributeByType(iconSet, output, 'png', false);
     assert.ok(true, 'Accesses exports');
   });
