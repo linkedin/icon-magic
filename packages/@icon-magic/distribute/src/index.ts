@@ -18,26 +18,32 @@ interface ContentImage {
   filename: string;
 }
 
+type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
+
 /**
  * Distributes a set of icons to the output folder based on type
  * @param iconSet set of icons to be moved to the output folder
- * @param flag createImageSet, distributeByResolution
+ * @param type svg, png, webp
  * @param outputPath output directory path to copy the assets to
  */
-export async function distributeByFlag(
+export async function distributeByType(
   iconConfig: IconConfigHash,
   outputPath: string,
-  flag?: string
+  type: ICON_TYPES = 'all',
+  groupByCategory = true
 ): Promise<void> {
-  LOGGER.debug(`entering distribute with ${flag}`);
+  LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
-  createSprite(iconSet, outputPath);
+
+  if (type !== 'svg' && type !== 'all') {
+    createSprite(iconSet, outputPath, groupByCategory);
+  }
   for (const icon of iconSet.hash.values()) {
-    switch (flag) {
-      case 'createImageSet': {
+    switch (type) {
+      case 'png': {
         await createImageSet(icon, outputPath);
       }
-      case 'distributeByResolution': {
+      case 'webp': {
         await distributeByResolution(icon, outputPath);
       }
       default: {
@@ -53,7 +59,7 @@ async function createImageSet(icon: Icon, outputPath: string) {
   const promises = [];
   const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
   for (const asset of assets) {
-    const assetNameForCatalog = `${icon.iconName}_${path.basename(asset.path)}`;
+    const assetNameForCatalog = `${icon.iconName}_${path.basename(asset.getPath())}`;
 
     // strip the resolution from the asset name to get the name of the imageset
     const outputIconDir = path.join(
@@ -73,7 +79,7 @@ async function createImageSet(icon: Icon, outputPath: string) {
     }
 
     promises.push(
-      fs.copy(asset.path, path.join(outputIconDir, assetNameForCatalog))
+      fs.copy(asset.getPath(), path.join(outputIconDir, assetNameForCatalog))
     );
 
     // update the assetCatalog if it doesn't contain the asset already
@@ -109,11 +115,11 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
     // category to the asset name. Eg: nav_iconName_assetName
     promises.push(
       fs.copy(
-        asset.path,
+        asset.getPath(),
 
         path.join(
           outputIconDir,
-          `${icon.iconName}_${path.basename(asset.path)}`
+          `${icon.iconName}_${path.basename(asset.getPath())}`
         )
       )
     );
@@ -134,34 +140,58 @@ const createSVGDoc = () => {
 };
 
 
-const writeSVGToDisk = (doc: SVGElement, filePath: string) => {
-  fs.writeFileSync(filePath, doc);
+const writeSVGToDisk = (doc: SVGElement, filePath: string, spriteName: string) => {
+  fs.writeFileSync(path.resolve(filePath, spriteName, '.svg'), doc);
 };
 
 
-const appendToSvgDoc = (asset: Asset, doc: SVGSVGElement) => {
-  // Structure of SVG document? Currently we have a <defs> for each label (`ui-icons`, `nav-icons` etc)
-  // do we still want to organize that way? in that case, before we get here, we filter by label.
-  //  data-supported dps? what attributes to add?
+function createDefs(category: string) {
+  const defs = document.createElement('defs');
+  defs.setAttribute('id', category);
+  return defs;
+};
+
+async function appendIcon(parent: Element, asset: Asset) {
+  var doc = new DOMParser();
+  let contents = await asset.getContents();
+  var xml = doc.parseFromString(contents as string, "image/svg+xml");
+  parent.appendChild(xml.documentElement);
+  return parent;
+};
+
+
+function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
+  if (category) {
+    let def = doc.getElementById(category);
+    if (def) {
+      return appendIcon(def, asset);
+    }
+    else {
+      def = createDefs(category);
+      doc.appendChild(def);
+      return appendIcon(def, asset)
+    }
+  }
+  else {
+    return appendIcon(doc, asset);
+  }
 }
 
-async function createSprite(iconSet: IconSet, outputPath: string) {
+async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean) {
+  // Assuming that it will be one doc ?
   const doc = createSVGDoc();
-  const outputSpriteDir = path.join(outputPath, 'icons.svg');
-  await fs.mkdirp(outputSpriteDir);
+  let spriteName = 'icons';
   for (const icon of iconSet.hash.values()) {
-    // Handle icon that need to be made into a sprite
-    // TO:DO match category _or_ labels
-    if (icon.category === 'sprite') {
+    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.noSprite) {
+      spriteName = icon.distribute.svg.spriteName;
       const spriteAssets = getIconFlavorsByType(icon, 'svg');
       for (const asset of spriteAssets) {
-        appendToSvgDoc(asset, doc);
+        appendToSvgDoc(asset, doc, groupByCategory ? icon.category : '');
       }
     }
   }
-
-  writeSVGToDisk(doc, outputPath);
-  // Write `icons.svg` to output directory
+  // Do we assume the sprite name will be the same
+  writeSVGToDisk(doc, outputPath, spriteName);
 }
 
 async function distributeSvg(icon: Icon, outputPath: string) {
@@ -173,7 +203,7 @@ async function distributeSvg(icon: Icon, outputPath: string) {
   const promises = [];
   for (const asset of assets) {
     promises.push(
-      fs.copy(asset.path, path.join(outputIconDir, path.basename(asset.path)))
+      fs.copy(asset.getPath(), path.join(outputIconDir, path.basename(asset.getPath())))
     );
   }
   return Promise.all(promises);

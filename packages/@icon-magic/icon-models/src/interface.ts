@@ -7,6 +7,11 @@ interface WidthHeight {
   height: number;
 }
 
+interface SVGOptions {
+  noSprite: boolean;
+  spriteName: string;
+}
+
 export type AssetSize = number | WidthHeight;
 export type AssetResolution = number;
 export type Content = Buffer | string;
@@ -75,7 +80,9 @@ export interface GenerateConfig {
 /**
  * Properties related to the distribution of the icon
  */
-export interface DistributeConfig {}
+export interface DistributeConfig {
+  svg?: SVGOptions;
+}
 
 /**
  * Properties related to an Icon

@@ -44,7 +44,7 @@ export class Icon {
    * @param config Config read from a config file containing all the icon's
    * information
    * @param skipVariantCheck if true, skips the check to verify the existence of
-   * variants. This flag is normally set false for generate configs that don't
+   * variants. This type is normally set false for generate configs that don't
    * have variants anymore
    */
   constructor(config: IconConfig, skipVariantCheck?: boolean) {
@@ -66,7 +66,7 @@ export class Icon {
       if (!(variant instanceof Asset)) {
         const variantAsset = new Asset(config.iconPath, variant);
 
-        // only check the variants if the flag is true
+        // only check the variants if the type is true
         if (!skipVariantCheck) {
           // check to see if the file exists
           if (!exists(variantAsset.getPath())) {
