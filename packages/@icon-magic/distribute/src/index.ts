@@ -1,7 +1,3 @@
-import { Logger, logger } from '@icon-magic/logger';
-import * as fs from 'fs-extra';
-import * as path from 'path';
-
 import {
   Asset,
   FlavorType,
@@ -9,6 +5,9 @@ import {
   IconConfigHash,
   IconSet
 } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 
@@ -36,7 +35,7 @@ export async function distributeByType(
   const iconSet = new IconSet(iconConfig, true);
 
   if (type !== 'svg' && type !== 'all') {
-    createSprite(iconSet, outputPath, groupByCategory);
+    await createSprite(iconSet, outputPath, groupByCategory);
   }
   for (const icon of iconSet.hash.values()) {
     switch (type) {
@@ -160,20 +159,20 @@ async function appendIcon(parent: Element, asset: Asset) {
 }
 
 
-function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
+async function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
   if (category) {
     let def = doc.getElementById(category);
     if (def) {
-      return appendIcon(def, asset);
+      return await appendIcon(def, asset);
     }
     else {
       def = createDefs(category);
       doc.appendChild(def);
-      return appendIcon(def, asset);
+      return await appendIcon(def, asset);
     }
   }
   else {
-    return appendIcon(doc, asset);
+    return await appendIcon(doc, asset);
   }
 }
 
@@ -186,7 +185,7 @@ async function createSprite(iconSet: IconSet, outputPath: string, groupByCategor
       spriteName = icon.distribute.svg.spriteName;
       const spriteAssets = getIconFlavorsByType(icon, 'svg');
       for (const asset of spriteAssets) {
-        appendToSvgDoc(asset, doc, groupByCategory ? icon.category : '');
+        await appendToSvgDoc(asset, doc, groupByCategory ? icon.category : '');
       }
     }
   }
