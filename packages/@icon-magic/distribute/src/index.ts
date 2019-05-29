@@ -149,15 +149,15 @@ function createDefs(category: string) {
   const defs = document.createElement('defs');
   defs.setAttribute('id', category);
   return defs;
-};
+}
 
 async function appendIcon(parent: Element, asset: Asset) {
-  var doc = new DOMParser();
-  let contents = await asset.getContents();
-  var xml = doc.parseFromString(contents as string, "image/svg+xml");
+  const doc = new DOMParser();
+  const contents = await asset.getContents();
+  const xml = doc.parseFromString(contents as string, "image/svg+xml");
   parent.appendChild(xml.documentElement);
   return parent;
-};
+}
 
 
 function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
@@ -169,7 +169,7 @@ function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
     else {
       def = createDefs(category);
       doc.appendChild(def);
-      return appendIcon(def, asset)
+      return appendIcon(def, asset);
     }
   }
   else {

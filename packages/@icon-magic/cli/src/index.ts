@@ -70,7 +70,7 @@ program
     '-g, --groupByCategory',
     '[for web icons] how to group the icons'
   )
-  .action(async (i: string, o: string) => {
+  .action(async (i: string, o: string, t: string, g: boolean) => {
     if (!i.length) {
       LOGGER.error('No Input Directories were specified.\n');
     }
