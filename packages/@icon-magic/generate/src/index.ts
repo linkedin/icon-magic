@@ -21,7 +21,7 @@ export async function generate(iconSet: IconSet): Promise<void> {
   LOGGER.debug('Icon generation has begun');
 
   LOGGER.debug('Creating the worker pool');
-  const poolPromises = [];
+  const poolPromises: any[] = [];
 
   // runs the plugins on each icon using the pool
   for (const icon of iconSet.hash.values()) {

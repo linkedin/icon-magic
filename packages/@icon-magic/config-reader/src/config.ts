@@ -24,7 +24,7 @@ export class Config {
    * A mapping of the icon to the config associated with the icon
    */
   iconConfigHash: IconConfigHash;
-  LOGGER:
+  LOGGER: Logger;
 
   /**
    * Takes in a set of config files and extracts icons from it. Creating an
@@ -42,7 +42,7 @@ export class Config {
       const configJson = loadConfigFile(configFile);
       try {
         validateConfigSchema(configJson);
-        LOGGER.debug(`Configuration in ${configFile} is valid`);
+        this.LOGGER.debug(`Configuration in ${configFile} is valid`);
       } catch (err) {
         throw new Error(`Configuration in ${configFile} is invalid:\n${err}`);
       }
@@ -51,7 +51,7 @@ export class Config {
       this.constructConfigHash(configFile, configJson);
     }
 
-    LOGGER.debug(JSON.stringify([...this.iconConfigHash]));
+    this.LOGGER.debug(JSON.stringify([...this.iconConfigHash]));
   }
 
   /**
@@ -70,13 +70,13 @@ export class Config {
       path.parse(configFile).dir,
       configJson.iconPath
     );
-    LOGGER.debug(`Resolving the icon path: ${resolvedIconPaths}`);
+    this.LOGGER.debug(`Resolving the icon path: ${resolvedIconPaths}`);
 
     // TODO: Determine if we can cache the stats for all the glob files via an option
     const iconPaths = glob
       .sync(resolvedIconPaths)
       .filter(iconPath => isDirectory(iconPath));
-    LOGGER.debug(
+    this.LOGGER.debug(
       `Resolving all the glob patterns to get the set of icon paths: ${iconPaths}`
     );
 
@@ -127,7 +127,6 @@ export class Config {
       // if there is no conflict, add the config to the hash
       this.iconConfigHash.set(iconConfig.iconPath, iconConfig);
     }
-    LOGGER.debug(this.iconConfigHash);
   }
 
   /**

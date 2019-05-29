@@ -10,5 +10,8 @@
   "keywords": [
     "tslint",
     "tslint-plugin"
-  ]
+  ],
+  "dependencies": {
+    "@icon-magic/logger": "^2.0.0"
+  }
 }

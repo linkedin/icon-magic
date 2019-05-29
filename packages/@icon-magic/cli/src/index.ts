@@ -2,6 +2,7 @@
 
 import * as iconBuild from '@icon-magic/build';
 import * as configReader from '@icon-magic/config-reader';
+import { distributeByFlag } from '@icon-magic/distribute';
 import * as iconGenerate from '@icon-magic/generate';
 import { Logger, logger } from '@icon-magic/logger';
 import * as program from 'commander';
@@ -68,7 +69,7 @@ program
     const iconSet = configReader.getIconConfigSet(new Array(i));
 
     // distribute the icons
-    // await distributeByFlag(iconSet, o, 'createImageSet');
+    await distributeByFlag(iconSet, o, 'createImageSet');
 
     // exit without any errors
     process.exit(0);

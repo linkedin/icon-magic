@@ -21,8 +21,9 @@
   },
   "dependencies": {
     "@icon-magic/build": "^2.0.0",
-    "@icon-magic/generate": "^2.0.0",
     "@icon-magic/distribute": "^2.0.0",
+    "@icon-magic/generate": "^2.0.0",
+    "@icon-magic/logger": "^2.0.0",
     "commander": "^2.19.0",
     "config-reader": "^0.1.1"
   }

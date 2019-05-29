@@ -652,6 +652,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/debug@^4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.4.tgz#56eec47706f0fd0b7c694eae2f3172e6b0b769da"
+
 "@types/events@*":
   version "1.2.0"
   resolved "http://registry.npmjs.org/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
@@ -1843,7 +1847,7 @@ debug@^3.1.0:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.1.0:
+debug@^4.1.0, debug@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
   dependencies:

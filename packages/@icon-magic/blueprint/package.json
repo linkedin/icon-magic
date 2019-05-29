@@ -16,5 +16,8 @@
     "postbuild": "cp -r ./test/fixtures ./dist/test",
     "lint": "tslint -t msbuild --project . -c tslint.json",
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
+  },
+  "dependencies": {
+    "@icon-magic/logger": "^2.0.0"
   }
 }
