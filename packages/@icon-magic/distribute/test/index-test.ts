@@ -11,7 +11,7 @@ const input = path.resolve(FIXTURES, 'input');
 const output = path.resolve(FIXTURES, 'out');
 const iconSet = configReader.getIconConfigSet(new Array(input));
 
-describe('Test test', function() {
+describe('distribute works as expected', function() {
   it('Moves all .png files to the output directory', async () => {
     await distributeByType(iconSet, output, 'png', false);
     assert.ok(true, 'Accesses exports');
