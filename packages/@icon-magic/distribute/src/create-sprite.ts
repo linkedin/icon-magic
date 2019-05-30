@@ -14,9 +14,6 @@ export function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const DOCUMENT = new DOMImplementation().createDocument(SVG_NS, 'svg', null);
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
-  svgEl.setAttribute('width', '24px');
-  svgEl.setAttribute('height', '390px');
-  svgEl.setAttribute('id', 'svg-source');
   svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');

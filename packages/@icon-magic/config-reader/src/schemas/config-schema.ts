@@ -45,7 +45,7 @@ const distributeConfigProperties = {
     type: ['object', null],
     properties: {
       spriteName: { type: ['string', 'null'] },
-      inSprite: { type: ['boolean', 'null'] }
+      toSprite: { type: ['boolean', 'null'] }
     },
   }
 };

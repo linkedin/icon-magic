@@ -5,7 +5,7 @@
       "path": "./filled.svg"
     }
   ],
-  "category": "ui-icon",
+  "category": "uix-icon",
   "iconPath": ".",
   "flavors": [
     {
@@ -30,7 +30,7 @@
   "distribute": {
     "svg": {
       "toSprite": true,
-      "spriteName": "icons-2"
+      "spriteName": "icons-3"
     }
   }
 }
