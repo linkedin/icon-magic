@@ -17,6 +17,11 @@ export interface AssetConfig {
   contents?: Content;
 }
 
+interface SVGOptions {
+  inSprite: boolean;
+  spriteName: string;
+}
+
 export type Iterant = string[];
 export type FlavorType = 'svg' | 'png' | 'webp';
 export type FlavorTypeMap = { [K in FlavorType]?: AssetConfig };
@@ -75,7 +80,9 @@ export interface GenerateConfig {
 /**
  * Properties related to the distribution of the icon
  */
-export interface DistributeConfig {}
+export interface DistributeConfig {
+  svg?: SVGOptions;
+}
 
 /**
  * Properties related to an Icon
