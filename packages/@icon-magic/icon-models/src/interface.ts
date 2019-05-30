@@ -18,7 +18,7 @@ export interface AssetConfig {
 }
 
 interface SVGOptions {
-  inSprite: boolean;
+  toSprite: boolean;
   spriteName: string;
 }
 
