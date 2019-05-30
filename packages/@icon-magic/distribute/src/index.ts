@@ -1,7 +1,3 @@
-import { Logger, logger } from '@icon-magic/logger';
-import * as fs from 'fs-extra';
-import * as path from 'path';
-
 import {
   Asset,
   FlavorType,
@@ -9,8 +5,19 @@ import {
   IconConfigHash,
   IconSet
 } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { DOMParser } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
+const document = new DOMParser().parseFromString(
+  '<xml xmlns="a" xmlns:c="./lite">\n'+
+      '\t<child>test</child>\n'+
+      '\t<child></child>\n'+
+      '\t<child/>\n'+
+  '</xml>'
+  ,'text/xml');
 
 interface ContentImage {
   idiom: string;
@@ -23,28 +30,33 @@ interface ContentImage {
 interface AssetCatalog {
   images?: ContentImage[];
 }
+type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 
 /**
  * Distributes a set of icons to the output folder based on the flag
  * @param iconSet set of icons to be moved to the output folder
- * @param flag createImageSet, distributeByResolution
+ * @param type svg, png, webp
  * @param outputPath output directory path to copy the assets to
  * @retuns promise after completion
  */
-export async function distributeByFlag(
+export async function distributeByType(
   iconConfig: IconConfigHash,
   outputPath: string,
-  flag?: string
+  type: ICON_TYPES = 'all',
+  groupByCategory = true
 ): Promise<void> {
-  LOGGER.debug(`entering distribute with ${flag}`);
+  LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
 
+  if (type !== 'svg' && type !== 'all') {
+    await createSprite(iconSet, outputPath, groupByCategory);
+  }
   for (const icon of iconSet.hash.values()) {
-    switch (flag) {
-      case 'createImageSet': {
+    switch (type) {
+      case 'png': {
         await createImageSet(icon, outputPath);
       }
-      case 'distributeByResolution': {
+      case 'webp': {
         await distributeByResolution(icon, outputPath);
       }
       default: {
@@ -148,13 +160,74 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   return Promise.all(promises);
 }
 
-/**
- * Moves the svg assets of an icon to the outputPath
- * @param icon icon to distribute
- * @param outputPath path to move to
- * @retuns promise after completion
- */
-async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]> {
+const createSVGDoc = () => {
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const doc = document.createElementNS(SVG_NS, 'svg');
+  doc.setAttribute('width', '24px');
+  doc.setAttribute('height', '390px');
+  doc.setAttribute('id', 'svg-source');
+  doc.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  doc.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  doc.setAttribute('version', '1.1');
+  return doc;
+};
+
+
+const writeSVGToDisk = (doc: SVGElement, filePath: string) => {
+  fs.writeFileSync(filePath, doc);
+};
+
+
+function createDefs(category: string) {
+  const defs = document.createElement('defs');
+  defs.setAttribute('id', category);
+  return defs;
+}
+
+async function appendIcon(parent: Element, asset: Asset) {
+  const doc = new DOMParser();
+  const contents = await asset.getContents();
+  const xml = doc.parseFromString(contents as string, "image/svg+xml");
+  parent.appendChild(xml.documentElement);
+  return parent;
+}
+
+
+async function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
+  if (category) {
+    let def = doc.getElementById(category);
+    if (def) {
+      return await appendIcon(def, asset);
+    }
+    else {
+      def = createDefs(category);
+      doc.appendChild(def);
+      return await appendIcon(def, asset);
+    }
+  }
+  else {
+    return await appendIcon(doc, asset);
+  }
+}
+
+async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean) {
+  // Assuming that it will be one doc ?
+  const doc = createSVGDoc();
+  let spriteName = 'icons';
+  for (const icon of iconSet.hash.values()) {
+    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.noSprite) {
+      spriteName = icon.distribute.svg.spriteName;
+      const spriteAssets = getIconFlavorsByType(icon, 'svg');
+      for (const asset of spriteAssets) {
+        await appendToSvgDoc(asset, doc, groupByCategory ? icon.category : '');
+      }
+    }
+  }
+  // Do we assume the sprite name will be the same
+  writeSVGToDisk(doc, path.join(outputPath, `${spriteName}.svg`));
+}
+
+async function distributeSvg(icon: Icon, outputPath: string) {
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
   const outputIconDir = path.join(outputPath, icon.iconName);
@@ -232,8 +305,8 @@ function getAssetResolutionFromName(
 }
 
 /**
- * Loads a JSON from a file
- * @param filePath The filename to load
+ * Loads a JSON from a file.
+ * @param filePath The filename to load.
  * @returns The JSON contents as an object
  */
 async function loadJSONFile(filePath: string): Promise<object> {

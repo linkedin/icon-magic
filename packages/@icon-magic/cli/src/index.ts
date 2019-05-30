@@ -2,8 +2,9 @@
 
 import * as iconBuild from '@icon-magic/build';
 import * as configReader from '@icon-magic/config-reader';
-import { distributeByFlag } from '@icon-magic/distribute';
 import * as iconGenerate from '@icon-magic/generate';
+import * as distributeByType from '@icon-magic/distribute';
+
 import { Logger, logger } from '@icon-magic/logger';
 import * as program from 'commander';
 
@@ -54,14 +55,22 @@ program
 program
   .command(
     'distribute',
-    'moves an icon from the source to the destination, applying flags as specified'
+    'moves an icon from the source to the destination, applying types as specified'
   )
   .option('-i, --inputPaths', 'path to the input directory of icons')
   .option(
     '-o, --outputPath',
     'path to the output directory where the generated assets are to be written to'
   )
-  .action(async (i: string, o: string) => {
+  .option(
+    '-t, --type',
+    'type of icons format to handle, accepted types are svg|png|webp'
+  )
+  .option(
+    '-g, --groupByCategory',
+    '[for web icons] how to group the icons'
+  )
+  .action(async (i: string, o: string, t: string, g: boolean) => {
     if (!i.length) {
       LOGGER.error('No Input Directories were specified.\n');
     }
@@ -69,7 +78,7 @@ program
     const iconSet = configReader.getIconConfigSet(new Array(i));
 
     // distribute the icons
-    await distributeByFlag(iconSet, o, 'createImageSet');
+    await distributeByType(iconSet, o, t, g);
 
     // exit without any errors
     process.exit(0);
