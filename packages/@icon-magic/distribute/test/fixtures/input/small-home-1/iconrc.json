@@ -1,0 +1,36 @@
+{
+  "iconName": "filled-3",
+  "variants": [
+    {
+      "path": "./filled.svg"
+    }
+  ],
+  "category": "uixx-icon",
+  "iconPath": ".",
+  "flavors": [
+    {
+      "name": "filled-24x12",
+      "path": "./filled.svg",
+      "types": {
+        "png": {
+          "name": "filled-24x12",
+          "path": "./filled-24x12@2.png"
+        },
+        "webp": {
+          "name": "filled-24x12",
+          "path": "./filled-24x12@2.webp"
+        },
+        "svg": {
+          "name": "filled-24x12",
+          "path": "./filled.svg"
+        }
+      }
+    }
+  ],
+  "distribute": {
+    "svg": {
+      "toSprite": true,
+      "spriteName": "icons-3"
+    }
+  }
+}
