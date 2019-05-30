@@ -284,6 +284,6 @@ async function loadJSONFile(filePath: string): Promise<object> {
  * @param filePath The filePath to write to
  * @returns Promise to the writeFile operation
  */
-async function writeJSONfile(filePath: string, data: object) {
+async function writeJSONfile(filePath: string, data: object): Promise<void> {
   return fs.writeFile(`${path.join(filePath)}`, JSON.stringify(data, null, 2));
 }
