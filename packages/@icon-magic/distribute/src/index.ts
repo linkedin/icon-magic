@@ -226,7 +226,7 @@ async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]>  {
  * @param type The type to which to filter the icon's flavors by
  * @returns a list of flavors that contain assets of "type"
  */
-function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
+export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
   return Array.from(icon.flavors.values())
     .filter(flavor => {
       return flavor.types.has(type);
