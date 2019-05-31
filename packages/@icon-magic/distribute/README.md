@@ -1,104 +1,82 @@
 # @icon-magic/distribute
 
-This package is responsible for generating the flavors of the icon in all the
-different types in which it can be consumed. At the end of the build step, we
-have each flavor in it's .svg format, but after generate, we will have more
-optimized .svg files, .png files that can be consumed by iOS and .webp files that
-can be consumed by android.
-
-Generate transforms the set of .svg flavors to their types by running a set of
-plugins based on the type in which we want the output. For example, we can have
-a different set of plugins to obtain the optimized svg and a different set to
-get a .png "type".
-
-After generate has applied all the plugins based on type, we now get flavors
-with types that contain paths to the newly created .type asset. Generate also
-updates the icon config with the newly generated types. An example flavor in the
-icon config (iconrc.json) after it's been through the generate step will look like
-this:
-
-```typescript
-{
-    "name": "filled-24x24",
-    "path": "./filled.svg",
-    "types": {
-        "png": {
-            "name": "filled-24x24",
-            "path": "./filled-24x24.png"
-        },
-        "webp": {
-            "name": "filled-24x24",
-            "path": "./filled-24x24.webp"
-        }
-    }
-},
-```
+This package is responsible for massaging the assets into type specific structures and formats.
+At the end of the generate step, we have optimized .svg files, .png files and .webp files for web,
+ios and android consumption. You can look in `test/fixtures/input` for an example of the file structure
+after the generate step. `Distribute` organizes and structures those files how they need to be consumed
+and creates the necessary files for platform consumption.
 
 ## Interface
 
-### generate(iconSet: IconSet): Promise<void>
+### distributeByType(iconConfig: IconConfigHash, outputPath: string, type: ICON_TYPES, groupByCategory = true): Promise<void>
 
-This package's primary interface is the generate function that takes in a
-mapping of the path to the icon directory and the Icon class corresponding to
-the icon. This allows it to be chained to the build step in the following
-manner:
+This package's primary interface is the `distributeByType` function that takes in a
+set of icons to be moved to the output folder, the type of icon to distribute
+(`'svg' | 'png' | 'webp'`), the outputPath the icons should be moved to and whether
+(for sprite creation), the icons should be grouped by their category attribute.
 
 ```typescript
-// build all the icons
-let outputIconSet = await iconBuild.build(iconSet);
-// generate all the icons
-await iconGenerate.generate(outputIconSet);
+// Get the iconSet from the inputPaths
+const iconSet = configReader.getIconConfigSet(new Array(i));
+
+// distribute the icons
+await distributeByType(iconSet, o, t, g);
 ```
 
-All the while, the icon in memory is updated with the newly generated types for
-each flavor. After all the plugins are applied, the generate then writes the
-config of each icon to form an icon bundle consisting of
+For each type (`'svg' | 'png' | 'webp'`) it calls a function to massage the asset counterparts. By default,type is set to 'all' which means it calls the functions for all types.
 
-1. The icon config file (iconrc.json) with flavors and types
-2. The various flavors of the icon in their optimized .svg version
-3. The various flavors of the icon in their .png and .webp version
+### type="svg"
+
+For web use, `distribute` can move the svg assets to the output _and / or_
+create a sprite with icons appended.
 
 ```bash
-outputIconSet
-├── home
-│   ├── filled-24x24.png
-│   ├── filled-24x24.webp
+out
+├── `${iconName}` e.g `filled`
 │   ├── filled.svg
-│   ├── iconrc.json
-│   ├── someOtherName-24x24.png
-│   ├── someOtherName-24x24.webp
-│   └── someOtherName.svg
-└── modified-small-home
-    ├── filled-16x16.png
-    ├── filled-16x16.webp
-    ├── filled-32x32.png
-    ├── filled-32x32.webp
-    ├── filled-8x8.png
-    ├── filled-8x8.webp
-    ├── filled.svg
-    ├── iconrc.json
-    ├── modifiedOutline-16x16.png
-    ├── modifiedOutline-16x16.webp
-    ├── modifiedOutline-32x32.png
-    ├── modifiedOutline-32x32.webp
-    ├── modifiedOutline-8x8.png
-    ├── modifiedOutline-8x8.webp
-    └── modifiedOutline.svg
+├── icons.svg
 ```
 
-### generate/plugins
+Sprite creation happens by default and you can indicate whether an icon should
+be included in a sprite through the icon's `iconrc.json`:
 
-Generate, by default provides the following plugins
+```json
+  "distribute": {
+    "svg": {
+      "toSprite": true, // will be included in sprite
+      "spriteName": "icons" // name of sprite file
+    }
+  }
+```
 
-#### svg-to-raster
+You can also add a `category` attribute to the `iconrc.json` which will be used
+to group the icons in the sprite (using `<defs>` with the ID attribute set to the value of `category`)
 
-That is used for generating PNG and webP assets. This plugin uses
-@icon-magic/svg-to-png and @icon-magic/image-min farm to generate .png and .webp
-assets and minify the outputs.
+```json
+  "category": "ui-icon",
+  "distribute": {
+    "svg": {
+      "toSprite": true, // will be included in sprite
+      "spriteName": "icons" // name of sprite file
+    }
+  }
+```
 
-### svg-generate - svgOptimize
+### type="webp"
 
-That is used to clean up the .svg file from unnecessary nodes, attributes and
-metatadata.
+```bash
+out
+├── drawable-xxxhdpi `folder name depends on asset resolution`
+│   ├── filled-1_filled-24x12@2.webp
+│   └── filled-1_filled-60x60@2.webp
+│   └── filled-1_filled-60x60@2.webp
+```
 
-For more details on the interfaces, refer to @icon-magic/icon-models
+### type="png"
+
+```bash
+out
+├── `${iconName}_${flavor.name}.imageset` e.g `filled-1_filled-24x12.imageset`
+│   ├── Contents.json
+│   └── `${iconName}_${flavor.name}.png` e.g `filled-1_filled-24x12@2.png`
+```
