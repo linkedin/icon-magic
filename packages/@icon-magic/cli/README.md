@@ -53,7 +53,7 @@ Options:
   -i, --inputPath     Path to the input directory of icons
   -o, --outputPath    Path to the output directory where the generated assets are to be written to
   -t, --type          type of icons format to handle, accepted types are svg|png|webp
-  -g, --groupByCategory [for web sprite creation, if to how to group the icons by category
+  -g, --groupByCategory [for web sprite creation] if to how to group the icons by category
   -h, --help          Display usage
   -v, --version       Display version
 ```
