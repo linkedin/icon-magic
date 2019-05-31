@@ -176,21 +176,25 @@ export async function createSprite(iconSet: IconSet, outputPath: string, groupBy
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`adding ${icon.iconName} to ${spriteName}`);
     if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
+      const spriteAssets = getIconFlavorsByType(icon, FILE_TYPE);
       const iconSpriteName = icon.distribute.svg.spriteName;
       spriteName = iconSpriteName ? iconSpriteName: spriteName;
-      if (!spriteNames[spriteName]) {
-        const { DOCUMENT, svgEl } = createSVGDoc();
-        const spriteAssets = getIconFlavorsByType(icon, FILE_TYPE);
-        for (const asset of spriteAssets) {
-          await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
-        }
-        spriteNames[spriteName] = svgEl;
+      let DOCUMENT, svgEl;
+      if (!spriteNames.hasOwnProperty(spriteName)) {
+       ({ DOCUMENT, svgEl } = createSVGDoc());
+        spriteNames[spriteName] = { DOCUMENT, svgEl };
+      }
+      else {
+        ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
+      }
+      for (const asset of spriteAssets) {
+        await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
       }
     }
   }
 
   for (spriteName in spriteNames) {
-    const svgEl = spriteNames[spriteName];
+    const svgEl = spriteNames[spriteName].svgEl;
     await saveContentToFile(outputPath, spriteName, convertSVGToString(svgEl), FILE_TYPE);
   }
 }
