@@ -31,13 +31,13 @@ out
 ├── icons.svg
 ```
 
-You can indicate whether an icon should be included in a sprite through the icon's `iconrc.json`:
+You can indicate whether an icon should be included in a sprite and the sprite name through the icon's `iconrc.json`:
 
 ```json
   "distribute": {
     "svg": {
-      "toSprite": true, // icon will be included in sprite
-      "spriteName": "icons" // name of sprite file
+      "toSprite": true,
+      "spriteName": "icons"
     }
   }
 ```
@@ -48,8 +48,8 @@ You can also add a `category` attribute to the `iconrc.json` which will be used 
   "category": "ui-icon",
   "distribute": {
     "svg": {
-      "toSprite": true, // will be included in sprite
-      "spriteName": "icons" // name of sprite file
+      "toSprite": true,
+      "spriteName": "icons"
     }
   }
 ```
