@@ -170,29 +170,21 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  */
 export async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean): Promise<void> {
-  const spriteNames = {};
+  const { DOCUMENT, svgEl } = createSVGDoc();
   const FILE_TYPE = 'svg';
   let spriteName = 'icons';
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`adding ${icon.iconName} to ${spriteName}`);
-    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
+    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.inSprite) {
       const iconSpriteName = icon.distribute.svg.spriteName;
       spriteName = iconSpriteName ? iconSpriteName: spriteName;
-      if (!spriteNames[spriteName]) {
-        const { DOCUMENT, svgEl } = createSVGDoc();
-        const spriteAssets = getIconFlavorsByType(icon, FILE_TYPE);
-        for (const asset of spriteAssets) {
-          await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
-        }
-        spriteNames[spriteName] = svgEl;
+      const spriteAssets = getIconFlavorsByType(icon, FILE_TYPE);
+      for (const asset of spriteAssets) {
+        await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
       }
     }
   }
-
-  for (spriteName in spriteNames) {
-    const svgEl = spriteNames[spriteName];
-    await saveContentToFile(outputPath, spriteName, convertSVGToString(svgEl), FILE_TYPE);
-  }
+  await saveContentToFile(outputPath, spriteName, convertSVGToString(svgEl), FILE_TYPE);
 }
 
 /**
