@@ -16,7 +16,7 @@ describe('Test test', function() {
   });
 
   it('creates the sprite', async () => {
-    await distributeByType(iconSet, output, 'svg', true);
+    await distributeByType(iconSet, output, 'svg', false);
     assert.ok(true, 'Accesses exports');
   });
 });

@@ -40,15 +40,7 @@ const buildConfigProperties = {
   }
 };
 
-const distributeConfigProperties = {
-  svg: {
-    type: ['object', null],
-    properties: {
-      spriteName: { type: 'string' },
-      inSprite: { type: 'boolean' }
-    },
-  }
-};
+const distributeConfigProperties = {};
 
 const generateConfigProperties = {
   outputPath: {

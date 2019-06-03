@@ -8,9 +8,17 @@ import {
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { DOMImplementation, DOMParser } from 'xmldom';
+import { DOMParser } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
+const document = new DOMParser().parseFromString(
+  '<xml xmlns="a" xmlns:c="./lite">\n'+
+      '\t<child>test</child>\n'+
+      '\t<child></child>\n'+
+      '\t<child/>\n'+
+  '</xml>'
+  ,'text/xml');
+
 interface ContentImage {
   idiom: string;
   scale: string;
@@ -18,7 +26,7 @@ interface ContentImage {
 }
 
 // TODO: populate this interface as needed
-// from https://developer.apple.com/library/archive/DOCUMENTation/Xcode/Reference/xcode_ref-Asset_Catalog_Format/ImageSetType.html
+// from https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_ref-Asset_Catalog_Format/ImageSetType.html
 interface AssetCatalog {
   images?: ContentImage[];
 }
@@ -40,7 +48,7 @@ export async function distributeByType(
   LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
 
-  if (type === 'svg' || type === 'all') {
+  if (type !== 'svg' && type !== 'all') {
     await createSprite(iconSet, outputPath, groupByCategory);
   }
   for (const icon of iconSet.hash.values()) {
@@ -152,36 +160,31 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   return Promise.all(promises);
 }
 
-function createSVGDoc(){
+const createSVGDoc = () => {
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  const DOCUMENT = new DOMImplementation().createDocument(SVG_NS, 'svg', null);
-  const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
-  svgEl.setAttribute('width', '24px');
-  svgEl.setAttribute('height', '390px');
-  svgEl.setAttribute('id', 'svg-source');
-  svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-  svgEl.setAttribute('version', '1.1');
-  DOCUMENT.appendChild(svgEl);
-  LOGGER.debug(`creating svg document ${DOCUMENT}`);
-  return { DOCUMENT, svgEl };
-}
+  const doc = document.createElementNS(SVG_NS, 'svg');
+  doc.setAttribute('width', '24px');
+  doc.setAttribute('height', '390px');
+  doc.setAttribute('id', 'svg-source');
+  doc.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  doc.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  doc.setAttribute('version', '1.1');
+  return doc;
+};
 
 
-function writeSVGToDisk(doc: SVGSVGElement, filePath: string){
+const writeSVGToDisk = (doc: SVGElement, filePath: string) => {
   fs.writeFileSync(filePath, doc);
-}
+};
 
 
-function createDefs(doc: Document, category: string) {
-  LOGGER.debug(`entering createDefs with ${category}`);
-  const defs = doc.createElement('defs');
+function createDefs(category: string) {
+  const defs = document.createElement('defs');
   defs.setAttribute('id', category);
   return defs;
 }
 
 async function appendIcon(parent: Element, asset: Asset) {
-  LOGGER.debug(`appending ${asset.name} icon`);
   const doc = new DOMParser();
   const contents = await asset.getContents();
   const xml = doc.parseFromString(contents as string, "image/svg+xml");
@@ -190,38 +193,38 @@ async function appendIcon(parent: Element, asset: Asset) {
 }
 
 
-async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGElement, category: string) {
+async function appendToSvgDoc (asset: Asset, doc: SVGSVGElement, category: string) {
   if (category) {
     let def = doc.getElementById(category);
     if (def) {
       return await appendIcon(def, asset);
     }
     else {
-      def = createDefs(doc, category);
-      svgEl.appendChild(def);
+      def = createDefs(category);
+      doc.appendChild(def);
       return await appendIcon(def, asset);
     }
   }
   else {
-    return await appendIcon(svgEl, asset);
+    return await appendIcon(doc, asset);
   }
 }
 
 async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean) {
-  const { DOCUMENT, svgEl } = createSVGDoc();
-  let spriteName;
+  // Assuming that it will be one doc ?
+  const doc = createSVGDoc();
+  let spriteName = 'icons';
   for (const icon of iconSet.hash.values()) {
-    LOGGER.debug(`creating sprite with ${icon.iconName}`);
-    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.inSprite) {
-      spriteName = icon.distribute.svg.spriteName || 'icons';
+    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.noSprite) {
+      spriteName = icon.distribute.svg.spriteName;
       const spriteAssets = getIconFlavorsByType(icon, 'svg');
       for (const asset of spriteAssets) {
-        await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
+        await appendToSvgDoc(asset, doc, groupByCategory ? icon.category : '');
       }
     }
   }
   // Do we assume the sprite name will be the same
-  writeSVGToDisk(svgEl, path.join(outputPath, `${spriteName}.svg`));
+  writeSVGToDisk(doc, path.join(outputPath, `${spriteName}.svg`));
 }
 
 async function distributeSvg(icon: Icon, outputPath: string) {
