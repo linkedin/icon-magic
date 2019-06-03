@@ -6,13 +6,16 @@ import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 const serializeToString = new XMLSerializer().serializeToString;
+
 /**
  * Creates an SVG Document and sets its attributes
- * @retuns object with created SVG Document and its child svg element
+ * @returns object with created SVG Document and its child svg element
  */
 export function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
+  const DOM = new DOMImplementation();
+  const doctype = DOM.createDocumentType('svg', '-//W3C//DTD SVG 1.1//EN', 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd');
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  const DOCUMENT = new DOMImplementation().createDocument(SVG_NS, 'svg', null);
+  const DOCUMENT = DOM.createDocument(SVG_NS, 'svg', doctype);
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
   svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
@@ -20,6 +23,22 @@ export function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);
   return { DOCUMENT, svgEl };
+}
+
+/**
+ * Looks for <defs> elements with an ID in Document
+ * @param doc the Document to look in
+ * @param the category to look for as an ID attribute
+ * @returns found <defs> element or null if there's none
+ */
+function findDefs(doc: Document, category: string): Element | null {
+  const nodes = [].slice.call(doc.getElementsByTagName('defs'));
+  for (const elem of nodes) {
+    if (!elem) continue;
+    const id = elem.getAttributeNode('id');
+    if (id && id.value === category) { return elem; }
+  }
+  return null;
 }
 
 /**
@@ -55,7 +74,10 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
  */
 export async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGElement, category: string): Promise<void> {
   if (category) {
-    let def = doc.getElementById(category);
+    // TODO: Replace this with findElementById, which right now doesn't find the <defs> with the ID
+    let def = findDefs(doc, category);
+    LOGGER.debug(`looking FOR, ${def}`);
+
     if (!def) {
       def = createDefs(doc, category);
       svgEl.appendChild(def);
