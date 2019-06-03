@@ -9,6 +9,7 @@ import { Logger, logger } from '@icon-magic/logger';
 import * as program from 'commander';
 
 const LOGGER: Logger = logger('@icon-magic/cli/index');
+type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 
 program
   .command(
@@ -70,7 +71,7 @@ program
     '-g, --groupByCategory',
     '[for web sprite creation] if to group the icons by category'
   )
-  .action(async (i: string, o: string, t: string, g: boolean) => {
+  .action(async (i: string, o: string, t: ICON_TYPES, g: boolean) => {
     if (!i.length) {
       LOGGER.error('No Input Directories were specified.\n');
     }
