@@ -60,10 +60,10 @@ export async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGE
       def = createDefs(doc, category);
       svgEl.appendChild(def);
     }
-    return appendIcon(def, asset);
+    await appendIcon(def, asset);
   }
   else {
-   return appendIcon(svgEl, asset);
+    await appendIcon(svgEl, asset);
   }
 }
 
