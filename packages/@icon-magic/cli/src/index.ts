@@ -68,7 +68,7 @@ program
   )
   .option(
     '-g, --groupByCategory',
-    '[for web sprite creation] if to how to group the icons by category'
+    '[for web icons] how to group the icons'
   )
   .action(async (i: string, o: string, t: string, g: boolean) => {
     if (!i.length) {
