@@ -10,11 +10,7 @@ import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import {
-  appendToSvgDoc,
-  convertSVGToString,
-  createSVGDoc
-} from './create-sprite';
+import { appendToSvgDoc, convertSVGToString, createSVGDoc } from './create-sprite';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 interface ContentImage {
@@ -173,50 +169,33 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
  * @param outputPath path to write sprite to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  */
-export async function createSprite(
-  iconSet: IconSet,
-  outputPath: string,
-  groupByCategory: boolean
-): Promise<void> {
+export async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean): Promise<void> {
   const spriteNames = {};
   const FILE_TYPE = 'svg';
   let spriteName = 'icons';
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`adding ${icon.iconName} to ${spriteName}`);
-    if (
-      icon.distribute &&
-      icon.distribute.svg &&
-      icon.distribute.svg.toSprite
-    ) {
+    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
       const spriteAssets = getIconFlavorsByType(icon, FILE_TYPE);
       const iconSpriteName = icon.distribute.svg.spriteName;
-      spriteName = iconSpriteName ? iconSpriteName : spriteName;
+      spriteName = iconSpriteName ? iconSpriteName: spriteName;
       let DOCUMENT, svgEl;
       if (!spriteNames.hasOwnProperty(spriteName)) {
-        ({ DOCUMENT, svgEl } = createSVGDoc());
+       ({ DOCUMENT, svgEl } = createSVGDoc());
         spriteNames[spriteName] = { DOCUMENT, svgEl };
-      } else {
+      }
+      else {
         ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
       }
       for (const asset of spriteAssets) {
-        await appendToSvgDoc(
-          asset,
-          DOCUMENT,
-          svgEl,
-          groupByCategory && icon.category ? icon.category : ''
-        );
+        await appendToSvgDoc(asset, DOCUMENT, svgEl, groupByCategory && icon.category ? icon.category : '');
       }
     }
   }
 
   for (spriteName in spriteNames) {
     const svgEl = spriteNames[spriteName].svgEl;
-    await saveContentToFile(
-      outputPath,
-      spriteName,
-      convertSVGToString(svgEl),
-      FILE_TYPE
-    );
+    await saveContentToFile(outputPath, spriteName, convertSVGToString(svgEl), FILE_TYPE);
   }
 }
 
@@ -226,7 +205,7 @@ export async function createSprite(
  * @param outputPath path to move to
  * @retuns promise after completion
  */
-async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]> {
+async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]>  {
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
   const outputIconDir = path.join(outputPath, icon.iconName);
@@ -251,7 +230,7 @@ async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]> {
  * @param type The type to which to filter the icon's flavors by
  * @returns a list of flavors that contain assets of "type"
  */
-function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
+export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
   return Array.from(icon.flavors.values())
     .filter(flavor => {
       return flavor.types.has(type);
