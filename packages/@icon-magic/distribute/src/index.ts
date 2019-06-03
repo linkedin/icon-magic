@@ -254,7 +254,7 @@ async function createSprite(iconSet: IconSet, outputPath: string, groupByCategor
  * @param outputPath path to move to
  * @retuns promise after completion
  */
-async function distributeSvg(icon: Icon, outputPath: string): Promise<void[]>  {
+async function distributeSvg(icon: Icon, outputPath: string) {
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
   const outputIconDir = path.join(outputPath, icon.iconName);
