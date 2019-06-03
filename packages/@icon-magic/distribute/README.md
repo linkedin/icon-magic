@@ -1,6 +1,6 @@
 # @icon-magic/distribute
 
-This package is responsible for massaging the assets into type specific structures and formats. At the end of the `generate` step, we have optimized .svg files, .png files and .webp files for web, ios and android consumption. You can look in `test/fixtures/input` for an example of the file structure after the generate step. `distribute` organizes and structures those files how they need to be consumed and creates the necessary files for platform consumption.
+This package is responsible for massaging the assets into type specific structures and formats. At the end of the `generate` step, we have optimized .svg files, .png files and .webp files for web, ios and android consumption. You can look in [test/fixtures/input](./test/fixtures/input) for an example of the file structure after the generate step. `distribute` organizes and structures those files how they need to be consumed and creates the necessary files for platform consumption.
 
 ## Interface
 
