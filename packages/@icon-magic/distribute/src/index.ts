@@ -18,7 +18,7 @@ interface ContentImage {
 }
 
 // TODO: populate this interface as needed
-// from https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_ref-Asset_Catalog_Format/ImageSetType.html
+// from https://developer.apple.com/library/archive/DOCUMENTation/Xcode/Reference/xcode_ref-Asset_Catalog_Format/ImageSetType.html
 interface AssetCatalog {
   images?: ContentImage[];
 }
@@ -27,9 +27,8 @@ type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 /**
  * Distributes a set of icons to the output folder based on the flag
  * @param iconSet set of icons to be moved to the output folder
- * @param type svg, png, webp, all
+ * @param type svg, png, webp
  * @param outputPath output directory path to copy the assets to
- * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @retuns promise after completion
  */
 export async function distributeByType(
@@ -153,11 +152,7 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   return Promise.all(promises);
 }
 
-/**
- * Creates an SVG Document and sets its attributes
- * @retuns object with created SVG Document and its child svg element
- */
-function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
+function createSVGDoc(){
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const DOCUMENT = new DOMImplementation().createDocument(SVG_NS, 'svg', null);
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
@@ -172,66 +167,46 @@ function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
   return { DOCUMENT, svgEl };
 }
 
-/**
- * Writes SVG to disk
- * @param doc svg element to write
- * @param filePath path to write to
- */
-function writeSVGToDisk(svgEl: SVGSVGElement, filePath: string){
-  fs.writeFileSync(filePath, svgEl);
+
+function writeSVGToDisk(doc: SVGSVGElement, filePath: string){
+  fs.writeFileSync(filePath, doc);
 }
 
-/**
- * Creates <defs> element and sets ID attribute
- * @param doc Document element to do the creation
- * @param category ID to set on the <defs>
- * @returns newly created <defs> element
- */
-function createDefs(doc: Document, category: string): HTMLElement {
+
+function createDefs(doc: Document, category: string) {
   LOGGER.debug(`entering createDefs with ${category}`);
   const defs = doc.createElement('defs');
   defs.setAttribute('id', category);
   return defs;
 }
 
-/**
- * Appends icon to element
- * @param parent element to append to
- * @param asset the asset whose contents need to be added
- */
 async function appendIcon(parent: Element, asset: Asset) {
   LOGGER.debug(`appending ${asset.name} icon`);
   const doc = new DOMParser();
   const contents = await asset.getContents();
   const xml = doc.parseFromString(contents as string, "image/svg+xml");
   parent.appendChild(xml.documentElement);
+  return parent;
 }
 
-/**
- * Appends icon to element
- * @param parent element to append to
- * @param asset the asset whose contents need to be added
- */
+
 async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGElement, category: string) {
   if (category) {
     let def = doc.getElementById(category);
-    if (!def) {
+    if (def) {
+      return await appendIcon(def, asset);
+    }
+    else {
       def = createDefs(doc, category);
       svgEl.appendChild(def);
+      return await appendIcon(def, asset);
     }
-    await appendIcon(def, asset);
   }
   else {
-    await appendIcon(svgEl, asset);
+    return await appendIcon(svgEl, asset);
   }
 }
 
-/**
- * Creates a sprite and appends SVG icons
- * @param iconSet set of icons to be added to the sprite
- * @param outputPath path to write sprite to
- * @param groupByCategory (for sprite creation) whether to group by the category attribute
- */
 async function createSprite(iconSet: IconSet, outputPath: string, groupByCategory: boolean) {
   const { DOCUMENT, svgEl } = createSVGDoc();
   let spriteName;
@@ -245,15 +220,10 @@ async function createSprite(iconSet: IconSet, outputPath: string, groupByCategor
       }
     }
   }
+  // Do we assume the sprite name will be the same
   writeSVGToDisk(svgEl, path.join(outputPath, `${spriteName}.svg`));
 }
 
-/**
- * Moves the svg assets of an icon to the outputPath
- * @param icon icon to distribute
- * @param outputPath path to move to
- * @retuns promise after completion
- */
 async function distributeSvg(icon: Icon, outputPath: string) {
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
