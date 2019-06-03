@@ -74,7 +74,7 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
  */
 export async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGElement, category: string): Promise<void> {
   if (category) {
-    // TODO: Replace this with getElementById, which right now doesn't find the <defs> with the ID
+    // TODO: Replace this with findElementById, which right now doesn't find the <defs> with the ID
     let def = findDefs(doc, category);
     LOGGER.debug(`looking FOR, ${def}`);
 
