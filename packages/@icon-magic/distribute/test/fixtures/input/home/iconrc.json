@@ -37,6 +37,10 @@
         "webp": {
           "name": "filled-60x60",
           "path": "./filled-60x60@2.webp"
+        },
+        "svg": {
+          "name": "filled-60x60",
+          "path": "./filled.svg"
         }
       }
     }
