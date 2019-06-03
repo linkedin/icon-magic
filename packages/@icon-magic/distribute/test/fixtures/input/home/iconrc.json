@@ -30,7 +30,7 @@
   "distribute": {
     "svg": {
       "toSprite": true,
-      "spriteName": "icons-1"
+      "spriteName": "icons-2"
     }
   }
 }
