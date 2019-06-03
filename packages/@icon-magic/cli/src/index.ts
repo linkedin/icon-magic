@@ -3,7 +3,7 @@
 import * as iconBuild from '@icon-magic/build';
 import * as configReader from '@icon-magic/config-reader';
 import * as iconGenerate from '@icon-magic/generate';
-import * as distributeByType from '@icon-magic/distribute';
+import { distributeByType } from '@icon-magic/distribute';
 
 import { Logger, logger } from '@icon-magic/logger';
 import * as program from 'commander';

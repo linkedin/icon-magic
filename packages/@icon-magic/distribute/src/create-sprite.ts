@@ -28,7 +28,7 @@ export function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
 /**
  * Looks for <defs> elements with an ID in Document
  * @param doc the Document to look in
- * @param the category to look for as an ID attribute
+ * @param category to look for as an ID attribute
  * @returns found <defs> element or null if there's none
  */
 function findDefs(doc: Document, category: string): Element | null {
