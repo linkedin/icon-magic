@@ -16,32 +16,13 @@ or using yarn:
 yarn add @icon-magic/cli --dev
 ```
 
-## Glossary
-
-- **Asset**: A single file containing a logo/image. Assets can be of multiple
-  types .svg, .png, .webp
-- **Variant**: a version of the icon that has its own underlying path elements.
-  Variants are always of .svg type and form the input of the entire icon build
-  process.
-- **Icon**: The class representing a group of variants that belong to the same
-  icon. For example, two variants of the home icon can be a filled version and
-  an outline version of the same home icon. Within the file system, an icon is a
-  directory that consists of all the variant assets and a corresponding
-  iconrc.json config file.
-- **iconrc.(js|json)** A config file for a single icon or a group of icons with
-  paths to the various icon directories and their variants at minimum. The
-  config further be caustomaized
-- **Flavor**: An asset obtained after applying build/generate plugins on the
-  source .svg file. A flavor will also contain assets for each type, i. e.,
-  paths to the .svg, .png and .webp version of that flavor.
-
 ## Usage
 
 For a detailed list of the terminology, refer to the glossary above.
 
 ```
 Usage:
-  icon-magic [command] [options] <directories ...>
+  icon-magic [options] <directories ...> [command]
 
 Commands:
   build               Construct flavors that an icon from its variants, after applying the build plugins.
@@ -60,7 +41,7 @@ Options:
 
 ## Commands
 
-If no command is specified after `icon-magic`, the CLI runs `build` and
+If no command is specified after the options `icon-magic`, the CLI runs `build` and
 `generate` on the directories specified
 
 ```
@@ -70,7 +51,7 @@ icon-magic .
 ### Build
 
 ```
-icon-magic build .
+icon-magic . build
 ```
 
 Given a set of input directories, finds the closest [config
@@ -80,7 +61,7 @@ file](../config-reader/README.md) and "builds" the icons from it. Refer
 ### Generate
 
 ```
-icon-magic generate .
+icon-magic . generate
 ```
 
 Given a directory of icons (each icon containing it's own config file consisting
@@ -91,7 +72,7 @@ to be supported. Refer [@icon-magic/build](../generate/README.md) for more detai
 ### Distribute
 
 ```
-icon-magic distribute inputPath outputPath
+icon-magic inputPath outputPath distribute
 ```
 
 Moves the icons from an input folder to the output folder. Optional filters can

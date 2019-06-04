@@ -4,9 +4,10 @@ Automated icon build system for iOS, Android and Web.
 
 ## Getting Started
 
-Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory.
+Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages)
 
 In the root directory run:
+
 - `yarn install`
 - `yarn lerna run build`
 
@@ -35,7 +36,7 @@ You can use `yarn lerna run` to run a script in each package that contains that 
 
 ## Packages
 
-A brief description of the packages in `icon-magic`:
+A brief description of the packages in `icon-magic`. More info lives in their READMEs.
 
 ### @icon-magic/blueprint
 
@@ -47,117 +48,52 @@ Most Icon Magic packages are built with Typescript, tested with Mocha, and linte
 
 Shared tslint config for all icon magic packages.
 
-### @icon-magic/imagemin-farm
+### [@icon-magic/config-reader](packages/@icon-magic/config-reader)
 
-A process farm for image minification! Has two main methods exported:
+Finds the closest config file(iconrc.json/iconrc.js/icon) to an icon and resolving all the paths in the
+config file so it's relative to the icon bundle. It helps in
 
-#### minify(path: string): Promise\<Result>
+- Locating config files within directories
+- Provides utils to read, validate and write icon config files
+- Defining and managing the data for each icon
+- Managing the config data for a set of icons in memory via a hash
 
-Given a path to a `png`, `jpg`, or `webp` file, minify the file. File will be modified in-place and replaced with the minified version of the file. Spins up `os.cpus() - 1` child processes to minify files. Minification tasks are transparently load balanced between processes. Promise will resolve with a `Result` object of the shape:
+### [@icon-magic/icon-models](packages/@icon-magic/icon-models)
 
-```typescript
-interface Result {
-  path: 'path-to-file';
-  worker: number; // Worker PID of completed task;
-  status: {
-    // Status across all tasks
-    total: number; // Total tasks
-    remaining: number; // Remaining tasks
-    progress: number; // Task progress between 0 and 1.
-    workers: [
-      {
-        pid: number; // Worker PID
-        total: number; // Total tasks for worker
-        remaining: number; // Remaining tasks for worker
-        progress: number | null; // Task progress of worker between 0 and 1
-      }
-      // repeats for number of workers...
-    ];
-  };
-}
-```
+The core of @icon-magic. Contains all the classes that represent the icon and a set of icons.
 
-#### subscribe(func: (res: ProcessStatus) => void): void
+- defining the Icon and IconSet interfaces
+- exposing a class that manipulates the icon in memory
+- provides plugin-manager functions that apply plugins on the icon
+- provides utils for writing the icon and it's config to disk
 
-Subscribe a listener to recieve regular updates on process status. Good for updating progress bars. Recieves the `status` property of the `Results` object (defined above).
+### [@icon-magic/build](packages/@icon-magic/build)
 
-### @icon-magic/svg-to-png
+Constructs the various flavors (in `svg` format) that an icon can exist in from it's different variants and moves these resulting flavors to a destination folder. It also generates a config file, one for each icon and stores it along with the icon it's in output folder.
 
-Quickly converts an SVG file to a PNG file using Puppeteer. On process start, it spins up `os.cpus() - 1` independent browser instances to farm conversion tasks out across multiple processes. Exports two main methods:
+### [@icon-magic/generate](packages/@icon-magic/generate)
 
-#### async convertFile(fileName: string, options: SVGToPNGOptions): Promise<Buffer>
+Generating the flavors of the icon in all the different types in which it can be consumed [(optimized)`svg`, `png` and `webp`].
 
-Given a path to a file, return the PNG buffer of the converted image.
+### [@icon-magic/distribute](packages/@icon-magic/distribute)
 
-#### async convert(contents: string, options: SVGToPNGOptions): Promise<Buffer>
+Organizes and structures the assets (from the generate step) how they need to be consumed and creates the necessary files for platform consumption. For example, creates `Contents.json` for `webp` files and generates a sprite for web consumption.
 
-Given the contents of a SVG file, return the PNG buffer of the converted image.
+### [@icon-magic/cli](packages/@icon-magic/cli)
 
-#### Options
+Icon Magic command line. For running the build, generate, distribute steps on an input directory of icons.
 
-Conversion options use the following interface:
+### [@icon-magic/imagemin-farm](packages/@icon-magic/imagemin-farm)
 
-```typescript
-interface SVGToPNGOptions {
-  width: number; // Width of the output PNG.
-  height: number; // Height of the output PNG.
-  headless?: boolean; // If the browser converting the image should be headless or not. Useful for debugging.
-}
-```
+Minifies images!
+
+### [@icon-magic/svg-to-png](packages/@icon-magic/svg-to-png)
+
+Quickly converts an SVG file to a PNG file using Puppeteer.
 
 ### @icon-magic/library
 
-Type defenitions and type conversion primitives for an "icon bundle" (TODO: Rename this package to better reflect its contents).
-
-An icon `Bundle` is a named collection of icons:
-
-```typescript
-export interface Bundle {
-  name: string;
-  icons: Icon[];
-}
-```
-
-Every `Icon` has a unique name, a path to its source directory, and a list of `Assets` that define its appearance under an array of conditions.
-
-```typescript
-export interface Icon {
-  name: string;
-  path: string;
-  assets: Asset[];
-}
-```
-
-Every `Asset` is defined as valid under a certain set of conditions (ex: screen resolution, platform, render size / size range, etc)
-
-```typescript
-export interface Asset {
-  path: string;
-  resolutions: number[];
-  platforms: Platform[];
-  sizes: AssetSize[];
-}
-
-export interface MaxMin {
-  max: number;
-  min: number;
-}
-
-export interface WidthHeight {
-  width: number | MaxMin;
-  height: number | MaxMin;
-}
-
-export type AssetSize = number | MaxMin | WidthHeight;
-```
-
-Icon bundles may be stored on disk using a serialized version of the `Icon` interface. For example, [here is the `pokemon` icon Bundle](https://github.com/amiller-gh/icon-magic/tree/master/packages/%40icon-magic/library/test/fixtures/pokemon).
-
-The `pokemon` icon bundle contains one icon – [the `squirtle` icon](https://github.com/amiller-gh/icon-magic/tree/master/packages/%40icon-magic/library/test/fixtures/pokemon/squirtle).
-
-The squirtle icon's `icon.json` file contains a list of all `Assets` associated with that icon. The source SVG files live alongside it.
-
-The package's `iconToPNGs` method (TODO: method name is a mis-nomer, also generated webp...) will take a path to an icon bundle, and generate all assets required, at all sizes required, to generate final icon bundles for all supported platforms. Resulting image files are all minified. The library attempts to avoid duplicating work and will not render assets that are identical (ex: 12px asset at 2x and 24px asset at 1x), and always check on-disk to see if we can avoid rendering icons at all – PNG files have the SHA1 hash of its source SVG hidden in the file header to serve as a cache buster to enable incremental builds.
+Type definitions and type conversion primitives for an "icon bundle"
 
 ### TODO
 
