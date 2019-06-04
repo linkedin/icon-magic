@@ -4,12 +4,15 @@ import { build } from '@icon-magic/build';
 import { getIconConfigSet } from '@icon-magic/config-reader';
 import { distributeByType } from '@icon-magic/distribute';
 import * as iconGenerate from '@icon-magic/generate';
-
 import { Logger, logger } from '@icon-magic/logger';
+
 import * as program from 'commander';
+import * as fs from 'fs-extra';
 
 const LOGGER: Logger = logger('@icon-magic/cli/index');
 const ICON_TYPES = ['svg', 'png', 'webp', 'all'];
+
+program.version(getVersion(), '-v, --version');
 
 program
   .command('build [inputPaths...]')
@@ -98,12 +101,6 @@ program
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
-    console.log(
-      options.outputPath,
-      options.type,
-      options.groupBy === 'category'
-    );
-
     // distribute the icons
     await distributeByType(
       iconSet,
@@ -140,4 +137,16 @@ program.parse(process.argv);
 if (program.args.length < 1) {
   program.outputHelp();
   process.exit(0);
+}
+
+/**
+ * Report the current version of this cli, based on package.json.
+ */
+function getVersion(): string {
+  try {
+    const pkgJson = fs.readJsonSync('./package.json');
+    return pkgJson.version;
+  } catch (e) {
+    return 'UNKNOWN - Could not read package.json for icon-magic/cli';
+  }
 }
