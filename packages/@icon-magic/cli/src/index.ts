@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 
-import * as iconBuild from '@icon-magic/build';
-import * as configReader from '@icon-magic/config-reader';
-import * as iconGenerate from '@icon-magic/generate';
+import { build } from '@icon-magic/build';
+import { getIconConfigSet } from '@icon-magic/config-reader';
 import { distributeByType } from '@icon-magic/distribute';
+import * as iconGenerate from '@icon-magic/generate';
 
 import { Logger, logger } from '@icon-magic/logger';
 import * as program from 'commander';
 
 const LOGGER: Logger = logger('@icon-magic/cli/index');
-type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
+const ICON_TYPES = ['svg', 'png', 'webp', 'all'];
 
 program
-  .command(
-    'build [inputPaths...]',
+  .command('build [inputPaths...]')
+  .description(
     'construct flavors of an icon from its variants, after applying the build plugins.'
   )
   .action(async inputPaths => {
@@ -21,20 +21,21 @@ program
       LOGGER.error(
         "No Input Directories were specified.\nDid you mean 'icon-magic build .'?"
       );
+      process.exit(1);
     }
     // Get the iconSet from the inputPaths
-    const iconSet = configReader.getIconConfigSet(inputPaths);
+    const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    await iconBuild.build(iconSet);
+    await build(iconSet);
 
     // exit without any errors
     process.exit(0);
   });
 
 program
-  .command(
-    'generate [inputPaths...]',
+  .command('generate [inputPaths...]')
+  .description(
     'generates the flavors of the icon in the extension types that it can be consumed.'
   )
   .action(async inputPaths => {
@@ -42,9 +43,10 @@ program
       LOGGER.error(
         "No Input Directories were specified.\nDid you mean 'icon-magic generate .'?"
       );
+      process.exit(1);
     }
     // Get the iconSet from the inputPaths
-    const iconSet = configReader.getIconConfigSet(inputPaths);
+    const iconSet = getIconConfigSet(inputPaths);
 
     // generate all the icons
     await iconGenerate.generateFromConfigHash(iconSet);
@@ -54,32 +56,61 @@ program
   });
 
 program
-  .command(
-    'distribute',
+  .command('distribute [inputPaths...]')
+  .description(
     'moves an icon from the source to the destination, applying types as specified'
   )
-  .option('-i, --inputPaths', 'path to the input directory of icons')
   .option(
-    '-o, --outputPath',
+    '-o, --outputPath [outputPath]',
     'path to the output directory where the generated assets are to be written to'
   )
   .option(
-    '-t, --type',
+    '-t, --type [type]',
     'type of icons format to handle, accepted types are svg|png|webp'
   )
   .option(
-    '-g, --groupByCategory',
+    '-g, --groupBy [groupBy]',
     '[for web sprite creation] if to group the icons by category'
   )
-  .action(async (i: string, o: string, t: ICON_TYPES, g: boolean) => {
-    if (!i.length) {
+  .action(async (inputPaths, options) => {
+    if (!inputPaths.length) {
       LOGGER.error('No Input Directories were specified.\n');
+      process.exit(1);
     }
+
+    // throw an errof if outputPath isn't specified
+    if (!options.outputPath) {
+      LOGGER.error('Option --outputPath is required');
+      process.exit(1);
+    }
+
+    // if there is no type specified, default to all
+    if (ICON_TYPES.indexOf(options.type) < 0) {
+      options.type = 'all';
+    }
+
+    // only groupBy category is supported now
+    if (options.groupBy && options.groupBy !== 'category') {
+      LOGGER.error('Option --groupBy only supports "category"');
+      process.exit(1);
+    }
+
     // Get the iconSet from the inputPaths
-    const iconSet = configReader.getIconConfigSet(new Array(i));
+    const iconSet = getIconConfigSet(inputPaths);
+
+    console.log(
+      options.outputPath,
+      options.type,
+      options.groupBy === 'category'
+    );
 
     // distribute the icons
-    await distributeByType(iconSet, o, t, g);
+    await distributeByType(
+      iconSet,
+      options.outputPath,
+      options.type,
+      options.groupBy === 'category'
+    );
 
     // exit without any errors
     process.exit(0);
@@ -87,13 +118,14 @@ program
 
 // for all other commands or rather, no command and only arguments
 program
-  .command('* [inputPaths...]', 'runs build and generate on all the inputPaths')
+  .command('* [inputPaths...]')
+  .description('runs build and generate on all the inputPaths')
   .action(async inputPaths => {
     // Get the iconSet from the inputPaths
-    const iconSet = configReader.getIconConfigSet(inputPaths);
+    const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    const outputIconSet = await iconBuild.build(iconSet);
+    const outputIconSet = await build(iconSet);
 
     // generate all the icons
     await iconGenerate.generate(outputIconSet);
