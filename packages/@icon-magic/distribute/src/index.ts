@@ -87,9 +87,14 @@ async function createImageSet(icon: Icon, outputPath: string): Promise<void[]> {
   const promises = [];
   const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
   for (const asset of assets) {
-    const assetNameForCatalog = `${icon.iconName}_${path.basename(
+    let assetNameForCatalog = `${icon.iconName}_${path.basename(
       asset.getPath()
     )}`;
+
+    // if the category is present, prepend it to the name
+    if (icon.category) {
+      assetNameForCatalog = `${icon.category}_${assetNameForCatalog}`;
+    }
 
     // strip the resolution from the asset name to get the name of the imageset
     const outputIconDir = path.join(
@@ -147,6 +152,13 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   for (const asset of assets) {
     // the output folder is the folder by resolution
     outputIconDir = path.join(outputPath, getAssetResolutionFromName(asset));
+
+    let assetName = `${icon.iconName}_${path.basename(asset.getPath())}`;
+    // if the category is present, prepend it to the name
+    if (icon.category) {
+      assetName = `${icon.category}_${assetName}`;
+    }
+
     await fs.mkdirp(outputIconDir);
 
     // append the icon name to the asset since all icons go into a single
@@ -154,14 +166,7 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
     // TODO: have icons have a category field in their config and prepend the
     // category to the asset name. Eg: nav_iconName_assetName
     promises.push(
-      fs.copy(
-        asset.getPath(),
-
-        path.join(
-          outputIconDir,
-          `${icon.iconName}_${path.basename(asset.getPath())}`
-        )
-      )
+      fs.copy(asset.getPath(), path.join(outputIconDir, assetName))
     );
   }
   return Promise.all(promises);
