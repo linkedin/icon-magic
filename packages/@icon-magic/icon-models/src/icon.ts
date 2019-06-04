@@ -167,6 +167,12 @@ export class Icon {
     }
 
     //copy over the rest of the properties only if they exist
+    if (this.labels) {
+      config.labels = this.labels;
+    }
+    if (this.category) {
+      config.category = this.category;
+    }
     if (this.build) {
       config.build = this.build;
     }

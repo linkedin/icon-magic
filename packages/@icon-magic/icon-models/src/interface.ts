@@ -95,6 +95,8 @@ export type IconConfig = {
   sizes: AssetSize[];
   resolutions: AssetResolution[];
   iconName?: string;
+  labels?: string[];
+  category?: string;
   flavors?: FlavorConfig[];
   outputPath: string; // path where the generated assets go
   build?: BuildConfig;

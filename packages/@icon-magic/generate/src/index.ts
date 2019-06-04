@@ -36,7 +36,7 @@ export async function generate(iconSet: IconSet): Promise<void> {
       ])
     );
   }
-  await Promise.all(poolPromises).then(() => {
+  await Promise.all(poolPromises).then(async () => {
     if (poolPromises.length > 0) {
       await pool.terminate();
     }
