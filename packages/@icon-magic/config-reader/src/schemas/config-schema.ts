@@ -44,8 +44,14 @@ const distributeConfigProperties = {
   svg: {
     type: ['object', null],
     properties: {
-      spriteName: { type: ['string', 'null'] },
-      toSprite: { type: ['boolean', 'null'] }
+      spriteName: {
+        type: ['string', 'null'],
+        default: 'icons'
+      },
+      toSprite: {
+        type: ['boolean', 'null'],
+        default: true
+      }
     },
   }
 };
