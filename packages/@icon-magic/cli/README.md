@@ -20,7 +20,7 @@ yarn add @icon-magic/cli --dev
 
 ```
 Usage:
-  icon-magic [options] <directories ...> [command]
+  icon-magic [command] [options] <directories ...>
 
 Commands:
   build               Construct flavors that an icon from its variants, after applying the build plugins.
@@ -39,7 +39,7 @@ Options:
 
 ## Commands
 
-If no command is specified after the options `icon-magic`, the CLI runs `build` and
+If no command is specified after `icon-magic`, the CLI runs `build` and
 `generate` on the directories specified
 
 ```
@@ -49,7 +49,7 @@ icon-magic .
 ### Build
 
 ```
-icon-magic . build
+icon-magic build .
 ```
 
 Given a set of input directories, finds the closest [config
@@ -59,7 +59,7 @@ file](../config-reader/README.md) and "builds" the icons from it. Refer
 ### Generate
 
 ```
-icon-magic . generate
+icon-magic generate .
 ```
 
 Given a directory of icons (each icon containing it's own config file consisting
@@ -70,7 +70,7 @@ to be supported. Refer [@icon-magic/build](../generate/README.md) for more detai
 ### Distribute
 
 ```
-icon-magic inputPath outputPath distribute
+icon-magic distribute inputPath outputPath
 ```
 
 Moves the icons from an input folder to the output folder. Optional filters can
