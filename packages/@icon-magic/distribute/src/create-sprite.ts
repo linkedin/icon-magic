@@ -1,6 +1,4 @@
-import {
-  Asset
-} from '@icon-magic/icon-models';
+import { Asset } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
@@ -11,9 +9,14 @@ const serializeToString = new XMLSerializer().serializeToString;
  * Creates an SVG Document and sets its attributes
  * @returns object with created SVG Document and its child svg element
  */
-export function createSVGDoc(): { DOCUMENT: Document, svgEl: SVGSVGElement } {
+export function createSVGDoc(): { DOCUMENT: Document; svgEl: SVGSVGElement } {
+  LOGGER.debug(`in create svg doc`);
   const DOM = new DOMImplementation();
-  const doctype = DOM.createDocumentType('svg', '-//W3C//DTD SVG 1.1//EN', 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd');
+  const doctype = DOM.createDocumentType(
+    'svg',
+    '-//W3C//DTD SVG 1.1//EN',
+    'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'
+  );
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const DOCUMENT = DOM.createDocument(SVG_NS, 'svg', doctype);
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
@@ -36,7 +39,9 @@ function findDefs(doc: Document, category: string): Element | null {
   for (const elem of nodes) {
     if (!elem) continue;
     const id = elem.getAttributeNode('id');
-    if (id && id.value === category) { return elem; }
+    if (id && id.value === category) {
+      return elem;
+    }
   }
   return null;
 }
@@ -63,7 +68,7 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
   LOGGER.debug(`appending ${asset.name} icon`);
   const doc = new DOMParser();
   const contents = await asset.getContents();
-  const xml = doc.parseFromString(contents as string, "image/svg+xml");
+  const xml = doc.parseFromString(contents as string, 'image/svg+xml');
   parent.appendChild(xml.documentElement);
 }
 
@@ -72,20 +77,24 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
  * @param parent element to append to
  * @param asset the asset whose contents need to be added
  */
-export async function appendToSvgDoc(asset: Asset, doc: Document, svgEl: SVGSVGElement, category: string): Promise<void> {
+export async function appendToSvgDoc(
+  asset: Asset,
+  doc: Document,
+  svgEl: SVGSVGElement,
+  category: string
+): Promise<void> {
+  LOGGER.debug(`category: ${category}`);
+
   if (category) {
     // TODO: #28 Replace this with getElementById, which right now doesn't find the <defs> with the ID
     let def = findDefs(doc, category);
-    LOGGER.debug(`looking FOR, ${def}`);
-
     if (!def) {
       def = createDefs(doc, category);
       svgEl.appendChild(def);
     }
     return appendIcon(def, asset);
-  }
-  else {
-   return appendIcon(svgEl, asset);
+  } else {
+    return appendIcon(svgEl, asset);
   }
 }
 

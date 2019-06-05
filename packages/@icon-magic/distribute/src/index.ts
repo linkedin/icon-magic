@@ -172,6 +172,16 @@ async function distributeByResolution(icon: Icon, outputPath: string) {
   return Promise.all(promises);
 }
 
+function sortIcons(icons: IterableIterator<Icon>) {
+  return Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
+    const iconNameOne = iconOne.iconName;
+    const iconNameTwo = iconTwo.iconName;
+    if (iconNameOne < iconNameTwo) { return -1; }
+    if (iconNameOne > iconNameTwo) { return 1;}
+    return 0;
+  });
+}
+
 /**
  * Creates a sprite and appends SVG icons
  * @param iconSet set of icons to be added to the sprite
@@ -186,7 +196,8 @@ export async function createSprite(
   const spriteNames = {};
   const FILE_TYPE = 'svg';
   let spriteName = 'icons';
-  for (const icon of iconSet.hash.values()) {
+  const icons = sortIcons(iconSet.hash.values());
+  for (const icon of icons) {
     LOGGER.debug(`adding ${icon.iconName} to ${spriteName}`);
     if (
       icon.distribute &&
