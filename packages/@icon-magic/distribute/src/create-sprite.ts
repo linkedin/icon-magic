@@ -1,6 +1,5 @@
 import {
   Asset,
-  Icon,
   saveContentToFile,
   spriteConfig
 } from '@icon-magic/icon-models';
@@ -9,38 +8,38 @@ import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 const serializeToString = new XMLSerializer().serializeToString;
-let spriteName = 'icons';
+const DEFAULT_SPRITENAME = 'icons';
 
 /**
  * Creates a sprite and appends SVG icons
- * @param iconSet set of icons to be added to the sprite
+ * @param spriteName name of sprite file
  * @param outputPath path to write sprite to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param category the category of icon
+ * @param spriteNames object for mapping sprite name to (and storing) svg document and element
  */
 export async function createSprite(
-  icon: Icon,
+  spriteName: string,
   assets: Asset[],
   groupByCategory: boolean,
+  category: string,
   spriteNames: spriteConfig
 ): Promise<void> {
-  if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
-    const iconSpriteName = icon.distribute.svg.spriteName;
-    spriteName = iconSpriteName ? iconSpriteName : spriteName;
-    let DOCUMENT, svgEl;
-    if (!spriteNames.hasOwnProperty(spriteName)) {
-      ({ DOCUMENT, svgEl } = createSVGDoc());
-      spriteNames[spriteName] = { DOCUMENT, svgEl };
-    } else {
-      ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
-    }
-    for (const asset of assets) {
-      await appendToSvgDoc(
-        asset,
-        DOCUMENT,
-        svgEl,
-        groupByCategory && icon.category ? icon.category : ''
-      );
-    }
+  spriteName = spriteName ? spriteName : DEFAULT_SPRITENAME;
+  let DOCUMENT, svgEl;
+  if (!spriteNames.hasOwnProperty(spriteName)) {
+    ({ DOCUMENT, svgEl } = createSVGDoc());
+    spriteNames[spriteName] = { DOCUMENT, svgEl };
+  } else {
+    ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
+  }
+  for (const asset of assets) {
+    await appendToSvgDoc(
+      asset,
+      DOCUMENT,
+      svgEl,
+      groupByCategory && category ? category : ''
+    );
   }
 }
 
@@ -137,14 +136,24 @@ export async function appendToSvgDoc(
   }
 }
 
+/**
+ * Converts SVG element to string
+ * @param svgEl svg element to convert
+ * @returns converted string
+ */
 function convertSVGToString(svgEl: SVGSVGElement): string {
   return serializeToString(svgEl);
 }
 
+/**
+ * Saves svg as a file
+ * @param spriteNames object for mapping sprite name to (and storing) svg document and element
+ * @param outputPath path to write to
+ */
 export async function writeSpriteToFile(
   spriteNames: spriteConfig,
   outputPath: string
-) {
+): Promise<void> {
   for (const spriteName in spriteNames) {
     const svgEl = spriteNames[spriteName].svgEl;
     await saveContentToFile(

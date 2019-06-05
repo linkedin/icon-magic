@@ -30,8 +30,8 @@ type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 /**
  * Distributes a set of icons to the output folder based on the flag
  * @param iconSet set of icons to be moved to the output folder
- * @param type svg, png, webp, all
  * @param outputPath output directory path to copy the assets to
+ * @param type svg, png, webp, all
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @retuns promise after completion
  */
@@ -183,10 +183,12 @@ function sortIcons(icons: IterableIterator<Icon>) {
 }
 
 /**
- * Moves the svg assets of an icon to the outputPath
+ *
  * @param icon icon to distribute
  * @param outputPath path to move to
- * @retuns promise after completion
+ * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param spriteNames object for mapping sprite name to (and storing) svg document and element
+ * @returns promise after completion
  */
 async function distributeSvg(
   icon: Icon,
@@ -197,14 +199,26 @@ async function distributeSvg(
   LOGGER.debug(`distributeSvg for ${icon.iconName}`);
   const assets = getIconFlavorsByType(icon, 'svg');
   if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
-    await createSprite(icon, assets, groupByCategory, spriteNames);
+    await createSprite(
+      icon.distribute.svg.spriteName,
+      assets,
+      groupByCategory,
+      icon.category,
+      spriteNames
+    );
   } else {
-    await copySVGs(icon, assets, outputPath);
+    await copySVGs(icon.iconName, assets, outputPath);
   }
 }
 
-async function copySVGs(icon: Icon, assets: Asset[], outputPath: string) {
-  const outputIconDir = path.join(outputPath, icon.iconName);
+/**
+ * Moves the svg assets of an icon to the outputPath
+ * @param iconName name of icon whose assets should be moved
+ * @param assets to be moved
+ * @param outputPath path to move to
+ */
+async function copySVGs(iconName: string, assets: Asset[], outputPath: string) {
+  const outputIconDir = path.join(outputPath, iconName);
   await fs.mkdirp(outputIconDir);
   // copy all assets to the output icon directory
   const promises = [];
