@@ -31,37 +31,52 @@ describe('distribute works as expected', function() {
     const iconPath = `${output}/drawable-xxxhdpi`;
     const icons = [
       {
-        iconName: 'filled-1_filled-24x12@2'
+        iconName: 'ui-icon_filled-1_filled-24x12@2'
       },
       {
-        iconName: 'filled-2_filled-24x12@2'
+        iconName: 'uix-icon_filled-2_filled-24x12@2'
       },
       {
-        iconName: 'filled-3_filled-24x12@2'
+        iconName: 'uixx-icon_filled-3_filled-24x12@2'
       },
       {
-        iconName: 'filled-1_filled-60x60@2'
+        iconName: 'ui-icon_filled-1_filled-60x60@2'
+      },
+      {
+        iconName: 'ui-icon_filled-4_filled-24x12@2'
+      },
+      {
+        iconName: 'ui-icon_filled-4_filled-60x60@2'
+      },
+      {
+        iconName: 'ui-icon-2_filled-6_filled-24x12@2'
+      },
+      {
+        iconName: 'ui-icon-2_filled-6_filled-60x60@2'
       }
     ];
     const files = fs.readdirSync(iconPath);
     icons.forEach(icon => {
-      assert.ok(files.includes(`${icon.iconName}.webp`));
+      assert.ok(
+        files.includes(`${icon.iconName}.webp`),
+        `includes ${icon.iconName}.webp`
+      );
     });
   });
 
   it('Moves all .png files to the output directory', async () => {
     const icons = [
       {
-        iconName: 'filled-1_filled-24x12'
+        iconName: 'ui-icon_filled-1_filled-24x12'
       },
       {
-        iconName: 'filled-2_filled-24x12'
+        iconName: 'uix-icon_filled-2_filled-24x12'
       },
       {
-        iconName: 'filled-3_filled-24x12'
+        iconName: 'uixx-icon_filled-3_filled-24x12'
       },
       {
-        iconName: 'filled-1_filled-60x60'
+        iconName: 'ui-icon_filled-1_filled-60x60'
       }
     ];
     await distributeByType(iconSet, output, 'png', false);

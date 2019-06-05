@@ -1,9 +1,48 @@
-import { Asset } from '@icon-magic/icon-models';
+import {
+  Asset,
+  Icon,
+  saveContentToFile,
+  spriteConfig
+} from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 const serializeToString = new XMLSerializer().serializeToString;
+let spriteName = 'icons';
+
+/**
+ * Creates a sprite and appends SVG icons
+ * @param iconSet set of icons to be added to the sprite
+ * @param outputPath path to write sprite to
+ * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ */
+export async function createSprite(
+  icon: Icon,
+  assets: Asset[],
+  groupByCategory: boolean,
+  spriteNames: spriteConfig
+): Promise<void> {
+  if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
+    const iconSpriteName = icon.distribute.svg.spriteName;
+    spriteName = iconSpriteName ? iconSpriteName : spriteName;
+    let DOCUMENT, svgEl;
+    if (!spriteNames.hasOwnProperty(spriteName)) {
+      ({ DOCUMENT, svgEl } = createSVGDoc());
+      spriteNames[spriteName] = { DOCUMENT, svgEl };
+    } else {
+      ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
+    }
+    for (const asset of assets) {
+      await appendToSvgDoc(
+        asset,
+        DOCUMENT,
+        svgEl,
+        groupByCategory && icon.category ? icon.category : ''
+      );
+    }
+  }
+}
 
 /**
  * Creates an SVG Document and sets its attributes
@@ -98,6 +137,21 @@ export async function appendToSvgDoc(
   }
 }
 
-export function convertSVGToString(svgEl: SVGSVGElement): string {
+function convertSVGToString(svgEl: SVGSVGElement): string {
   return serializeToString(svgEl);
+}
+
+export async function writeSpriteToFile(
+  spriteNames: spriteConfig,
+  outputPath: string
+) {
+  for (const spriteName in spriteNames) {
+    const svgEl = spriteNames[spriteName].svgEl;
+    await saveContentToFile(
+      outputPath,
+      spriteName,
+      convertSVGToString(svgEl),
+      'svg'
+    );
+  }
 }

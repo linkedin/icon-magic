@@ -22,6 +22,13 @@ interface SVGOptions {
   spriteName: string;
 }
 
+export interface spriteConfig {
+  [code: string]: {
+    DOCUMENT: Document;
+    svgEl: SVGSVGElement;
+  };
+}
+
 export type Iterant = string[];
 export type FlavorType = 'svg' | 'png' | 'webp';
 export type FlavorTypeMap = { [K in FlavorType]?: AssetConfig };
