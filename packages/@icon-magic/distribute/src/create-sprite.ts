@@ -13,12 +13,13 @@ const DEFAULT_SPRITENAME = 'icons';
 /**
  * Creates a sprite and appends SVG icons
  * @param spriteName name of sprite file
+ * @param assets assets to add to svg
  * @param outputPath path to write sprite to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @param category the category of icon
  * @param spriteNames object for mapping sprite name to (and storing) svg document and element
  */
-export async function createSprite(
+export async function addToSprite(
   spriteName: string,
   assets: Asset[],
   groupByCategory: boolean,
@@ -121,8 +122,6 @@ export async function appendToSvgDoc(
   svgEl: SVGSVGElement,
   category: string
 ): Promise<void> {
-  LOGGER.debug(`category: ${category}`);
-
   if (category) {
     // TODO: #28 Replace this with getElementById, which right now doesn't find the <defs> with the ID
     let def = findDefs(doc, category);
@@ -137,16 +136,7 @@ export async function appendToSvgDoc(
 }
 
 /**
- * Converts SVG element to string
- * @param svgEl svg element to convert
- * @returns converted string
- */
-function convertSVGToString(svgEl: SVGSVGElement): string {
-  return serializeToString(svgEl);
-}
-
-/**
- * Saves svg as a file
+ * Saves svg elements stored in an object as a file
  * @param spriteNames object for mapping sprite name to (and storing) svg document and element
  * @param outputPath path to write to
  */
@@ -159,7 +149,7 @@ export async function writeSpriteToFile(
     await saveContentToFile(
       outputPath,
       spriteName,
-      convertSVGToString(svgEl),
+      serializeToString(svgEl),
       'svg'
     );
   }
