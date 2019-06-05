@@ -1,9 +1,4 @@
-import {
-  Asset,
-  Icon,
-  IconSet,
-  spriteConfig
-} from '@icon-magic/icon-models';
+import { Asset, Icon, IconSet, spriteConfig } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -27,20 +22,27 @@ export default async function distributeSvg(
 ): Promise<void> {
   const icons = sortIcons(iconSet.hash.values());
   const spriteNames: spriteConfig = {};
-
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
-    if (icon.distribute && icon.distribute.svg && icon.distribute.svg.toSprite) {
+    if (
+      icon.distribute &&
+      icon.distribute.svg &&
+      !icon.distribute.svg.toSprite
+    ) {
+      await copyIconAssetSvgs(icon.iconName, assets, outputPath);
+    } else {
+      let spriteName =
+        icon.distribute && icon.distribute.svg && icon.distribute.svg.spriteName
+          ? icon.distribute.svg.spriteName
+          : 'icons';
       await addToSprite(
-        icon.distribute.svg.spriteName,
+        spriteName,
         assets,
         groupByCategory,
         icon.category,
         spriteNames
       );
-    } else {
-      await copyIconAssetSvgs(icon.iconName, assets, outputPath);
     }
   }
   await writeSpriteToFile(spriteNames, outputPath);
@@ -52,7 +54,11 @@ export default async function distributeSvg(
  * @param assets to be moved
  * @param outputPath path to move to
  */
-async function copyIconAssetSvgs(iconName: string, assets: Asset[], outputPath: string) {
+async function copyIconAssetSvgs(
+  iconName: string,
+  assets: Asset[],
+  outputPath: string
+) {
   const outputIconDir = path.join(outputPath, iconName);
   await fs.mkdirp(outputIconDir);
   // copy all assets to the output icon directory

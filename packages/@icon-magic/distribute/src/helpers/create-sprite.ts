@@ -8,7 +8,6 @@ import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 const serializeToString = new XMLSerializer().serializeToString;
-const DEFAULT_SPRITENAME = 'icons';
 
 /**
  * Creates a sprite and appends SVG icons
@@ -26,7 +25,6 @@ export async function addToSprite(
   category: string,
   spriteNames: spriteConfig
 ): Promise<void> {
-  spriteName = spriteName ? spriteName : DEFAULT_SPRITENAME;
   let DOCUMENT, svgEl;
   if (!spriteNames.hasOwnProperty(spriteName)) {
     ({ DOCUMENT, svgEl } = createSVGDoc());
