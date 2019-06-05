@@ -69,7 +69,7 @@ program
   )
   .option(
     '-t, --type [type]',
-    'type of icons format to handle, accepted types are svg|png|webp'
+    'type of icons format to handle, accepted types are svg|png|webp|all(default)'
   )
   .option(
     '-g, --groupBy [groupBy]',
@@ -88,8 +88,16 @@ program
     }
 
     // if there is no type specified, default to all
-    if (ICON_TYPES.indexOf(options.type) < 0) {
+    if (!options.type) {
       options.type = 'all';
+    }
+
+    // else check that a valid type is passed in
+    if (ICON_TYPES.indexOf(options.type) < 0) {
+      LOGGER.error(
+        'Option --type only supports "svg" | "png" | "webp" | "all"'
+      );
+      process.exit(1);
     }
 
     // only groupBy category is supported now
