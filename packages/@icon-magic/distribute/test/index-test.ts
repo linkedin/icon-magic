@@ -2,7 +2,7 @@ import * as configReader from '@icon-magic/config-reader';
 import * as assert from 'assert';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { DOMParser} from 'xmldom';
+import { DOMParser } from 'xmldom';
 
 import { distributeByType } from '../src';
 
@@ -18,12 +18,10 @@ describe('distribute works as expected', function() {
     try {
       if (fs.existsSync(iconPath)) {
         assert.ok(`${iconPath} dir was generated`);
+      } else {
+        assert.ok(false, `${iconPath} dir was not generated`);
       }
-      else {
-        assert.ok(false, `${iconPath} dir was not generated` );
-      }
-    }
-    catch(err) {
+    } catch (err) {
       assert.ok(false, `${err} reading ${iconPath}`);
     }
   });
@@ -33,38 +31,53 @@ describe('distribute works as expected', function() {
     const iconPath = `${output}/drawable-xxxhdpi`;
     const icons = [
       {
-        iconName: 'filled-1_filled-24x12@2',
-       },
-       {
-        iconName: 'filled-2_filled-24x12@2'
+        iconName: 'ui-icon_filled-1_filled-24x12@2'
       },
       {
-        iconName: 'filled-3_filled-24x12@2'
+        iconName: 'uix-icon_filled-2_filled-24x12@2'
       },
       {
-        iconName: 'filled-1_filled-60x60@2'
+        iconName: 'uixx-icon_filled-3_filled-24x12@2'
       },
+      {
+        iconName: 'ui-icon_filled-1_filled-60x60@2'
+      },
+      {
+        iconName: 'ui-icon_filled-4_filled-24x12@2'
+      },
+      {
+        iconName: 'ui-icon_filled-4_filled-60x60@2'
+      },
+      {
+        iconName: 'ui-icon-2_filled-6_filled-24x12@2'
+      },
+      {
+        iconName: 'ui-icon-2_filled-6_filled-60x60@2'
+      }
     ];
     const files = fs.readdirSync(iconPath);
     icons.forEach(icon => {
-      assert.ok(files.includes(`${icon.iconName}.webp`));
+      assert.ok(
+        files.includes(`${icon.iconName}.webp`),
+        `includes ${icon.iconName}.webp`
+      );
     });
   });
 
   it('Moves all .png files to the output directory', async () => {
     const icons = [
       {
-        iconName: 'filled-1_filled-24x12',
-       },
-       {
-        iconName: 'filled-2_filled-24x12'
+        iconName: 'ui-icon_filled-1_filled-24x12'
       },
       {
-        iconName: 'filled-3_filled-24x12'
+        iconName: 'uix-icon_filled-2_filled-24x12'
       },
       {
-        iconName: 'filled-1_filled-60x60'
+        iconName: 'uixx-icon_filled-3_filled-24x12'
       },
+      {
+        iconName: 'ui-icon_filled-1_filled-60x60'
+      }
     ];
     await distributeByType(iconSet, output, 'png', false);
     icons.forEach(icon => {
@@ -73,13 +86,18 @@ describe('distribute works as expected', function() {
         if (fs.existsSync(iconPath)) {
           assert.ok(`${iconPath} dir was generated`);
           const files = fs.readdirSync(iconPath);
-          assert.ok(files.indexOf('Contents.json') > -1, 'Contents.json was generated');
-          assert.ok(files.indexOf(`${icon.iconName}@2.png`) > -1, `${icon.iconName}@2.png was created`);
-        }
-        else {
+          assert.ok(
+            files.indexOf('Contents.json') > -1,
+            'Contents.json was generated'
+          );
+          assert.ok(
+            files.indexOf(`${icon.iconName}@2.png`) > -1,
+            `${icon.iconName}@2.png was created`
+          );
+        } else {
           assert.ok(false, `Missing files for ${iconPath}`);
         }
-      } catch(err) {
+      } catch (err) {
         assert.ok(false, err);
       }
     });
@@ -89,10 +107,10 @@ describe('distribute works as expected', function() {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
       {
-        path: 'icons-1.svg',
-       },
-       {
-         path: 'icons-2.svg'
+        path: 'icons-1.svg'
+      },
+      {
+        path: 'icons-2.svg'
       },
       {
         path: 'icons-3.svg'
@@ -102,11 +120,10 @@ describe('distribute works as expected', function() {
       try {
         if (fs.existsSync(`${output}/${p.path}`)) {
           assert.ok(`${p} was generated`);
-        }
-        else {
+        } else {
           assert.ok(false, `${p} was not generated`);
         }
-      } catch(err) {
+      } catch (err) {
         assert.ok(false, `${p} was not generated: ${err}`);
       }
     });
@@ -117,13 +134,23 @@ describe('distribute works as expected', function() {
     const spritePaths = [
       {
         path: 'icons-1.svg',
-        id: 'home-filled-1',
+        id: 'a-home-filled-1',
         category: 'ui-icon'
-       },
-       {
-         path: 'icons-2.svg',
-         id: 'home-filled-2',
-         category: 'uix-icon'
+      },
+      {
+        path: 'icons-1.svg',
+        id: 'b-home-filled-4',
+        category: 'ui-icon'
+      },
+      {
+        path: 'icons-1.svg',
+        id: 'c-home-filled-8',
+        category: 'ui-icon-2'
+      },
+      {
+        path: 'icons-2.svg',
+        id: 'home-filled-2',
+        category: 'uix-icon'
       },
       {
         path: 'icons-3.svg',
@@ -136,9 +163,12 @@ describe('distribute works as expected', function() {
         const content = fs.readFileSync(`${output}/${p.path}`, 'utf8');
         const doc = new DOMParser().parseFromString(content, 'svg');
         const defs = doc.getElementById(p.category);
-        assert.ok(defs && defs.tagName === 'defs', 'has <defs> element with the right ID');
+        assert.ok(
+          defs && defs.tagName === 'defs',
+          'has <defs> element with the right ID'
+        );
         assert.ok(doc.getElementById(p.id), 'has SVG with right ID');
-      } catch(err) {
+      } catch (err) {
         assert.ok(false, `${err} with ${p.category}`);
       }
     });
