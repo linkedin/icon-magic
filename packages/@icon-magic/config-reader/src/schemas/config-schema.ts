@@ -44,9 +44,13 @@ const distributeConfigProperties = {
   svg: {
     type: ['object', null],
     properties: {
-      spriteName: { type: ['string', 'null'] },
-      toSprite: { type: ['boolean', 'null'] }
-    },
+      spriteName: {
+        type: ['string', 'null']
+      },
+      toSprite: {
+        type: ['boolean', 'null']
+      }
+    }
   }
 };
 
@@ -81,7 +85,7 @@ const generateConfigProperties = {
 const topLevelConfigProperties = {
   iconPath: { type: 'string', minLength: 1 },
   iconName: { type: ['string', 'null'] },
-  labels : {
+  labels: {
     type: 'array',
     items: {
       type: 'string'
