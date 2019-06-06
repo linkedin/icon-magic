@@ -74,7 +74,12 @@ async function copyIconAssetSvgs(
   return Promise.all(promises);
 }
 
-function sortIcons(icons: IterableIterator<Icon>) {
+/**
+ * Sorts a set of icons by property iconName
+ * @param icons set of icons to sort
+ * @returns sorted array of icons
+ */
+function sortIcons(icons: IterableIterator<Icon>): Array<Icon> {
   return Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
     const iconNameOne = iconOne.iconName;
     const iconNameTwo = iconTwo.iconName;

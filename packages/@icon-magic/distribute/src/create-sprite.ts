@@ -13,7 +13,6 @@ const serializeToString = new XMLSerializer().serializeToString;
  * Creates a sprite and appends SVG icons
  * @param spriteName name of sprite file
  * @param assets assets to add to svg
- * @param outputPath path to write sprite to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @param category the category of icon
  * @param spriteNames object for mapping sprite name to (and storing) svg document and element
