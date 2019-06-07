@@ -1,4 +1,5 @@
 import * as configReader from '@icon-magic/config-reader';
+import { saveContentToFile } from '@icon-magic/icon-models';
 import * as assert from 'assert';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -10,6 +11,43 @@ const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 const input = path.resolve(FIXTURES, 'input');
 const output = path.resolve(FIXTURES, 'out');
 const iconSet = configReader.getIconConfigSet(new Array(input));
+
+function squashIcons(
+  icons: HTMLCollectionOf<SVGSVGElement>,
+  strToFind: string | null
+): Array<Object> {
+  let svgs = [].slice.call(icons);
+  if (strToFind) {
+    svgs = svgs.filter((icon: Element) => {
+      const id = icon.getAttributeNode('id');
+      return id && id.value && id.value.includes(strToFind);
+    });
+  }
+  return svgs.map((icon: Element) => {
+    const id = icon.getAttributeNode('id');
+    const parent = icon.parentNode;
+    const parentId = parent ? parent.getAttributeNode('id') : '';
+    const iconObj = {
+      iconName: id && id.value ? id.value : '',
+      iconCategory: parentId ? parentId.value : ''
+    };
+    const children = [].slice.call(icon.childNodes);
+    const childrenIDs = children
+      .map((childIcon: Element) => {
+        if (childIcon && childIcon.attributes) {
+          const childId = childIcon.attributes.getNamedItem('id');
+          return childId ? childId.value : '';
+        }
+        return '';
+      })
+      .filter((childIcon: Element) => {
+        return !!childIcon;
+      });
+    if (childrenIDs.length) iconObj['childrenIDs'] = childrenIDs;
+
+    return iconObj;
+  });
+}
 
 describe('distribute works as expected', function() {
   it('Moves all .webp files to the right output directory', async () => {
@@ -172,5 +210,34 @@ describe('distribute works as expected', function() {
         assert.ok(false, `${err} with ${p.category}`);
       }
     });
+  });
+
+  it('creates set of all svgs in old and new sprite files', async () => {
+    try {
+      const oldIconsFileName = `old-icons`;
+      const newIconsFileName = `new-icons`;
+      const oldSvgContent = fs.readFileSync(
+        `${FIXTURES}/${oldIconsFileName}.svg`,
+        'utf8'
+      );
+      const newSvgContent = fs.readFileSync(
+        `${FIXTURES}/${newIconsFileName}.svg`,
+        'utf8'
+      );
+      const oldSvg = new DOMParser().parseFromString(oldSvgContent, 'svg');
+      const newSvg = new DOMParser().parseFromString(newSvgContent, 'svg');
+      const oldIcons = JSON.stringify(
+        squashIcons(oldSvg.documentElement.getElementsByTagName('svg'), '-icon')
+      );
+      const newIcons = JSON.stringify(
+        squashIcons(newSvg.documentElement.getElementsByTagName('svg'), '')
+      );
+      await saveContentToFile(FIXTURES, oldIconsFileName, oldIcons, 'json');
+      await saveContentToFile(FIXTURES, newIconsFileName, newIcons, 'json');
+      fs.readFileSync(`${FIXTURES}/${oldIconsFileName}.json`, 'utf8');
+      fs.readFileSync(`${FIXTURES}/${newIconsFileName}.json`, 'utf8');
+    } catch (err) {
+      assert.ok(false, `Could not read file: ${err}`);
+    }
   });
 });
