@@ -15,24 +15,32 @@ const LOGGER: Logger = logger('icon-magic:distribute/index');
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @returns promise after completion
  */
-export default async function distributeSvg(
+export async function distributeSvg(
   iconSet: IconSet,
   outputPath: string,
   groupByCategory: boolean
 ): Promise<void> {
+  // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
+  // Keep track of the sprites that have been created so we know when to create
+  // a new one and when to append to an existing document
   const spriteNames: spriteConfig = {};
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
+    // If icon has a distribute config and it indicates it shouldn't bee put
+    // in a sprite
     if (
       icon.distribute &&
       icon.distribute.svg &&
       !icon.distribute.svg.toSprite
     ) {
+      // Just copy the files to the output
       await copyIconAssetSvgs(icon.iconName, assets, outputPath);
     } else {
-      let spriteName =
+      // By default, if there is no distribute config, add to the sprite
+      // Default spriteName is `icons`
+      const spriteName =
         icon.distribute && icon.distribute.svg && icon.distribute.svg.spriteName
           ? icon.distribute.svg.spriteName
           : 'icons';
@@ -45,6 +53,7 @@ export default async function distributeSvg(
       );
     }
   }
+  // After we've gone through all the icons, write the sprites to a file
   await writeSpriteToFile(spriteNames, outputPath);
 }
 

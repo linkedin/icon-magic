@@ -1,8 +1,9 @@
-import { Logger, logger } from '@icon-magic/logger';
 import { IconSet } from '@icon-magic/icon-models';
-import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
-import * as path from 'path';
+import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
+import * as path from 'path';
+
+import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 
@@ -25,7 +26,7 @@ interface AssetCatalog {
  * @param icon the icon for which the imageSet needs to be created
  * @param outputPath output directory path to copy the assets to
  */
-export default async function createImageSet(iconSet: IconSet, outputPath: string) {
+export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`Creating imageSet for ${icon.iconName}`);
     const assets = getIconFlavorsByType(icon, 'png');
@@ -77,7 +78,7 @@ export default async function createImageSet(iconSet: IconSet, outputPath: strin
         await writeJSONfile(assetCatalogPath, { images });
       }
     }
-    Promise.all(promises);
+    await Promise.all(promises);
   }
 }
 

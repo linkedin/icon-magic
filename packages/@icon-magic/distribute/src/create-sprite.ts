@@ -25,12 +25,23 @@ export async function addToSprite(
   spriteNames: spriteConfig
 ): Promise<void> {
   let DOCUMENT, svgEl;
+  // If there's no existing sprite with that name
   if (!spriteNames.hasOwnProperty(spriteName)) {
+    // Create a new Document and SVG element for the sprite
     ({ DOCUMENT, svgEl } = createSVGDoc());
+    // Store the Document and the SVGEl
+    // We need the Document because we we're using methods like
+    // `createElement` and `getElementById` that can only be
+    // called on the Document
     spriteNames[spriteName] = { DOCUMENT, svgEl };
   } else {
+    // If one exists, grab the document and the containing <svg> element
     ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
   }
+  // Add the svg assets to the containing <svg> element
+  // and ultimately because the containing <svg> el
+  // is within the Document, the asset will also be added
+  // to the Document
   for (const asset of assets) {
     await appendToSvgDoc(
       asset,
@@ -54,11 +65,14 @@ export function createSVGDoc(): { DOCUMENT: Document; svgEl: SVGSVGElement } {
     'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'
   );
   const SVG_NS = 'http://www.w3.org/2000/svg';
+  // Create an SVG Document and set its doctype
   const DOCUMENT = DOM.createDocument(SVG_NS, 'svg', doctype);
+  // Create SVG element
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
   svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');
+  // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);
   return { DOCUMENT, svgEl };
@@ -71,7 +85,9 @@ export function createSVGDoc(): { DOCUMENT: Document; svgEl: SVGSVGElement } {
  * @returns found <defs> element or null if there's none
  */
 function findDefs(doc: Document, category: string): Element | null {
+  // Get all child nodes of the document that are <defs>
   const nodes = [].slice.call(doc.getElementsByTagName('defs'));
+  // Look for a <defs> element with the ID and return if found
   for (const elem of nodes) {
     if (!elem) continue;
     const id = elem.getAttributeNode('id');
@@ -90,7 +106,9 @@ function findDefs(doc: Document, category: string): Element | null {
  */
 function createDefs(doc: Document, category: string): HTMLElement {
   LOGGER.debug(`entering createDefs with ${category}`);
+  // Create a <defs> element
   const defs = doc.createElement('defs');
+  // Set it's ID to be the icon's category e.g 'ui'
   defs.setAttribute('id', category);
   return defs;
 }
@@ -103,8 +121,12 @@ function createDefs(doc: Document, category: string): HTMLElement {
 async function appendIcon(parent: Element, asset: Asset): Promise<void> {
   LOGGER.debug(`appending ${asset.name} icon`);
   const doc = new DOMParser();
+  // Get contents of the asset, since it's an SVG the content will be in XML format
+  // Content Buffer | string
   const contents = await asset.getContents();
+  // Parse XML from a string into a DOM Document.
   const xml = doc.parseFromString(contents as string, 'image/svg+xml');
+  // Append the root node of the DOM document to the parent element
   parent.appendChild(xml.documentElement);
 }
 
@@ -119,15 +141,23 @@ export async function appendToSvgDoc(
   svgEl: SVGSVGElement,
   category: string
 ): Promise<void> {
+  LOGGER.debug(`The category is ${category}`);
+  // If there's a category property, we want to append the icon to a <defs> element
+  // where the value of its ID is the category
   if (category) {
     // TODO: #28 Replace this with getElementById, which right now doesn't find the <defs> with the ID
+    // Check if there is an existing <defs> tag with the ID set to the category
     let def = findDefs(doc, category);
+    LOGGER.debug(`The <defs> is ${def}`);
+    // If there isn't create one and append the <defs> to the svg element
     if (!def) {
       def = createDefs(doc, category);
       svgEl.appendChild(def);
     }
+    // Then append the actual icon (asset) to the <defs>
     return appendIcon(def, asset);
   } else {
+    // If there's no category just append to (anywhere) in the svg element
     return appendIcon(svgEl, asset);
   }
 }
@@ -141,8 +171,11 @@ export async function writeSpriteToFile(
   spriteNames: spriteConfig,
   outputPath: string
 ): Promise<void> {
+  // Go through all the stored sprites
   for (const spriteName in spriteNames) {
+    // Get the svg element
     const svgEl = spriteNames[spriteName].svgEl;
+    // Write it to file
     await saveContentToFile(
       outputPath,
       spriteName,
