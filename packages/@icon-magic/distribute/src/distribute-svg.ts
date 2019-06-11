@@ -28,7 +28,7 @@ export async function distributeSvg(
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
-    // If icon has a distribute config and it indicates it shouldn't bee put
+    // If icon has a distribute config and it indicates it shouldn't be put
     // in a sprite
     if (
       icon.distribute &&
