@@ -4,9 +4,9 @@ import {
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 
-import createImageSet from './helpers/create-image-set';
-import distributeByResolution from './helpers/distribute-by-resolution';
-import distributeSvg from './helpers/distribute-svg';
+import { createImageSet } from './create-image-set';
+import  { distributeByResolution } from './distribute-by-resolution';
+import  { distributeSvg } from './distribute-svg';
 
 const LOGGER: Logger = logger('icon-magic:distribute/index');
 type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
