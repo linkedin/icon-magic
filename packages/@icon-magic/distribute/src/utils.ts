@@ -1,7 +1,7 @@
 import {
   Asset,
-  Icon,
-  FlavorType
+  FlavorType,
+  Icon
 } from '@icon-magic/icon-models';
 
 /**
