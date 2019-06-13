@@ -24,13 +24,11 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
 
-// TODO: check if we should add more properties here
 export interface SvgGenerateOptions {
   propCombo?: object;
   addSupportedDps?: 'all' | 'current' | 'none'; // when set to current, only adds the current size. If not, defaults to adding all allowed sizes
-  isColoredIcon?: boolean; // if this is set, the fill of the icon isn't updated but respected
-  removeDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to true)
-  removeViewbox?: boolean; // if this is true, then retains the viewBox of the original svg (defaults to false)
+  isColored?: boolean; // if this is set, the fill of the icon isn't updated but respected
+  isFixedDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to true) and no viewBox
 }
 
 export const svgGenerate: GeneratePlugin = {
@@ -79,9 +77,13 @@ export const svgGenerate: GeneratePlugin = {
           // also 'all'
           dataSupportedDps = getSupportedSizes(icon.sizes);
       }
-      attributes['data-supported-dps'] = dataSupportedDps;
+      // set the attribute only if it's present
+      if (dataSupportedDps) {
+        attributes['data-supported-dps'] = dataSupportedDps;
+      }
 
-      if (!params.isColoredIcon) {
+      // set the fill to be currentColor
+      if (!params.isColored) {
         attributes['fill'] = 'currentColor';
       }
     }
@@ -89,10 +91,15 @@ export const svgGenerate: GeneratePlugin = {
     const svgo = new Svgo({
       plugins: [
         {
-          removeViewBox: (params && params.removeViewbox) || false
+          removeViewBox: (params && params.isFixedDimensions) || false
         },
         {
-          removeDimensions: (params && params.removeDimensions) || true
+          removeDimensions: (params && !params.isFixedDimensions) || true
+        },
+        {
+          convertColors: {
+            currentColor: params && params.isColored ? false : true // this also converts fills within the svg paths
+          }
         },
         {
           removeAttrs: { attrs: '(data.*)' }
