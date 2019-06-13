@@ -29,6 +29,7 @@ export interface SvgGenerateOptions {
   addSupportedDps?: 'all' | 'current' | 'none'; // when set to current, only adds the current size. If not, defaults to adding all allowed sizes
   isColored?: boolean; // if this is set, the fill of the icon isn't updated but respected
   isFixedDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to true) and no viewBox
+  colorByNameMatching?: string[]; // if this is set to true, then set isColored only if the name of the flavor contains color in it
 }
 
 export const svgGenerate: GeneratePlugin = {
@@ -40,6 +41,8 @@ export const svgGenerate: GeneratePlugin = {
   ): Promise<Flavor> => {
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
+    let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
+    const flavorName: string = path.basename(flavor.name);
 
     if (params) {
       let dataSupportedDps;
@@ -59,7 +62,6 @@ export const svgGenerate: GeneratePlugin = {
           }
 
           // get the size from the mapping
-          const flavorName: string = path.basename(flavor.name);
           const flavorSize: AssetSize = nameSizeMapping[flavorName];
           if (!flavorSize) {
             throw new Error(
@@ -83,7 +85,19 @@ export const svgGenerate: GeneratePlugin = {
       }
 
       // set the fill to be currentColor
-      if (!params.isColored) {
+      if (params.colorByNameMatching) {
+        const nameMatching = flavorName.match(
+          new RegExp(params.colorByNameMatching.join('|'), 'gi')
+        );
+        setCurrentColor =
+          nameMatching && nameMatching.length > 0 ? false : setCurrentColor; // if the name does not contain the words specified, then setCurrentcolor
+      }
+      // if isColored is set on the icon, then respect it
+      if (params.isColored) {
+        setCurrentColor = !params.isColored;
+      }
+
+      if (setCurrentColor) {
         attributes['fill'] = 'currentColor';
       }
     }
@@ -98,7 +112,7 @@ export const svgGenerate: GeneratePlugin = {
         },
         {
           convertColors: {
-            currentColor: params && params.isColored ? false : true // this also converts fills within the svg paths
+            currentColor: setCurrentColor ? true : false // this also converts fills within the svg paths
           }
         },
         {

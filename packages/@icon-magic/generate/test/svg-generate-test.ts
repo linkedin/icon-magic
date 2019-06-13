@@ -91,6 +91,18 @@ describe('svgGenerate()', function() {
     }
   });
 
+  it('Removes fill attributes when colorByNameMatching is set to filled', async () => {
+    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" data-supported-dps="8x8 16x16"><path d="M28 13.36L16.64 6.19a1.2 1.2 0 0 0-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 0 0 1 1h6v-5h4v5h6a1 1 0 0 0 1-1V13.67L27 15z" fill="#737373"/></svg>`;
+
+    const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
+      colorByNameMatching: ['filled']
+    });
+    const svgFromOutputFlavor = outputFlavor.types.get('svg');
+    if (svgFromOutputFlavor) {
+      assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);
+    }
+  });
+
   it('Does not remove width and height if isFixedDimensions is true', async () => {
     const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" id="home-filled" data-supported-dps="8x8 16x16" fill="currentColor"><path d="M28 13.36L16.64 6.19a1.2 1.2 0 0 0-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 0 0 1 1h6v-5h4v5h6a1 1 0 0 0 1-1V13.67L27 15z" fill="currentColor"/></svg>`;
 
