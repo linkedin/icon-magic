@@ -63,7 +63,8 @@ export const svgToRaster: GeneratePlugin = {
         let sizeFromMapping!: AssetSize;
         const flavorName = path.basename(flavor.name);
 
-        // get the size from the mapping that is passed in
+        // get the size from the mapping that is passed in. This is a pattern
+        // matching of the key and not necessarily the key itself
         for (const key in nameSizeMapping) {
           if (flavorName.match(key)) sizeFromMapping = nameSizeMapping[key];
         }

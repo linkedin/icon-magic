@@ -28,7 +28,7 @@ export interface SvgGenerateOptions {
   propCombo?: object;
   addSupportedDps?: 'all' | 'current' | 'none'; // when set to current, only adds the current size. If not, defaults to adding all allowed sizes
   isColored?: boolean; // if this is set, the fill of the icon isn't updated but respected
-  isFixedDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to true) and no viewBox
+  isFixedDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to false) and no viewBox
   colorByNameMatching?: string[]; // if this is set to true, then set isColored only if the name of the flavor contains color in it
 }
 
@@ -55,21 +55,27 @@ export const svgGenerate: GeneratePlugin = {
           // if the metadata doesn't contain nameSizeMapping, throw an error
           if (!nameSizeMapping) {
             throw new Error(
-              `${
+              `SVGGenerateError: ${
                 icon.iconPath
               } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
             );
           }
 
-          // get the size from the mapping
-          const flavorSize: AssetSize = nameSizeMapping[flavorName];
+          // get the size from the mapping that is passed in. This is a pattern
+          // matching of the key and not necessarily the key itself
+          let flavorSize;
+          for (const key in nameSizeMapping) {
+            if (flavorName.match(key)) flavorSize = nameSizeMapping[key];
+          }
+
           if (!flavorSize) {
             throw new Error(
-              `${
+              `SVGGenerateError: ${flavorName} of ${
                 icon.iconPath
-              } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+              } does not match a key in "nameSizeMapping"`
             );
           }
+
           // format the size
           dataSupportedDps = getSupportedSizes([flavorSize]);
           break;
