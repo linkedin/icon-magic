@@ -51,6 +51,14 @@ const distributeConfigProperties = {
         type: ['boolean', 'null']
       }
     }
+  },
+  webp: {
+    type: ['object', null],
+    properties: {
+      namePrefix: {
+        type: ['string', 'null']
+      }
+    }
   }
 };
 

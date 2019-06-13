@@ -18,8 +18,12 @@ export interface AssetConfig {
 }
 
 interface SVGOptions {
-  toSprite: boolean;
-  spriteName: string;
+  toSprite?: boolean;
+  spriteName?: string;
+}
+
+interface WebpOptions {
+  namePrefix?: string;
 }
 
 export interface spriteConfig {
@@ -89,6 +93,7 @@ export interface GenerateConfig {
  */
 export interface DistributeConfig {
   svg?: SVGOptions;
+  webp?: WebpOptions;
 }
 
 /**
