@@ -36,7 +36,13 @@ const icon = new Icon({
   resolutions: [1, 2, 3],
   outputPath: `/${FIXTURES}/out`,
   iconName: 'home',
-  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
+  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
+  metadata: {
+    nameSizeMapping: {
+      filled: 60,
+      outline: 40
+    }
+  }
 });
 
 describe('svgToRaster()', function() {
@@ -65,10 +71,7 @@ describe('svgToRaster()', function() {
 
   it('Uses the size mapping if it is passed in as a parameter', async () => {
     const options: SvgToRasterOptions = {
-      useNameSizeMapping: {
-        filled: 60,
-        outline: 40
-      },
+      useNameSizeMapping: true,
       propCombo: {
         resolutions: 2
       }

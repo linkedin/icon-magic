@@ -92,6 +92,13 @@ export interface DistributeConfig {
 }
 
 /**
+ * An object containing any meta information about the icon
+ */
+export interface MetaData {
+  [key: string]: any;
+}
+
+/**
  * Properties related to an Icon
  * This should represent the config schema at all times
  */
@@ -109,6 +116,7 @@ export type IconConfig = {
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
+  metadata?: MetaData;
 };
 
 /**

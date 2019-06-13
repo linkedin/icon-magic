@@ -33,15 +33,23 @@ const icon = new Icon({
   resolutions: [1, 2, 3],
   outputPath: `/${FIXTURES}/out`,
   iconName: 'home',
-  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
+  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
+  metadata: {
+    nameSizeMapping: {
+      filled: 8,
+      outline: 16
+    }
+  }
 });
 
-const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" data-supported-dps="8x8 16x16" fill="currentColor"><path d="M28 13.36L16.64 6.19a1.2 1.2 0 0 0-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 0 0 1 1h6v-5h4v5h6a1 1 0 0 0 1-1V13.67L27 15z"/></svg>`;
+const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" data-supported-dps="8x8" fill="currentColor"><path d="M28 13.36L16.64 6.19a1.2 1.2 0 0 0-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 0 0 1 1h6v-5h4v5h6a1 1 0 0 0 1-1V13.67L27 15z"/></svg>`;
 
 describe('svgGenerate()', function() {
   it('Optimizes the svg file', async () => {
     console.log('entering svg-generate');
-    const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {});
+    const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
+      addSupportedDps: 'current'
+    });
     const svgFromOutputFlavor = outputFlavor.types.get('svg');
     if (svgFromOutputFlavor) {
       assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);

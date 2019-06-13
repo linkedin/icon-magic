@@ -26,36 +26,80 @@ import Svgo from 'svgo';
 
 // TODO: check if we should add more properties here
 export interface SvgGenerateOptions {
-  propCombo: object;
-  addSupportedDps?: boolean;
-  isColoredIcon?: boolean;
-  setSize?: boolean;
-  setViewbox?: boolean;
+  propCombo?: object;
+  addSupportedDps?: 'all' | 'current' | 'none'; // when set to current, only adds the current size. If not, defaults to adding all allowed sizes
+  isColoredIcon?: boolean; // if this is set, the fill of the icon isn't updated but respected
+  removeDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to true)
+  removeViewbox?: boolean; // if this is true, then retains the viewBox of the original svg (defaults to false)
 }
 
 export const svgGenerate: GeneratePlugin = {
   name: 'svg-generate',
-  fn: async (flavor: Flavor, icon: Icon, _params?: object): Promise<Flavor> => {
+  fn: async (
+    flavor: Flavor,
+    icon: Icon,
+    params?: SvgGenerateOptions
+  ): Promise<Flavor> => {
+    // build the attributes object that contains attributes to be added to the svg
+    const attributes = { id: `${icon.iconName}-${flavor.name}` };
+
+    if (params) {
+      let dataSupportedDps;
+      switch (params.addSupportedDps) {
+        case 'current':
+          // get the mapping object from the metadata
+          const nameSizeMapping =
+            icon.metadata && icon.metadata.nameSizeMapping;
+
+          // if the metadata doesn't contain nameSizeMapping, throw an error
+          if (!nameSizeMapping) {
+            throw new Error(
+              `${
+                icon.iconPath
+              } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+            );
+          }
+
+          // get the size from the mapping
+          const flavorName: string = path.basename(flavor.name);
+          const flavorSize: AssetSize = nameSizeMapping[flavorName];
+          if (!flavorSize) {
+            throw new Error(
+              `${
+                icon.iconPath
+              } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+            );
+          }
+          // format the size
+          dataSupportedDps = getSupportedSizes([flavorSize]);
+          break;
+        case 'none':
+          break; // do nothing
+        default:
+          // also 'all'
+          dataSupportedDps = getSupportedSizes(icon.sizes);
+      }
+      attributes['data-supported-dps'] = dataSupportedDps;
+
+      if (!params.isColoredIcon) {
+        attributes['fill'] = 'currentColor';
+      }
+    }
+
     const svgo = new Svgo({
       plugins: [
         {
-          removeViewBox: false
+          removeViewBox: (params && params.removeViewbox) || false
         },
         {
-          removeDimensions: true
+          removeDimensions: (params && params.removeDimensions) || true
         },
         {
           removeAttrs: { attrs: '(data.*)' }
         },
         {
           addAttributesToSVGElement: {
-            attributes: [
-              {
-                id: `${icon.iconName}-${flavor.name}`,
-                'data-supported-dps': getSupportedSizes(icon.sizes).join(' '),
-                fill: 'currentColor'
-              }
-            ]
+            attributes: [attributes]
           }
         },
         { removeRasterImages: true }
@@ -92,10 +136,12 @@ export const svgGenerate: GeneratePlugin = {
  * (width x height)
  * @param sizes Array of icon asset sizes
  */
-function getSupportedSizes(sizes: AssetSize[]): String[] {
-  return sizes.map(size => {
-    return typeof size === 'number'
-      ? `${size}x${size}`
-      : `${size.width}x${size.height}`;
-  });
+function getSupportedSizes(sizes: AssetSize[]): String {
+  return sizes
+    .map(size => {
+      return typeof size === 'number'
+        ? `${size}x${size}`
+        : `${size.width}x${size.height}`;
+    })
+    .join(' ');
 }
