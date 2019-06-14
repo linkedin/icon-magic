@@ -41,10 +41,10 @@ export const svgToRaster: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params?: SvgToRasterOptions
+    params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
     // get the size and resolution from the params passed in
-    if (params && params.propCombo) {
+    if (params.propCombo) {
       let w: number;
       let h: number;
       // if a nameSizeMapping should be used, get the size from the matching name pattern

@@ -24,12 +24,29 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
 
+/**
+ * Decides what sizes to append for data-supported-dps
+ * all - adds all the sizes that the icon can have
+ * current - only adds the current size. If not, defaults to adding all allowed sizes
+ * none - does not add the attribute at all
+ */
+enum addSupportedDpsValues {
+  'all',
+  'current',
+  'none'
+}
+
 export interface SvgGenerateOptions {
   propCombo?: object;
-  addSupportedDps?: 'all' | 'current' | 'none'; // when set to current, only adds the current size. If not, defaults to adding all allowed sizes
-  isColored?: boolean; // if this is set, the fill of the icon isn't updated but respected
-  isFixedDimensions?: boolean; // if this is true, then adds a width and height attribute to the svg (defaults to false) and no viewBox
-  colorByNameMatching?: string[]; // if this is set to true, then set isColored only if the name of the flavor contains color in it
+  addSupportedDps?: addSupportedDpsValues;
+  /* if this is set, the fill of the icon isn't updated but respected */
+  isColored?: boolean;
+  /* if this is true, then adds a width and height attribute to the svg
+  (defaults to false) and no viewBox */
+  isFixedDimensions?: boolean;
+  /* if this is set to true, then set isColored only if the name of the flavor
+  contains color in it */
+  colorByNameMatching?: string[];
 }
 
 export const svgGenerate: GeneratePlugin = {
@@ -37,75 +54,72 @@ export const svgGenerate: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params?: SvgGenerateOptions
+    params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
     const flavorName: string = path.basename(flavor.name);
 
-    if (params) {
-      let dataSupportedDps;
-      switch (params.addSupportedDps) {
-        case 'current':
-          // get the mapping object from the metadata
-          const nameSizeMapping =
-            icon.metadata && icon.metadata.nameSizeMapping;
+    let dataSupportedDps;
+    switch (params.addSupportedDps) {
+      case 'current':
+        // get the mapping object from the metadata
+        const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
-          // if the metadata doesn't contain nameSizeMapping, throw an error
-          if (!nameSizeMapping) {
-            throw new Error(
-              `SVGGenerateError: ${
-                icon.iconPath
-              } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
-            );
-          }
+        // if the metadata doesn't contain nameSizeMapping, throw an error
+        if (!nameSizeMapping) {
+          throw new Error(
+            `SVGGenerateError: ${
+              icon.iconPath
+            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+          );
+        }
 
-          // get the size from the mapping that is passed in. This is a pattern
-          // matching of the key and not necessarily the key itself
-          let flavorSize;
-          for (const key in nameSizeMapping) {
-            if (flavorName.match(key)) flavorSize = nameSizeMapping[key];
-          }
+        // get the size from the mapping that is passed in. This is a pattern
+        // matching of the key and not necessarily the key itself
+        let flavorSize;
+        for (const key in nameSizeMapping) {
+          if (flavorName.match(key)) flavorSize = nameSizeMapping[key];
+        }
 
-          if (!flavorSize) {
-            throw new Error(
-              `SVGGenerateError: ${flavorName} of ${
-                icon.iconPath
-              } does not match a key in "nameSizeMapping"`
-            );
-          }
+        if (!flavorSize) {
+          throw new Error(
+            `SVGGenerateError: ${flavorName} of ${
+              icon.iconPath
+            } does not match a key in "nameSizeMapping"`
+          );
+        }
 
-          // format the size
-          dataSupportedDps = getSupportedSizes([flavorSize]);
-          break;
-        case 'none':
-          break; // do nothing
-        default:
-          // also 'all'
-          dataSupportedDps = getSupportedSizes(icon.sizes);
-      }
-      // set the attribute only if it's present
-      if (dataSupportedDps) {
-        attributes['data-supported-dps'] = dataSupportedDps;
-      }
+        // format the size
+        dataSupportedDps = getSupportedSizes([flavorSize]);
+        break;
+      case 'none':
+        break; // do nothing
+      default:
+        // also 'all'
+        dataSupportedDps = getSupportedSizes(icon.sizes);
+    }
+    // set the attribute only if it's present
+    if (dataSupportedDps) {
+      attributes['data-supported-dps'] = dataSupportedDps;
+    }
 
-      // set the fill to be currentColor
-      if (params.colorByNameMatching) {
-        const nameMatching = flavorName.match(
-          new RegExp(params.colorByNameMatching.join('|'), 'gi')
-        );
-        setCurrentColor =
-          nameMatching && nameMatching.length > 0 ? false : setCurrentColor; // if the name does not contain the words specified, then setCurrentcolor
-      }
-      // if isColored is set on the icon, then respect it
-      if (params.isColored) {
-        setCurrentColor = !params.isColored;
-      }
+    // set the fill to be currentColor
+    if (params.colorByNameMatching) {
+      const nameMatching = flavorName.match(
+        new RegExp(params.colorByNameMatching.join('|'), 'gi')
+      );
+      setCurrentColor =
+        nameMatching && nameMatching.length > 0 ? false : setCurrentColor; // if the name does not contain the words specified, then setCurrentcolor
+    }
+    // if isColored is set on the icon, then respect it
+    if (params.isColored) {
+      setCurrentColor = !params.isColored;
+    }
 
-      if (setCurrentColor) {
-        attributes['fill'] = 'currentColor';
-      }
+    if (setCurrentColor) {
+      attributes['fill'] = 'currentColor';
     }
 
     const svgo = new Svgo({
