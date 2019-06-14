@@ -16,7 +16,7 @@ export const svgPassThrough: GeneratePlugin = {
   ): Promise<Flavor> => {
     const outputPath = icon.getIconOutputPath();
 
-    // write the optimized svg to the output directory
+    // copy the file from the input to the output path
     await fs.mkdirp(outputPath);
     fs.copyFileSync(
       flavor.getPath(),
