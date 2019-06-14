@@ -64,6 +64,8 @@ export const svgToRaster: GeneratePlugin = {
 
         // get the size from the mapping that is passed in. This is a pattern
         // matching of the key and not necessarily the key itself
+        // once a pattern is matched, we check to see if it's the longest
+        // matching key to ensure that the correct size is obtained from the name
         let matchedLength = 0;
         for (const key in nameSizeMapping) {
           const regExMatch = flavorName.match(key);
