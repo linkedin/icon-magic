@@ -63,7 +63,7 @@ export const svgGenerate: GeneratePlugin = {
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
-      case 'current':
+      case addSupportedDpsValues.current:
         // get the mapping object from the metadata
         const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
@@ -94,7 +94,7 @@ export const svgGenerate: GeneratePlugin = {
         // format the size
         dataSupportedDps = getSupportedSizes([flavorSize]);
         break;
-      case 'none':
+      case addSupportedDpsValues.none:
         break; // do nothing
       default:
         // also 'all'
