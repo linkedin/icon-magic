@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
 
-const LOGGER: Logger = logger('icon-magic:distribute/index');
+const LOGGER: Logger = logger('icon-magic:distribute:create-image-set');
 
 interface ContentImage {
   idiom: string;

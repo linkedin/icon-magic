@@ -10,7 +10,8 @@ import {
   DistributeConfig,
   FlavorConfig,
   GenerateConfig,
-  IconConfig
+  IconConfig,
+  MetaData
 } from './interface';
 import { exists, isTypeSVG } from './utils/files';
 
@@ -37,6 +38,7 @@ export class Icon {
   build?: BuildConfig;
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
+  metadata?: MetaData;
 
   /**
    * Creates an Icon instance by creating sub classes for it's variants and
@@ -172,6 +174,9 @@ export class Icon {
     }
     if (this.category) {
       config.category = this.category;
+    }
+    if (this.metadata) {
+      config.metadata = this.metadata;
     }
     if (this.build) {
       config.build = this.build;

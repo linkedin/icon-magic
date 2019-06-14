@@ -1,14 +1,11 @@
-import {
-  IconConfigHash,
-  IconSet
-} from '@icon-magic/icon-models';
+import { IconConfigHash, IconSet } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 
 import { createImageSet } from './create-image-set';
-import  { distributeByResolution } from './distribute-by-resolution';
-import  { distributeSvg } from './distribute-svg';
+import { distributeByResolution } from './distribute-by-resolution';
+import { distributeSvg } from './distribute-svg';
 
-const LOGGER: Logger = logger('icon-magic:distribute/index');
+const LOGGER: Logger = logger('icon-magic:distribute:index');
 type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 
 /**
