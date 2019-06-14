@@ -105,9 +105,6 @@ Shared tslint config for all icon magic packages.
 
 ### TODO
 
-- Split `Bundle` / `Icon` / `Asset` type definitions and filesystem ingestion from asset primitive generation. Move to independent packages.
-- Create exporters for iOS, Android and Web. Takes primitives folder and moves to correct folder structure.
-- Create icon bundle validator. Will all the metadata on Assets, we can determine if there are support gaps for a given icon – ex: no asset for 24px icon sizes, missing support for 2x screens, etc.
 - Create API server for adding, modifying and removing icons from a bundle (Foundations for this live in `@icon-magic/server`.
 - Create WYSIWYG manager for icon bundles – Drag and drop interface for managing
   icon bundles, icons and their assets. This uses the API server under the hood
