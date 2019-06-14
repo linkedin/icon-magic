@@ -32,19 +32,22 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
     const assets = getIconFlavorsByType(icon, 'png');
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
+    let iconOutputPath = outputPath;
+
+    // prepend the outputPath with the category so output icons are categorized
+    // by category name
+    if (icon.category) {
+      iconOutputPath = path.join(iconOutputPath, icon.category);
+    }
+
     for (const asset of assets) {
-      let assetNameForCatalog = `${icon.iconName}_${path.basename(
+      const assetNameForCatalog = `${icon.iconName}_${path.basename(
         asset.getPath()
       )}`;
 
-      // if the category is present, prepend it to the name
-      if (icon.category) {
-        assetNameForCatalog = `${icon.category}_${assetNameForCatalog}`;
-      }
-
       // strip the resolution from the asset name to get the name of the imageset
       const outputIconDir = path.join(
-        outputPath,
+        iconOutputPath,
         `${assetNameForCatalog.split('@')[0]}.imageset`
       );
 
