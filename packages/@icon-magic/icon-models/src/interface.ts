@@ -95,6 +95,7 @@ export interface DistributeConfig {
  * An object containing any meta information about the icon
  */
 export interface MetaData {
+  nameSizeMapping?: { [name: string]: AssetSize };
   [key: string]: any;
 }
 

@@ -30,15 +30,15 @@ import Svgo from 'svgo';
  * current - only adds the current size. If not, defaults to adding all allowed sizes
  * none - does not add the attribute at all
  */
-enum addSupportedDpsValues {
-  'all',
-  'current',
-  'none'
+enum AddSupportedDpsValues {
+  ALL = 'all',
+  CURRENT = 'current',
+  NONE = 'none'
 }
 
 export interface SvgGenerateOptions {
   propCombo?: object;
-  addSupportedDps?: addSupportedDpsValues;
+  addSupportedDps?: AddSupportedDpsValues;
   /* if this is set, the fill of the icon isn't updated but respected */
   isColored?: boolean;
   /* if this is true, then adds a width and height attribute to the svg
@@ -63,7 +63,7 @@ export const svgGenerate: GeneratePlugin = {
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
-      case addSupportedDpsValues.current:
+      case AddSupportedDpsValues.CURRENT:
         // get the mapping object from the metadata
         const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
@@ -94,7 +94,7 @@ export const svgGenerate: GeneratePlugin = {
         // format the size
         dataSupportedDps = getSupportedSizes([flavorSize]);
         break;
-      case addSupportedDpsValues.none:
+      case AddSupportedDpsValues.NONE:
         break; // do nothing
       default:
         // also 'all'
@@ -125,10 +125,10 @@ export const svgGenerate: GeneratePlugin = {
     const svgo = new Svgo({
       plugins: [
         {
-          removeViewBox: (params && params.isFixedDimensions) || false
+          removeViewBox: params.isFixedDimensions || false
         },
         {
-          removeDimensions: (params && !params.isFixedDimensions) || true
+          removeDimensions: !params.isFixedDimensions
         },
         {
           convertColors: {

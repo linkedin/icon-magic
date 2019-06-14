@@ -49,8 +49,7 @@ export const svgToRaster: GeneratePlugin = {
       let h: number;
       // if a nameSizeMapping should be used, get the size from the matching name pattern
       if (params.useNameSizeMapping) {
-        const nameSizeMapping: { [name: string]: AssetSize } =
-          icon.metadata && icon.metadata.nameSizeMapping;
+        const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
         // throw an error if the icon's config file does not have metadata
         // information for nameSizeMapping
         if (!nameSizeMapping) {
