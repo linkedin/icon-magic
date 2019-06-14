@@ -69,7 +69,7 @@ const generateConfigProperties = {
           enum: ['svg', 'raster']
         },
         plugins: {
-          type: ['array'],
+          type: ['array', 'null'],
           items: {
             type: ['object'],
             required: ['name'],
@@ -146,6 +146,9 @@ const topLevelConfigProperties = {
     type: 'object',
     properties: distributeConfigProperties,
     additionalProperties: false
+  },
+  metadata: {
+    type: 'object'
   }
 };
 

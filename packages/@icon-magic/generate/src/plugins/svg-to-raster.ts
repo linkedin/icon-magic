@@ -15,7 +15,7 @@ const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
 export interface SvgToRasterOptions {
-  useNameSizeMapping?: { [name: string]: AssetSize };
+  useNameSizeMapping?: boolean;
   propCombo?: {
     sizes?: AssetSize;
     resolutions: AssetResolution;
@@ -41,21 +41,31 @@ export const svgToRaster: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params?: SvgToRasterOptions
+    params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
     // get the size and resolution from the params passed in
-    if (params && params.propCombo) {
+    if (params.propCombo) {
       let w: number;
       let h: number;
       // if a nameSizeMapping should be used, get the size from the matching name pattern
       if (params.useNameSizeMapping) {
+        const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
+        // throw an error if the icon's config file does not have metadata
+        // information for nameSizeMapping
+        if (!nameSizeMapping) {
+          throw new Error(
+            `${
+              icon.iconPath
+            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains useNameSizeMapping: true`
+          );
+        }
         let sizeFromMapping!: AssetSize;
         const flavorName = path.basename(flavor.name);
 
-        // get the size from the mapping that is passed in
-        for (const key in params.useNameSizeMapping) {
-          if (flavorName.match(key))
-            sizeFromMapping = params.useNameSizeMapping[key];
+        // get the size from the mapping that is passed in. This is a pattern
+        // matching of the key and not necessarily the key itself
+        for (const key in nameSizeMapping) {
+          if (flavorName.match(key)) sizeFromMapping = nameSizeMapping[key];
         }
 
         if (sizeFromMapping) {
@@ -69,9 +79,7 @@ export const svgToRaster: GeneratePlugin = {
               : sizeFromMapping.height;
         } else {
           throw new Error(
-            `${flavorName} does not match a size in ${
-              params.useNameSizeMapping
-            }`
+            `${flavorName} does not match a size in ${nameSizeMapping}`
           );
         }
       } else {

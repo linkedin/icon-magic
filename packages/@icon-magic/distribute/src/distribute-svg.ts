@@ -6,7 +6,7 @@ import * as path from 'path';
 import { addToSprite, writeSpriteToFile } from './create-sprite';
 import { getIconFlavorsByType } from './utils';
 
-const LOGGER: Logger = logger('icon-magic:distribute/index');
+const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
 
 /**
  *

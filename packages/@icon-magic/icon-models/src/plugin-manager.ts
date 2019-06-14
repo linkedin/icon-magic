@@ -78,21 +78,39 @@ async function applySinglePluginOnAsset(
           asset.name
         } with`
       );
-      output = output.concat(
-        await plugin.fn.call(
+      let pluginOutput;
+      try {
+        pluginOutput = await plugin.fn.call(
           icon,
           asset,
           icon,
           Object.assign(plugin.params || {}, { propCombo: propCombo })
-        )
-      );
+        );
+      } catch (e) {
+        LOGGER.error(
+          `PluginError: Error while running ${plugin.name} on ${icon.iconPath}`
+        );
+        LOGGER.error(e);
+      }
+      if (pluginOutput) {
+        output = output.concat(pluginOutput);
+      }
     }
   } else {
     // when the plugin does not have any or iterants
     LOGGER.debug('Running the plugin without iterants');
-    output = output.concat(
-      await plugin.fn.call(icon, asset, icon, plugin.params)
-    );
+    let pluginOutput;
+    try {
+      pluginOutput = await plugin.fn.call(icon, asset, icon, plugin.params);
+    } catch (e) {
+      LOGGER.error(
+        `PluginError: Error while running ${plugin.name} on ${icon.iconPath}`
+      );
+      LOGGER.error(e);
+    }
+    if (pluginOutput) {
+      output = output.concat(pluginOutput);
+    }
   }
 
   const promises = [];

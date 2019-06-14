@@ -1,11 +1,10 @@
-
 import { IconSet } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
-const LOGGER: Logger = logger('icon-magic:distribute/index');
+const LOGGER: Logger = logger('icon-magic:distribute:distribute-by-resolution');
 
 /**
  * Distributes icons into different folders based on the resolution
@@ -14,7 +13,10 @@ const LOGGER: Logger = logger('icon-magic:distribute/index');
  * @param outputPath output directory where the different folders are created
  * for each resolution
  */
-export async function distributeByResolution(iconSet: IconSet, outputPath: string) {
+export async function distributeByResolution(
+  iconSet: IconSet,
+  outputPath: string
+) {
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`distributeByResolution for ${icon.iconName}`);
     const assets = getIconFlavorsByType(icon, 'webp');
