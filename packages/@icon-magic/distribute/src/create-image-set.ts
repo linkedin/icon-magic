@@ -1,4 +1,4 @@
-import { IconSet } from '@icon-magic/icon-models';
+import { Asset, IconSet } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -6,6 +6,7 @@ import * as path from 'path';
 import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:create-image-set');
+const IOS_SUPPORTED_RESOLUTIONS = [1, 2, 3];
 
 interface ContentImage {
   idiom: string;
@@ -41,6 +42,11 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
     }
 
     for (const asset of assets) {
+      // if the asset is not a supported ios resolution, then do nothing
+      if (!isSupportedResolution(asset)) {
+        continue;
+      }
+
       const assetNameForCatalog = `${icon.iconName}_${path.basename(
         asset.getPath()
       )}`;
@@ -101,4 +107,9 @@ async function loadJSONFile(filePath: string): Promise<object> {
  */
 async function writeJSONfile(filePath: string, data: object): Promise<void> {
   return fs.writeFile(`${path.join(filePath)}`, JSON.stringify(data, null, 2));
+}
+
+function isSupportedResolution(asset: Asset) {
+  const assetResolution = asset.name.split('@').pop();
+  return IOS_SUPPORTED_RESOLUTIONS.includes(Number(assetResolution));
 }
