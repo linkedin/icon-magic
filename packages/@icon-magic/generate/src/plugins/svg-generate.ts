@@ -84,8 +84,8 @@ export const svgGenerate: GeneratePlugin = {
         let matchedLength = 0;
         for (const key in nameSizeMapping) {
           const regExMatch = flavorName.match(key);
-          if (regExMatch && matchedLength < regExMatch.length) {
-            matchedLength = regExMatch.length;
+          if (regExMatch && matchedLength < regExMatch[0].length) {
+            matchedLength = regExMatch[0].length;
             flavorSize = nameSizeMapping[key];
           }
         }
