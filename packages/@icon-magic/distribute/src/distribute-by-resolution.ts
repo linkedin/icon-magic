@@ -31,8 +31,8 @@ export async function distributeByResolution(
 
       // get the asset name by prepending the icon name
       // also making both of them kebab case
-      let assetName = asset.name.replace(/-/g, '_').split('@')[0];
-      const iconName = icon.iconName.replace(/-/g, '_');
+      let assetName = asset.name.split('@')[0];
+      const iconName = icon.iconName;
       assetName = `${iconName}_${assetName}${path.extname(asset.getPath())}`;
 
       // if the category is present, prepend it to the name
@@ -49,6 +49,9 @@ export async function distributeByResolution(
         ICON_NAME_PREFIX;
 
       assetName = `${namePrefix}_${assetName}`;
+
+      // replace all - with _ in the name to follow android conventions
+      assetName = assetName.replace(/-/g, '_');
 
       await fs.mkdirp(outputIconDir);
 
