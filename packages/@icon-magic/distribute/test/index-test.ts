@@ -31,28 +31,28 @@ describe('distribute works as expected', function() {
     const iconPath = `${output}/drawable-xxxhdpi`;
     const icons = [
       {
-        iconName: 'ui-icon_filled-1_filled-24x12@2'
+        iconName: 'ic_ui_icon_filled_1_filled_24x12'
       },
       {
-        iconName: 'uix-icon_filled-2_filled-24x12@2'
+        iconName: 'ic_uix_icon_filled_2_filled_24x12'
       },
       {
-        iconName: 'uixx-icon_filled-3_filled-24x12@2'
+        iconName: 'ic_uixx_icon_filled_3_filled_24x12'
       },
       {
-        iconName: 'ui-icon_filled-1_filled-60x60@2'
+        iconName: 'ic_ui_icon_filled_1_filled_60x60'
       },
       {
-        iconName: 'ui-icon_filled-4_filled-24x12@2'
+        iconName: 'ic_ui_icon_filled_4_filled_24x12'
       },
       {
-        iconName: 'ui-icon_filled-4_filled-60x60@2'
+        iconName: 'ic_ui_icon_filled_4_filled_60x60'
       },
       {
-        iconName: 'ui-icon-2_filled-6_filled-24x12@2'
+        iconName: 'ic_ui_icon_2_filled_6_filled_24x12'
       },
       {
-        iconName: 'ui-icon-2_filled-6_filled-60x60@2'
+        iconName: 'ic_ui_icon_2_filled_6_filled_60x60'
       }
     ];
     const files = fs.readdirSync(iconPath);
@@ -67,22 +67,27 @@ describe('distribute works as expected', function() {
   it('Moves all .png files to the output directory', async () => {
     const icons = [
       {
-        iconName: 'ui-icon_filled-1_filled-24x12'
+        iconName: 'filled_1_filled_24x12',
+        category: 'ui-icon'
       },
       {
-        iconName: 'uix-icon_filled-2_filled-24x12'
+        iconName: 'filled_2_filled_24x12',
+        category: 'uix-icon'
       },
       {
-        iconName: 'uixx-icon_filled-3_filled-24x12'
+        iconName: 'filled_3_filled_24x12',
+        category: 'uixx-icon'
       },
       {
-        iconName: 'ui-icon_filled-1_filled-60x60'
+        iconName: 'filled_1_filled_60x60',
+        category: 'ui-icon'
       }
     ];
     await distributeByType(iconSet, output, 'png', false);
+
     icons.forEach(icon => {
       try {
-        const iconPath = `${output}/${icon.iconName}.imageset`;
+        const iconPath = `${output}/${icon.category}/${icon.iconName}.imageset`;
         if (fs.existsSync(iconPath)) {
           assert.ok(`${iconPath} dir was generated`);
           const files = fs.readdirSync(iconPath);

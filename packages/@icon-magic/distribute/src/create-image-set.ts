@@ -49,7 +49,7 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
 
       const assetNameForCatalog = `${icon.iconName}_${path.basename(
         asset.getPath()
-      )}`;
+      )}`.replace(/-/g, '_');
 
       // strip the resolution from the asset name to get the name of the imageset
       const outputIconDir = path.join(
@@ -109,7 +109,14 @@ async function writeJSONfile(filePath: string, data: object): Promise<void> {
   return fs.writeFile(`${path.join(filePath)}`, JSON.stringify(data, null, 2));
 }
 
+/**
+ * Checks if the asset is among the supported resolutions by looking at the name
+ * of the asset
+ * @param asset the asset to check if it's in a supported resolution
+ */
 function isSupportedResolution(asset: Asset) {
-  const assetResolution = asset.name.split('@').pop();
-  return IOS_SUPPORTED_RESOLUTIONS.includes(Number(assetResolution));
+  const assetResolution = Number(asset.name.split('@').pop());
+  return assetResolution
+    ? IOS_SUPPORTED_RESOLUTIONS.includes(Number(assetResolution))
+    : true;
 }
