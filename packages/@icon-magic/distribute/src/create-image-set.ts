@@ -47,9 +47,14 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
         continue;
       }
 
-      const assetNameForCatalog = `${icon.iconName}_${path.basename(
+      let assetNameForCatalog = `${icon.iconName}_${path.basename(
         asset.getPath()
       )}`.replace(/-/g, '_');
+
+      // if the category is present, prepend it to the name
+      if (icon.category) {
+        assetNameForCatalog = `${icon.category}_${assetNameForCatalog}`;
+      }
 
       // strip the resolution from the asset name to get the name of the imageset
       const outputIconDir = path.join(
