@@ -87,7 +87,9 @@ describe('distribute works as expected', function() {
 
     icons.forEach(icon => {
       try {
-        const iconPath = `${output}/${icon.category}/${icon.iconName}.imageset`;
+        const iconPath = `${output}/${icon.category}/${icon.category}_${
+          icon.iconName
+        }.imageset`;
         if (fs.existsSync(iconPath)) {
           assert.ok(`${iconPath} dir was generated`);
           const files = fs.readdirSync(iconPath);
@@ -96,8 +98,8 @@ describe('distribute works as expected', function() {
             'Contents.json was generated'
           );
           assert.ok(
-            files.indexOf(`${icon.iconName}@2.png`) > -1,
-            `${icon.iconName}@2.png was created`
+            files.indexOf(`${icon.category}_${icon.iconName}@2.png`) > -1,
+            `${icon.category}_${icon.iconName}@2.png was created`
           );
         } else {
           assert.ok(false, `Missing files for ${iconPath}`);
