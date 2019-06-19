@@ -99,12 +99,12 @@ describe('svgToRaster()', function() {
 
     const flavorWithTypes: FlavorTypeMap = {
       png: {
-        name: 'filled-60x60',
-        path: './filled-60x60.png'
+        name: 'filled-60x60@1',
+        path: './filled-60x60@1.png'
       },
       webp: {
-        name: 'filled-60x60',
-        path: './filled-60x60.webp'
+        name: 'filled-60x60@1',
+        path: './filled-60x60@1.webp'
       }
     };
     let output: Flavor = await svgToRaster.fn(flavor, icon, options);
@@ -125,12 +125,12 @@ describe('svgToRaster()', function() {
 
     const flavorWithTypes2: FlavorTypeMap = {
       png: {
-        name: 'filledwithResolutionInBetween-60x60@@1.5',
-        path: './filledwithResolutionInBetween-60x60@@1.5.png'
+        name: 'filledwithResolutionInBetween-60x60@1.5',
+        path: './filledwithResolutionInBetween-60x60@1.5.png'
       },
       webp: {
-        name: 'filledwithResolutionInBetween-60x60@@1.5',
-        path: './filledwithResolutionInBetween-60x60@@1.5.webp'
+        name: 'filledwithResolutionInBetween-60x60@1.5',
+        path: './filledwithResolutionInBetween-60x60@1.5.webp'
       }
     };
 

@@ -130,10 +130,10 @@ export const svgToRaster: GeneratePlugin = {
           assetName = `${flavor.name.replace(
             resolutionFromName[0],
             ''
-          )}-${w}x${h}@${resolutionFromName[0]}`;
+          )}-${w}x${h}${resolutionFromName[0]}`;
         } else {
-          // do not append the resolution at all
-          assetName = `${flavor.name}-${w}x${h}`;
+          // appends @1 to the name
+          assetName = `${flavor.name}-${w}x${h}@${res}`;
         }
       } else {
         res = params.propCombo.resolutions;
