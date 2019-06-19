@@ -14,11 +14,20 @@ import * as path from 'path';
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
+/**
+ * Optional values passed into the svg-to-raster plugin
+ */
 export interface SvgToRasterOptions {
+  useResolutionValueFromName?: Boolean;
+  /** if this is set to true, the plugin uses the size for the icon from a
+   * metadata field called nameSizeMapping in the config to determine the size
+   * of the icon */
   useNameSizeMapping?: boolean;
+  /** Data coming in from the plugin-manager (specified as iterants in the
+   * plugins config) */
   propCombo?: {
     sizes?: AssetSize;
-    resolutions: AssetResolution;
+    resolutions?: AssetResolution;
   };
 }
 
@@ -47,7 +56,8 @@ export const svgToRaster: GeneratePlugin = {
     if (params.propCombo) {
       let w: number;
       let h: number;
-      // if a nameSizeMapping should be used, get the size from the matching name pattern
+      // if a nameSizeMapping should be used, get the size from the matching
+      // name pattern
       if (params.useNameSizeMapping) {
         const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
         // throw an error if the icon's config file does not have metadata
@@ -104,13 +114,35 @@ export const svgToRaster: GeneratePlugin = {
             ? params.propCombo.sizes
             : params.propCombo.sizes.height;
       }
-      const res = params.propCombo.resolutions;
+
+      // If resolution is not passed in (the iterant is not set in the config),
+      // the plugin assumes res = 1 and renames the flavor such that the
+      // resolution is at the end of the flavor's name Eg: if flavor.name =
+      // home-filled@12 then the resulting name will be
+      // home-filled-width-height@12 instead of home-filled@12-width-height
+      let res;
+      let assetName;
+      if (!params.propCombo.resolutions) {
+        res = 1;
+        const resolutionFromName = flavor.name.match(/@[0-9|\.]*/);
+        if (resolutionFromName) {
+          // strip the resolution from the falvor's name and append it to the end
+          assetName = `${flavor.name.replace(
+            resolutionFromName[0],
+            ''
+          )}-${w}x${h}@${resolutionFromName[0]}`;
+        } else {
+          // do not append the resolution at all
+          assetName = `${flavor.name}-${w}x${h}`;
+        }
+      } else {
+        res = params.propCombo.resolutions;
+        assetName = `${flavor.name}-${w}x${h}@${res}`;
+      }
 
       // create the icon output path if it doesn't exist already
       const outputPath = icon.getIconOutputPath();
       await fs.mkdirp(outputPath);
-
-      const assetName = `${flavor.name}-${w}x${h}@${res}`;
 
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;

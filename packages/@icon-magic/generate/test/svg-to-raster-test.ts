@@ -90,4 +90,55 @@ describe('svgToRaster()', function() {
     const output: Flavor = await svgToRaster.fn(flavor, icon, options);
     assert.deepEqual(flavorWithTypes, output.getConfig().types);
   });
+
+  it('Renames the flavor correctly when there are is no resolutions passed in', async () => {
+    const options: SvgToRasterOptions = {
+      useNameSizeMapping: true,
+      propCombo: {}
+    };
+
+    const flavorWithTypes: FlavorTypeMap = {
+      png: {
+        name: 'filled-60x60',
+        path: './filled-60x60.png'
+      },
+      webp: {
+        name: 'filled-60x60',
+        path: './filled-60x60.webp'
+      }
+    };
+    let output: Flavor = await svgToRaster.fn(flavor, icon, options);
+    await assert.deepEqual(
+      flavorWithTypes,
+      output.getConfig().types,
+      'works when there is no resolution in the name'
+    );
+
+    const flavor2: Flavor = new Flavor(
+      `${FIXTURES}/nav-icons/home/filled.svg`,
+      {
+        name: 'filled@1.5withResolutionInBetween',
+        contents: file,
+        path: `${FIXTURES}/nav-icons/home/filled.svg`
+      }
+    );
+
+    const flavorWithTypes2: FlavorTypeMap = {
+      png: {
+        name: 'filledwithResolutionInBetween-60x60@@1.5',
+        path: './filledwithResolutionInBetween-60x60@@1.5.png'
+      },
+      webp: {
+        name: 'filledwithResolutionInBetween-60x60@@1.5',
+        path: './filledwithResolutionInBetween-60x60@@1.5.webp'
+      }
+    };
+
+    output = await svgToRaster.fn(flavor2, icon, options);
+    assert.deepEqual(
+      flavorWithTypes2,
+      output.getConfig().types,
+      'works when the resolution is present in the name'
+    );
+  });
 });
