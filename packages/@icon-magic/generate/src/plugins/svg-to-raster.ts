@@ -126,7 +126,7 @@ export const svgToRaster: GeneratePlugin = {
         res = 1;
         const resolutionFromName = flavor.name.match(/@[0-9|\.]*/);
         if (resolutionFromName) {
-          // strip the resolution from the falvor's name and append it to the end
+          // strip the resolution from the flavor's name and append it to the end
           assetName = `${flavor.name.replace(
             resolutionFromName[0],
             ''
