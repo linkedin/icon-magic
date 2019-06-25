@@ -1,8 +1,3 @@
-const variantProperties = {
-  name: { type: 'string' },
-  path: { type: 'string', minLength: 1 }
-};
-
 const flavorProperties = {
   name: { type: 'string' },
   path: { type: 'string', minLength: 1 },
@@ -59,6 +54,16 @@ const distributeConfigProperties = {
         type: ['string', 'null']
       }
     }
+  }
+};
+
+const variantProperties = {
+  name: { type: 'string' },
+  path: { type: 'string', minLength: 1 },
+  distribute: {
+    type: 'object',
+    properties: distributeConfigProperties,
+    additionalProperties: false
   }
 };
 

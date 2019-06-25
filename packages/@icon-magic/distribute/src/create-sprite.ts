@@ -1,5 +1,6 @@
 import {
   Asset,
+  Icon,
   saveContentToFile,
   spriteConfig
 } from '@icon-magic/icon-models';
@@ -183,4 +184,16 @@ export async function writeSpriteToFile(
       'svg'
     );
   }
+}
+
+/**
+ * Checks if asset allows for addition to sprite
+ * @param asset asset to check for sprite configuration
+ */
+export function shouldAddToSprite(asset: Asset | Icon) {
+  return !(
+    asset.distribute &&
+    asset.distribute.svg &&
+    !asset.distribute.toSprite
+  );
 }

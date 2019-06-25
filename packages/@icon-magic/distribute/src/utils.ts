@@ -1,8 +1,4 @@
-import {
-  Asset,
-  FlavorType,
-  Icon
-} from '@icon-magic/icon-models';
+import { Asset, FlavorType, Icon } from '@icon-magic/icon-models';
 
 /**
  * The resolution of an asset is within the assets name as "@resolution"
@@ -61,4 +57,13 @@ export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
       return flavor.types.has(type);
     })
     .map(flavor => flavor.types.get(type) as Asset); // type casting here as we have checked for whether the flavor has the type above
+}
+
+/**
+ * Strips resolution from icon name
+ * @param iconName name to strip resolution from
+ * @returns a string with the resolution stripped
+ */
+export function removeResolutionFromName(iconName: string): string {
+  return iconName.includes('@') ? iconName.replace(/@[0-9]/, '') : iconName;
 }
