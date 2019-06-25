@@ -8,7 +8,7 @@ import {
   writeSpriteToFile,
   shouldAddToSprite
 } from './create-sprite';
-import { getIconFlavorsByType, removeResolutionFromName } from './utils';
+import { getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
 
@@ -31,7 +31,7 @@ export async function distributeSvg(
   const spriteNames: spriteConfig = {};
   for (const icon of icons) {
     // Don't need resolution for web
-    const name = removeResolutionFromName(icon.iconName);
+    const name = icon.iconName;
     LOGGER.debug(`calling distributeSvg on ${name}: ${icon.iconPath}`);
     let assets = getIconFlavorsByType(icon, 'svg');
     const spriteName =

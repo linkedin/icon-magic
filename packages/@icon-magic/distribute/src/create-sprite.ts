@@ -6,6 +6,7 @@ import {
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
+import { removeResolutionFromName } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:create-sprite');
 const serializeToString = new XMLSerializer().serializeToString;
