@@ -1,9 +1,9 @@
 {
-  "name": "@icon-magic/cli",
+  "name": "@icon-magic/timing",
   "version": "2.0.0",
-  "description": "Icon magic CLI package.",
+  "description": "Icon magic timing package.",
   "main": "dist/src/index.js",
-  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
+  "author": "Adam Miller <adam@pages.me>",
   "license": "BSD-2-Clause",
   "private": true,
   "scripts": {
@@ -13,17 +13,12 @@
     "test": "mocha --opts test/mocha.opts dist/test",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
-    "lint": "tslint -t msbuild --project . -c tslint.json --fix"
-  },
-  "bin": {
-    "icon-magic": "dist/src/index.js"
+    "lint": "tslint -t msbuild --project . -c tslint.json",
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/build": "^2.0.0",
-    "@icon-magic/distribute": "^2.0.0",
-    "@icon-magic/generate": "^2.0.0",
     "@icon-magic/logger": "^2.0.0",
-    "commander": "^2.19.0",
-    "config-reader": "^0.1.1"
+    "@types/pretty-hrtime": "^1.0.0",
+    "pretty-hrtime": "^1.0.3"
   }
 }

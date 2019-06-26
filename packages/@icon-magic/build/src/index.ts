@@ -9,9 +9,12 @@ import {
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
+import { timer } from '@icon-magic/timing';
+
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
+const TIMER = timer();
 const LOGGER: Logger = logger('icon-magic:build:index');
 
 /**
@@ -29,6 +32,7 @@ const LOGGER: Logger = logger('icon-magic:build:index');
  */
 export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
   LOGGER.debug('Icon build has begun');
+  TIMER.start();
   // Create icons for all icons within the iconConfig
   const iconSet = new IconSet(iconConfig);
   const outputIconSet: IconSet = new IconSet();
@@ -80,6 +84,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     );
   }
 
+  LOGGER.info(`${TIMER.end()}`);
   //return the outputIconSet
   return outputIconSet;
 }
