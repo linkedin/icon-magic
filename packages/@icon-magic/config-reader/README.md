@@ -56,4 +56,4 @@ the various fields
 
 ```
 
-For more details on the interfaces, refer to @icon-magic/icon-models
+For more details on the interfaces, refer to [@icon-magic/icon-models](../icon-models/README.md)
