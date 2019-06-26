@@ -5,8 +5,8 @@ import * as path from 'path';
 
 import {
   addToSprite,
-  writeSpriteToFile,
-  shouldAddToSprite
+  shouldAddToSprite,
+  writeSpriteToFile
 } from './create-sprite';
 import { getIconFlavorsByType } from './utils';
 

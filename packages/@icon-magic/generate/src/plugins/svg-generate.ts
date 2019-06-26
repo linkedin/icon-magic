@@ -16,6 +16,7 @@
 import {
   Asset,
   AssetSize,
+  AssetConfig,
   Flavor,
   GeneratePlugin,
   Icon
@@ -167,14 +168,12 @@ export const svgGenerate: GeneratePlugin = {
     );
 
     // Create a new svg asset type and add it to the flavor
-    flavor.types.set(
-      'svg',
-      new Asset(icon.iconPath, {
-        name: flavor.name,
-        path: `./${flavor.name}.svg`
-      })
-    );
-
+    const config: AssetConfig = {
+      name: flavor.name,
+      path: `./${flavor.name}.svg`
+    };
+    if (flavor.distribute) config.distribute = flavor.distribute;
+    flavor.types.set('svg', new Asset(icon.iconPath, config));
     return flavor;
   }
 };

@@ -53,11 +53,12 @@ export class Flavor extends Asset {
         flavorTypes[key] = asset.getAssetConfig();
       }
     }
-
-    return {
+    const config: FlavorConfig = {
       name: this.name,
       path: `./${path.relative(this.iconPath, this.getPath())}`,
       types: flavorTypes
     };
+    if (this.distribute) config.distribute = this.distribute;
+    return config;
   }
 }
