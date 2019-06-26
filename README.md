@@ -1,10 +1,36 @@
 # icon-magic
 
-Automated icon build system for iOS, Android and Web.
+Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and a configuration file
+(`iconrc.(js|json)`) and applies a set of plugins (build & generate) that
+
+- Optimize SVG and adds or removes properties as indicated.
+- Generates images in `png` and `webp` formats from the original SVG and minifies them.
+- Creates the necessary files for platform (`ios|android|web`) consumption
+- Delivers the generated assets to an indicated destination
+
+* [Getting Started](#getting-started)
+* [Setting up your icons for icon-magic](#setting-up-your-icons-for-icon-magic)
+* [Command line Usage](#command-line-usage)
+* [Glossary](#glossary)
+* [Packages](#packages)
+  - [@icon-magic/blueprint](#icon-magicblueprint)
+  - [@icon-magic/config-reader](#icon-magicconfig-reader)
+  - [@icon-magic/icon-models](#icon-magicicon-models)
+  - [@icon-magic/build](#icon-magicbuild)
+  - [@icon-magic/generate](#icon-magicgenerate)
+  - [@icon-magic/distribute](#icon-magicdistribute)
+  - [@icon-magic/cli](#icon-magiccli)
+  - [@icon-magic/imagemin-farm](#icon-magicimagemin-farm)
+  - [@icon-magic/svg-to-png](#icon-magicsvg-to-png)
+  - [@icon-magic/logger](#icon-magiclogger)
+  - [@icon-magic/code-style](#icon-magiccode-style)
+  - [@icon-magic/server](#icon-magicserver)
+  - [@icon-magic/library](#icon-magiclibrary)
+  - [TODO](#todo)
 
 ## Getting Started
 
-Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages)
+Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages).
 
 In the root directory run:
 
@@ -14,6 +40,12 @@ In the root directory run:
 or you can install lerna globally using `yarn global add lerna` and run `lerna` directly using `lerna run build`.
 
 You can use `yarn lerna run` to run a script in each package that contains that script. i.e `yarn lerna run test` to run the tests for all packages. You'll need to run a build on all the packages when you switch branches.
+
+## Setting up your icons for icon-magic
+
+To use icon-magic, you have to set up your files (icons and their configurations) in the right format. Go to [Icon Directory Structure](./icon-dir-structure.md) for more information.
+
+## [Command line Usage](packages/@icon-magic/cli)
 
 ## Glossary
 

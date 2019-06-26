@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "SVGOptions": {
+      "title": "SVGOptions",
+      "type": "object",
+      "properties": {
+        "toSprite": {
+          "type": "boolean",
+          "title": "toSprite"
+        },
+        "spriteName": {
+          "type": "string",
+          "title": "spriteName"
+        }
+      }
+    },
+    "WebpOptions": {
+      "title": "WebpOptions",
+      "type": "object",
+      "properties": {
+        "namePrefix": {
+          "type": "string",
+          "title": "namePrefix"
+        }
+      }
+    },
+    "AssetConfig": {
+      "title": "AssetConfig",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "path": {
+          "type": "string",
+          "title": "path"
+        }
+      },
+      "required": ["path"]
+    },
+    "MetaData": {
+      "title": "MetaData",
+      "type": "object",
+      "additionalProperties": {},
+      "properties": {
+        "nameSizeMapping": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/WidthHeight"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "title": "nameSizeMapping"
+        }
+      }
+    },
+    "DistributeConfig": {
+      "title": "DistributeConfig",
+      "type": "object",
+      "properties": {
+        "svg": {
+          "$ref": "#/definitions/SVGOptions",
+          "title": "svg"
+        },
+        "webp": {
+          "$ref": "#/definitions/WebpOptions",
+          "title": "webp"
+        }
+      }
+    },
+    "WidthHeight": {
+      "title": "WidthHeight",
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "number",
+          "title": "width"
+        },
+        "height": {
+          "type": "number",
+          "title": "height"
+        }
+      },
+      "required": ["height", "width"]
+    },
+    "AssetSize": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WidthHeight"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "AssetResolution": {
+      "type": "number"
+    },
+    "Iterant": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "FlavorType": {
+      "enum": ["png", "svg", "webp"],
+      "type": "string"
+    },
+    "FlavorTypeMap": {
+      "title": "FlavorTypeMap",
+      "type": "object",
+      "properties": {
+        "svg": {
+          "$ref": "#/definitions/AssetConfig",
+          "title": "svg"
+        },
+        "png": {
+          "$ref": "#/definitions/AssetConfig",
+          "title": "png"
+        },
+        "webp": {
+          "$ref": "#/definitions/AssetConfig",
+          "title": "webp"
+        }
+      }
+    },
+    "Plugin": {
+      "title": "Plugin",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "iterants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "iterants"
+        },
+        "params": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "params"
+        },
+        "writeToOutput": {
+          "type": "boolean",
+          "title": "writeToOutput"
+        }
+      },
+      "required": ["name"]
+    },
+    "BuildPlugin": {
+      "$ref": "#/definitions/Plugin"
+    },
+    "GeneratePlugin": {
+      "$ref": "#/definitions/Plugin"
+    },
+    "BuildConfig": {
+      "title": "BuildConfig",
+      "type": "object",
+      "properties": {
+        "plugins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Plugin"
+          },
+          "title": "plugins"
+        }
+      }
+    },
+    "GenerateType": {
+      "description": "Supported types for generation are svg and raster\nRaster here represents .png and .webp",
+      "title": "GenerateType",
+      "enum": ["raster", "svg"],
+      "type": "string"
+    },
+    "GenerateTypeConfig": {
+      "description": "Properties related to a single generation type",
+      "title": "GenerateTypeConfig",
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/GenerateType",
+          "title": "name"
+        },
+        "plugins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Plugin"
+          },
+          "title": "plugins"
+        }
+      },
+      "required": ["name"]
+    },
+    "GenerateConfig": {
+      "description": "Properties related to the generation of an icon from .svg into multiple\ntypes(.png, .webp)",
+      "title": "GenerateConfig",
+      "type": "object",
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GenerateTypeConfig"
+          },
+          "title": "types"
+        }
+      },
+      "required": ["types"]
+    }
+  }
+}
