@@ -84,7 +84,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
     );
   }
 
-  LOGGER.info(`${TIMER.end()}`);
+  LOGGER.info(`Building took ${TIMER.end()}`);
   //return the outputIconSet
   return outputIconSet;
 }

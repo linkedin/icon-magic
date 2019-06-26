@@ -6,7 +6,7 @@ export function timer() {
     start: function(): void {
       start = process.hrtime();
     },
-    end: function(): void {
+    end: function(): string {
       const end = process.hrtime(start);
       return prettyHrtime(end, { verbose: true });
     }
