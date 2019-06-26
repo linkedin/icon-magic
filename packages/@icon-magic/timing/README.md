@@ -1,6 +1,6 @@
 # @icon-magic/timing
 
-This package handles timing using Node.js' [`process.hrtime()`](https://nodejs.org/api/process.html#process_process_hrtime) function.
+This package handles timing using Node.js' [process.hrtime](https://nodejs.org/api/process.html#process_process_hrtime) function.
 
 ## Usage
 
@@ -21,10 +21,10 @@ function doSomething() {
 
 The `timer` object has the following methods:
 
-/_ To start the timer _/
+To start the timer:
 
 - start()
 
-/_ To end the timer, returns elapsed time _/
+To end the timer, returns elapsed time:
 
 - end()
