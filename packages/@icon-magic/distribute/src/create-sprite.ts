@@ -188,6 +188,7 @@ export async function writeSpriteToFile(
 /**
  * Checks if asset allows for addition to sprite
  * @param asset asset to check for sprite configuration
+ * @returns boolean if the asset allows for sprite addition
  */
 export function shouldAddToSprite(asset: Asset): boolean {
   return !!(

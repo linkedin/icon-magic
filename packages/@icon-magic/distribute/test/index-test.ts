@@ -114,6 +114,9 @@ describe('distribute works as expected', function() {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
       {
+        path: 'icons.svg'
+      },
+      {
         path: 'icons-1.svg'
       },
       {
@@ -139,6 +142,11 @@ describe('distribute works as expected', function() {
   it('sprite files contain defs with category for ID', async () => {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
+      {
+        path: 'icons.svg',
+        id: 'ads-default@1',
+        category: 'app'
+      },
       {
         path: 'icons-1.svg',
         id: 'a-home-filled-1',
@@ -179,5 +187,24 @@ describe('distribute works as expected', function() {
         assert.ok(false, `${err} with ${p.category}`);
       }
     });
+  });
+
+  it('it only puts two variant into the sprite', async () => {
+    try {
+      const content = fs.readFileSync(`${output}/icons.svg`, 'utf8');
+      const doc = new DOMParser().parseFromString(content, 'svg');
+      const svgs = doc.getElementsByTagName('svg');
+      // 2 icons + parent svg
+      assert.ok(svgs.length === 3, 'Only two variants in sprite');
+      const svgIDs = ['ads-default@1', 'ads-default@2'];
+      svgIDs.forEach(id => {
+        assert.ok(
+          doc.getElementById(id),
+          'puts the right variants into sprite'
+        );
+      });
+    } catch (err) {
+      assert.ok(false, err);
+    }
   });
 });

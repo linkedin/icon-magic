@@ -4,7 +4,7 @@
   "variants": [
     {
       "name": "default@1",
-      "path": "./@1x/40dp.svg",
+      "path": "./default@1.svg",
       "distribute": {
         "svg": {
           "toSprite": true
@@ -13,25 +13,30 @@
     },
     {
       "name": "default@1.5",
-      "path": "./@1.5x/40dp.svg"
+      "path": "./default@1.5.svg"
     },
     {
       "name": "default@2",
-      "path": "./@2x/40dp.svg"
+      "path": "./default@2.svg",
+      "distribute": {
+        "svg": {
+          "toSprite": true
+        }
+      }
     },
     {
       "name": "default@3",
-      "path": "./@3x/40dp.svg"
+      "path": "./default@3.svg"
     },
     {
       "name": "default@4",
-      "path": "./@4x/40dp.svg"
+      "path": "./default@4.svg"
     }
   ],
   "flavors": [
     {
       "name": "default@1",
-      "path": "./build/default@1.svg",
+      "path": "./default@1.svg",
       "types": {
         "svg": {
           "name": "default@1",
@@ -46,17 +51,22 @@
     },
     {
       "name": "default@2",
-      "path": "./build/default@2.svg",
+      "path": "./default@2.svg",
       "types": {
         "svg": {
           "name": "default@2",
           "path": "./default@2.svg"
         }
+      },
+      "distribute": {
+        "svg": {
+          "toSprite": true
+        }
       }
     },
     {
       "name": "default@1.5",
-      "path": "./build/default@1.5.svg",
+      "path": "./default@1.5.svg",
       "types": {
         "svg": {
           "name": "default@1.5",
@@ -65,18 +75,8 @@
       }
     },
     {
-      "name": "default@1",
-      "path": "./build/default@1.svg",
-      "types": {
-        "svg": {
-          "name": "default@1",
-          "path": "./default@1.svg"
-        }
-      }
-    },
-    {
       "name": "default@4",
-      "path": "./build/default@4.svg",
+      "path": "./default@4.svg",
       "types": {
         "svg": {
           "name": "default@4",
@@ -86,7 +86,7 @@
     },
     {
       "name": "default@3",
-      "path": "./build/default@3.svg",
+      "path": "./default@3.svg",
       "types": {
         "svg": {
           "name": "default@3",
