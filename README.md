@@ -1,10 +1,35 @@
 # icon-magic
 
-Automated icon build system for iOS, Android and Web.
+Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and a configuration file
+(`iconrc.(js|json)`) and applies a set of plugins (build & generate) that
+
+- Optimize SVG and adds or removes properties as indicated.
+- Generates images in `png` and `webp` formats from the original SVG and minifies them.
+- Creates the necessary files for platform (`ios|android|web`) consumption
+- Delivers the generated assets to an indicated destination
+
+* [Getting Started](#getting-started)
+* [Setting up your icons for icon-magic](#setting-up-your-icons-for-icon-magic)
+* [Command line Usage](#command-line-usage)
+* [Packages](#packages)
+  - [@icon-magic/blueprint](#icon-magicblueprint)
+  - [@icon-magic/config-reader](#icon-magicconfig-reader)
+  - [@icon-magic/icon-models](#icon-magicicon-models)
+  - [@icon-magic/build](#icon-magicbuild)
+  - [@icon-magic/generate](#icon-magicgenerate)
+  - [@icon-magic/distribute](#icon-magicdistribute)
+  - [@icon-magic/cli](#icon-magiccli)
+  - [@icon-magic/imagemin-farm](#icon-magicimagemin-farm)
+  - [@icon-magic/svg-to-png](#icon-magicsvg-to-png)
+  - [@icon-magic/logger](#icon-magiclogger)
+  - [@icon-magic/code-style](#icon-magiccode-style)
+  - [@icon-magic/server](#icon-magicserver)
+  - [@icon-magic/library](#icon-magiclibrary)
+  - [TODO](#todo)
 
 ## Getting Started
 
-Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages)
+Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages).
 
 In the root directory run:
 
@@ -15,24 +40,31 @@ or you can install lerna globally using `yarn global add lerna` and run `lerna` 
 
 You can use `yarn lerna run` to run a script in each package that contains that script. i.e `yarn lerna run test` to run the tests for all packages. You'll need to run a build on all the packages when you switch branches.
 
-## Glossary
+## Setting up your icons for icon-magic
 
-- **Asset**: A single file containing a logo/image. Assets can be of multiple
-  types .svg, .png, .webp
-- **Variant**: a version of the icon that has its own underlying path elements.
-  Variants are always of .svg type and form the input of the entire icon build
-  process.
-- **Icon**: The class representing a group of variants that belong to the same
-  icon. For example, two variants of the home icon can be a filled version and
-  an outline version of the same home icon. Within the file system, an icon is a
-  directory that consists of all the variant assets and a corresponding
-  iconrc.json config file.
-- **iconrc.(js|json)** A config file for a single icon or a group of icons with
-  paths to the various icon directories and their variants at minimum. The
-  config further be caustomaized
-- **Flavor**: An asset obtained after applying build/generate plugins on the
-  source .svg file. A flavor will also contain assets for each type, i. e.,
-  paths to the .svg, .png and .webp version of that flavor.
+To use icon-magic, you have to set up your files (icons and their configurations) in the right format. Go to [Icon Directory Structure](./icon-dir-structure.md) for more information.
+
+## [Command line Usage](packages/@icon-magic/cli)
+
+<details>
+  <summary><h2>Glossary</h2></summary>
+  - **Asset**: A single file containing a logo/image. Assets can be of multiple
+    types .svg, .png, .webp
+  - **Variant**: a version of the icon that has its own underlying path elements.
+    Variants are always of .svg type and form the input of the entire icon build
+    process.
+  - **Icon**: The class representing a group of variants that belong to the same
+    icon. For example, two variants of the home icon can be a filled version and
+    an outline version of the same home icon. Within the file system, an icon is a
+    directory that consists of all the variant assets and a corresponding
+    iconrc.json config file.
+  - **iconrc.(js|json)** A config file for a single icon or a group of icons with
+    paths to the various icon directories and their variants at minimum. The
+    config further be caustomaized
+  - **Flavor**: An asset obtained after applying build/generate plugins on the
+    source .svg file. A flavor will also contain assets for each type, i. e.,
+    paths to the .svg, .png and .webp version of that flavor.
+</details>
 
 ## Packages
 

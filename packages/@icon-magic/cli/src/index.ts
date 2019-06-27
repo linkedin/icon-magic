@@ -65,7 +65,7 @@ program
   )
   .option(
     '-o, --outputPath [outputPath]',
-    'path to the output directory where the generated assets are to be written to'
+    '[required] path to the output directory where the generated assets are to be written to'
   )
   .option(
     '-t, --type [type]',
@@ -73,7 +73,7 @@ program
   )
   .option(
     '-g, --groupBy [groupBy]',
-    '[for web sprite creation] if to group the icons by category'
+    '[for web sprite creation] how to group the icons. The only available option for now is `--groupBy category`'
   )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {

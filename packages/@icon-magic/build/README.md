@@ -25,11 +25,14 @@ nav-icons
 ├── home
 │   ├── filled.svg
 │   └── outline.svg
+    computer
+│   ├── filled.svg
+│   └── outline.svg
 ├── iconrc.json
 ```
 
 `nav-icons` also contains an `iconrc.json` that is applicable to all the icons
-within `nav-icons` including the `home` icon. After we get the config from
+within `nav-icons` including the `home` and `computer` icon. After we get the config from
 `config-reader`'s `getIconConfigSet()`, each Icon will have it's own config with
 resolved iconPaths as below:
 
@@ -71,4 +74,4 @@ to add css classes on the .svg icon for to generate different color themes of
 the icon. All .svg manipulations to generate flavors are done as part of the
 build process via build plugins
 
-For more details on the interfaces, refer to @icon-magic/icon-models
+For more details on the interfaces, refer to [@icon-magic/icon-models](../icon-models/README.md)

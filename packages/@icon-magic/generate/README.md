@@ -52,7 +52,7 @@ await iconGenerate.generate(outputIconSet);
 
 All the while, the icon in memory is updated with the newly generated types for
 each flavor. After all the plugins are applied, the generate then writes the
-config of each icon to form an icon bundle consisting of
+config of each icon to form an icon bundle consisting of:
 
 1. The icon config file (iconrc.json) with flavors and types
 2. The various flavors of the icon in their optimized .svg version
