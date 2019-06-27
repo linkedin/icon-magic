@@ -1,7 +1,7 @@
 import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 
-import { AssetConfig, Content } from './interface';
+import { AssetConfig, Content, DistributeConfig } from './interface';
 import { getFileContents } from './utils/files';
 
 /**
@@ -11,6 +11,7 @@ import { getFileContents } from './utils/files';
 export class Asset {
   name: string;
   contents: Content | undefined;
+  distribute: DistributeConfig | undefined;
   iconPath: string;
   protected path: string;
   private LOGGER: Logger;
@@ -43,6 +44,9 @@ export class Asset {
     if (config.contents) {
       this.contents = config.contents;
     }
+    if (config.distribute) {
+      this.distribute = config.distribute;
+    }
     this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
@@ -64,10 +68,12 @@ export class Asset {
    * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
-    return {
+    const config: AssetConfig = {
       name: this.name,
       path: this.path
     };
+    if (this.distribute) config.distribute = this.distribute;
+    return config;
   }
 
   /**

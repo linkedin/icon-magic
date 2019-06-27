@@ -1,0 +1,98 @@
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "default@1",
+      "path": "./@1x/40dp.svg",
+      "distribute": {
+        "svg": {
+          "toSprite": true
+        }
+      }
+    },
+    {
+      "name": "default@1.5",
+      "path": "./@1.5x/40dp.svg"
+    },
+    {
+      "name": "default@2",
+      "path": "./@2x/40dp.svg"
+    },
+    {
+      "name": "default@3",
+      "path": "./@3x/40dp.svg"
+    },
+    {
+      "name": "default@4",
+      "path": "./@4x/40dp.svg"
+    }
+  ],
+  "sourceConfigFile": "../../../../../../icons/app/iconrc.json",
+  "sizes": [40],
+  "resolutions": [1],
+  "iconName": "referrals",
+  "outputPath": "./out/app",
+  "flavors": [
+    {
+      "name": "default@1",
+      "path": "./build/default@1.svg",
+      "types": {
+        "svg": {
+          "name": "default@1",
+          "path": "./default@1.svg"
+        }
+      },
+      "distribute": {
+        "svg": {
+          "toSprite": true
+        }
+      }
+    },
+    {
+      "name": "default@2",
+      "path": "./build/default@2.svg",
+      "types": {
+        "svg": {
+          "name": "default@2",
+          "path": "./default@2.svg"
+        }
+      }
+    },
+    {
+      "name": "default@1.5",
+      "path": "./build/default@1.5.svg",
+      "types": {
+        "svg": {
+          "name": "default@1.5",
+          "path": "./default@1.5.svg"
+        }
+      }
+    },
+    {
+      "name": "default@4",
+      "path": "./build/default@4.svg",
+      "types": {
+        "svg": {
+          "name": "default@4",
+          "path": "./default@4.svg"
+        }
+      }
+    },
+    {
+      "name": "default@3",
+      "path": "./build/default@3.svg",
+      "types": {
+        "svg": {
+          "name": "default@3",
+          "path": "./default@3.svg"
+        }
+      }
+    }
+  ],
+  "category": "app",
+  "distribute": {
+    "svg": {
+      "toSprite": false
+    }
+  }
+}

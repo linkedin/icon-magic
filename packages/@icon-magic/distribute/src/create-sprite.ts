@@ -184,3 +184,15 @@ export async function writeSpriteToFile(
     );
   }
 }
+
+/**
+ * Checks if asset allows for addition to sprite
+ * @param asset asset to check for sprite configuration
+ */
+export function shouldAddToSprite(asset: Asset): boolean {
+  return !!(
+    asset.distribute &&
+    asset.distribute.svg &&
+    asset.distribute.svg.toSprite
+  );
+}

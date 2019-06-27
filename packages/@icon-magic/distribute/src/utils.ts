@@ -60,5 +60,10 @@ export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
     .filter(flavor => {
       return flavor.types.has(type);
     })
-    .map(flavor => flavor.types.get(type) as Asset); // type casting here as we have checked for whether the flavor has the type above
+    .map((flavor) => {
+      const distribute = flavor.getConfig().distribute;
+      const flavTypes = (flavor.types.get(type) as Asset); // type casting here as we have checked for whether the flavor has the type above
+      if (distribute) flavTypes.distribute = distribute;
+      return flavTypes;
+    });
 }
