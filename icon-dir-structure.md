@@ -17,11 +17,11 @@ At the core of `icon-magic` is the icon configuration `iconrc.(js|json)` which r
 
 You can define a single `iconrc` to apply to multiple icons. In the above case, the `iconrc.json` in `nav-icons` will apply to **both** the `home` icons and the `computer` icons.
 
-The `iconrc.json` may look something like this:
+The `iconrc.json` may look something like this with `iconPath` set to `*` which applies to all the files in the directory:
 
 ```json
 {
-  "iconPath": "*", // Apply to all files in directory
+  "iconPath": "*",
   "variants": [
     {
       "path": "./solid.svg"
@@ -52,11 +52,11 @@ Or you can define as many `iconrc`'s as you want to accomodate differences in ho
   ├── iconrc.json
 ```
 
-In this case, the `iconrc` in `nav-icons` will apply to `computer` and `desktop` and the `iconrc` in the home directory will apply to just `home`. The `iconrc` for `home` will look like:
+In this case, the `iconrc` in `nav-icons` will apply to `computer` and `desktop` and the `iconrc` in the home directory will apply to just `home`. The `iconrc` for `home` will look like this with `iconPath` set to `.` which applies to all the files in the *current* directory::
 
 ```json
 {
-  "iconPath": ".", // only match for files in current directory
+  "iconPath": ".",
   "variants": [
     {
       "path": "./solid/solid.svg"
@@ -74,4 +74,4 @@ to match it's corresponding folder structure.
 
 ## Icon configuration `iconrc.(js|json)`
 
-You can explore all the available properties and descriptions on the Icon in the [TS config-schema](./packages/config-reader/src/schemas/config-schema) or [JSON Schema](./schema.md)
+You can explore all the available properties and descriptions on the Icon in the [TS config-schema](./packages/config-reader/src/schemas/config-schema.ts).

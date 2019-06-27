@@ -8,6 +8,8 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 - Creates the necessary files for platform (`ios|android|web`) consumption
 - Delivers the generated assets to an indicated destination
 
+## Table of Contents
+
 * [Getting Started](#getting-started)
 * [Setting up your icons for icon-magic](#setting-up-your-icons-for-icon-magic)
 * [Command line Usage](#command-line-usage)
@@ -44,10 +46,12 @@ You can use `yarn lerna run` to run a script in each package that contains that 
 
 To use icon-magic, you have to set up your files (icons and their configurations) in the right format. Go to [Icon Directory Structure](./icon-dir-structure.md) for more information.
 
-## [Command line Usage](packages/@icon-magic/cli)
+## Command line Usage
+
+Using icon-magic from the [command line](packages/@icon-magic/cli).
 
 <details>
-  <summary><h2>Glossary</h2></summary>
+  <summary><strong>Glossary</strong></summary>
   - **Asset**: A single file containing a logo/image. Assets can be of multiple
     types .svg, .png, .webp
   - **Variant**: a version of the icon that has its own underlying path elements.
