@@ -49,7 +49,14 @@ export async function distributeSvg(
     });
 
     // If icon has a distribute config and toSprite is true or toSprite is not defined
-    if (shouldAddToSprite(icon) || assetsToAddToSprite.length) {
+    if (
+      !(
+        icon.distribute &&
+        icon.distribute.svg &&
+        !icon.distribute.svg.toSprite
+      ) ||
+      assetsToAddToSprite.length
+    ) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       if (assetsToAddToSprite.length) assets = assetsToAddToSprite;

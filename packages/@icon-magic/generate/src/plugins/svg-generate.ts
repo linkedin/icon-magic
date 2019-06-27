@@ -172,7 +172,6 @@ export const svgGenerate: GeneratePlugin = {
       name: flavor.name,
       path: `./${flavor.name}.svg`
     };
-    if (flavor.distribute) config.distribute = flavor.distribute;
     flavor.types.set('svg', new Asset(icon.iconPath, config));
     return flavor;
   }

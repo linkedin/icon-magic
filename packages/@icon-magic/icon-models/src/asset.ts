@@ -68,10 +68,19 @@ export class Asset {
    * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
-    return {
+    const config: AssetConfig = {
       name: this.name,
       path: this.path
     };
+    if (this.distribute) config.distribute = this.distribute;
+    return config;
+  }
+
+  /**
+   * @returns the distribute config
+   */
+  getDistribute(): DistributeConfig | undefined {
+    return this.distribute;
   }
 
   /**
