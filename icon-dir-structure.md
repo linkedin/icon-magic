@@ -74,4 +74,4 @@ to match it's corresponding folder structure.
 
 ## Icon configuration `iconrc.(js|json)`
 
-You can explore all the available properties and descriptions on the Icon in the [TS config-schema](./packages/config-reader/src/schemas/config-schema) or [JSON Schema](./schema.md).
+You can explore all the available properties and descriptions on the Icon in the [TS config-schema](./packages/config-reader/src/schemas/config-schema.ts).
