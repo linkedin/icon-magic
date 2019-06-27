@@ -1,5 +1,5 @@
 let start: [number, number];
-const prettyHrtime = require('pretty-hrtime');
+const pretty = require('pretty-time');
 
 export function timer() {
   return {
@@ -8,7 +8,7 @@ export function timer() {
     },
     end: function(): string {
       const end = process.hrtime(start);
-      return prettyHrtime(end, { verbose: true });
+      return pretty(end);
     }
   };
 }

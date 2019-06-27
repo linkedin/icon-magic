@@ -17,7 +17,7 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@types/pretty-hrtime": "^1.0.0",
-    "pretty-hrtime": "^1.0.3"
+    "@types/pretty-time": "^1.1.0",
+    "pretty-time": "^1.1.0"
   }
 }
