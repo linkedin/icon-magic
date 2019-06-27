@@ -51,7 +51,7 @@ To use icon-magic, you have to set up your files (icons and their configurations
 Using icon-magic from the [command line](packages/@icon-magic/cli).
 
 <details>
-  <summary><h2>Glossary</h2></summary>
+  <summary><strong>Glossary</strong></summary>
   - **Asset**: A single file containing a logo/image. Assets can be of multiple
     types .svg, .png, .webp
   - **Variant**: a version of the icon that has its own underlying path elements.
