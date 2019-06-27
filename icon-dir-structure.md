@@ -74,47 +74,4 @@ to match it's corresponding folder structure.
 
 ## Icon configuration `iconrc.(js|json)`
 
-### JSON Schema
-
-```json
-  "iconrc": {
-      "type": "object",
-      "properties": {
-        "iconPath": {
-          "type": "string",
-          "title": "iconPath"
-        },
-        "variants": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AssetConfig"
-          },
-          "title": "variants"
-        },
-        "sizes": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/WidthHeight"
-              },
-              {
-                "type": "number"
-              }
-            ]
-          },
-          "title": "sizes"
-        },
-        "resolutions": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "title": "resolutions"
-        }
-      },
-      "required": ["iconPath", "resolutions", "sizes", "variants"]
-    }
-```
-
 You can explore all the available properties and descriptions on the Icon in the [TS config-schema](./packages/config-reader/src/schemas/config-schema) or [JSON Schema](./schema.md)
