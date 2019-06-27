@@ -11,7 +11,6 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 * [Getting Started](#getting-started)
 * [Setting up your icons for icon-magic](#setting-up-your-icons-for-icon-magic)
 * [Command line Usage](#command-line-usage)
-* [Glossary](#glossary)
 * [Packages](#packages)
   - [@icon-magic/blueprint](#icon-magicblueprint)
   - [@icon-magic/config-reader](#icon-magicconfig-reader)
@@ -47,24 +46,25 @@ To use icon-magic, you have to set up your files (icons and their configurations
 
 ## [Command line Usage](packages/@icon-magic/cli)
 
-## Glossary
-
-- **Asset**: A single file containing a logo/image. Assets can be of multiple
-  types .svg, .png, .webp
-- **Variant**: a version of the icon that has its own underlying path elements.
-  Variants are always of .svg type and form the input of the entire icon build
-  process.
-- **Icon**: The class representing a group of variants that belong to the same
-  icon. For example, two variants of the home icon can be a filled version and
-  an outline version of the same home icon. Within the file system, an icon is a
-  directory that consists of all the variant assets and a corresponding
-  iconrc.json config file.
-- **iconrc.(js|json)** A config file for a single icon or a group of icons with
-  paths to the various icon directories and their variants at minimum. The
-  config further be caustomaized
-- **Flavor**: An asset obtained after applying build/generate plugins on the
-  source .svg file. A flavor will also contain assets for each type, i. e.,
-  paths to the .svg, .png and .webp version of that flavor.
+<details>
+  <summary><h2>Glossary</h2></summary>
+  - **Asset**: A single file containing a logo/image. Assets can be of multiple
+    types .svg, .png, .webp
+  - **Variant**: a version of the icon that has its own underlying path elements.
+    Variants are always of .svg type and form the input of the entire icon build
+    process.
+  - **Icon**: The class representing a group of variants that belong to the same
+    icon. For example, two variants of the home icon can be a filled version and
+    an outline version of the same home icon. Within the file system, an icon is a
+    directory that consists of all the variant assets and a corresponding
+    iconrc.json config file.
+  - **iconrc.(js|json)** A config file for a single icon or a group of icons with
+    paths to the various icon directories and their variants at minimum. The
+    config further be caustomaized
+  - **Flavor**: An asset obtained after applying build/generate plugins on the
+    source .svg file. A flavor will also contain assets for each type, i. e.,
+    paths to the .svg, .png and .webp version of that flavor.
+</details>
 
 ## Packages
 
