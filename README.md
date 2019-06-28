@@ -127,6 +127,10 @@ Quickly converts an SVG file to a PNG file using Puppeteer.
 
 Handles logging for all the packages.
 
+### @icon-magic/timing
+
+Measures execution time.
+
 ### @icon-magic/code-style
 
 Shared tslint config for all icon magic packages.

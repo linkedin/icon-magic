@@ -706,9 +706,15 @@
   version "10.12.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.5.tgz#7e7ea1a9b34d2c8d704cb0b755dffbcda34741ad"
 
-"@types/node@^10.5.7":
-  version "10.5.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.7.tgz#960d9feb3ade2233bcc9843c918d740b4f78a7cf"
+"@types/node@^10.12.28":
+  version "10.14.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.10.tgz#e491484c6060af8d461e12ec81c0da8a3282b8de"
+  integrity sha512-V8wj+w2YMNvGuhgl/MA5fmTxgjmVHVoasfIaxMMZJV6Y8Kk+Ydpi1z2whoShDCJ2BuNVoqH/h1hrygnBxkrw/Q==
+
+"@types/pretty-time@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/pretty-time/-/pretty-time-1.1.0.tgz#aa69ab559e3506b245952332d8d5cf8dc4a15d6a"
+  integrity sha512-XxHpS0HzYCXyXe68xazMAK4ZCaLiDUeCGtT+zdVhb2LgXX40fGPamFW8aiNYlkf6WCDc176plLyDqfYodc0r6Q==
 
 "@types/puppeteer@^1.10.0":
   version "1.10.0"
@@ -5065,6 +5071,11 @@ prepend-http@^2.0.0:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
+
+pretty-time@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
+  integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
 process-nextick-args@~2.0.0:
   version "2.0.0"

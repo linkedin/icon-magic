@@ -1,9 +1,9 @@
 {
-  "name": "@icon-magic/build",
+  "name": "@icon-magic/timing",
   "version": "2.0.0",
-  "description": "Icon magic blueprint package.",
+  "description": "Icon magic timing package.",
   "main": "dist/src/index.js",
-  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
+  "author": "Adam Miller <adam@pages.me>",
   "license": "BSD-2-Clause",
   "private": true,
   "scripts": {
@@ -13,14 +13,11 @@
     "test": "mocha --opts test/mocha.opts dist/test",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
-    "postbuild": "cp -r ./test/fixtures ./dist/test",
     "lint": "tslint -t msbuild --project . -c tslint.json",
-    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix",
-    "cli": "yarn run build && icon-magic"
+    "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/icon-models": "^2.0.0",
-    "@icon-magic/logger": "^2.0.0",
-    "@icon-magic/timing": "^2.0.0"
+    "@types/pretty-time": "^1.1.0",
+    "pretty-time": "^1.1.0"
   }
 }
