@@ -64,3 +64,12 @@ export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
       return flavTypes;
     });
 }
+
+/**
+ * Strips resolution from icon name
+ * @param iconName name to strip resolution from
+ * @returns a string with the resolution stripped
+ */
+export function removeResolutionFromName(iconName: string): string {
+  return iconName.includes('@') ? iconName.replace(/@[0-9]/, '') : iconName;
+}

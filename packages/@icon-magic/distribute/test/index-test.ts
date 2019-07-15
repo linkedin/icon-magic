@@ -144,7 +144,12 @@ describe('distribute works as expected', function() {
     const spritePaths = [
       {
         path: 'icons.svg',
-        id: 'ads-default@1',
+        id: 'ads-default',
+        category: 'app'
+      },
+      {
+        path: 'icons.svg',
+        id: 'ads-default-2',
         category: 'app'
       },
       {
@@ -196,7 +201,7 @@ describe('distribute works as expected', function() {
       const svgs = doc.getElementsByTagName('svg');
       // 2 icons + parent svg
       assert.ok(svgs.length === 3, 'Only two variants in sprite');
-      const svgIDs = ['ads-default@1', 'ads-default@2'];
+      const svgIDs = ['ads-default', 'ads-default-2'];
       svgIDs.forEach(id => {
         assert.ok(
           doc.getElementById(id),

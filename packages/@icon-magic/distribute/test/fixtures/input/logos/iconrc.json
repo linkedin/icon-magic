@@ -16,7 +16,7 @@
       "path": "./default@1.5.svg"
     },
     {
-      "name": "default@2",
+      "name": "default-2@2",
       "path": "./default@2.svg",
       "distribute": {
         "svg": {
@@ -50,11 +50,11 @@
       }
     },
     {
-      "name": "default@2",
+      "name": "default-2@2",
       "path": "./default@2.svg",
       "types": {
         "svg": {
-          "name": "default@2",
+          "name": "default-2@2",
           "path": "./default@2.svg"
         }
       },
