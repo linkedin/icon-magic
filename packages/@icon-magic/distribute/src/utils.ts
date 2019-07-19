@@ -1,4 +1,4 @@
-import { Asset, FlavorType, Icon } from '@icon-magic/icon-models';
+import { Asset, FlavorType, Flavor, Icon } from '@icon-magic/icon-models';
 
 /**
  * The resolution of an asset is within the assets name as "@resolution"
@@ -53,16 +53,10 @@ export function getAssetResolutionFromName(
  */
 export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
   return Array.from(icon.flavors.values())
-    .filter(flavor => {
+    .filter((flavor: Flavor) => {
       return flavor.types.has(type);
     })
-    .map(flavor => {
-      // Add the distribute config to the flavor type if it exists so we can check for it
-      const distribute = flavor.getConfig().distribute;
-      const flavTypes = flavor.types.get(type) as Asset; // type casting here as we have checked for whether the flavor has the type above
-      if (distribute) flavTypes.distribute = distribute;
-      return flavTypes;
-    });
+    .map((flavor: Flavor) => flavor.types.get(type) as Asset); // type casting here as we have checked for whether the flavor has the type above
 }
 
 /**

@@ -36,6 +36,9 @@ const buildConfigProperties = {
 };
 
 const distributeConfigProperties = {
+  filterByVariants: {
+    type: ['array', 'null']
+  },
   svg: {
     type: ['object', null],
     properties: {
@@ -59,12 +62,7 @@ const distributeConfigProperties = {
 
 const variantProperties = {
   name: { type: 'string' },
-  path: { type: 'string', minLength: 1 },
-  distribute: {
-    type: 'object',
-    properties: distributeConfigProperties,
-    additionalProperties: false
-  }
+  path: { type: 'string', minLength: 1 }
 };
 
 const generateConfigProperties = {

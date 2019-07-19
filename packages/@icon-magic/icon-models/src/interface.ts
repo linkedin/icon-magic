@@ -15,7 +15,6 @@ export interface AssetConfig {
   name?: string;
   path: string;
   contents?: Content;
-  distribute?: object;
 }
 
 interface SVGOptions {

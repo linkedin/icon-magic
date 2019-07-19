@@ -200,14 +200,24 @@ export async function writeSpriteToFile(
 }
 
 /**
- * Checks if asset allows for addition to sprite
- * @param asset asset to check for sprite configuration
- * @returns boolean if the asset allows for sprite addition
+ * Partitions list of assets by whether it should be added to a sprite
+ * @param assets list of assets to partition
+ * @returns object with assets to be added to sprite and assets not to be
+ * added
  */
-export function shouldAddToSprite(asset: Asset): boolean {
-  return !!(
-    asset.distribute &&
-    asset.distribute.svg &&
-    asset.distribute.svg.toSprite
+export function shouldAddToSprite(
+  assets: Asset[],
+  filterByVariants: string[]
+): { assetsToAddToSprite: Asset[]; assetsNoSprite: Asset[] } {
+  const [assetsToAddToSprite, assetsNoSprite] = assets.reduce(
+    (result, asset) => {
+      result[filterByVariants.includes(asset.name)].push(asset);
+      return result;
+    },
+    [[], []]
   );
+  return {
+    assetsToAddToSprite,
+    assetsNoSprite
+  };
 }
