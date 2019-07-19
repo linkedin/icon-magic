@@ -205,10 +205,12 @@ export async function writeSpriteToFile(
  * @returns object with assets to be added to sprite and assets not to be
  * added
  */
-export function shouldAddToSprite(
+export function partitionAssetsForSprite(
   assets: Asset[],
   filterByVariants: string[]
 ): { assetsToAddToSprite: Asset[]; assetsNoSprite: Asset[] } {
+  // Create two arrays: 1 with assets to go in sprite and other with assets
+  // that won't be added to the sprite
   const [assetsToAddToSprite, assetsNoSprite] = assets.reduce(
     (result: Asset[][], asset: Asset) => {
       result[filterByVariants.includes(asset.name) ? 0 : 1].push(asset);

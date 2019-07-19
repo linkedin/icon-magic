@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import {
   addToSprite,
-  shouldAddToSprite,
+  partitionAssetsForSprite,
   writeSpriteToFile
 } from './create-sprite';
 import { getIconFlavorsByType } from './utils';
@@ -32,12 +32,15 @@ export async function distributeSvg(
 
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
-    const distributeConfig = icon.distribute;
     const assets = getIconFlavorsByType(icon, 'svg');
-    const { assetsToAddToSprite, assetsNoSprite } =
-      distributeConfig && distributeConfig.filterByVariants
-        ? shouldAddToSprite(assets, distributeConfig.filterByVariants)
-        : { assetsToAddToSprite: assets, assetsNoSprite: [] };
+    const distributeConfig = icon.distribute;
+    // If icon has defined the assets to go to sprite
+    const filterByVariants =
+      distributeConfig && distributeConfig.filterByVariants;
+
+    const { assetsToAddToSprite, assetsNoSprite } = filterByVariants
+      ? partitionAssetsForSprite(assets, distributeConfig.filterByVariants)
+      : { assetsToAddToSprite: assets, assetsNoSprite: [] };
 
     const iconHasSpriteConfig = !(
       icon.distribute &&
