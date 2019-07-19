@@ -4,12 +4,7 @@
   "variants": [
     {
       "name": "default@1",
-      "path": "./default@1.svg",
-      "distribute": {
-        "svg": {
-          "toSprite": true
-        }
-      }
+      "path": "./default@1.svg"
     },
     {
       "name": "default@1.5",
@@ -17,12 +12,7 @@
     },
     {
       "name": "default-2@2",
-      "path": "./default@2.svg",
-      "distribute": {
-        "svg": {
-          "toSprite": true
-        }
-      }
+      "path": "./default@2.svg"
     },
     {
       "name": "default@3",
@@ -98,8 +88,9 @@
   "sizes": [40],
   "category": "app",
   "distribute": {
+    "filterByVariants": ["default-2@2", "default@1"],
     "svg": {
-      "toSprite": false
+      "toSprite": true
     }
   }
 }

@@ -210,8 +210,8 @@ export function shouldAddToSprite(
   filterByVariants: string[]
 ): { assetsToAddToSprite: Asset[]; assetsNoSprite: Asset[] } {
   const [assetsToAddToSprite, assetsNoSprite] = assets.reduce(
-    (result, asset) => {
-      result[filterByVariants.includes(asset.name)].push(asset);
+    (result: Asset[][], asset: Asset) => {
+      result[filterByVariants.includes(asset.name) ? 0 : 1].push(asset);
       return result;
     },
     [[], []]

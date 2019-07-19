@@ -92,6 +92,7 @@ export interface GenerateConfig {
  * Properties related to the distribution of the icon
  */
 export interface DistributeConfig {
+  filterByVariants: string[];
   svg?: SVGOptions;
   webp?: WebpOptions;
 }

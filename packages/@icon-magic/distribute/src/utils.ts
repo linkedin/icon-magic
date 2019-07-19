@@ -1,4 +1,4 @@
-import { Asset, FlavorType, Flavor, Icon } from '@icon-magic/icon-models';
+import { Asset, Flavor, FlavorType, Icon } from '@icon-magic/icon-models';
 
 /**
  * The resolution of an asset is within the assets name as "@resolution"

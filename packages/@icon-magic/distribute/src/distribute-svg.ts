@@ -32,12 +32,13 @@ export async function distributeSvg(
 
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
-    const distributeConfig = icon.distribute || {};
+    const distributeConfig = icon.distribute;
     const assets = getIconFlavorsByType(icon, 'svg');
-    const { assetsToAddToSprite, assetsNoSprite } = shouldAddToSprite(
-      assets,
-      distributeConfig.filterByVariants
-    );
+    const { assetsToAddToSprite, assetsNoSprite } =
+      distributeConfig && distributeConfig.filterByVariants
+        ? shouldAddToSprite(assets, distributeConfig.filterByVariants)
+        : { assetsToAddToSprite: assets, assetsNoSprite: [] };
+
     const iconHasSpriteConfig = !(
       icon.distribute &&
       icon.distribute.svg &&
