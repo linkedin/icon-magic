@@ -3,84 +3,74 @@
   "iconPath": ".",
   "variants": [
     {
-      "name": "default@1",
-      "path": "./default@1.svg"
+      "name": "filled@1",
+      "path": "./filled@1.svg"
     },
     {
-      "name": "default@1.5",
-      "path": "./default@1.5.svg"
+      "name": "filled@1.5",
+      "path": "./filled@1.5.svg"
     },
     {
-      "name": "default-2@2",
-      "path": "./default@2.svg"
+      "name": "filled-2@2",
+      "path": "./filled@2.svg"
     },
     {
-      "name": "default@3",
-      "path": "./default@3.svg"
+      "name": "filled@3",
+      "path": "./filled@3.svg"
     },
     {
-      "name": "default@4",
-      "path": "./default@4.svg"
+      "name": "filled@4",
+      "path": "./filled@4.svg"
     }
   ],
   "flavors": [
     {
-      "name": "default@1",
-      "path": "./default@1.svg",
+      "name": "filled@1",
+      "path": "./filled@1.svg",
       "types": {
         "svg": {
-          "name": "default@1",
-          "path": "./default@1.svg"
-        }
-      },
-      "distribute": {
-        "svg": {
-          "toSprite": true
+          "name": "filled@1",
+          "path": "./filled@1.svg"
         }
       }
     },
     {
-      "name": "default-2@2",
-      "path": "./default@2.svg",
+      "name": "filled-2@2",
+      "path": "./filled@2.svg",
       "types": {
         "svg": {
-          "name": "default-2@2",
-          "path": "./default@2.svg"
-        }
-      },
-      "distribute": {
-        "svg": {
-          "toSprite": true
+          "name": "filled-2@2",
+          "path": "./filled@2.svg"
         }
       }
     },
     {
-      "name": "default@1.5",
-      "path": "./default@1.5.svg",
+      "name": "filled@1.5",
+      "path": "./filled@1.5.svg",
       "types": {
         "svg": {
-          "name": "default@1.5",
-          "path": "./default@1.5.svg"
+          "name": "filled@1.5",
+          "path": "./filled@1.5.svg"
         }
       }
     },
     {
-      "name": "default@4",
-      "path": "./default@4.svg",
+      "name": "filled@4",
+      "path": "./filled@4.svg",
       "types": {
         "svg": {
-          "name": "default@4",
-          "path": "./default@4.svg"
+          "name": "filled@4",
+          "path": "./filled@4.svg"
         }
       }
     },
     {
-      "name": "default@3",
-      "path": "./default@3.svg",
+      "name": "filled@3",
+      "path": "./filled@3.svg",
       "types": {
         "svg": {
-          "name": "default@3",
-          "path": "./default@3.svg"
+          "name": "filled@3",
+          "path": "./filled@3.svg"
         }
       }
     }
@@ -88,9 +78,9 @@
   "sizes": [40],
   "category": "app",
   "distribute": {
-    "filterByVariants": ["default-2@2", "default@1"],
     "svg": {
-      "toSprite": true
+      "toSprite": true,
+      "variantsToFilter": ["filled-2@2", "filled@1"]
     }
   }
 }

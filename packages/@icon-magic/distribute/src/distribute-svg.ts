@@ -34,29 +34,29 @@ export async function distributeSvg(
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
     const distributeConfig = icon.distribute;
-    // If icon has defined the assets to go to sprite
-    const filterByVariants =
-      distributeConfig && distributeConfig.filterByVariants;
+    const svgConfig = distributeConfig && distributeConfig.svg;
 
-    const { assetsToAddToSprite, assetsNoSprite } = filterByVariants
-      ? partitionAssetsForSprite(assets, distributeConfig.filterByVariants)
+    // variantsToFilter can be defined on distribute or on distribute.svg
+    const iconVariantsToFilter = distributeConfig && distributeConfig.variantsToFilter;
+    const svgVariantsToFilter = svgConfig && svgConfig.variantsToFilter;
+    const variantsToFilter = svgVariantsToFilter || iconVariantsToFilter;
+
+    // If icon has defined the assets to go to sprite
+    const { assetsToAddToSprite, assetsNoSprite } = variantsToFilter && variantsToFilter.length
+      ? partitionAssetsForSprite(assets, variantsToFilter)
       : { assetsToAddToSprite: assets, assetsNoSprite: [] };
 
     const iconHasSpriteConfig = !(
-      icon.distribute &&
-      icon.distribute.svg &&
-      !icon.distribute.svg.toSprite
+      distributeConfig &&
+      svgConfig &&
+      !svgConfig.toSprite
     );
 
     if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const spriteName =
-        distributeConfig &&
-        distributeConfig.svg &&
-        distributeConfig.svg.spriteName
-          ? distributeConfig.svg.spriteName
-          : 'icons';
+        svgConfig && svgConfig.spriteName ? svgConfig.spriteName : 'icons';
 
       await addToSprite(
         spriteName,

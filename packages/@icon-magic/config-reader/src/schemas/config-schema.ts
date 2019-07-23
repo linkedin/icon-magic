@@ -36,7 +36,7 @@ const buildConfigProperties = {
 };
 
 const distributeConfigProperties = {
-  filterByVariants: {
+  variantsToFilter: {
     type: ['array', 'null']
   },
   svg: {
@@ -47,7 +47,10 @@ const distributeConfigProperties = {
       },
       toSprite: {
         type: ['boolean', 'null']
-      }
+      },
+      variantsToFilter: {
+        type: ['array', 'null']
+      },
     }
   },
   webp: {

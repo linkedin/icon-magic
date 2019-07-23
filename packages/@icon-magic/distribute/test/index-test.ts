@@ -153,6 +153,16 @@ describe('distribute works as expected', function() {
         category: 'app'
       },
       {
+        path: 'icons.svg',
+        id: 'point-default',
+        category: 'app'
+      },
+      {
+        path: 'icons.svg',
+        id: 'point-default-2',
+        category: 'app'
+      },
+      {
         path: 'icons-1.svg',
         id: 'a-home-filled-1',
         category: 'ui-icon'
@@ -200,8 +210,13 @@ describe('distribute works as expected', function() {
       const doc = new DOMParser().parseFromString(content, 'svg');
       const svgs = doc.getElementsByTagName('svg');
       // 2 icons + parent svg
-      assert.ok(svgs.length === 3, 'Only two variants in sprite');
-      const svgIDs = ['ads-default', 'ads-default-2'];
+      assert.ok(svgs.length === 5, 'Only four variants in sprite');
+      const svgIDs = [
+        'ads-default',
+        'ads-default-2',
+        'point-default',
+        'point-default-2'
+      ];
       svgIDs.forEach(id => {
         assert.ok(
           doc.getElementById(id),

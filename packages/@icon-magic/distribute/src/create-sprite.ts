@@ -207,13 +207,13 @@ export async function writeSpriteToFile(
  */
 export function partitionAssetsForSprite(
   assets: Asset[],
-  filterByVariants: string[]
+  variantsToFilter: string[]
 ): { assetsToAddToSprite: Asset[]; assetsNoSprite: Asset[] } {
   // Create two arrays: 1 with assets to go in sprite and other with assets
   // that won't be added to the sprite
   const [assetsToAddToSprite, assetsNoSprite] = assets.reduce(
     (result: Asset[][], asset: Asset) => {
-      result[filterByVariants.includes(asset.name) ? 0 : 1].push(asset);
+      result[variantsToFilter.includes(asset.name) ? 0 : 1].push(asset);
       return result;
     },
     [[], []]
