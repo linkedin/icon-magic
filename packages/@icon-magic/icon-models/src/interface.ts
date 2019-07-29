@@ -20,6 +20,7 @@ export interface AssetConfig {
 interface SVGOptions {
   toSprite?: boolean;
   spriteName?: string;
+  variantsToFilter: string[];
 }
 
 interface WebpOptions {
@@ -92,6 +93,7 @@ export interface GenerateConfig {
  * Properties related to the distribution of the icon
  */
 export interface DistributeConfig {
+  variantsToFilter: string[];
   svg?: SVGOptions;
   webp?: WebpOptions;
 }

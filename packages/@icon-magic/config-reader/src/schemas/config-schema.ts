@@ -1,8 +1,3 @@
-const variantProperties = {
-  name: { type: 'string' },
-  path: { type: 'string', minLength: 1 }
-};
-
 const flavorProperties = {
   name: { type: 'string' },
   path: { type: 'string', minLength: 1 },
@@ -41,6 +36,9 @@ const buildConfigProperties = {
 };
 
 const distributeConfigProperties = {
+  variantsToFilter: {
+    type: ['array', 'null']
+  },
   svg: {
     type: ['object', null],
     properties: {
@@ -49,7 +47,10 @@ const distributeConfigProperties = {
       },
       toSprite: {
         type: ['boolean', 'null']
-      }
+      },
+      variantsToFilter: {
+        type: ['array', 'null']
+      },
     }
   },
   webp: {
@@ -60,6 +61,11 @@ const distributeConfigProperties = {
       }
     }
   }
+};
+
+const variantProperties = {
+  name: { type: 'string' },
+  path: { type: 'string', minLength: 1 }
 };
 
 const generateConfigProperties = {

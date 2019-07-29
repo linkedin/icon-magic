@@ -53,7 +53,6 @@ export class Flavor extends Asset {
         flavorTypes[key] = asset.getAssetConfig();
       }
     }
-
     return {
       name: this.name,
       path: `./${path.relative(this.iconPath, this.getPath())}`,

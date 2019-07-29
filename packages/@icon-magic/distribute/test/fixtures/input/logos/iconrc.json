@@ -1,0 +1,86 @@
+{
+  "iconName": "logos",
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "filled@1",
+      "path": "./filled@1.svg"
+    },
+    {
+      "name": "filled@1.5",
+      "path": "./filled@1.5.svg"
+    },
+    {
+      "name": "filled-2@2",
+      "path": "./filled@2.svg"
+    },
+    {
+      "name": "filled@3",
+      "path": "./filled@3.svg"
+    },
+    {
+      "name": "filled@4",
+      "path": "./filled@4.svg"
+    }
+  ],
+  "flavors": [
+    {
+      "name": "filled@1",
+      "path": "./filled@1.svg",
+      "types": {
+        "svg": {
+          "name": "filled@1",
+          "path": "./filled@1.svg"
+        }
+      }
+    },
+    {
+      "name": "filled-2@2",
+      "path": "./filled@2.svg",
+      "types": {
+        "svg": {
+          "name": "filled-2@2",
+          "path": "./filled@2.svg"
+        }
+      }
+    },
+    {
+      "name": "filled@1.5",
+      "path": "./filled@1.5.svg",
+      "types": {
+        "svg": {
+          "name": "filled@1.5",
+          "path": "./filled@1.5.svg"
+        }
+      }
+    },
+    {
+      "name": "filled@4",
+      "path": "./filled@4.svg",
+      "types": {
+        "svg": {
+          "name": "filled@4",
+          "path": "./filled@4.svg"
+        }
+      }
+    },
+    {
+      "name": "filled@3",
+      "path": "./filled@3.svg",
+      "types": {
+        "svg": {
+          "name": "filled@3",
+          "path": "./filled@3.svg"
+        }
+      }
+    }
+  ],
+  "sizes": [40],
+  "category": "app",
+  "distribute": {
+    "svg": {
+      "toSprite": true,
+      "variantsToFilter": ["filled-2@2", "filled@1"]
+    }
+  }
+}

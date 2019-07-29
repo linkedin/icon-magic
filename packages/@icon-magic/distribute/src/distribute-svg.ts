@@ -3,7 +3,11 @@ import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { addToSprite, writeSpriteToFile } from './create-sprite';
+import {
+  addToSprite,
+  partitionAssetsForSprite,
+  writeSpriteToFile
+} from './create-sprite';
 import { getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
@@ -25,32 +29,45 @@ export async function distributeSvg(
   // Keep track of the sprites that have been created so we know when to create
   // a new one and when to append to an existing document
   const spriteNames: spriteConfig = {};
+
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
-    // If icon has a distribute config and it indicates it shouldn't be put
-    // in a sprite
-    if (
-      icon.distribute &&
-      icon.distribute.svg &&
-      !icon.distribute.svg.toSprite
-    ) {
-      // Just copy the files to the output
-      await copyIconAssetSvgs(icon.iconName, assets, outputPath);
-    } else {
+    const distributeConfig = icon.distribute;
+    const svgConfig = distributeConfig && distributeConfig.svg;
+
+    // variantsToFilter can be defined on distribute or on distribute.svg
+    const iconVariantsToFilter = distributeConfig && distributeConfig.variantsToFilter;
+    const svgVariantsToFilter = svgConfig && svgConfig.variantsToFilter;
+    const variantsToFilter = svgVariantsToFilter || iconVariantsToFilter;
+
+    // If icon has defined the assets to go to sprite
+    const { assetsToAddToSprite, assetsNoSprite } = variantsToFilter && variantsToFilter.length
+      ? partitionAssetsForSprite(assets, variantsToFilter)
+      : { assetsToAddToSprite: assets, assetsNoSprite: [] };
+
+    const iconHasSpriteConfig = !(
+      distributeConfig &&
+      svgConfig &&
+      !svgConfig.toSprite
+    );
+
+    if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const spriteName =
-        icon.distribute && icon.distribute.svg && icon.distribute.svg.spriteName
-          ? icon.distribute.svg.spriteName
-          : 'icons';
+        svgConfig && svgConfig.spriteName ? svgConfig.spriteName : 'icons';
+
       await addToSprite(
         spriteName,
-        assets,
+        assetsToAddToSprite,
         groupByCategory,
         icon.category,
         spriteNames
       );
+    } else {
+      // Just copy the files to the output
+      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, outputPath);
     }
   }
   // After we've gone through all the icons, write the sprites to a file

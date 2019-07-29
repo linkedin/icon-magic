@@ -6,6 +6,8 @@ import {
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
+import { removeResolutionFromName } from './utils';
+
 const LOGGER: Logger = logger('icon-magic:distribute:create-sprite');
 const serializeToString = new XMLSerializer().serializeToString;
 
@@ -162,6 +164,18 @@ export async function appendToSvgDoc(
   }
 }
 
+function removeSVGResolution(svgEl: SVGSVGElement): SVGSVGElement {
+  const children = svgEl.getElementsByTagName('svg');
+  let svgs = [].slice.call(children);
+  svgs = svgs.filter((icon: Element) => {
+    const id = icon.getAttributeNode('id');
+    if (id && id.value) {
+      const newId = removeResolutionFromName(id.value);
+      icon.setAttribute('id', newId);
+    }
+  });
+  return svgEl;
+}
 /**
  * Saves svg elements stored in an object as a file
  * @param spriteNames object for mapping sprite name to (and storing) svg document and element
@@ -174,7 +188,7 @@ export async function writeSpriteToFile(
   // Go through all the stored sprites
   for (const spriteName in spriteNames) {
     // Get the svg element
-    const svgEl = spriteNames[spriteName].svgEl;
+    const svgEl = removeSVGResolution(spriteNames[spriteName].svgEl);
     // Write it to file
     await saveContentToFile(
       outputPath,
@@ -183,4 +197,29 @@ export async function writeSpriteToFile(
       'svg'
     );
   }
+}
+
+/**
+ * Partitions list of assets by whether it should be added to a sprite
+ * @param assets list of assets to partition
+ * @returns object with assets to be added to sprite and assets not to be
+ * added
+ */
+export function partitionAssetsForSprite(
+  assets: Asset[],
+  variantsToFilter: string[]
+): { assetsToAddToSprite: Asset[]; assetsNoSprite: Asset[] } {
+  // Create two arrays: 1 with assets to go in sprite and other with assets
+  // that won't be added to the sprite
+  const [assetsToAddToSprite, assetsNoSprite] = assets.reduce(
+    (result: Asset[][], asset: Asset) => {
+      result[variantsToFilter.includes(asset.name) ? 0 : 1].push(asset);
+      return result;
+    },
+    [[], []]
+  );
+  return {
+    assetsToAddToSprite,
+    assetsNoSprite
+  };
 }
