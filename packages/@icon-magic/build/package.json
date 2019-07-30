@@ -21,7 +21,6 @@
   "dependencies": {
     "@icon-magic/icon-models": "^2.0.0",
     "@icon-magic/logger": "^2.0.0",
-    "@icon-magic/timing": "^2.0.0",
-    "timing": "^0.1.3"
+    "@icon-magic/timing": "^2.0.0"
   }
 }
