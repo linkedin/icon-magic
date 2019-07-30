@@ -141,4 +141,63 @@ describe('svgToRaster()', function() {
       'works when the resolution is present in the name'
     );
   });
+
+  it('Generated raster assets are named correctly when name in flavor is just the resolution', async () => {
+    const options: SvgToRasterOptions = {
+      propCombo: {
+        sizes: { width: 24, height: 12 }
+      }
+    };
+
+    const flavor2: Flavor = new Flavor(
+      `${FIXTURES}/nav-icons/home/filled.svg`,
+      {
+        name: '@2',
+        contents: file,
+        path: `${FIXTURES}/nav-icons/home/filled.svg`
+      }
+    );
+
+    const flavorWithTypes2: FlavorTypeMap = {
+      png: {
+        name: '24x12@2',
+        path: './24x12@2.png'
+      },
+      webp: {
+        name: '24x12@2',
+        path: './24x12@2.webp'
+      }
+    };
+    const output: Flavor = await svgToRaster.fn(flavor2, icon, options);
+    assert.deepEqual(flavorWithTypes2, output.getConfig().types);
+  });
+
+  it('Generated raster assets are named correctly when name in flavor is not specified', async () => {
+    const options: SvgToRasterOptions = {
+      propCombo: {
+        sizes: { width: 24, height: 12 }
+      }
+    };
+
+    const flavor2: Flavor = new Flavor(
+      `${FIXTURES}/nav-icons/home/filled.svg`,
+      {
+        contents: file,
+        path: `${FIXTURES}/nav-icons/home/filled.svg`
+      }
+    );
+
+    const flavorWithTypes2: FlavorTypeMap = {
+      png: {
+        name: 'filled-24x12@1',
+        path: './filled-24x12@1.png'
+      },
+      webp: {
+        name: 'filled-24x12@1',
+        path: './filled-24x12@1.webp'
+      }
+    };
+    const output: Flavor = await svgToRaster.fn(flavor2, icon, options);
+    assert.deepEqual(flavorWithTypes2, output.getConfig().types);
+  });
 });
