@@ -15,7 +15,7 @@ function start () {
 function stop() {
   console.log(`Stopping server on port ${PORT}.`);
   return new Promise((resolve, reject) => {
-    server ? server.close((err: Error) => err ? reject(err) : resolve()) : resolve();
+    server ? server.close((err: Error | undefined) => err ? reject(err) : resolve()) : resolve();
   }).then(() => {
     console.log(`Server stopped on port ${PORT}.`);
   });

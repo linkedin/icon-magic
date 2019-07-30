@@ -122,22 +122,28 @@ export const svgToRaster: GeneratePlugin = {
       // home-filled-width-height@12 instead of home-filled@12-width-height
       let res;
       let assetName;
+      const flavorName = flavor.name;
       if (!params.propCombo.resolutions) {
         res = 1;
-        const resolutionFromName = flavor.name.match(/@[0-9|\.]*/);
+        const resolutionFromName = flavorName.match(/@[0-9|\.]*/);
         if (resolutionFromName) {
           // strip the resolution from the flavor's name and append it to the end
-          assetName = `${flavor.name.replace(
+          const nameWithoutRes = `${flavorName.replace(
             resolutionFromName[0],
             ''
-          )}-${w}x${h}${resolutionFromName[0]}`;
+          )}`;
+          // don't append `-` if there's name is an empty string
+          assetName = `${appendDash(nameWithoutRes)}${w}x${h}${
+            resolutionFromName[0]
+          }`;
         } else {
           // appends @1 to the name
-          assetName = `${flavor.name}-${w}x${h}@${res}`;
+          // name is an optional property on flavor, so don't append `-` if there's nothing
+          assetName = `${appendDash(flavorName)}${w}x${h}@${res}`;
         }
       } else {
         res = params.propCombo.resolutions;
-        assetName = `${flavor.name}-${w}x${h}@${res}`;
+        assetName = `${appendDash(flavorName)}${w}x${h}@${res}`;
       }
 
       // create the icon output path if it doesn't exist already
@@ -185,6 +191,15 @@ export const svgToRaster: GeneratePlugin = {
     return flavor;
   }
 };
+
+/**
+ * Appends dash to a string if it's not empty
+ * @param s the string to append a dash to
+ * @returns empty string or string with appended dash
+ */
+function appendDash(s: string): string {
+  return s ? `${s}-` : s;
+}
 
 /**
  * Generate a png asset from an svg string
