@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "description": "Icon magic timing package.",
   "main": "dist/src/index.js",
-  "author": "Adam Miller <adam@pages.me>",
+  "author": "Omayeli Arenyeka <aomayeli@gmail.com>",
   "license": "BSD-2-Clause",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
