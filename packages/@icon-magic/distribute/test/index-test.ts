@@ -227,4 +227,14 @@ describe('distribute works as expected', function() {
       assert.ok(false, err);
     }
   });
+
+  it('copies svg assets with no sprite config to output', async () => {
+    try {
+      const iconPath = `${output}/achievement`;
+      const files = fs.readdirSync(iconPath);
+      assert.ok(files.includes('filled.svg'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
 });
