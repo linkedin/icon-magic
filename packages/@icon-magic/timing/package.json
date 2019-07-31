@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/timing",
-  "version": "2.0.1-beta.0",
+  "version": "2.0.0",
   "description": "Icon magic timing package.",
   "main": "dist/src/index.js",
   "author": "Omayeli Arenyeka <aomayeli@gmail.com>",
