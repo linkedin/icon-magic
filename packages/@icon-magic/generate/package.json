@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/generate",
-  "version": "2.0.1-beta.0",
+  "version": "2.0.0",
   "description": "Icon magic blueprint package.",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
@@ -18,11 +18,11 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/icon-models": "^2.0.1-beta.0",
-    "@icon-magic/imagemin-farm": "^2.0.1-beta.0",
-    "@icon-magic/logger": "^2.0.1-beta.0",
-    "@icon-magic/svg-to-png": "^2.0.1-beta.0",
-    "@icon-magic/timing": "^2.0.1-beta.0",
+    "@icon-magic/icon-models": "^2.0.0",
+    "@icon-magic/imagemin-farm": "^2.0.0",
+    "@icon-magic/logger": "^2.0.0",
+    "@icon-magic/svg-to-png": "^2.0.0",
+    "@icon-magic/timing": "^2.0.0",
     "svgo": "^1.2.0",
     "workerpool": "^3.1.2"
   },
