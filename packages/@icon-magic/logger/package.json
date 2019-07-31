@@ -1,9 +1,9 @@
 {
-  "name": "@icon-magic/logger",
+  "name": "@icon-magic/timing",
   "version": "2.0.0",
-  "description": "Icon magic logger package.",
+  "description": "Icon magic timing package.",
   "main": "dist/src/index.js",
-  "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
+  "author": "Omayeli Arenyeka <aomayeli@gmail.com>",
   "license": "BSD-2-Clause",
   "private": true,
   "scripts": {

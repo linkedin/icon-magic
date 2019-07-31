@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
   "license": "BSD-2-Clause",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
