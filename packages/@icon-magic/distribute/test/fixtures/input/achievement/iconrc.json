@@ -1,0 +1,49 @@
+{
+  "iconName": "achievement",
+  "variants": [
+    {
+      "path": "./filled.svg"
+    }
+  ],
+  "category": "ui-icon",
+  "iconPath": ".",
+  "flavors": [
+    {
+      "name": "filled-24x12",
+      "path": "./filled.svg",
+      "types": {
+        "png": {
+          "name": "filled-24x12",
+          "path": "./filled-24x12@2.png"
+        },
+        "webp": {
+          "name": "filled-24x12",
+          "path": "./filled-24x12@2.webp"
+        },
+        "svg": {
+          "name": "filled-24x12",
+          "path": "./filled.svg"
+        }
+      }
+    },
+    {
+      "name": "filled-60x60",
+      "path": "./filled.svg",
+      "types": {
+        "png": {
+          "name": "filled-60x60",
+          "path": "./filled-60x60@2.png"
+        },
+        "webp": {
+          "name": "filled-60x60",
+          "path": "./filled-60x60@2.webp"
+        }
+      }
+    }
+  ],
+  "distribute": {
+    "svg": {
+      "toSprite": false
+    }
+  }
+}

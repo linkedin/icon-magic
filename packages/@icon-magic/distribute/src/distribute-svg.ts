@@ -37,14 +37,16 @@ export async function distributeSvg(
     const svgConfig = distributeConfig && distributeConfig.svg;
 
     // variantsToFilter can be defined on distribute or on distribute.svg
-    const iconVariantsToFilter = distributeConfig && distributeConfig.variantsToFilter;
+    const iconVariantsToFilter =
+      distributeConfig && distributeConfig.variantsToFilter;
     const svgVariantsToFilter = svgConfig && svgConfig.variantsToFilter;
     const variantsToFilter = svgVariantsToFilter || iconVariantsToFilter;
 
     // If icon has defined the assets to go to sprite
-    const { assetsToAddToSprite, assetsNoSprite } = variantsToFilter && variantsToFilter.length
-      ? partitionAssetsForSprite(assets, variantsToFilter)
-      : { assetsToAddToSprite: assets, assetsNoSprite: [] };
+    const { assetsToAddToSprite, assetsNoSprite } =
+      variantsToFilter && variantsToFilter.length
+        ? partitionAssetsForSprite(assets, variantsToFilter)
+        : { assetsToAddToSprite: assets, assetsNoSprite: assets };
 
     const iconHasSpriteConfig = !(
       distributeConfig &&
