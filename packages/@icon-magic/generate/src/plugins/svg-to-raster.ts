@@ -136,6 +136,10 @@ export const svgToRaster: GeneratePlugin = {
           assetName = `${appendDash(nameWithoutRes)}${w}x${h}${
             resolutionFromName[0]
           }`;
+          LOGGER.debug(`resolutionFromName: ${resolutionFromName}`);
+          // the resolution is of the form @1 in the name and we need to get the
+          // number for raster generation
+          res = parseFloat(resolutionFromName[0].replace('@', ''));
         } else {
           // appends @1 to the name
           // name is an optional property on flavor, so don't append `-` if there's nothing
