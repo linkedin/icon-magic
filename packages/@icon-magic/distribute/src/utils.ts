@@ -16,12 +16,12 @@ export function getAssetResolutionFromName(
   let scale;
   switch (true) {
     case /@1.5/.test(asset.name): {
-      resolution = 'drawable-mdpi';
+      resolution = 'drawable-hdpi';
       scale = '1.5x';
       break;
     }
     case /@1/.test(asset.name): {
-      resolution = 'drawable-hdpi';
+      resolution = 'drawable-mdpi';
       scale = '1x';
       break;
     }
