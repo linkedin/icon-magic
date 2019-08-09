@@ -52,6 +52,8 @@ Using icon-magic from the [command line](packages/@icon-magic/cli).
 
 <details>
   <summary><strong>Glossary</strong></summary>
+  <p>
+    
   - **Asset**: A single file containing a logo/image. Assets can be of multiple
     types .svg, .png, .webp
   - **Variant**: a version of the icon that has its own underlying path elements.
@@ -68,6 +70,8 @@ Using icon-magic from the [command line](packages/@icon-magic/cli).
   - **Flavor**: An asset obtained after applying build/generate plugins on the
     source .svg file. A flavor will also contain assets for each type, i. e.,
     paths to the .svg, .png and .webp version of that flavor.
+    
+  </p>
 </details>
 
 ## Packages
@@ -123,23 +127,23 @@ Minifies images!
 
 Quickly converts an SVG file to a PNG file using Puppeteer.
 
-### @icon-magic/logger
+### [@icon-magic/logger](packages/@icon-magic/logger)
 
 Handles logging for all the packages.
 
-### @icon-magic/timing
+### [@icon-magic/timing](packages/@icon-magic/timing)
 
 Measures execution time.
 
-### @icon-magic/code-style
+### [@icon-magic/code-style](packages/@icon-magic/code-style)
 
 Shared tslint config for all icon magic packages.
 
-### @icon-magic/server
+### [@icon-magic/server](packages/@icon-magic/server)
 
 [WIP] API server for adding, modifying and removing icons from a bundle.
 
-### @icon-magic/library
+### [@icon-magic/library](packages/@icon-magic/library)
 
 [**DEPRECATED**] Type definitions and type conversion primitives for an "icon bundle"
 
