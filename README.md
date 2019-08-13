@@ -70,9 +70,8 @@ You can use `yarn lerna run` to run a script in each package that contains that 
 - **Flavor**: An asset obtained after applying build/generate plugins on the
   source .svg file. A flavor will also contain assets for each type, i. e.,
   paths to the .svg, .png and .webp version of that flavor.
-
-    </p>
-  </details>
+  </p>
+</details>
 
 ## Packages
 
