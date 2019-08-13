@@ -1,0 +1,14 @@
+{
+  "name": "@icon-magic/blueprint",
+  "version": "2.0.1-beta.0",
+  "description": "Icon magic blueprint package.",
+  "author": "Ramitha Chitloor",
+  "license": "BSD-2-Clause",
+  "private": false,
+  "bin": {
+    "icon-magic": "@icon-magic/cli"
+  },
+  "dependencies": {
+    "@icon-magic/cli": "^2.0.1-beta.0"
+  }
+}
