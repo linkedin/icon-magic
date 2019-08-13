@@ -10,6 +10,7 @@
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
     "pretest": "yarn run build & yarn run lint",
+    "prepack": "yarn run build",
     "test": "mocha --opts test/mocha.opts dist/test",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
