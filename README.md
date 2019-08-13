@@ -10,9 +10,9 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Setting up your icons for icon-magic](#setting-up-your-icons-for-icon-magic)
-- [Command line Usage](#command-line-usage)
+- [Using icon-magic](#using-icon-magic)
+- [Setting up your icons](#setting-up-your-icons)
+- [Exploring Icon Magic](#exploring-icon-magic)
 - [Packages](#packages)
   - [@icon-magic/blueprint](#icon-magicblueprint)
   - [@icon-magic/config-reader](#icon-magicconfig-reader)
@@ -37,7 +37,7 @@ You can get started using icon-magic with our [CLI](packages/@icon-magic/cli).
 
 To use icon-magic, you have to set up your files (icons and their configurations) in the right format. Go to [Icon Directory Structure](./icon-dir-structure.md) for more information.
 
-## Getting Started with the project
+## Exploring Icon Magic
 
 Icon Magic is structured as a [Lerna](https://github.com/lerna/lerna) monorepo. All of Icon Magic's packages live in the `/packages/@icon-magic` directory and you'll need to use [lerna commands](https://github.com/lerna/lerna/tree/master/commands) to manage the packages (for example, adding a new package to be used by one or multiple existing packages).
 
@@ -71,8 +71,8 @@ You can use `yarn lerna run` to run a script in each package that contains that 
   source .svg file. A flavor will also contain assets for each type, i. e.,
   paths to the .svg, .png and .webp version of that flavor.
 
-  </p>
-</details>
+    </p>
+  </details>
 
 ## Packages
 
