@@ -31,7 +31,21 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 
 ## Using icon-magic
 
-You can get started using icon-magic with our [CLI](packages/@icon-magic/cli).
+## Install
+
+Using npm:
+
+```sh
+npm install --save-dev @icon-magic/cli
+```
+
+or using yarn:
+
+```sh
+yarn add @icon-magic/cli --dev
+```
+
+Usage information is available in the [CLI README](packages/@icon-magic/cli).
 
 ### Setting up your icons
 
