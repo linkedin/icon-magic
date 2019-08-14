@@ -36,13 +36,13 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 Using npm:
 
 ```sh
-npm install --save-dev @icon-magic/cli
+npm install --save-dev @icon-magic
 ```
 
 or using yarn:
 
 ```sh
-yarn add @icon-magic/cli --dev
+yarn add @icon-magic --dev
 ```
 
 Usage information is available in the [CLI README](packages/@icon-magic/cli).
@@ -84,8 +84,8 @@ You can use `yarn lerna run` to run a script in each package that contains that 
 - **Flavor**: An asset obtained after applying build/generate plugins on the
   source .svg file. A flavor will also contain assets for each type, i. e.,
   paths to the .svg, .png and .webp version of that flavor.
-  </p>
-</details>
+    </p>
+  </details>
 
 ## Packages
 
