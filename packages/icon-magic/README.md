@@ -58,7 +58,7 @@ icon-magic build icons/
 ```
 
 Given a set of input directories, finds the closest [config file](../config-reader/README.md) (iconrc.json/iconrc.js/icon) and "builds" the icons from it. Refer to
-[@icon-magic/build](../build/README.md) for more details.
+[@icon-magic/build](../@icon-magic/build/README.md) for more details.
 
 ### Generate
 
@@ -73,7 +73,7 @@ icon-magic generate icons/
 Given a directory of icons (each icon containing it's own config file consisting
 of all the flavors from the build step), the generate step is responsible for
 going through the config file to determine the platforms on which the icon needs
-to be supported. Refer [@icon-magic/generate](../generate/README.md) for more details.
+to be supported. Refer [@icon-magic/generate](../@icon-magic/generate/README.md) for more details.
 
 ### Distribute
 
@@ -90,4 +90,4 @@ Options:
 -t, --type type of icons format to handle, accepted types are svg|png|webp
 -g, --groupBy [currently the only supported use is for web sprite creation] if to how to group the icons by category
 
-Refer [@icon-magic/distribute](../distribute/README.md) for more details.
+Refer [@icon-magic/distribute](../@icon-magic/distribute/README.md) for more details.
