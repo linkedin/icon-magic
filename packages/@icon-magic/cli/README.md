@@ -1,19 +1,19 @@
-# @icon-magic/cli
+# @icon-magic
 
-> Icon Magic command line.
+> For using Icon Magic command line.
 
 ## Install
 
 Using npm:
 
 ```sh
-npm install --save-dev @icon-magic/cli
+npm install --save-dev icon-magic
 ```
 
 or using yarn:
 
 ```sh
-yarn add @icon-magic/cli --dev
+yarn add icon-magic --dev
 ```
 
 ## Usage
