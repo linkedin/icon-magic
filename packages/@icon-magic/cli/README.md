@@ -1,4 +1,4 @@
-# @icon-magic
+# @icon-magic/cli
 
 > For using Icon Magic command line.
 
