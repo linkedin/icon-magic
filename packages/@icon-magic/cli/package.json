@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/cli",
-  "version": "2.0.1-beta.0",
+  "version": "2.1.0-beta.0",
   "description": "Icon magic CLI package.",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@icon-magic/build": "^2.0.1-beta.0",
-    "@icon-magic/distribute": "^2.0.1-beta.0",
-    "@icon-magic/generate": "^2.0.1-beta.0",
+    "@icon-magic/distribute": "^2.1.0-beta.0",
+    "@icon-magic/generate": "^2.1.0-beta.0",
     "@icon-magic/logger": "^2.0.1-beta.0",
     "commander": "^2.19.0",
     "config-reader": "^0.1.1"

@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/generate",
-  "version": "2.0.1-beta.0",
+  "version": "2.1.0-beta.0",
   "description": "Icon magic blueprint package.",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@icon-magic/icon-models": "^2.0.1-beta.0",
-    "@icon-magic/imagemin-farm": "^2.0.1-beta.0",
+    "@icon-magic/imagemin-farm": "^2.1.0-beta.0",
     "@icon-magic/logger": "^2.0.1-beta.0",
     "@icon-magic/svg-to-png": "^2.0.1-beta.0",
     "@icon-magic/timing": "^2.0.1-beta.0",
