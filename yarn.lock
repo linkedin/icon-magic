@@ -2905,7 +2905,7 @@ eventemitter3@^3.1.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
-exec-buffer@^3.0.0, exec-buffer@^3.2.0:
+exec-buffer@^3.0.0, exec-buffer@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/exec-buffer/-/exec-buffer-3.2.0.tgz#b1686dbd904c7cf982e652c1f5a79b1e5573082b"
   integrity sha512-wsiD+2Tp6BWHoVv3B+5Dcx6E7u5zky+hUwOHjuH2hKSLR3dvRmX8fk8UD8uqQixHs4Wk6eDmiegVrMPjKj7wpA==
@@ -4067,14 +4067,14 @@ image-type@3.x.x:
   dependencies:
     file-type "^10.9.0"
 
-imagemin-advpng@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/imagemin-advpng/-/imagemin-advpng-5.0.0.tgz#93d551c6184bb2433be127f2c674c4631817c7e3"
-  integrity sha512-5zRcTD0ZVkagC82wrJQmlig5YFD/NPTZ3p9D01wQRZfU4SyTcW9FvOqLqqG9Nea+oFXUg6A2X6mJNkoTH7uQQg==
+imagemin-advpng@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-advpng/-/imagemin-advpng-4.0.0.tgz#936a8712cfae299fbf3c3aac4206d6bf89c3f241"
+  integrity sha512-IyrmLD5wbbMpfobpsmyS+f8pwDJ0Owgd74Nv9z/fEgPJoxwy09PMkIFCP5tgiQDp2//r1qVDxoMDUkqq1dBl1A==
   dependencies:
     advpng-bin "^3.0.0"
-    exec-buffer "^3.2.0"
-    is-png "^1.1.0"
+    exec-buffer "^3.1.0"
+    is-png "^1.0.0"
     tempfile "^2.0.0"
 
 imagemin-optipng@^6.0.0:
@@ -4493,7 +4493,7 @@ is-plain-object@^3.0.0:
   dependencies:
     isobject "^4.0.0"
 
-is-png@^1.0.0, is-png@^1.1.0:
+is-png@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-png/-/is-png-1.1.0.tgz#d574b12bf275c0350455570b0e5b57ab062077ce"
   integrity sha1-1XSxK/J1wDUEVVcLDltXqwYgd84=
