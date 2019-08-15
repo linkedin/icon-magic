@@ -9,6 +9,6 @@
     "icon-magic": "@icon-magic/cli"
   },
   "dependencies": {
-    "@icon-magic/cli": "^2.0.1-beta.0"
+    "@icon-magic/cli": "^2.1.1-beta.0"
   }
 }
