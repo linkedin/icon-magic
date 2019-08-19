@@ -73,6 +73,7 @@ export async function distributeSvg(
       const destPath = icon.category
         ? path.join(outputPath, icon.category)
         : outputPath;
+      LOGGER.debug(destPath);
       await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
     }
   }
