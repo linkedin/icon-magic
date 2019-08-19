@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "@types/svgo": "^1.0.1",
-    "@types/workerpool": "^2.3.0"
+    "@types/workerpool": "^3.1.0"
   }
 }

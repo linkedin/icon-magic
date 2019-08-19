@@ -1067,10 +1067,10 @@
   resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-1.2.1.tgz#7b7f2f7966c8301001e955c8d488c9eb7e868b16"
   integrity sha512-UYSpRjkiiThPS3L2L7VhmmKGheGmyCBE382LCHaJIjLe6PeBb1HJvUSNqsZyuRyNMGcDcHcBQEV/CovlWjzFsw==
 
-"@types/workerpool@^2.3.0":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-2.3.1.tgz#93b03f0113c72af9340bef5a8153e3da8613eaa6"
-  integrity sha512-HZuleLQVKMMl3oTeuH30TC75Nedu6gfjWNuJkSLHG18ABPuiLQZRzQV0TmM9cwoww7lcNgRK37/jdYEOTFRUrw==
+"@types/workerpool@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-3.1.0.tgz#8812ad37d73df86b6cf060fbe5697751361bb591"
+  integrity sha512-bJcLkk78Ng2H8dJbIfQu8STOTNZAEGFFz3DS8YMReHo4BDv3pn+HUd3r4/+lopsOmWS9QQb4OdvlpLAc+gaWrw==
   dependencies:
     "@types/node" "*"
 
