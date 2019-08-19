@@ -151,7 +151,8 @@ export const svgGenerate: GeneratePlugin = {
           }
         },
         { removeRasterImages: true }
-      ]
+      ],
+      js2svg: { pretty: true, indent: 2 }
     });
     const asset = await svgo.optimize((await flavor.getContents()) as string); // .svg asset's getContents() returns a string
     const outputPath = icon.getIconOutputPath();
