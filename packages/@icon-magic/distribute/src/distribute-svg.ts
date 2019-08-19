@@ -68,8 +68,12 @@ export async function distributeSvg(
         spriteNames
       );
     } else {
-      // Just copy the files to the output
-      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, outputPath);
+      // Just copy the files to the output and put them in a folder that matches
+      // the icon category
+      const destPath = icon.category
+        ? path.join(outputPath, icon.category)
+        : outputPath;
+      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
     }
   }
   // After we've gone through all the icons, write the sprites to a file
