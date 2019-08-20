@@ -11,11 +11,9 @@
   "author": "Adam Miller <ammiller@linkedin.com>",
   "license": "BSD-2-Clause",
   "scripts": {
-    "start": "yarn run watch",
-    "build": "tsc -p tsconfig.json",
-    "watch": "watch 'yarn run test' './src' './test' --wait=3",
-    "pretest": "yarn run build",
-    "test": "mocha --opts test/mocha.opts dist/test"
+    "prepare": "lerna run build",
+    "build": "lerna run build",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",

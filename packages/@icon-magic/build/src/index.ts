@@ -10,7 +10,6 @@ import {
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { timer } from '@icon-magic/timing';
-
 import * as fs from 'fs-extra';
 import * as path from 'path';
 

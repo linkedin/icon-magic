@@ -1,7 +1,7 @@
 import {
   Asset,
-  saveContentToFile,
-  spriteConfig
+  SpriteConfig,
+  saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
@@ -24,7 +24,7 @@ export async function addToSprite(
   assets: Asset[],
   groupByCategory: boolean,
   category: string,
-  spriteNames: spriteConfig
+  spriteNames: SpriteConfig
 ): Promise<void> {
   let DOCUMENT, svgEl;
   // If there's no existing sprite with that name
@@ -182,7 +182,7 @@ function removeSVGResolution(svgEl: SVGSVGElement): SVGSVGElement {
  * @param outputPath path to write to
  */
 export async function writeSpriteToFile(
-  spriteNames: spriteConfig,
+  spriteNames: SpriteConfig,
   outputPath: string
 ): Promise<void> {
   // Go through all the stored sprites

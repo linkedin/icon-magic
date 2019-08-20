@@ -5,7 +5,6 @@ import { getIconConfigSet } from '@icon-magic/config-reader';
 import { distributeByType } from '@icon-magic/distribute';
 import * as iconGenerate from '@icon-magic/generate';
 import { Logger, logger } from '@icon-magic/logger';
-
 import * as program from 'commander';
 import * as fs from 'fs-extra';
 
