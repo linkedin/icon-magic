@@ -11,8 +11,9 @@
   "author": "Adam Miller <ammiller@linkedin.com>",
   "license": "BSD-2-Clause",
   "scripts": {
-    "build": "yarn lerna run build",
-    "test": "yarn lerna run test"
+    "prepare": "lerna run build",
+    "build": "lerna run build",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
