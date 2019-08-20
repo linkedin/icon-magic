@@ -1,6 +1,5 @@
-import * as cluster from 'cluster';
-
 import { Logger, logger } from '@icon-magic/logger';
+import * as cluster from 'cluster';
 
 import { minifyFile } from './minify';
 
@@ -188,8 +187,8 @@ export function minify(path: string): Promise<Result> {
     throw new Error(`Can not find worker state for pid ${worker.id}.`);
   }
   return new Promise<Result>((resolve, reject) => {
-    state!.remaining.set(localId, { resolve, reject });
-    state!.total += 1;
+    state.remaining.set(localId, { resolve, reject });
+    state.total += 1;
     worker.send({ cmd: 'minify', msg: { path, uid: localId } });
   });
 }

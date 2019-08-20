@@ -1,6 +1,5 @@
-import * as path from "path";
-
 import * as fs from "fs-extra";
+import * as path from "path";
 
 import { run } from "./browserPool";
 
@@ -14,7 +13,7 @@ export async function convertFile(fileName: string, options: SVGToPNGOptions): P
   if (!path.isAbsolute(fileName)) {
     throw new Error("svg-to-png expects an absolute filepath");
   }
-  let contents = await fs.readFile(fileName);
+  const contents = await fs.readFile(fileName);
   return await convert(contents.toString(), options);
 }
 

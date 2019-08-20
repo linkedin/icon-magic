@@ -6,7 +6,7 @@ import { iconToPNGs } from "../src";
 
 describe("Test test", function () {
   it("rust tests", async () => {
-    let icon = path.join(__dirname, 'fixtures', 'pokemon', 'squirtle');
+    const icon = path.join(__dirname, 'fixtures', 'pokemon', 'squirtle');
     await iconToPNGs(icon);
     await iconToPNGs(icon);
     let svg = fs.readFileSync(path.join(icon, 'squirtle.svg')).toString();

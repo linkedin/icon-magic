@@ -1,4 +1,4 @@
-import { Asset, Icon, IconSet, spriteConfig } from '@icon-magic/icon-models';
+import { Asset, Icon, IconSet, SpriteConfig } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -28,7 +28,7 @@ export async function distributeSvg(
   const icons = sortIcons(iconSet.hash.values());
   // Keep track of the sprites that have been created so we know when to create
   // a new one and when to append to an existing document
-  const spriteNames: spriteConfig = {};
+  const spriteNames: SpriteConfig = {};
 
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);

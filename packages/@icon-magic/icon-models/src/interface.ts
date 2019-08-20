@@ -27,7 +27,7 @@ interface WebpOptions {
   namePrefix?: string;
 }
 
-export interface spriteConfig {
+export interface SpriteConfig {
   [code: string]: {
     DOCUMENT: Document;
     svgEl: SVGSVGElement;

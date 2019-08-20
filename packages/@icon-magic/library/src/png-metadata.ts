@@ -22,7 +22,7 @@ export function decode(buffer: Buffer, key: string): string | undefined {
     return decodeText(chunk.data);
   });
 
-  for (let chunk of textChunks) {
+  for (const chunk of textChunks) {
     if (chunk.keyword === key) { return chunk.text; }
   }
 

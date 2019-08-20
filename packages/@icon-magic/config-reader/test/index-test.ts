@@ -6,13 +6,11 @@ import { getIconConfigSet } from '../src';
 describe('@icon-magic/config-reader/index', function() {
   it('Resolves all paths in the config files correctly', async () => {
     const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
-
     const expectedOutput = new Map([
       [
-        '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/home',
+        `${FIXTURES}/nav-icons/home`,
         {
-          iconPath:
-            '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/home',
+          iconPath: `${FIXTURES}/nav-icons/home`,
           variants: [
             { path: './filled.svg' },
             { name: 'someOtherName', path: './outline.svg' }
@@ -27,15 +25,13 @@ describe('@icon-magic/config-reader/index', function() {
               { name: 'raster', plugins: [] }
             ]
           },
-          sourceConfigFile:
-            '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/iconrc.json'
+          sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
         }
       ],
       [
-        '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/small-home',
+        `${FIXTURES}/nav-icons/small-home`,
         {
-          iconPath:
-            '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/small-home',
+          iconPath: `${FIXTURES}/nav-icons/small-home`,
           iconName: 'modified-small-home',
           variants: [
             { name: 'filled', path: './filled.svg' },
@@ -51,8 +47,7 @@ describe('@icon-magic/config-reader/index', function() {
               { name: 'raster', plugins: [] }
             ]
           },
-          sourceConfigFile:
-            '/Users/rchitloo/workspace/icon-magic/packages/@icon-magic/config-reader/test/fixtures/nav-icons/small-home/iconrc.json'
+          sourceConfigFile: `${FIXTURES}/nav-icons/small-home/iconrc.json`
         }
       ]
     ]);
