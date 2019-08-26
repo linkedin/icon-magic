@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@icon-magic/logger": "^2.0.1-beta.0",
-    "imagemin": "^6.0.0",
+    "imagemin": "^7.0.0",
     "imagemin-advpng": "^5.0.0",
     "imagemin-optipng": "^7.0.0",
     "imagemin-pngcrush": "^5.1.0",
