@@ -1453,7 +1453,7 @@ before-after-hook@^2.0.0:
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.1.0.tgz#b6c03487f44e24200dd30ca5e6a1979c5d2fb635"
   integrity sha512-IWIbu7pMqyw3EAJHzzHbWa85b6oud/yfKYg5rqB5hNE8CeMi3nX+2C2sj0HswfblST86hpVEOAb9x34NZd6P7A==
 
-bin-build@^2.0.0, bin-build@^2.2.0:
+bin-build@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/bin-build/-/bin-build-2.2.0.tgz#11f8dd61f70ffcfa2bdcaa5b46f5e8fedd4221cc"
   integrity sha1-EfjdYfcP/Por3KpbRvXo/t1CIcw=
@@ -4167,14 +4167,14 @@ imagemin-optipng@^7.0.0:
     is-png "^2.0.0"
     optipng-bin "^6.0.0"
 
-imagemin-pngcrush@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-5.1.0.tgz#81b4cfe494aebd8e1dd35eb630cb32f5df2b78cf"
-  integrity sha1-gbTP5JSuvY4d0162MMsy9d8reM8=
+imagemin-pngcrush@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-6.0.0.tgz#24882d24aafab04227853797f535525814ebbbed"
+  integrity sha512-9Je0uUnzgZGLDDjsJxUlwozHS2aO/NmGRPUKcBzbpiliHI2W40HcRXYUaNNOMePGAWDCYJkJQ0rS5UG1JCguMA==
   dependencies:
     exec-buffer "^3.0.0"
     is-png "^1.0.0"
-    pngcrush-bin "^3.0.0"
+    pngcrush-bin "^4.0.0"
 
 imagemin-zopfli@^6.0.0:
   version "6.0.0"
@@ -6368,13 +6368,13 @@ png-chunks-extract@^1.0.0:
   dependencies:
     crc-32 "^0.3.0"
 
-pngcrush-bin@^3.0.0:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-3.1.1.tgz#cdd6e638f7b3cada6d728901d02b5a2b85126436"
-  integrity sha512-Sb60BVQpIKYRaVVCQ7ZIMAuA4kOFJKj4AeC8KSyVcgSCRNszh+pc87sCTi30WyvxVKsKtSXJNQP4K9sONGxr7Q==
+pngcrush-bin@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-4.0.0.tgz#a2450ce952dc165c290d8b4be37478ad38fca6e7"
+  integrity sha512-SFR9a/OgkuFiiksjM6yevTGvOdn+7JrL5r0j/zCVAZTurfRzh2smwDRYKnPMEwxgVOkwWt/tlVWRJUstSH7RcA==
   dependencies:
-    bin-build "^2.2.0"
-    bin-wrapper "^3.0.0"
+    bin-build "^3.0.0"
+    bin-wrapper "^4.0.0"
     logalot "^2.0.0"
 
 pngjs@3.x.x, pngjs@^3.3.3:
