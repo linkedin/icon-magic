@@ -23,6 +23,6 @@
     "imagemin-advpng": "^5.0.0",
     "imagemin-optipng": "^6.0.0",
     "imagemin-pngcrush": "^5.1.0",
-    "imagemin-zopfli": "^5.1.0"
+    "imagemin-zopfli": "^6.0.0"
   }
 }
