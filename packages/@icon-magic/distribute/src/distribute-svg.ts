@@ -57,16 +57,17 @@ export async function distributeSvg(
     if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
-      const spriteName =
-        svgConfig && svgConfig.spriteName ? svgConfig.spriteName : 'icons';
-
-      await addToSprite(
-        spriteName,
-        assetsToAddToSprite,
-        groupByCategory,
-        icon.category,
-        spriteNames
-      );
+      const iconSpriteNames =
+        svgConfig && svgConfig.spriteNames ? svgConfig.spriteNames : ['icons'];
+      iconSpriteNames.forEach(async spriteName => {
+        await addToSprite(
+          spriteName,
+          assetsToAddToSprite,
+          groupByCategory,
+          icon.category,
+          spriteNames
+        );
+      });
     } else {
       // Just copy the files to the output
       // If the groupByCategory flag is available,

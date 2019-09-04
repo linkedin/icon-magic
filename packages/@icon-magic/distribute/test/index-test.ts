@@ -87,9 +87,7 @@ describe('distribute works as expected', function() {
 
     icons.forEach(icon => {
       try {
-        const iconPath = `${output}/${icon.category}/${icon.category}_${
-          icon.iconName
-        }.imageset`;
+        const iconPath = `${output}/${icon.category}/${icon.category}_${icon.iconName}.imageset`;
         if (fs.existsSync(iconPath)) {
           assert.ok(`${iconPath} dir was generated`);
           const files = fs.readdirSync(iconPath);
@@ -204,7 +202,7 @@ describe('distribute works as expected', function() {
     });
   });
 
-  it('it only puts two variant into the sprite', async () => {
+  it('it only puts two variants into the sprite', async () => {
     try {
       const content = fs.readFileSync(`${output}/icons.svg`, 'utf8');
       const doc = new DOMParser().parseFromString(content, 'svg');
@@ -230,7 +228,7 @@ describe('distribute works as expected', function() {
 
   it('copies svg assets with no sprite config to output', async () => {
     try {
-      const iconPath = `${output}/achievement`;
+      const iconPath = `${output}/ui-icon/achievement`;
       const files = fs.readdirSync(iconPath);
       assert.ok(files.includes('filled.svg'));
     } catch (err) {
