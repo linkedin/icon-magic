@@ -1,11 +1,11 @@
 {
-  "iconName": "filled-1",
+  "iconName": "filled-6",
   "variants": [
     {
       "path": "./filled.svg"
     }
   ],
-  "category": "ui-icon",
+  "category": "ui-icon-3",
   "iconPath": ".",
   "flavors": [
     {
@@ -43,7 +43,8 @@
   ],
   "distribute": {
     "svg": {
-      "toSprite": true
+      "toSprite": true,
+      "spriteNames": ["icons-1"]
     }
   }
 }

@@ -79,6 +79,7 @@ export async function distributeSvg(
       await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
     }
   }
+
   // After we've gone through all the icons, write the sprites to a file
   await writeSpriteToFile(spriteNames, outputPath);
 }

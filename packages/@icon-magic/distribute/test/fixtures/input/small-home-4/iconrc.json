@@ -1,5 +1,5 @@
 {
-  "iconName": "filled-1",
+  "iconName": "filled-3",
   "variants": [
     {
       "path": "./filled.svg"
@@ -43,7 +43,8 @@
   ],
   "distribute": {
     "svg": {
-      "toSprite": true
+      "toSprite": true,
+      "spriteNames": ["icons-3", "icons-2"]
     }
   }
 }

@@ -141,32 +141,7 @@ describe('distribute works as expected', function() {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
       {
-        path: 'icons.svg',
-        id: 'ads-default',
-        category: 'app'
-      },
-      {
-        path: 'icons.svg',
-        id: 'ads-default-2',
-        category: 'app'
-      },
-      {
-        path: 'icons.svg',
-        id: 'point-default',
-        category: 'app'
-      },
-      {
-        path: 'icons.svg',
-        id: 'point-default-2',
-        category: 'app'
-      },
-      {
-        path: 'icons-1.svg',
-        id: 'a-home-filled-1',
-        category: 'ui-icon'
-      },
-      {
-        path: 'icons-1.svg',
+        path: 'icons-2.svg',
         id: 'b-home-filled-4',
         category: 'ui-icon'
       },
@@ -176,13 +151,38 @@ describe('distribute works as expected', function() {
         category: 'ui-icon-2'
       },
       {
+        path: 'icons-1.svg',
+        id: 'c-home-filled-88-9',
+        category: 'ui-icon-3'
+      },
+      {
+        path: 'icons-1.svg',
+        id: 'c-home-filled-889',
+        category: 'ui-icon-2'
+      },
+      {
         path: 'icons-2.svg',
         id: 'home-filled-2',
         category: 'uix-icon'
       },
       {
+        path: 'icons-2.svg',
+        id: 'home-filled-333',
+        category: 'ui-icon'
+      },
+      {
+        path: 'icons-3.svg',
+        id: 'home-filled-333',
+        category: 'ui-icon'
+      },
+      {
         path: 'icons-3.svg',
         id: 'home-filled-3',
+        category: 'uixx-icon'
+      },
+      {
+        path: 'icons-3.svg',
+        id: 'home-filled-33',
         category: 'uixx-icon'
       }
     ];
