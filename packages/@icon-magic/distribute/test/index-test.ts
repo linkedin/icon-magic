@@ -202,18 +202,19 @@ describe('distribute works as expected', function() {
     });
   });
 
-  it('it only puts two variants into the sprite', async () => {
+  it('it only puts 5 variants into the sprite', async () => {
     try {
       const content = fs.readFileSync(`${output}/icons.svg`, 'utf8');
       const doc = new DOMParser().parseFromString(content, 'svg');
       const svgs = doc.getElementsByTagName('svg');
       // 2 icons + parent svg
-      assert.ok(svgs.length === 5, 'Only four variants in sprite');
+      assert.ok(svgs.length === 6, 'Only five variants in sprite');
       const svgIDs = [
         'ads-default',
         'ads-default-2',
         'point-default',
-        'point-default-2'
+        'point-default-2',
+        'a-home-filled-1'
       ];
       svgIDs.forEach(id => {
         assert.ok(
