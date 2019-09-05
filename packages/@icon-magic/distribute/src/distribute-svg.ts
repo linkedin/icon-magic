@@ -29,7 +29,7 @@ export async function distributeSvg(
   // Keep track of the sprites that have been created so we know when to create
   // a new one and when to append to an existing document
   const spriteNames: SpriteConfig = {};
-
+  const promises: any[] = [];
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
@@ -57,15 +57,19 @@ export async function distributeSvg(
     if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
+      LOGGER.debug(`0`);
+
       const iconSpriteNames =
         svgConfig && svgConfig.spriteNames ? svgConfig.spriteNames : ['icons'];
       iconSpriteNames.forEach(async spriteName => {
-        await addToSprite(
-          spriteName,
-          assetsToAddToSprite,
-          groupByCategory,
-          icon.category,
-          spriteNames
+        promises.push(
+          await addToSprite(
+            spriteName,
+            assetsToAddToSprite,
+            groupByCategory,
+            icon.category,
+            spriteNames
+          )
         );
       });
     } else {
@@ -79,9 +83,11 @@ export async function distributeSvg(
       await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
     }
   }
-
-  // After we've gone through all the icons, write the sprites to a file
-  await writeSpriteToFile(spriteNames, outputPath);
+  await Promise.all(promises).then(async () => {
+    LOGGER.debug(`5x`);
+    // After we've gone through all the icons, write the sprites to a file
+    await writeSpriteToFile(spriteNames, outputPath);
+  });
 }
 
 /**

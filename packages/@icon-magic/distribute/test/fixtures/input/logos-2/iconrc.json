@@ -78,9 +78,8 @@
   "sizes": [40],
   "category": "app",
   "distribute": {
-    "variantsToFilter": ["default-2@2", "default@1"],
     "svg": {
-      "toSprite": true
+      "toSprite": false
     }
   }
 }

@@ -27,6 +27,8 @@ export async function addToSprite(
   spriteNames: SpriteConfig
 ): Promise<void> {
   let DOCUMENT, svgEl;
+  LOGGER.debug(`1`);
+  const promises: any[] = [];
   // If there's no existing sprite with that name
   if (!spriteNames.hasOwnProperty(spriteName)) {
     // Create a new Document and SVG element for the sprite
@@ -45,13 +47,17 @@ export async function addToSprite(
   // is within the Document, the asset will also be added
   // to the Document
   for (const asset of assets) {
-    await appendToSvgDoc(
-      asset,
-      DOCUMENT,
-      svgEl,
-      groupByCategory && category ? category : ''
+    promises.push(
+      await appendToSvgDoc(
+        asset,
+        DOCUMENT,
+        svgEl,
+        groupByCategory && category ? category : ''
+      )
     );
   }
+  LOGGER.debug(`4`);
+  await Promise.all(promises);
 }
 
 /**
@@ -121,6 +127,7 @@ function createDefs(doc: Document, category: string): HTMLElement {
  * @param asset the asset whose contents need to be added
  */
 async function appendIcon(parent: Element, asset: Asset): Promise<void> {
+  LOGGER.debug(`3`);
   LOGGER.debug(`appending ${asset.name} icon`);
   const doc = new DOMParser();
   // Get contents of the asset, since it's an SVG the content will be in XML format
@@ -129,7 +136,7 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
   // Parse XML from a string into a DOM Document.
   const xml = doc.parseFromString(contents as string, 'image/svg+xml');
   // Append the root node of the DOM document to the parent element
-  parent.appendChild(xml.documentElement);
+  await parent.appendChild(xml.documentElement);
 }
 
 /**
@@ -143,6 +150,7 @@ export async function appendToSvgDoc(
   svgEl: SVGSVGElement,
   category: string
 ): Promise<void> {
+  LOGGER.debug(`2`);
   LOGGER.debug(`The category is ${category}`);
   // If there's a category property, we want to append the icon to a <defs> element
   // where the value of its ID is the category
@@ -157,10 +165,10 @@ export async function appendToSvgDoc(
       svgEl.appendChild(def);
     }
     // Then append the actual icon (asset) to the <defs>
-    return appendIcon(def, asset);
+    return await appendIcon(def, asset);
   } else {
     // If there's no category just append to (anywhere) in the svg element
-    return appendIcon(svgEl, asset);
+    return await appendIcon(svgEl, asset);
   }
 }
 
