@@ -157,7 +157,7 @@ describe('distribute works as expected', function() {
       },
       {
         path: 'icons.svg',
-        id: 'ads-default-2',
+        id: 'ads-default',
         category: 'app'
       },
       {
