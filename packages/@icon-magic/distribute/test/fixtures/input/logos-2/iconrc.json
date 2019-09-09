@@ -79,7 +79,8 @@
   "category": "app",
   "distribute": {
     "svg": {
-      "toSprite": false
+      "toSprite": true,
+      "variantsToFilter": ["default@4", "default@3"]
     }
   }
 }

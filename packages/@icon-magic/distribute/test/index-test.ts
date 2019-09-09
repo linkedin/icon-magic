@@ -141,6 +141,31 @@ describe('distribute works as expected', function() {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
       {
+        path: 'icons.svg',
+        id: 'a-home-filled-1',
+        category: 'ui-icon'
+      },
+      {
+        path: 'icons.svg',
+        id: 'point-default',
+        category: 'app'
+      },
+      {
+        path: 'icons.svg',
+        id: 'point-default-2',
+        category: 'app'
+      },
+      {
+        path: 'icons.svg',
+        id: 'ads-default-2',
+        category: 'app'
+      },
+      {
+        path: 'icons.svg',
+        id: 'ads-default-2',
+        category: 'app'
+      },
+      {
         path: 'icons-2.svg',
         id: 'b-home-filled-4',
         category: 'ui-icon'

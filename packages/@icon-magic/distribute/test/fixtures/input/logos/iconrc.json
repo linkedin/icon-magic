@@ -11,7 +11,7 @@
       "path": "./filled@1.5.svg"
     },
     {
-      "name": "filled-2@2",
+      "name": "filled@2",
       "path": "./filled@2.svg"
     },
     {
@@ -35,11 +35,11 @@
       }
     },
     {
-      "name": "filled-2@2",
+      "name": "filled@2",
       "path": "./filled@2.svg",
       "types": {
         "svg": {
-          "name": "filled-2@2",
+          "name": "filled@2",
           "path": "./filled@2.svg"
         }
       }
@@ -79,7 +79,8 @@
   "category": "app",
   "distribute": {
     "svg": {
-      "toSprite": true
+      "toSprite": true,
+      "variantsToFilter": ["filled@2", "filled@4"]
     }
   }
 }

@@ -57,11 +57,9 @@ export async function distributeSvg(
     if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
-      LOGGER.debug(`0`);
-
       const iconSpriteNames =
         svgConfig && svgConfig.spriteNames ? svgConfig.spriteNames : ['icons'];
-      iconSpriteNames.forEach(async spriteName => {
+      for (const spriteName of iconSpriteNames) {
         promises.push(
           await addToSprite(
             spriteName,
@@ -71,7 +69,7 @@ export async function distributeSvg(
             spriteNames
           )
         );
-      });
+      }
     } else {
       // Just copy the files to the output
       // If the groupByCategory flag is available,
@@ -84,7 +82,6 @@ export async function distributeSvg(
     }
   }
   await Promise.all(promises).then(async () => {
-    LOGGER.debug(`5x`);
     // After we've gone through all the icons, write the sprites to a file
     await writeSpriteToFile(spriteNames, outputPath);
   });
