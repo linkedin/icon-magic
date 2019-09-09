@@ -27,7 +27,7 @@ export async function addToSprite(
   spriteNames: SpriteConfig
 ): Promise<void> {
   let DOCUMENT, svgEl;
-  const promises: any[] = [];
+  const promises: void[] = [];
   // If there's no existing sprite with that name
   if (!spriteNames.hasOwnProperty(spriteName)) {
     // Create a new Document and SVG element for the sprite

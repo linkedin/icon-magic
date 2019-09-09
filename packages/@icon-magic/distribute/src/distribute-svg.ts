@@ -29,7 +29,7 @@ export async function distributeSvg(
   // Keep track of the sprites that have been created so we know when to create
   // a new one and when to append to an existing document
   const spriteNames: SpriteConfig = {};
-  const promises: any[] = [];
+  const promises: void[] = [];
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
     const assets = getIconFlavorsByType(icon, 'svg');
