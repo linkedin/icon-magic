@@ -27,6 +27,7 @@ export async function addToSprite(
   spriteNames: SpriteConfig
 ): Promise<void> {
   let DOCUMENT, svgEl;
+  const promises: void[] = [];
   // If there's no existing sprite with that name
   if (!spriteNames.hasOwnProperty(spriteName)) {
     // Create a new Document and SVG element for the sprite
@@ -45,13 +46,16 @@ export async function addToSprite(
   // is within the Document, the asset will also be added
   // to the Document
   for (const asset of assets) {
-    await appendToSvgDoc(
-      asset,
-      DOCUMENT,
-      svgEl,
-      groupByCategory && category ? category : ''
+    promises.push(
+      await appendToSvgDoc(
+        asset,
+        DOCUMENT,
+        svgEl,
+        groupByCategory && category ? category : ''
+      )
     );
   }
+  await Promise.all(promises);
 }
 
 /**
@@ -129,7 +133,7 @@ async function appendIcon(parent: Element, asset: Asset): Promise<void> {
   // Parse XML from a string into a DOM Document.
   const xml = doc.parseFromString(contents as string, 'image/svg+xml');
   // Append the root node of the DOM document to the parent element
-  parent.appendChild(xml.documentElement);
+  await parent.appendChild(xml.documentElement);
 }
 
 /**
@@ -157,10 +161,10 @@ export async function appendToSvgDoc(
       svgEl.appendChild(def);
     }
     // Then append the actual icon (asset) to the <defs>
-    return appendIcon(def, asset);
+    return await appendIcon(def, asset);
   } else {
     // If there's no category just append to (anywhere) in the svg element
-    return appendIcon(svgEl, asset);
+    return await appendIcon(svgEl, asset);
   }
 }
 

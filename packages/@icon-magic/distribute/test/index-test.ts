@@ -87,9 +87,7 @@ describe('distribute works as expected', function() {
 
     icons.forEach(icon => {
       try {
-        const iconPath = `${output}/${icon.category}/${icon.category}_${
-          icon.iconName
-        }.imageset`;
+        const iconPath = `${output}/${icon.category}/${icon.category}_${icon.iconName}.imageset`;
         if (fs.existsSync(iconPath)) {
           assert.ok(`${iconPath} dir was generated`);
           const files = fs.readdirSync(iconPath);
@@ -144,13 +142,8 @@ describe('distribute works as expected', function() {
     const spritePaths = [
       {
         path: 'icons.svg',
-        id: 'ads-default',
-        category: 'app'
-      },
-      {
-        path: 'icons.svg',
-        id: 'ads-default-2',
-        category: 'app'
+        id: 'a-home-filled-1',
+        category: 'ui-icon'
       },
       {
         path: 'icons.svg',
@@ -163,12 +156,17 @@ describe('distribute works as expected', function() {
         category: 'app'
       },
       {
-        path: 'icons-1.svg',
-        id: 'a-home-filled-1',
-        category: 'ui-icon'
+        path: 'icons.svg',
+        id: 'ads-default',
+        category: 'app'
       },
       {
-        path: 'icons-1.svg',
+        path: 'icons.svg',
+        id: 'ads-default-2',
+        category: 'app'
+      },
+      {
+        path: 'icons-2.svg',
         id: 'b-home-filled-4',
         category: 'ui-icon'
       },
@@ -178,13 +176,38 @@ describe('distribute works as expected', function() {
         category: 'ui-icon-2'
       },
       {
+        path: 'icons-1.svg',
+        id: 'c-home-filled-88-9',
+        category: 'ui-icon-3'
+      },
+      {
+        path: 'icons-1.svg',
+        id: 'c-home-filled-889',
+        category: 'ui-icon-2'
+      },
+      {
         path: 'icons-2.svg',
         id: 'home-filled-2',
         category: 'uix-icon'
       },
       {
+        path: 'icons-2.svg',
+        id: 'home-filled-333',
+        category: 'ui-icon'
+      },
+      {
+        path: 'icons-3.svg',
+        id: 'home-filled-333',
+        category: 'ui-icon'
+      },
+      {
         path: 'icons-3.svg',
         id: 'home-filled-3',
+        category: 'uixx-icon'
+      },
+      {
+        path: 'icons-3.svg',
+        id: 'home-filled-33',
         category: 'uixx-icon'
       }
     ];
@@ -204,18 +227,19 @@ describe('distribute works as expected', function() {
     });
   });
 
-  it('it only puts two variant into the sprite', async () => {
+  it('it only puts 5 variants into the sprite', async () => {
     try {
       const content = fs.readFileSync(`${output}/icons.svg`, 'utf8');
       const doc = new DOMParser().parseFromString(content, 'svg');
       const svgs = doc.getElementsByTagName('svg');
       // 2 icons + parent svg
-      assert.ok(svgs.length === 5, 'Only four variants in sprite');
+      assert.ok(svgs.length === 6, 'Only five variants in sprite');
       const svgIDs = [
         'ads-default',
         'ads-default-2',
         'point-default',
-        'point-default-2'
+        'point-default-2',
+        'a-home-filled-1'
       ];
       svgIDs.forEach(id => {
         assert.ok(
@@ -230,7 +254,7 @@ describe('distribute works as expected', function() {
 
   it('copies svg assets with no sprite config to output', async () => {
     try {
-      const iconPath = `${output}/achievement`;
+      const iconPath = `${output}/ui-icon/achievement`;
       const files = fs.readdirSync(iconPath);
       assert.ok(files.includes('filled.svg'));
     } catch (err) {

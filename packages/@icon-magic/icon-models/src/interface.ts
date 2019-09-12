@@ -19,7 +19,7 @@ export interface AssetConfig {
 
 interface SVGOptions {
   toSprite?: boolean;
-  spriteName?: string;
+  spriteNames?: string[];
   variantsToFilter: string[];
 }
 
