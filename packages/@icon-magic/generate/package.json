@@ -25,7 +25,7 @@
     "@icon-magic/timing": "^2.0.1-beta.0",
     "svgo": "^1.2.0",
     "webp-converter": "^2.2.3",
-    "workerpool": "^3.1.2"
+    "workerpool": "^5.0.0"
   },
   "devDependencies": {
     "@types/svgo": "^1.0.1",
