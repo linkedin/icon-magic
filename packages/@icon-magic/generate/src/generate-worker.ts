@@ -5,7 +5,6 @@ import {
   Icon,
   IconConfig,
   applyPluginsOnAsset,
-  createHash,
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
