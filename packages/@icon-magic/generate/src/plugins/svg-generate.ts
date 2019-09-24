@@ -12,18 +12,21 @@
  *   A helper function will need to map the API to the size and render the SVG with the appropriate width, height and viewbox values.
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
-
+import { loadConfigFile } from "@icon-magic/config-reader";
 import {
   Asset,
   AssetSize,
   Flavor,
   GeneratePlugin,
   Icon,
-  createHash
+  compareHash,
 } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
+
+const LOGGER: Logger = logger('icon-magic:generate:svg-generate');
 
 /**
  * Decides what sizes to append for data-supported-dps
@@ -57,13 +60,10 @@ export const svgGenerate: GeneratePlugin = {
     icon: Icon,
     params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
-    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
-    flavor.sourceHash = createHash(flavorContent);
-
+    const flavorName: string = path.basename(flavor.name);
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
-    const flavorName: string = path.basename(flavor.name);
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
@@ -158,7 +158,18 @@ export const svgGenerate: GeneratePlugin = {
       ],
       js2svg: { pretty: true, indent: 2 }
     });
-    const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
+    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+    const buildOutputPath = icon.getBuildOutputPath();
+    const iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
+    const savedFlavor = iconrc['flavors'].find((savedFlavor: Flavor) => savedFlavor.name === flavorName);
+    let asset;
+    if (compareHash(flavor, savedFlavor)) {
+      LOGGER.info(`${icon.iconName}'s ${flavorName} has been optimized. Skipping that step.`);
+      asset = savedFlavor;
+    }
+    else {
+      asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
+    }
     const outputPath = icon.getIconOutputPath();
 
     // write the optimized svg to the output directory

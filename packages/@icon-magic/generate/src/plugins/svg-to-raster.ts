@@ -4,8 +4,10 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
-  createHash
+  createHash,
+  compareHash,
 } from '@icon-magic/icon-models';
+import { loadConfigFile } from "@icon-magic/config-reader";
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
@@ -122,7 +124,7 @@ export const svgToRaster: GeneratePlugin = {
       // home-filled@12 then the resulting name will be
       // home-filled-width-height@12 instead of home-filled@12-width-height
       let res;
-      let assetName;
+      let assetName: string;
       const flavorName = flavor.name;
       if (!params.propCombo.resolutions) {
         res = 1;
@@ -151,6 +153,15 @@ export const svgToRaster: GeneratePlugin = {
         assetName = `${appendDash(flavorName)}${w}x${h}@${res}`;
       }
 
+      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+      const buildOutputPath = icon.getBuildOutputPath();
+      const iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
+      const savedFlavor = iconrc['flavors'].find((savedFlavor: Flavor) => { savedFlavor.name === assetName });
+      if (compareHash(flavor, savedFlavor)) {
+        LOGGER.info(`${icon.iconName}'s ${assetName} has been converted and minified. Skipping that step.`);
+        return savedFlavor;
+      }
+
       // create the icon output path if it doesn't exist already
       const outputPath = icon.getIconOutputPath();
       await fs.mkdirp(outputPath);
@@ -158,7 +169,6 @@ export const svgToRaster: GeneratePlugin = {
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
-      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
       await generatePng(
         flavorContent,
         w * res,

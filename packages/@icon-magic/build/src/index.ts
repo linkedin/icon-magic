@@ -8,6 +8,7 @@ import {
   IconSet,
   applyPluginsOnAsset,
   createHash,
+  compareHash,
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
@@ -148,11 +149,11 @@ export async function applyBuildPluginsOnVariants(
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
     if (iconrc) {
-      const equivFlavor = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
-      if (compareHash(iconVariant, equivFlavor)) {
+      const savedFlavor = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
+      if (compareHash(iconVariant, savedFlavor)) {
         // This variant has already been built
-        LOGGER.debug(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
-        assets = assets.concat(equivFlavor);
+        LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
+        assets = assets.concat(savedFlavor);
         continue;
       }
     }
@@ -189,13 +190,6 @@ async function getPlugins(plugins: BuildPlugin[]): Promise<BuildPlugin[]> {
       }
     })
   );
-}
-
-async function compareHash(iconVariant: Asset, equivFlavor: Flavor): Promise<boolean> {
-  const currContent = await iconVariant.getContents();
-  const currSourceHash = createHash(currContent);
-  LOGGER.debug(`current: ${currSourceHash}, saved:  ${equivFlavor.sourceHash}`);
-  return (!!equivFlavor && currSourceHash === equivFlavor.sourceHash);
 }
 
 /**

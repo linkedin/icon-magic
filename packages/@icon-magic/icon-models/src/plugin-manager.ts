@@ -7,7 +7,6 @@ import { Icon } from './icon';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
-
 const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 
 /**
