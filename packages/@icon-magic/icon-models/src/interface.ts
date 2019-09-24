@@ -15,6 +15,7 @@ export interface AssetConfig {
   name?: string;
   path: string;
   contents?: Content;
+  sourceHash?: string;
 }
 
 interface SVGOptions {

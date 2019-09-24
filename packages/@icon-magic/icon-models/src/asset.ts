@@ -12,6 +12,7 @@ export class Asset {
   name: string;
   contents: Content | undefined;
   iconPath: string;
+  sourceHash?: string;
   protected path: string;
   private LOGGER: Logger;
 
@@ -43,6 +44,12 @@ export class Asset {
     if (config.contents) {
       this.contents = config.contents;
     }
+
+    // if a source has is passed in, set it on the asset's config
+    if (config.sourceHash) {
+      this.sourceHash = config.sourceHash;
+    }
+
     this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
@@ -64,10 +71,14 @@ export class Asset {
    * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
-    return {
+    const config: AssetConfig = {
       name: this.name,
-      path: this.path
+      path: this.path,
     };
+    if (this.sourceHash) {
+      config.sourceHash = this.sourceHash;
+    }
+    return config;
   }
 
   /**

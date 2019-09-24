@@ -3,7 +3,8 @@ import {
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon
+  Icon,
+  createHash
 } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
@@ -157,8 +158,9 @@ export const svgToRaster: GeneratePlugin = {
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
+      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
       await generatePng(
-        (await flavor.getContents()) as string, // .svg asset's getContents() returns a string
+        flavorContent,
         w * res,
         h * res,
         pngOutput
@@ -179,6 +181,7 @@ export const svgToRaster: GeneratePlugin = {
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
         path: flavor.getPath(),
+        sourceHash: createHash(flavorContent),
         types: {
           png: {
             name: assetName,

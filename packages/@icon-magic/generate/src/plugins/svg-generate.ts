@@ -18,7 +18,8 @@ import {
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon
+  Icon,
+  createHash
 } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -56,6 +57,9 @@ export const svgGenerate: GeneratePlugin = {
     icon: Icon,
     params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
+    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+    flavor.sourceHash = createHash(flavorContent);
+
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
@@ -154,7 +158,7 @@ export const svgGenerate: GeneratePlugin = {
       ],
       js2svg: { pretty: true, indent: 2 }
     });
-    const asset = await svgo.optimize((await flavor.getContents()) as string); // .svg asset's getContents() returns a string
+    const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
     const outputPath = icon.getIconOutputPath();
 
     // write the optimized svg to the output directory
