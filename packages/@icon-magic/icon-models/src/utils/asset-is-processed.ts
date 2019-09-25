@@ -47,6 +47,8 @@ export async function hasAssetBeenProcessed(
       : null;
     // Flavor with the same source svg already exists, no need to run generate again
     if (savedFlavorConfig && await compareAssetHashes(flavor, savedFlavorConfig)) {
+      // Create new Flavor from the config we retrieved, so it's copied over
+      // when the iconrc is written
       const savedFlavor: Flavor = new Flavor(outputPath, savedFlavorConfig);
       await savedFlavor.getContents();
       return savedFlavor;
