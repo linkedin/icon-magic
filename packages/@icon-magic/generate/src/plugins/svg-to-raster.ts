@@ -155,18 +155,15 @@ export const svgToRaster: GeneratePlugin = {
 
       // Check if generate has been run on this flavor already, if it has, it will be saved
       // in the iconrc in the output path
-      const savedFlavorConfig = await hasAssetBeenProcessed(
+      const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
         outputPath,
-        assetName,
+        flavorName,
         flavor
       );
-      // If this flavor has been saved in the outputPath, it's already gone through the process.
-      if (savedFlavorConfig) {
+      if (savedFlavor) {
         LOGGER.info(
-          `${icon.iconName}'s ${assetName} has been converted and minified already. Skipping that step. Turn hashing off if you don't want this.`
+          `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
         );
-        const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
-        await savedFlavor.getContents();
         return savedFlavor;
       }
 

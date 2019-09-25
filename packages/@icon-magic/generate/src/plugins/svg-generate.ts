@@ -66,17 +66,15 @@ export const svgGenerate: GeneratePlugin = {
     const outputPath = icon.getIconOutputPath();
 
     // Check if generate has been run on this flavor already
-    const savedFlavorConfig: FlavorConfig | null = await hasAssetBeenProcessed(
+    const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
       outputPath,
       flavorName,
       flavor
     );
-    if (savedFlavorConfig) {
+    if (savedFlavor) {
       LOGGER.info(
         `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
       );
-      const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
-      await savedFlavor.getContents();
       return savedFlavor;
     }
 
