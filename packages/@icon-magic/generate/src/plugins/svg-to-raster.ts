@@ -157,12 +157,12 @@ export const svgToRaster: GeneratePlugin = {
       // in the iconrc in the output path
       const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
         outputPath,
-        flavorName,
+        assetName,
         flavor
       );
       if (savedFlavor) {
         LOGGER.info(
-          `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
+          `${icon.iconName}'s ${assetName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
         );
         return savedFlavor;
       }
