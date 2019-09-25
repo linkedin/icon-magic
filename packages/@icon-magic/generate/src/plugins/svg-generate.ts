@@ -13,12 +13,12 @@
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
 import {
-  hasAssetBeenProcessed,
   Asset,
   AssetSize,
   Flavor,
   GeneratePlugin,
   Icon,
+  hasAssetBeenProcessed,
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
@@ -191,7 +191,7 @@ export const svgGenerate: GeneratePlugin = {
         path: `./${flavor.name}.svg`
       })
     );
-    LOGGER.info(`cur: ${JSON.stringify(flavor, null, 4)}`)
+    LOGGER.info(`cur: ${JSON.stringify(flavor, null, 4)}`);
     return flavor;
   }
 };

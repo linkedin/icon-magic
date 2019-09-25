@@ -1,6 +1,7 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
 import * as path from 'path';
-import { FlavorConfig, Flavor, createHash, Asset } from '../';
+
+import { Asset, Flavor, FlavorConfig, createHash } from '../';
 
 /**
  * Checks if the `sourceHash` of the saved asset matches the computed hash of

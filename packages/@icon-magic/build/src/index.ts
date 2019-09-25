@@ -7,8 +7,8 @@ import {
   IconConfigHash,
   IconSet,
   applyPluginsOnAsset,
-  createHash,
   compareAssetHashes,
+  createHash,
   saveContentToFile,
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';

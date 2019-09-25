@@ -6,12 +6,12 @@ import {
   Icon,
   createHash
 } from '@icon-magic/icon-models';
+import { hasAssetBeenProcessed } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { hasAssetBeenProcessed } from '@icon-magic/icon-models';
 
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
@@ -202,7 +202,7 @@ export const svgToRaster: GeneratePlugin = {
           }
         }
       });
-      LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`)
+      LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`);
       return flavorWithRasterAssets;
     }
     return flavor;
