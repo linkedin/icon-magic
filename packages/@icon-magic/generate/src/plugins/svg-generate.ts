@@ -12,14 +12,13 @@
  *   A helper function will need to map the API to the size and render the SVG with the appropriate width, height and viewbox values.
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
-import { loadConfigFile } from "@icon-magic/config-reader";
+import { hasAssetBeenProcessed } from '../utils/is-processed';
 import {
   Asset,
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon,
-  compareHash,
+  Icon
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
@@ -60,7 +59,24 @@ export const svgGenerate: GeneratePlugin = {
     icon: Icon,
     params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
+    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
     const flavorName: string = path.basename(flavor.name);
+    // Create the output directory
+    const outputPath = icon.getIconOutputPath();
+
+    // Check if generate has been run on this flavor already
+    const savedFlavor = await hasAssetBeenProcessed(
+      outputPath,
+      flavorName,
+      flavor
+    );
+    if (savedFlavor) {
+      LOGGER.info(
+        `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
+      );
+      return flavor;
+    }
+
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
@@ -74,9 +90,7 @@ export const svgGenerate: GeneratePlugin = {
         // if the metadata doesn't contain nameSizeMapping, throw an error
         if (!nameSizeMapping) {
           throw new Error(
-            `SVGGenerateError: ${
-              icon.iconPath
-            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+            `SVGGenerateError: ${icon.iconPath} does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
           );
         }
 
@@ -96,9 +110,7 @@ export const svgGenerate: GeneratePlugin = {
 
         if (!flavorSize) {
           throw new Error(
-            `SVGGenerateError: ${flavorName} of ${
-              icon.iconPath
-            } does not match a key in "nameSizeMapping"`
+            `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
           );
         }
 
@@ -158,22 +170,11 @@ export const svgGenerate: GeneratePlugin = {
       ],
       js2svg: { pretty: true, indent: 2 }
     });
-    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
-    const buildOutputPath = icon.getBuildOutputPath();
-    const iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
-    const savedFlavor = iconrc['flavors'].find((savedFlavor: Flavor) => savedFlavor.name === flavorName);
-    let asset;
-    if (compareHash(flavor, savedFlavor)) {
-      LOGGER.info(`${icon.iconName}'s ${flavorName} has been optimized. Skipping that step.`);
-      asset = savedFlavor;
-    }
-    else {
-      asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
-    }
-    const outputPath = icon.getIconOutputPath();
 
     // write the optimized svg to the output directory
+    const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
     await fs.mkdirp(outputPath);
+
     await fs.writeFile(
       `${path.join(outputPath, flavor.name)}.svg`,
       asset.data,
@@ -190,7 +191,6 @@ export const svgGenerate: GeneratePlugin = {
         path: `./${flavor.name}.svg`
       })
     );
-
     return flavor;
   }
 };

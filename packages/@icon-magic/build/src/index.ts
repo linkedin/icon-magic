@@ -8,7 +8,7 @@ import {
   IconSet,
   applyPluginsOnAsset,
   createHash,
-  compareHash,
+  isAssetProcessed,
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
@@ -48,8 +48,15 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
 
     // runs the plugins on each icon
     let assets: Asset[];
+    let iconrc = '';
     const buildConfig = icon.build;
-    const iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
+    try {
+      iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
+    }
+    catch(e) {
+      // If we get here then the icon has not been built before, we don't have to
+      // do anything, just let it build.
+    }
     if (buildConfig && buildConfig.plugins && buildConfig.plugins.length) {
       assets = await applyBuildPluginsOnVariants(
         icon,
@@ -150,7 +157,7 @@ export async function applyBuildPluginsOnVariants(
   for (const iconVariant of icon.variants) {
     if (iconrc) {
       const savedFlavor = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
-      if (compareHash(iconVariant, savedFlavor)) {
+      if (isAssetProcessed(iconVariant, savedFlavor)) {
         // This variant has already been built
         LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
         assets = assets.concat(savedFlavor);

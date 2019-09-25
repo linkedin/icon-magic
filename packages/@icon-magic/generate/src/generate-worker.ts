@@ -41,9 +41,7 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
   // icon-magic build
   if (!existsSync(icon.getBuildOutputPath())) {
     LOGGER.error(
-      `${
-        icon.iconPath
-      }: Run "icon-magic build" on the icon before running "generate"`
+      `${icon.iconPath}: Run "icon-magic build" on the icon before running "generate"`
     );
   }
   const generateConfig = icon.generate;
@@ -84,12 +82,17 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
 
   // write the icon config to disk
   LOGGER.debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
-  await saveContentToFile(
-    icon.getIconOutputPath(),
-    'iconrc',
-    JSON.stringify(icon.getConfig(), null, 2),
-    'json'
-  );
+  try {
+    await saveContentToFile(
+      icon.getIconOutputPath(),
+      'iconrc',
+      JSON.stringify(icon.getConfig(), null, 2),
+      'json'
+    );
+  }
+  catch(e) {
+    LOGGER.debug(`${e}`);
+  }
 }
 
 /**

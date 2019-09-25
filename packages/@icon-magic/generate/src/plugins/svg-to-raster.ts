@@ -4,15 +4,14 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
-  createHash,
-  compareHash,
+  createHash
 } from '@icon-magic/icon-models';
-import { loadConfigFile } from "@icon-magic/config-reader";
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { hasAssetBeenProcessed } from '../utils/is-processed';
 
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
@@ -67,9 +66,7 @@ export const svgToRaster: GeneratePlugin = {
         // information for nameSizeMapping
         if (!nameSizeMapping) {
           throw new Error(
-            `${
-              icon.iconPath
-            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains useNameSizeMapping: true`
+            `${icon.iconPath} does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains useNameSizeMapping: true`
           );
         }
         let sizeFromMapping!: AssetSize;
@@ -153,28 +150,31 @@ export const svgToRaster: GeneratePlugin = {
         assetName = `${appendDash(flavorName)}${w}x${h}@${res}`;
       }
 
-      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
-      const buildOutputPath = icon.getBuildOutputPath();
-      const iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
-      const savedFlavor = iconrc['flavors'].find((savedFlavor: Flavor) => { savedFlavor.name === assetName });
-      if (compareHash(flavor, savedFlavor)) {
-        LOGGER.info(`${icon.iconName}'s ${assetName} has been converted and minified. Skipping that step.`);
-        return savedFlavor;
+      // Get icon output path
+      const outputPath = icon.getIconOutputPath();
+
+      // Check if generate has been run on this flavor already, if it has, it will be saved
+      // in the iconrc in the output path
+      const savedFlavor = await hasAssetBeenProcessed(
+        outputPath,
+        assetName,
+        flavor
+      );
+      // If this flavor has been saved in the outputPath, it's already gone through the process.
+      if (savedFlavor) {
+        LOGGER.info(
+          `${icon.iconName}'s ${assetName} has been converted and minified already. Skipping that step. Turn hashing off if you don't want this.`
+        );
+        return flavor;
       }
 
       // create the icon output path if it doesn't exist already
-      const outputPath = icon.getIconOutputPath();
       await fs.mkdirp(outputPath);
-
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
-      await generatePng(
-        flavorContent,
-        w * res,
-        h * res,
-        pngOutput
-      );
+      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+      await generatePng(flavorContent, w * res, h * res, pngOutput);
 
       // Convert the png to webp
       LOGGER.debug(`Creating webp from ${pngOutput} `);
