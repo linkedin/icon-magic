@@ -19,7 +19,6 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
-  FlavorConfig,
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
