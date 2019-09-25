@@ -8,8 +8,8 @@ import {
   IconSet,
   applyPluginsOnAsset,
   createHash,
-  isAssetProcessed,
-  saveContentToFile
+  compareAssetHashes,
+  saveContentToFile,
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { timer } from '@icon-magic/timing';
@@ -123,7 +123,7 @@ async function saveAssetAsFlavor(
     encoding: 'utf8'
   });
   LOGGER.debug(`Asset ${asset.name} has been written to ${pathToAsset}`);
-  const variant = icon.variants.find(variant => variant.name === asset.name);
+  const variant = icon.variants.find((variant: Asset) => variant.name === asset.name);
   const variantContent = variant ? await variant.getContents() : '';
   // create a new Flavor instance with the asset once the asset is written to
   // disk
@@ -156,10 +156,11 @@ export async function applyBuildPluginsOnVariants(
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
     if (iconrc) {
-      const savedFlavor = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
-      if (isAssetProcessed(iconVariant, savedFlavor)) {
+      const savedFlavorConfig = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
+      if (compareAssetHashes(iconVariant, savedFlavorConfig)) {
         // This variant has already been built
         LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
+        const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
         assets = assets.concat(savedFlavor);
         continue;
       }

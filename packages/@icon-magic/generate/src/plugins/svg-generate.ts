@@ -12,13 +12,14 @@
  *   A helper function will need to map the API to the size and render the SVG with the appropriate width, height and viewbox values.
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
-import { hasAssetBeenProcessed } from '../utils/is-processed';
 import {
+  hasAssetBeenProcessed,
   Asset,
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon
+  Icon,
+  FlavorConfig,
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
@@ -65,16 +66,18 @@ export const svgGenerate: GeneratePlugin = {
     const outputPath = icon.getIconOutputPath();
 
     // Check if generate has been run on this flavor already
-    const savedFlavor = await hasAssetBeenProcessed(
+    const savedFlavorConfig: FlavorConfig | null = await hasAssetBeenProcessed(
       outputPath,
       flavorName,
       flavor
     );
-    if (savedFlavor) {
+    if (savedFlavorConfig) {
       LOGGER.info(
         `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
       );
-      return flavor;
+      const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
+      await savedFlavor.getContents();
+      return savedFlavor;
     }
 
     // build the attributes object that contains attributes to be added to the svg
@@ -191,6 +194,7 @@ export const svgGenerate: GeneratePlugin = {
         path: `./${flavor.name}.svg`
       })
     );
+    LOGGER.info(`cur: ${JSON.stringify(flavor, null, 4)}`)
     return flavor;
   }
 };

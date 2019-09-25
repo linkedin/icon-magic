@@ -1,6 +1,6 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
 import * as path from 'path';
-import { Flavor, createHash, Asset } from '@icon-magic/icon-models';
+import { FlavorConfig, Flavor, createHash, Asset } from '../';
 
 /**
  * Checks if the `sourceHash` of the saved asset matches the computed hash of
@@ -12,7 +12,7 @@ import { Flavor, createHash, Asset } from '@icon-magic/icon-models';
  */
 export async function compareAssetHashes(
   currentAsset: Asset,
-  savedAsset: Flavor
+  savedAsset: FlavorConfig
 ): Promise<boolean> {
   // Get the contents of the asset (flavor or variant) being processed
   const currContent = await currentAsset.getContents();
@@ -34,25 +34,25 @@ export async function hasAssetBeenProcessed(
   outputPath: string,
   flavorName: string,
   flavor: Flavor
-): Promise<Boolean> {
+): Promise<FlavorConfig | null> {
   try {
     // Try and open the config file in the output path
     const iconrc = await loadConfigFile(path.join(outputPath, 'iconrc.json'));
     // Look for a flavor in the config that matches the current flavor going through
     // the generation process
-    const savedFlavor: Flavor = iconrc
+    const savedFlavor: FlavorConfig = iconrc
       ? iconrc['flavors'].find(
           (storedFlavor: Flavor) => storedFlavor.name === flavorName
         )
       : null;
     // Flavor with the same source svg already exists, no need to run generate again
-    if (savedFlavor) {
-      return await compareAssetHashes(flavor, savedFlavor);
+    if (savedFlavor && await compareAssetHashes(flavor, savedFlavor)) {
+      return savedFlavor;
     }
   } catch (e) {
     // If we get here then the icon has not been generated before, we don't have to
     // do anything, just let it generate
-    return false;
+    return null;
   }
-  return false;
+  return null;
 }

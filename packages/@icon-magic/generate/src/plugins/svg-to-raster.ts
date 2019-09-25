@@ -11,7 +11,7 @@ import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { hasAssetBeenProcessed } from '../utils/is-processed';
+import { hasAssetBeenProcessed } from '@icon-magic/icon-models';
 
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
@@ -155,17 +155,19 @@ export const svgToRaster: GeneratePlugin = {
 
       // Check if generate has been run on this flavor already, if it has, it will be saved
       // in the iconrc in the output path
-      const savedFlavor = await hasAssetBeenProcessed(
+      const savedFlavorConfig = await hasAssetBeenProcessed(
         outputPath,
         assetName,
         flavor
       );
       // If this flavor has been saved in the outputPath, it's already gone through the process.
-      if (savedFlavor) {
+      if (savedFlavorConfig) {
         LOGGER.info(
           `${icon.iconName}'s ${assetName} has been converted and minified already. Skipping that step. Turn hashing off if you don't want this.`
         );
-        return flavor;
+        const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
+        await savedFlavor.getContents();
+        return savedFlavor;
       }
 
       // create the icon output path if it doesn't exist already
@@ -203,6 +205,7 @@ export const svgToRaster: GeneratePlugin = {
           }
         }
       });
+      LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`)
       return flavorWithRasterAssets;
     }
     return flavor;
