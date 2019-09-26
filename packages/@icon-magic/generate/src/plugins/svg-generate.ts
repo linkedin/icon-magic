@@ -70,9 +70,7 @@ export const svgGenerate: GeneratePlugin = {
         // if the metadata doesn't contain nameSizeMapping, throw an error
         if (!nameSizeMapping) {
           throw new Error(
-            `SVGGenerateError: ${
-              icon.iconPath
-            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
+            `SVGGenerateError: ${icon.iconPath} does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains addSupportedDps: current`
           );
         }
 
@@ -92,9 +90,7 @@ export const svgGenerate: GeneratePlugin = {
 
         if (!flavorSize) {
           throw new Error(
-            `SVGGenerateError: ${flavorName} of ${
-              icon.iconPath
-            } does not match a key in "nameSizeMapping"`
+            `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
           );
         }
 
@@ -131,6 +127,11 @@ export const svgGenerate: GeneratePlugin = {
 
     const svgo = new Svgo({
       plugins: [
+        {
+          cleanupIDs: {
+            prefix: `${icon.category}-${attributes.id}-`
+          }
+        },
         {
           removeViewBox: params.isFixedDimensions || false
         },
