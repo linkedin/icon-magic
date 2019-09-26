@@ -1,0 +1,18 @@
+{
+  "iconPath": ".",
+  "iconName": "modified-small-home",
+  "variants": [
+    {
+      "name": "filled",
+      "path": "./filled.svg"
+    },
+    {
+      "name": "modifiedOutline",
+      "path": "./modifiedOutline.svg"
+    }
+  ],
+  "outputPath": "./test/fixtures/out",
+  "build": {
+    "outputPath": "./out"
+  }
+}

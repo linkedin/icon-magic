@@ -67,6 +67,18 @@ const buildPlugins: BuildPlugin[] = [
   }
 ];
 
+export const lastBuildPluginUpdated = {
+  name: 'p3',
+  fn: async (asset: Asset, icon: Icon, params?: object): Promise<Asset> => {
+    return new Asset(icon.iconPath, {
+      name: getNameFromPropCombo(asset.name, params),
+      path: asset.getPath(),
+      contents: 'p3x2'
+    });
+  },
+  iterants: ['sizes']
+};
+
 export const generate: GenerateConfig = {
   types: [
     {
@@ -98,7 +110,7 @@ export const variants: AssetConfig[] = [
 export const flavors: FlavorConfig[] = [
   {
     path: './filled-a.svg',
-    name: 'filled-a',
+    name: 'filled',
     types: sampleExt
   },
   {
@@ -108,7 +120,7 @@ export const flavors: FlavorConfig[] = [
   },
   {
     path: './someOtherName-a.svg',
-    name: 'someOtherName-a',
+    name: 'someOtherName',
     types: sampleExt
   },
   {
@@ -119,14 +131,14 @@ export const flavors: FlavorConfig[] = [
 ];
 
 export const idealIcon: IconConfig = {
-  iconPath: `${FIXTURES}/nav-icons/home`,
+  iconPath: `${FIXTURES}/input/nav-icons/home`,
   iconName: 'home',
   variants: variants,
   flavors: flavors,
-  outputPath: './out',
+  outputPath: `${FIXTURES}/out`,
   build: build,
   generate: generate,
   sizes: [16, 24],
   resolutions: [1, 2],
-  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
+  sourceConfigFile: `${FIXTURES}/input/nav-icons/iconrc.json`
 };

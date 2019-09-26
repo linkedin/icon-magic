@@ -3,6 +3,7 @@ import {
   Asset,
   BuildPlugin,
   Flavor,
+  FlavorConfig,
   Icon,
   IconConfigHash,
   IconSet,
@@ -48,7 +49,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
 
     // runs the plugins on each icon
     let assets: Asset[];
-    let iconrc = '';
+    let iconrc = {};
     const buildConfig = icon.build;
     try {
       iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
@@ -138,7 +139,6 @@ async function saveAssetAsFlavor(
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);
-  LOGGER.debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
 }
 
 /**
@@ -151,13 +151,14 @@ async function saveAssetAsFlavor(
 export async function applyBuildPluginsOnVariants(
   icon: Icon,
   plugins: BuildPlugin[],
-  iconrc?: string,
+  iconrc?: object,
 ): Promise<Asset[]> {
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
+    LOGGER.debug(`HEYYA: ${JSON.stringify(iconrc, null, 2)}, ${JSON.stringify(icon.getConfig(), null, 2)}`);
     if (iconrc) {
-      const savedFlavorConfig = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
-      if (compareAssetHashes(iconVariant, savedFlavorConfig)) {
+      const savedFlavorConfig: FlavorConfig = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
+      if (savedFlavorConfig && compareAssetHashes(iconVariant, savedFlavorConfig)) {
         // This variant has already been built
         LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
         const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
@@ -170,6 +171,8 @@ export async function applyBuildPluginsOnVariants(
       await applyPluginsOnAsset(iconVariant, icon, plugins)
     );
   }
+  // LOGGER.info(`Assets ${JSON.stringify(assets, null, 2)}`);
+
   return assets;
 }
 
