@@ -155,6 +155,11 @@ export const svgGenerate: GeneratePlugin = {
     const svgo = new Svgo({
       plugins: [
         {
+          cleanupIDs: {
+            prefix: `${icon.category}-${attributes.id}-`
+          }
+        },
+        {
           removeViewBox: params.isFixedDimensions || false
         },
         {

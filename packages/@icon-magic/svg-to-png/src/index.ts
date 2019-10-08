@@ -29,20 +29,14 @@ export async function convert(
   if (!contents) {
     throw new Error('No contents discovered.');
   }
-  return await run(async page => {
+  return await run(async (page) => {
+    // Page should be bigger than the svg it's taking a screenshot of
     await page.setViewport({
-      width: options.width + 200,
-      height: 480,
-      deviceScaleFactor: 1
+      width: options.width + 100,
+      height: options.height + 100,
+      deviceScaleFactor: 1,
     });
-    await page.setContent(
-      contents
-        .toString()
-        .replace(
-          '<svg',
-          `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `
-        )
-    );
+    await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `));
     return await page.screenshot({
       encoding: 'binary',
       omitBackground: true,
