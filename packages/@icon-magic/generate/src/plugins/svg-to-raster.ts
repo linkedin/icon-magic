@@ -6,12 +6,13 @@ import {
   Icon,
   createHash
 } from '@icon-magic/icon-models';
-import { hasAssetBeenProcessed } from '../utils';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+
+import { hasAssetBeenProcessed } from '../utils';
 
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
@@ -172,7 +173,7 @@ export const svgToRaster: GeneratePlugin = {
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
-      const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+      const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
       await generatePng(flavorContent, w * res, h * res, pngOutput);
 
       // Convert the png to webp
@@ -202,7 +203,7 @@ export const svgToRaster: GeneratePlugin = {
           }
         }
       });
-      LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`);
+      // LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`);
       return flavorWithRasterAssets;
     }
     return flavor;

@@ -1,7 +1,8 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
-import * as path from 'path';
-
 import { Flavor, FlavorConfig, compareAssetHashes } from '@icon-magic/icon-models';
+import { Logger, logger } from '@icon-magic/logger';
+import * as path from 'path';
+const LOGGER: Logger = logger('icon-magic:generate:utils');
 
 /**
  * Checks the config to see if the asset has been generated before i.e if it is
@@ -20,6 +21,7 @@ export async function hasAssetBeenProcessed(
   try {
     // Try and open the config file in the output path
     const iconrc = await loadConfigFile(path.join(outputPath, 'iconrc.json'));
+    LOGGER.debug(`ONETWO ${JSON.stringify(iconrc)}, ${flavorName}`);
     // Look for a flavor in the config that matches the current flavor going through
     // the generation process
     const savedFlavorConfig: FlavorConfig = iconrc

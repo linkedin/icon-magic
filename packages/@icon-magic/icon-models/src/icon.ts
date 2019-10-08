@@ -66,7 +66,7 @@ export class Icon {
     const variants: Asset[] = [];
     for (const variant of config.variants) {
       if (!(variant instanceof Asset)) {
-        this.LOGGER.debug(`HERE 2 ${JSON.stringify(config)}`);
+        // this.LOGGER.debug(`HERE 2 ${JSON.stringify(config)}`);
         const variantAsset = new Asset(config.iconPath, variant);
 
         // only check the variants if the flag is true
@@ -99,9 +99,7 @@ export class Icon {
     // if there are no valid variants, throw an error
     if (!variants.length) {
       throw new Error(
-        `NoValidVariantsError: ${
-          this.iconPath
-        } does not have any valid variants`
+        `NoValidVariantsError: ${this.iconPath} does not have any valid variants`
       );
     }
 

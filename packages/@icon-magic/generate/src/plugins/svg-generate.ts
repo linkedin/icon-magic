@@ -18,14 +18,16 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
+  createHash
 } from '@icon-magic/icon-models';
-import { hasAssetBeenProcessed } from '../utils'
-import { Logger, logger } from '@icon-magic/logger';
+// import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
 
-const LOGGER: Logger = logger('icon-magic:generate:svg-generate');
+// import { hasAssetBeenProcessed } from '../utils';
+
+// const LOGGER: Logger = logger('icon-magic:generate:svg-generate');
 
 /**
  * Decides what sizes to append for data-supported-dps
@@ -59,24 +61,27 @@ export const svgGenerate: GeneratePlugin = {
     icon: Icon,
     params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
-    const flavorContent = await flavor.getContents() as string; // .svg asset's getContents() returns a string
+    const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
     const flavorName: string = path.basename(flavor.name);
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
 
     // Check if generate has been run on this flavor already
-    const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
-      outputPath,
-      flavorName,
-      flavor
-    );
-    if (savedFlavor) {
-      LOGGER.info(
-        `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
-      );
-      return savedFlavor;
-    }
+    // const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
+    //   outputPath,
+    //   flavorName,
+    //   flavor
+    // );
+    // if (savedFlavor) {
+    //   LOGGER.info(
+    //     `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
+    //   );
+    //   // return savedFlavor;
+    // }
 
+    // If generate hasn't been run create the hash
+
+    flavor.sourceHash = createHash(flavorContent);
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
@@ -191,7 +196,7 @@ export const svgGenerate: GeneratePlugin = {
         path: `./${flavor.name}.svg`
       })
     );
-    LOGGER.info(`cur: ${JSON.stringify(flavor, null, 4)}`);
+    // LOGGER.info(`cur: ${JSON.stringify(flavor, null, 4)}`);
     return flavor;
   }
 };

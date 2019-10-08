@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@types/svgo": "^1.0.1",
-    "@types/workerpool": "^3.1.0"
+    "@types/workerpool": "^3.1.0",
+    "xmldom": "^0.1.27"
   }
 }
