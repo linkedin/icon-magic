@@ -134,7 +134,6 @@ export const idealIcon: IconConfig = {
   iconPath: `${FIXTURES}/input/nav-icons/home`,
   iconName: 'home',
   variants: variants,
-  flavors: flavors,
   outputPath: `${FIXTURES}/out`,
   build: build,
   generate: generate,

@@ -111,7 +111,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
  * @param icon The icon to which the new asset is to be added
  * @param outputPath The path to which the asset is to be written to on disk
  */
-async function saveAssetAsFlavor(
+export async function saveAssetAsFlavor(
   asset: Asset,
   icon: Icon,
   outputPath: string
@@ -155,15 +155,22 @@ export async function applyBuildPluginsOnVariants(
 ): Promise<Asset[]> {
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
-    LOGGER.debug(`HEYYA: ${JSON.stringify(iconrc, null, 2)}, ${JSON.stringify(icon.getConfig(), null, 2)}`);
+    LOGGER.debug(`HEYYA: ${JSON.stringify(iconrc, null, 2)}`);
     if (iconrc) {
-      const savedFlavorConfig: FlavorConfig = iconrc['flavors'].find((flav: Flavor) => flav.name === iconVariant.name) ;
-      if (savedFlavorConfig && compareAssetHashes(iconVariant, savedFlavorConfig)) {
-        // This variant has already been built
-        LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
-        const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
-        assets = assets.concat(savedFlavor);
-        continue;
+      const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter((flav: Flavor) => flav.name.match(iconVariant.name)) ;
+      if (savedFlavorConfigs.length) {
+        const allFlavorsMatch = savedFlavorConfigs.every(async(savedFlavorConfig: FlavorConfig) => {
+          await compareAssetHashes(iconVariant, savedFlavorConfig);
+        });
+        if (allFlavorsMatch) {
+          // This variant has already been built
+          LOGGER.info(`Variant ${iconVariant.name} has already been built, skipping build plugins.`);
+          savedFlavorConfigs.forEach((savedFlavorConfig: FlavorConfig) => {
+            const savedFlavor: Flavor = new Flavor(icon.iconPath, savedFlavorConfig);
+            assets = assets.concat(savedFlavor);
+          });
+          continue;
+        }
       }
     }
     assets = assets.concat(
@@ -171,8 +178,6 @@ export async function applyBuildPluginsOnVariants(
       await applyPluginsOnAsset(iconVariant, icon, plugins)
     );
   }
-  // LOGGER.info(`Assets ${JSON.stringify(assets, null, 2)}`);
-
   return assets;
 }
 
