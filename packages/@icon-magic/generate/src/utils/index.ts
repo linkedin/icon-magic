@@ -1,5 +1,9 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
-import { Flavor, FlavorConfig, compareAssetHashes } from '@icon-magic/icon-models';
+import {
+  Flavor,
+  FlavorConfig,
+  compareAssetHashes
+} from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
 const LOGGER: Logger = logger('icon-magic:generate:utils');
@@ -21,7 +25,6 @@ export async function hasAssetBeenProcessed(
   try {
     // Try and open the config file in the output path
     const iconrc = await loadConfigFile(path.join(outputPath, 'iconrc.json'));
-    LOGGER.debug(`ONETWO ${JSON.stringify(iconrc)}, ${flavorName}`);
     // Look for a flavor in the config that matches the current flavor going through
     // the generation process
     const savedFlavorConfig: FlavorConfig = iconrc
@@ -30,7 +33,10 @@ export async function hasAssetBeenProcessed(
         )
       : null;
     // Flavor with the same source svg already exists, no need to run generate again
-    if (savedFlavorConfig && await compareAssetHashes(flavor, savedFlavorConfig)) {
+    if (
+      savedFlavorConfig &&
+      (await compareAssetHashes(flavor, savedFlavorConfig))
+    ) {
       // Create new Flavor from the config we retrieved, so it's copied over
       // when the iconrc is written
       const savedFlavor: Flavor = new Flavor(outputPath, savedFlavorConfig);

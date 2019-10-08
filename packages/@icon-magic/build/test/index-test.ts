@@ -4,7 +4,11 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { applyBuildPluginsOnVariants, build, saveAssetAsFlavor } from './../src/index';
+import {
+  applyBuildPluginsOnVariants,
+  build,
+  saveAssetAsFlavor
+} from './../src/index';
 import { idealIcon, lastBuildPluginUpdated } from './helpers/ideal-icon';
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 
@@ -93,17 +97,16 @@ describe('Build tests', function() {
     assert.equal(assets.length, 32);
 
     // Should not run lastBuildPluginUpdated which changes the contents
-    assets.forEach(async(asset) => {
+    assets.forEach(async asset => {
       const contents = await asset.getContents();
       assert.equal(contents, 'p3'); // contents of the last plugin
     });
 
     // Just to make sure lastBuildPluginUpdated actually works
-
     if (sampleIcon.build && sampleIcon.build.plugins) {
       assets = await applyBuildPluginsOnVariants(
         sampleIcon,
-        sampleIcon.build.plugins,
+        sampleIcon.build.plugins
       );
     }
 

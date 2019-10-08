@@ -24,7 +24,8 @@ const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 export async function applyPluginsOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
-  plugins: BuildPlugin[] | GeneratePlugin[]
+  plugins: BuildPlugin[] | GeneratePlugin[],
+  hashing?: boolean
 ): Promise<Flavor[]> {
   // create a two dimensional matrix that stores the result of each plugin
   const pluginResults: Flavor[][] = [];
@@ -41,7 +42,12 @@ export async function applyPluginsOnAsset(
 
     // for each input asset, run the plugin and add the results to the matrix
     for (const input of pluginInput) {
-      const output = await applySinglePluginOnAsset(input, icon, plugin);
+      const output = await applySinglePluginOnAsset(
+        input,
+        icon,
+        plugin,
+        hashing
+      );
 
       pluginResults[index] = pluginResults[index].concat(output);
     }
@@ -66,16 +72,15 @@ export async function applyPluginsOnAsset(
 async function applySinglePluginOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
-  plugin: BuildPlugin | GeneratePlugin
+  plugin: BuildPlugin | GeneratePlugin,
+  hashing?: boolean
 ): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
     for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
       []) {
       LOGGER.debug(
-        `applySinglePluginOnFlavor: Applying ${plugin.name} on ${
-          asset.name
-        } with`
+        `applySinglePluginOnFlavor: Applying ${plugin.name} on ${asset.name} with`
       );
       let pluginOutput;
       try {
@@ -83,7 +88,8 @@ async function applySinglePluginOnAsset(
           icon,
           asset,
           icon,
-          Object.assign(plugin.params || {}, { propCombo: propCombo })
+          Object.assign(plugin.params || {}, { propCombo: propCombo }),
+          hashing
         );
       } catch (e) {
         LOGGER.error(
@@ -100,7 +106,13 @@ async function applySinglePluginOnAsset(
     LOGGER.debug('Running the plugin without iterants');
     let pluginOutput;
     try {
-      pluginOutput = await plugin.fn.call(icon, asset, icon, plugin.params);
+      pluginOutput = await plugin.fn.call(
+        icon,
+        asset,
+        icon,
+        plugin.params,
+        hashing
+      );
     } catch (e) {
       LOGGER.error(
         `PluginError: Error while running ${plugin.name} on ${icon.iconPath}`

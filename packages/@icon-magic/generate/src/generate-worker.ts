@@ -30,7 +30,10 @@ const LOGGER: Logger = logger('icon-magic:generate:index');
  * svgGenerate are applied on svg types
  * @param iconConfig mapping of the iconPath to the Icon class
  */
-async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
+async function generateSingleIcon(
+  iconConfig: IconConfig,
+  hashing?: boolean
+): Promise<void> {
   // TODO: this function should take in an instance of Icon but due to an issue
   // in workerpool, I'm using a workaround where we're having to create this
   // instance by taking an iconConfig instead.
@@ -56,7 +59,8 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
               icon,
               generateType.plugins && generateType.plugins.length
                 ? await getPlugins(generateType.plugins)
-                : new Array(svgGenerate)
+                : new Array(svgGenerate),
+              hashing
             )
           );
           break;
@@ -66,7 +70,8 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
             icon,
             generateType.plugins && generateType.plugins.length
               ? await getPlugins(generateType.plugins)
-              : new Array(svgToRaster)
+              : new Array(svgToRaster),
+            hashing
           );
           break;
         }
@@ -89,8 +94,7 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
       JSON.stringify(icon.getConfig(), null, 2),
       'json'
     );
-  }
-  catch(e) {
+  } catch (e) {
     LOGGER.debug(`${e}`);
   }
 }
@@ -103,7 +107,8 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
  */
 async function applyGeneratePluginsOnFlavors(
   icon: Icon,
-  plugins: GeneratePlugin[]
+  plugins: GeneratePlugin[],
+  hashing?: boolean
 ): Promise<Flavor[]> {
   let promises: Flavor[] = [];
   if (icon.flavors) {
@@ -111,7 +116,7 @@ async function applyGeneratePluginsOnFlavors(
       LOGGER.debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
       promises = promises.concat(
         // TODO: fork off a separate node process for each variant here
-        await applyPluginsOnAsset(iconFlavor, icon, plugins)
+        await applyPluginsOnAsset(iconFlavor, icon, plugins, hashing)
       );
     }
   }

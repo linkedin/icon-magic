@@ -46,7 +46,8 @@ export interface FlavorConfig extends AssetConfig {
 export type PluginFunctionType<T> = (
   flavor: T,
   icon: Icon,
-  params?: object // set of iterant values to be passed into the plugin
+  params?: object, // set of iterant values to be passed into the plugin
+  hashing?: boolean
 ) => Promise<T>;
 
 export interface Plugin<T> {

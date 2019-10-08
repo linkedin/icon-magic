@@ -19,7 +19,10 @@ const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
  *
  * @param iconSet mapping of the iconPath to the Icon class
  */
-export async function generate(iconSet: IconSet): Promise<void> {
+export async function generate(
+  iconSet: IconSet,
+  hashing = true
+): Promise<void> {
   TIMER.start();
   LOGGER.debug('Icon generation has begun');
 
@@ -35,7 +38,8 @@ export async function generate(iconSet: IconSet): Promise<void> {
       // I'll file a bug and follow up with them on it. TODO: Create an issue
       // for workerpool
       pool.exec('generateSingleIcon', [
-        Object.assign(icon.getConfig(), { iconPath: icon.iconPath })
+        Object.assign(icon.getConfig(), { iconPath: icon.iconPath }),
+        hashing
       ])
     );
   }
@@ -54,8 +58,9 @@ export async function generate(iconSet: IconSet): Promise<void> {
  * directly from the CLI
  */
 export async function generateFromConfigHash(
-  iconConfig: IconConfigHash
+  iconConfig: IconConfigHash,
+  hashing = true
 ): Promise<void> {
   const iconSet = new IconSet(iconConfig, true);
-  return generate(iconSet);
+  return generate(iconSet, hashing);
 }

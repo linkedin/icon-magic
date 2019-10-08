@@ -53,7 +53,8 @@ export const svgToRaster: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params: SvgToRasterOptions = {}
+    params: SvgToRasterOptions = {},
+    hashing?: boolean
   ): Promise<Flavor> => {
     // get the size and resolution from the params passed in
     if (params.propCombo) {
@@ -156,16 +157,18 @@ export const svgToRaster: GeneratePlugin = {
 
       // Check if generate has been run on this flavor already, if it has, it will be saved
       // in the iconrc in the output path
-      const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
-        outputPath,
-        assetName,
-        flavor
-      );
-      if (savedFlavor) {
-        LOGGER.info(
-          `${icon.iconName}'s ${assetName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
+      if (hashing) {
+        const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
+          outputPath,
+          assetName,
+          flavor
         );
-        return savedFlavor;
+        if (savedFlavor) {
+          LOGGER.info(
+            `${icon.iconName}'s ${assetName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
+          );
+          return savedFlavor;
+        }
       }
 
       // create the icon output path if it doesn't exist already
@@ -203,7 +206,6 @@ export const svgToRaster: GeneratePlugin = {
           }
         }
       });
-      // LOGGER.info(`cur: ${JSON.stringify(flavorWithRasterAssets, null, 4)}`);
       return flavorWithRasterAssets;
     }
     return flavor;
