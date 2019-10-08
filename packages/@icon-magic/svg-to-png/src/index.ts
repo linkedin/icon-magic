@@ -1,5 +1,7 @@
 import * as fs from "fs-extra";
 import * as path from "path";
+import { Logger, logger } from '@icon-magic/logger';
+const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
 import { run } from "./browserPool";
 
@@ -22,7 +24,13 @@ export async function convert(contents: string, options: SVGToPNGOptions): Promi
     throw new Error("No contents discovered.");
   }
   return await run(async (page) => {
+    await page.setViewport({
+      width: options.width + 200,
+      height: 480,
+      deviceScaleFactor: 1,
+    });
     await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `));
+    LOGGER.debug(`PAGEEEEE: ${page.viewport()} ${contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `)}`);
     return await page.screenshot({
       encoding: "binary",
       omitBackground: true,

@@ -18,8 +18,8 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
-  hasAssetBeenProcessed,
 } from '@icon-magic/icon-models';
+import { hasAssetBeenProcessed } from '../utils'
 import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';

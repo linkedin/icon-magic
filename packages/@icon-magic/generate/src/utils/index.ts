@@ -1,26 +1,7 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
 import * as path from 'path';
 
-import { Asset, Flavor, FlavorConfig, createHash } from '../';
-
-/**
- * Checks if the `sourceHash` of the saved asset matches the computed hash of
- * the asset that's about to be taken through the generation process.
- * @param currentAsset the asset being processed in the generate step
- * @param savedAsset the config of the saved asset that's written to the output path
- * @returns A promise that resolves to a Boolean which states whether the saved asset and the current
- * asset are the same.
- */
-export async function compareAssetHashes(
-  currentAsset: Asset,
-  savedAsset: FlavorConfig
-): Promise<boolean> {
-  // Get the contents of the asset (flavor or variant) being processed
-  const currContent = await currentAsset.getContents();
-  // Compute the hash
-  const currSourceHash = createHash(currContent);
-  return currSourceHash === savedAsset.sourceHash;
-}
+import { Flavor, FlavorConfig, compareAssetHashes } from '@icon-magic/icon-models';
 
 /**
  * Checks the config to see if the asset has been generated before i.e if it is

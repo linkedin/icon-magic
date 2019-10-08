@@ -6,7 +6,7 @@ import {
   Icon,
   createHash
 } from '@icon-magic/icon-models';
-import { hasAssetBeenProcessed } from '@icon-magic/icon-models';
+import { hasAssetBeenProcessed } from '../utils';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
