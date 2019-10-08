@@ -4,9 +4,7 @@ import {
   FlavorConfig,
   compareAssetHashes
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
-const LOGGER: Logger = logger('icon-magic:generate:utils');
 
 /**
  * Checks the config to see if the asset has been generated before i.e if it is
