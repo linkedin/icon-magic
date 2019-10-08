@@ -1,7 +1,5 @@
-import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
 import { run } from './browserPool';
 
