@@ -8,7 +8,7 @@ import { generateFromConfigHash } from '../src';
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 const output = path.resolve(FIXTURES, 'out');
 
-describe('Test test', function() {
+describe('Generate test', function() {
   it('runs the generate plugins', async () => {
     const input = path.resolve(FIXTURES, 'nav-icons/home-2');
     // generate all the icons

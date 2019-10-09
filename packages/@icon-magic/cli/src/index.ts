@@ -20,7 +20,7 @@ program
   )
   .option(
     '-h, --hashing',
-    'If false, Icon Magic will run build and generate on all icons including those that have not changed since the previous execution. If true it will only run on icons that have changed assets. Defaults to true.'
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
@@ -46,7 +46,7 @@ program
   )
   .option(
     '-h, --hashing',
-    'If false, Icon Magic will run build and generate on all icons including those that have not changed since the previous execution. If true it will only run on icons that have changed assets. Defaults to true.'
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
@@ -134,7 +134,7 @@ program
   .description('runs build and generate on all the inputPaths')
   .option(
     '-h, --hashing',
-    'If false, Icon Magic will run build and generate on all icons including those that have not changed since the previous execution. If true it will only run on icons that have changed assets. Defaults to true.'
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
   .action(async (inputPaths, options) => {
     // Get the iconSet from the inputPaths

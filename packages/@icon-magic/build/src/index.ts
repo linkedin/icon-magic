@@ -57,7 +57,9 @@ export async function build(
 
     if (hashing) {
       try {
-        iconrc = loadConfigFile(path.join(buildOutputPath, 'iconrc.json'));
+        iconrc = await loadConfigFile(
+          path.join(buildOutputPath, 'iconrc.json')
+        );
       } catch (e) {
         // If we get here then the icon has not been built before, we don't have to
         // do anything, just let it build.

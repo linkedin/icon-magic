@@ -95,7 +95,7 @@ async function generateSingleIcon(
       'json'
     );
   } catch (e) {
-    LOGGER.debug(`${e}`);
+    LOGGER.error(`${e}`);
   }
 }
 
