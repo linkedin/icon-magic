@@ -10,9 +10,11 @@ import {
 import { Logger, logger } from '@icon-magic/logger';
 import { existsSync } from 'fs-extra';
 import * as workerpool from 'workerpool';
+import * as path from 'path';
 
 import { svgGenerate } from './plugins/svg-generate';
 import { svgToRaster } from './plugins/svg-to-raster';
+import { hasAssetBeenProcessed } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:generate:index');
 
@@ -114,6 +116,27 @@ async function applyGeneratePluginsOnFlavors(
   if (icon.flavors) {
     for (const iconFlavor of icon.flavors.values()) {
       LOGGER.debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
+      // Check if generate has been run on this flavor already, if it has, it will be saved
+      // in the iconrc in the output path
+
+      if (hashing) {
+        // Check if generate has been run on this flavor already
+        const flavorName: string = path.basename(iconFlavor.name);
+        // Create the output directory
+        const outputPath = icon.getIconOutputPath();
+        const savedFlavors: Flavor[] | null = await hasAssetBeenProcessed(
+          outputPath,
+          flavorName,
+          iconFlavor
+        );
+        if (savedFlavors.length) {
+          LOGGER.info(
+            `${icon.iconName}'s ${flavorName} has been generated. Skipping that step. Turn hashing off if you don't want this.`
+          );
+          promises = promises.concat(savedFlavors);
+          continue;
+        }
+      }
       promises = promises.concat(
         // TODO: fork off a separate node process for each variant here
         await applyPluginsOnAsset(iconFlavor, icon, plugins, hashing)

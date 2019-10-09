@@ -26,8 +26,8 @@ export async function hasAssetBeenProcessed(
     // Look for a flavor in the config that matches the current flavor going through
     // the generation process
     const savedFlavorConfig: FlavorConfig = iconrc
-      ? iconrc['flavors'].find(
-          (storedFlavor: Flavor) => storedFlavor.name === flavorName
+      ? iconrc['flavors'].filter(
+          (storedFlavor: Flavor) => storedFlavor.name.match(flavorName)
         )
       : null;
     // Flavor with the same source svg already exists, no need to run generate again

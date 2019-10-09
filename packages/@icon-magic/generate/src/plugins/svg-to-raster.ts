@@ -12,8 +12,6 @@ import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { hasAssetBeenProcessed } from '../utils';
-
 const webp = require('webp-converter');
 const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
 
@@ -53,8 +51,7 @@ export const svgToRaster: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params: SvgToRasterOptions = {},
-    hashing?: boolean
+    params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
     // get the size and resolution from the params passed in
     if (params.propCombo) {
@@ -154,22 +151,6 @@ export const svgToRaster: GeneratePlugin = {
 
       // Get icon output path
       const outputPath = icon.getIconOutputPath();
-
-      // Check if generate has been run on this flavor already, if it has, it will be saved
-      // in the iconrc in the output path
-      if (hashing) {
-        const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
-          outputPath,
-          assetName,
-          flavor
-        );
-        if (savedFlavor) {
-          LOGGER.info(
-            `${icon.iconName}'s ${assetName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
-          );
-          return savedFlavor;
-        }
-      }
 
       // create the icon output path if it doesn't exist already
       await fs.mkdirp(outputPath);

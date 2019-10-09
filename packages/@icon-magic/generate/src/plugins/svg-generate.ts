@@ -20,14 +20,9 @@ import {
   Icon,
   createHash
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Svgo from 'svgo';
-
-import { hasAssetBeenProcessed } from '../utils';
-
-const LOGGER: Logger = logger('icon-magic:generate:svg-generate');
 
 /**
  * Decides what sizes to append for data-supported-dps
@@ -59,28 +54,12 @@ export const svgGenerate: GeneratePlugin = {
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params: SvgGenerateOptions = {},
-    hashing?: boolean
+    params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
     const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
     const flavorName: string = path.basename(flavor.name);
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
-
-    if (hashing) {
-      // Check if generate has been run on this flavor already
-      const savedFlavor: Flavor | null = await hasAssetBeenProcessed(
-        outputPath,
-        flavorName,
-        flavor
-      );
-      if (savedFlavor) {
-        LOGGER.info(
-          `${icon.iconName}'s ${flavorName} has been optimized. Skipping that step. Turn hashing off if you don't want this.`
-        );
-        return savedFlavor;
-      }
-    }
 
     // If generate hasn't been run create the hash
     flavor.sourceHash = createHash(flavorContent);
