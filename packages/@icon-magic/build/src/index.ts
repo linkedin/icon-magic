@@ -171,14 +171,17 @@ export async function applyBuildPluginsOnVariants(
     if (iconrc) {
       const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
         (flav: Flavor) => {
-          const regex = RegExp(`^${iconVariant.name}\b`);
+          const regex = RegExp(`^${iconVariant.name}\\b`);
           return regex.test(flav.name);
         }
       );
       if (savedFlavorConfigs.length) {
         const allFlavorsMatch = savedFlavorConfigs.every(
           async (savedFlavorConfig: FlavorConfig) => {
-            await compareAssetHashes(iconVariant, savedFlavorConfig.buildSourceHash);
+            await compareAssetHashes(
+              iconVariant,
+              savedFlavorConfig.buildSourceHash
+            );
           }
         );
         if (allFlavorsMatch) {
