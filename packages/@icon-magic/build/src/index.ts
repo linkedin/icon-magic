@@ -170,7 +170,10 @@ export async function applyBuildPluginsOnVariants(
   for (const iconVariant of icon.variants) {
     if (iconrc) {
       const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
-        (flav: Flavor) => flav.name.match(iconVariant.name)
+        (flav: Flavor) => {
+          const regex = RegExp(`^${iconVariant.name}\b`);
+          return regex.test(flav.name);
+        }
       );
       if (savedFlavorConfigs.length) {
         const allFlavorsMatch = savedFlavorConfigs.every(
@@ -196,7 +199,7 @@ export async function applyBuildPluginsOnVariants(
     }
     assets = assets.concat(
       // TODO: fork off a separate node process for each variant here
-      await applyPluginsOnAsset(iconVariant, icon, plugins, false)
+      await applyPluginsOnAsset(iconVariant, icon, plugins)
     );
   }
   return assets;

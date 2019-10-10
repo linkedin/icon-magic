@@ -24,8 +24,7 @@ const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 export async function applyPluginsOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
-  plugins: BuildPlugin[] | GeneratePlugin[],
-  hashing?: boolean
+  plugins: BuildPlugin[] | GeneratePlugin[]
 ): Promise<Flavor[]> {
   // create a two dimensional matrix that stores the result of each plugin
   const pluginResults: Flavor[][] = [];
@@ -45,8 +44,7 @@ export async function applyPluginsOnAsset(
       const output = await applySinglePluginOnAsset(
         input,
         icon,
-        plugin,
-        hashing
+        plugin
       );
 
       pluginResults[index] = pluginResults[index].concat(output);
@@ -73,7 +71,6 @@ async function applySinglePluginOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
   plugin: BuildPlugin | GeneratePlugin,
-  hashing?: boolean
 ): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
@@ -88,8 +85,7 @@ async function applySinglePluginOnAsset(
           icon,
           asset,
           icon,
-          Object.assign(plugin.params || {}, { propCombo: propCombo }),
-          hashing
+          Object.assign(plugin.params || {}, { propCombo: propCombo })
         );
       } catch (e) {
         LOGGER.error(
@@ -110,8 +106,7 @@ async function applySinglePluginOnAsset(
         icon,
         asset,
         icon,
-        plugin.params,
-        hashing
+        plugin.params
       );
     } catch (e) {
       LOGGER.error(
