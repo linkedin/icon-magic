@@ -1,1 +1,74 @@
-{"iconPath":".","variants":[{"name":"active-small","path":"./active-24.svg"},{"name":"inverse-small","path":"./inverse-24.svg"}],"sourceConfigFile":"../../../icons/nav/iconrc.json","sizes":[24,32],"resolutions":[1,1.5,2,3,4],"iconName":"ads","outputPath":"./test/fixtures/out/home-2","flavors":[{"name":"active-small","path":"./active-small.svg","types":{}},{"name":"inverse-small","path":"./inverse-small.svg","types":{}}],"category":"home-2","metadata":{"nameSizeMapping":{"small":24,"large":32}},"generate":{"types":[{"name":"svg","plugins":[{"name":"svg-generate","params":{"addSupportedDps":"current","colorByNameMatching":["inverse"],"isFixedDimensions":false}}]},{"name":"raster","plugins":[{"name":"svg-to-raster","iterants":["resolutions"],"params":{"useNameSizeMapping":true},"writeToOutput":false}]}]},"distribute":{"svg":{"toSprite":true,"spriteName":"icons"}}}
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "active-small",
+      "path": "./active-24.svg"
+    },
+    {
+      "name": "inverse-small",
+      "path": "./inverse-24.svg"
+    }
+  ],
+  "sourceConfigFile": "../../../icons/nav/iconrc.json",
+  "sizes": [24, 32],
+  "resolutions": [1, 1.5, 2, 3, 4],
+  "iconName": "ads",
+  "outputPath": "./test/fixtures/out/home-2",
+  "flavors": [
+    {
+      "name": "active-small",
+      "path": "./active-small.svg",
+      "types": {}
+    },
+    {
+      "name": "inverse-small",
+      "path": "./inverse-small.svg",
+      "types": {}
+    }
+  ],
+  "category": "home-2",
+  "metadata": {
+    "nameSizeMapping": {
+      "small": 24,
+      "large": 32
+    }
+  },
+  "generate": {
+    "types": [
+      {
+        "name": "svg",
+        "plugins": [
+          {
+            "name": "svg-generate",
+            "params": {
+              "addSupportedDps": "current",
+              "colorByNameMatching": ["inverse"],
+              "isFixedDimensions": true
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
+        "name": "raster",
+        "plugins": [
+          {
+            "name": "svg-to-raster",
+            "iterants": ["resolutions"],
+            "params": {
+              "useNameSizeMapping": true
+            },
+            "writeToOutput": false
+          }
+        ]
+      }
+    ]
+  },
+  "distribute": {
+    "svg": {
+      "toSprite": true,
+      "spriteName": "icons"
+    }
+  }
+}

@@ -23,7 +23,7 @@ describe('Generate test', function() {
     } catch (err) {
       assert.ok(false, `${err} reading ${iconPath}`);
     }
-    let content = fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
+    let content = await fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
     assert.ok(content);
     let doc = new DOMParser().parseFromString(content, 'svg');
     let width = doc.documentElement.getAttribute('width');
