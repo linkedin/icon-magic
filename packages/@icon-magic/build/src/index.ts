@@ -57,6 +57,8 @@ export async function build(
 
     if (hashing) {
       try {
+        // If build has been run before on this variant, there would be a readable config written
+        // to the build output path
         iconrc = await loadConfigFile(
           path.join(buildOutputPath, 'iconrc.json')
         );
@@ -169,6 +171,9 @@ export async function applyBuildPluginsOnVariants(
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
     if (iconrc) {
+      // Find the flavors in the config from the initial run that match the iconVariant
+      // name (the flavors generated from a variant would have names that start with
+      // the iconVariant name)
       const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
         (flav: Flavor) => {
           const regex = RegExp(`^${iconVariant.name}\\b`);
@@ -176,6 +181,12 @@ export async function applyBuildPluginsOnVariants(
         }
       );
       if (savedFlavorConfigs.length) {
+        // If there are flavors that match by name, check to see if the buildSourceHash
+        // i.e the hash from the variant svg they were generated from matches the one we're
+        // currently looking at
+
+        // If they are different that means the variant (source svg) was updated and build
+        // needs to be run again
         const allFlavorsMatch = savedFlavorConfigs.every(
           async (savedFlavorConfig: FlavorConfig) => {
             await compareAssetHashes(
@@ -190,6 +201,7 @@ export async function applyBuildPluginsOnVariants(
             `Variant ${iconVariant.name} has already been built, skipping build plugins.`
           );
           savedFlavorConfigs.forEach((savedFlavorConfig: FlavorConfig) => {
+            // Make flavors from the already written config and add them
             const savedFlavor: Flavor = new Flavor(
               icon.iconPath,
               savedFlavorConfig

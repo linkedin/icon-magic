@@ -124,6 +124,7 @@ async function applyGeneratePluginsOnFlavors(
         const flavorName: string = path.basename(iconFlavor.name);
         // Create the output directory
         const outputPath = icon.getIconOutputPath();
+        // Find the flavors in the config from the initial run that match the flavorName
         const savedFlavorConfigs = await hasAssetBeenProcessed(
           outputPath,
           flavorName,
