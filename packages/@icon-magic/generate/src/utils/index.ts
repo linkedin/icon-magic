@@ -4,9 +4,7 @@ import {
   FlavorConfig,
   compareAssetHashes
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
 import * as path from 'path';
-const LOGGER: Logger = logger('icon-magic:generate:utils');
 
 /**
  * Checks the config to see if the asset has been generated before i.e if it is
@@ -29,9 +27,8 @@ export async function hasAssetBeenProcessed(
     // the generation process
     const savedFlavorConfigs: FlavorConfig[] = iconrc
       ? iconrc['flavors'].filter((storedFlavor: Flavor) =>  {
-        const regex = RegExp(`^${flavorName}\b`);
-        regex.test(storedFlavor.name);
-        LOGGER.debug(`HEYYA ${regex}, ${flavorName}, ${storedFlavor}`);
+        const regex = RegExp(`^${flavorName}\\b`);
+        return regex.test(storedFlavor.name);
       }
         )
       : null;
@@ -45,7 +42,7 @@ export async function hasAssetBeenProcessed(
       async (savedFlavorConfig: FlavorConfig) => {
         // Create new Flavor from the config we retrieved, so it's copied over
         // when the iconrc is written
-        await compareAssetHashes(flavor, savedFlavorConfig);
+        await compareAssetHashes(flavor, savedFlavorConfig.generateSourceHash);
       }
     );
     if (!allFlavorsMatch) {

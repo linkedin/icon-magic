@@ -62,7 +62,7 @@ export const svgGenerate: GeneratePlugin = {
     const outputPath = icon.getIconOutputPath();
 
     // If generate hasn't been run create the hash
-    flavor.sourceHash = createHash(flavorContent);
+    flavor.generateSourceHash = createHash(flavorContent);
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor

@@ -28,7 +28,7 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "svg": {
           "name": "active-small",
@@ -39,7 +39,7 @@
     {
       "name": "inverse-small",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "svg": {
           "name": "inverse-small",
@@ -50,7 +50,7 @@
     {
       "name": "active-small-24x24@1",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "png": {
           "name": "active-small-24x24@1",
@@ -65,7 +65,7 @@
     {
       "name": "active-small-24x24@1.5",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "png": {
           "name": "active-small-24x24@1.5",
@@ -80,7 +80,7 @@
     {
       "name": "active-small-24x24@2",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "png": {
           "name": "active-small-24x24@2",
@@ -95,7 +95,7 @@
     {
       "name": "active-small-24x24@3",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "png": {
           "name": "active-small-24x24@3",
@@ -110,7 +110,7 @@
     {
       "name": "active-small-24x24@4",
       "path": "./active-small.svg",
-      "sourceHash": "40081e5cc7733eed719862ac95854030",
+      "generateSourceHash": "40081e5cc7733eed719862ac95854030",
       "types": {
         "png": {
           "name": "active-small-24x24@4",
@@ -125,7 +125,7 @@
     {
       "name": "inverse-small-24x24@1",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "png": {
           "name": "inverse-small-24x24@1",
@@ -140,7 +140,7 @@
     {
       "name": "inverse-small-24x24@1.5",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "png": {
           "name": "inverse-small-24x24@1.5",
@@ -155,7 +155,7 @@
     {
       "name": "inverse-small-24x24@2",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "png": {
           "name": "inverse-small-24x24@2",
@@ -170,7 +170,7 @@
     {
       "name": "inverse-small-24x24@3",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "png": {
           "name": "inverse-small-24x24@3",
@@ -185,7 +185,7 @@
     {
       "name": "inverse-small-24x24@4",
       "path": "./inverse-small.svg",
-      "sourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
       "types": {
         "png": {
           "name": "inverse-small-24x24@4",

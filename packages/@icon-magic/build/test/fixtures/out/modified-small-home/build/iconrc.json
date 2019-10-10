@@ -17,13 +17,13 @@
     {
       "name": "filled",
       "path": "./build/filled.svg",
-      "sourceHash": "a18c253325974cf3f4aaca7d64571011",
+      "buildSourceHash": "a18c253325974cf3f4aaca7d64571011",
       "types": {}
     },
     {
       "name": "modifiedOutline",
       "path": "./build/modifiedOutline.svg",
-      "sourceHash": "142631995bb91440daadae60f869ce52",
+      "buildSourceHash": "142631995bb91440daadae60f869ce52",
       "types": {}
     }
   ],

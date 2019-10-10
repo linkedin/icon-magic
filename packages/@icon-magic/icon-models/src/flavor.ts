@@ -57,7 +57,8 @@ export class Flavor extends Asset {
     return {
       name: this.name,
       path: `./${path.relative(this.iconPath, this.getPath())}`,
-      sourceHash: this.sourceHash,
+      buildSourceHash: this.buildSourceHash,
+      generateSourceHash: this.generateSourceHash,
       types: flavorTypes
     };
   }

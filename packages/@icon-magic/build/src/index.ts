@@ -141,7 +141,7 @@ export async function saveAssetAsFlavor(
   const flavor = new Flavor(
     icon.iconPath,
     Object.assign(asset.getAssetConfig(), {
-      sourceHash: createHash(variantContent) // Add the sourceHash of the input variant
+      buildSourceHash: createHash(variantContent) // Add the sourceHash of the input variant
     })
   );
 
@@ -178,7 +178,7 @@ export async function applyBuildPluginsOnVariants(
       if (savedFlavorConfigs.length) {
         const allFlavorsMatch = savedFlavorConfigs.every(
           async (savedFlavorConfig: FlavorConfig) => {
-            await compareAssetHashes(iconVariant, savedFlavorConfig);
+            await compareAssetHashes(iconVariant, savedFlavorConfig.buildSourceHash);
           }
         );
         if (allFlavorsMatch) {

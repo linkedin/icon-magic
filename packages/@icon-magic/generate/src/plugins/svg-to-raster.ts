@@ -175,7 +175,7 @@ export const svgToRaster: GeneratePlugin = {
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
         path: flavor.getPath(),
-        sourceHash: createHash(flavorContent),
+        generateSourceHash: createHash(flavorContent),
         types: {
           png: {
             name: assetName,

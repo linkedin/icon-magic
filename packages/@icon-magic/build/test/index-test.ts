@@ -51,8 +51,8 @@ describe('Build tests', function() {
       }
       const flavors = icon.flavors;
       assert.ok(
-        Array.from(flavors.values()).every((flav: Flavor) => !!flav.sourceHash),
-        'All flavors have a source hash'
+        Array.from(flavors.values()).every((flav: Flavor) => !!flav.buildSourceHash),
+        'All flavors have a build source hash'
       );
     });
   });

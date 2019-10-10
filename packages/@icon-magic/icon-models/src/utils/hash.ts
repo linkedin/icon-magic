@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 
-import { Asset, FlavorConfig } from '../';
+import { Asset } from '../';
 
 /**
  * Creates a hash from a string or Buffer
@@ -25,13 +25,13 @@ export function createHash(contents: string | Buffer): string {
  */
 export async function compareAssetHashes(
   currentAsset: Asset,
-  savedAsset: FlavorConfig
+  savedAssetHash: string | undefined
 ): Promise<boolean> {
   // Get the contents of the asset (flavor or variant) being processed
   const currContent = await currentAsset.getContents();
   // Compute the hash
   const currSourceHash = createHash(currContent);
-  return currSourceHash === savedAsset.sourceHash;
+  return currSourceHash === savedAssetHash;
 }
 
 

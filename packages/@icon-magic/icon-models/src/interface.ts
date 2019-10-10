@@ -15,7 +15,8 @@ export interface AssetConfig {
   name?: string;
   path: string;
   contents?: Content;
-  sourceHash?: string;
+  buildSourceHash?: string;
+  generateSourceHash?: string;
 }
 
 interface SVGOptions {
@@ -46,8 +47,7 @@ export interface FlavorConfig extends AssetConfig {
 export type PluginFunctionType<T> = (
   flavor: T,
   icon: Icon,
-  params?: object, // set of iterant values to be passed into the plugin
-  hashing?: boolean
+  params?: object // set of iterant values to be passed into the plugin
 ) => Promise<T>;
 
 export interface Plugin<T> {

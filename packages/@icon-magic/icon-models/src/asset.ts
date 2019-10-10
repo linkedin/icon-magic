@@ -12,7 +12,8 @@ export class Asset {
   name: string;
   contents: Content | undefined;
   iconPath: string;
-  sourceHash?: string;
+  buildSourceHash?: string;
+  generateSourceHash?: string;
   protected path: string;
   private LOGGER: Logger;
 
@@ -46,10 +47,12 @@ export class Asset {
     }
 
     // if a source has is passed in, set it on the asset's config
-    if (config.sourceHash) {
-      this.sourceHash = config.sourceHash;
+    if (config.buildSourceHash) {
+      this.buildSourceHash = config.buildSourceHash;
     }
-
+    if (config.generateSourceHash) {
+      this.generateSourceHash = config.generateSourceHash;
+    }
     this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
@@ -75,8 +78,11 @@ export class Asset {
       name: this.name,
       path: this.path,
     };
-    if (this.sourceHash) {
-      config.sourceHash = this.sourceHash;
+    if (this.buildSourceHash) {
+      config.buildSourceHash = this.buildSourceHash;
+    }
+    if (config.generateSourceHash) {
+      this.generateSourceHash = config.generateSourceHash;
     }
     return config;
   }
