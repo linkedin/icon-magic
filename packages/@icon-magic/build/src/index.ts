@@ -184,17 +184,16 @@ export async function applyBuildPluginsOnVariants(
         // If there are flavors that match by name, check to see if the buildSourceHash
         // i.e the hash from the variant svg they were generated from matches the one we're
         // currently looking at
-
-        // If they are different that means the variant (source svg) was updated and build
-        // needs to be run again
-        const allFlavorsMatch = savedFlavorConfigs.every(
-          async (savedFlavorConfig: FlavorConfig) => {
-            await compareAssetHashes(
-              iconVariant,
-              savedFlavorConfig.buildSourceHash
-            );
+        let allFlavorsMatch = false;
+        for (const config of savedFlavorConfigs) {
+          allFlavorsMatch = await compareAssetHashes(
+            iconVariant,
+            config.generateSourceHash
+          );
+          if (!allFlavorsMatch) {
+            break;
           }
-        );
+        }
         if (allFlavorsMatch) {
           // This variant has already been built
           LOGGER.info(

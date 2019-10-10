@@ -9,7 +9,7 @@ const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 const output = path.resolve(FIXTURES, 'out');
 
 describe('Generate test', function() {
-  it('runs the generate plugins', async () => {
+  it('runs the generate plugins correctly', async () => {
     const input = path.resolve(FIXTURES, 'nav-icons/home-2');
     // generate all the icons
     await generateFromConfigHash(getIconConfigSet(new Array(input)), false);
@@ -26,8 +26,14 @@ describe('Generate test', function() {
     let content = await fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
     assert.ok(content);
     let doc = new DOMParser().parseFromString(content, 'svg');
-    let width = doc.documentElement.getAttribute('width');
+    const svgEl = doc.documentElement;
+    let width = svgEl.getAttribute('width');
     assert.equal(width, 24, 'svg has correct width');
+    assert.equal(
+      svgEl.getElementsByTagName('path').length,
+      2,
+      'svg has two paths'
+    );
 
     // Change the config
     const iconrcPath = path.resolve(
@@ -72,6 +78,31 @@ describe('Generate test', function() {
     await fs.copyFile(
       path.resolve(FIXTURES, 'nav-icons/home-2/build/orig.json'),
       iconrcPath
+    );
+
+    // Run generate again, hashing is true BUT the svg has been changed so plugins should run.
+    const newSvg = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <title>24dp</title>
+      <path d="M12,17.13A5.13,5.13,0,0,1,12,6.88V4a8,8,0,1,0,8,8H17.13A5.13,5.13,0,0,1,12,17.13Z" style="opacity: 0.75;isolation: isolate"/>
+    </svg>`;
+    const inputSvgPath = path.resolve(
+      FIXTURES,
+      `${input}/build/active-small.svg`
+    );
+    fs.writeFileSync(inputSvgPath, newSvg);
+    await generateFromConfigHash(getIconConfigSet(new Array(input)), true);
+    content = fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
+    assert.ok(content);
+    doc = new DOMParser().parseFromString(content, 'svg');
+    assert.equal(
+      doc.documentElement.getElementsByTagName('path').length,
+      1,
+      'plugins should be run with changes svg.'
+    );
+    // Write original svg back to disk
+    await fs.copyFile(
+      path.resolve(FIXTURES, 'nav-icons/home-2/build/active-small-copy.svg'),
+      inputSvgPath
     );
   });
 });

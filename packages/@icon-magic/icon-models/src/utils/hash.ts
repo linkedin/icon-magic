@@ -1,7 +1,5 @@
 import * as crypto from 'crypto';
-
 import { Asset } from '../';
-
 /**
  * Creates a hash from a string or Buffer
  * @param contents the string or Buffer to create the hash from
@@ -13,7 +11,6 @@ export function createHash(contents: string | Buffer): string {
     .update(contents)
     .digest('hex');
 }
-
 
 /**
  * Checks if the `sourceHash` of the saved asset matches the computed hash of
@@ -30,8 +27,6 @@ export async function compareAssetHashes(
   // Get the contents of the asset (flavor or variant) being processed
   const currContent = await currentAsset.getContents();
   // Compute the hash
-  const currSourceHash = createHash(currContent);
-  return currSourceHash === savedAssetHash;
+  const currSourceHash = await createHash(currContent);
+  return !!savedAssetHash && currSourceHash === savedAssetHash;
 }
-
-

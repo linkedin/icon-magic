@@ -23,35 +23,38 @@ export async function hasAssetBeenProcessed(
   try {
     // Try and open the config file in the output path
     const iconrc = await loadConfigFile(path.join(outputPath, 'iconrc.json'));
-    // Look for flavors in the config that matches the current flavor going through
-    // the generation process
-    const savedFlavorConfigs: FlavorConfig[] = iconrc
-      ? iconrc['flavors'].filter((storedFlavor: Flavor) =>  {
-        const regex = RegExp(`^${flavorName}\\b`);
-        return regex.test(storedFlavor.name);
+    if (iconrc) {
+      // Look for flavors in the config that matches the current flavor going through
+      // the generation process
+      const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
+        (storedFlavor: Flavor) => {
+          const regex = RegExp(`^${flavorName}\\b`);
+          return regex.test(storedFlavor.name);
+        }
+      );
+      if (savedFlavorConfigs.length) {
+        // Check if all the flavors in the config have hashes that match
+        // the current flavor we are looking at
+        let allFlavorsMatch = false;
+        for (const config of savedFlavorConfigs) {
+          allFlavorsMatch = await compareAssetHashes(
+            flavor,
+            config.generateSourceHash
+          );
+          if (!allFlavorsMatch) {
+            break;
+          }
+        }
+        // Flavors (webp, png, minified svg) with the same source svg already exists, no need to run generate again
+        if (allFlavorsMatch) {
+          return savedFlavorConfigs;
+        }
       }
-        )
-      : null;
-    // None match, asset has not been processed before
-    if (!savedFlavorConfigs.length) {
-      return null;
     }
-
-    // Flavors (webp, png, minified svg) with the same source svg already exists, no need to run generate again
-    const allFlavorsMatch = savedFlavorConfigs.every(
-      async (savedFlavorConfig: FlavorConfig) => {
-        // Create new Flavor from the config we retrieved, so it's copied over
-        // when the iconrc is written
-        await compareAssetHashes(flavor, savedFlavorConfig.generateSourceHash);
-      }
-    );
-    if (!allFlavorsMatch) {
-      return null;
-    }
-    return savedFlavorConfigs;
   } catch (e) {
     // If we get here then the icon has not been generated before, we don't have to
     // do anything, just let it generate
     return null;
   }
+  return null;
 }
