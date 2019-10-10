@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+
 import { Asset } from '../';
 /**
  * Creates a hash from a string or Buffer
