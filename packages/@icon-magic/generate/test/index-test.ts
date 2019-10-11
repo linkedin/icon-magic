@@ -59,10 +59,10 @@ describe('Generate test', function() {
     // Run generate again, this time plugins should not run
     // await generateFromConfigHash(getIconConfigSet(new Array(input)), true);
     content = fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
-    // assert.ok(content);
+    assert.ok(content);
     doc = new DOMParser().parseFromString(content, 'svg');
     width = doc.documentElement.getAttribute('width');
-    // // svg was not changed
+    // svg was not changed
     // assert.equal(width, 24, 'svg should not change');
 
     // // Run generate again, this time plugins should run cause hashing is turned off
