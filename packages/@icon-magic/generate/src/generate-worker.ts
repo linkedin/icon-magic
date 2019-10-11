@@ -63,6 +63,7 @@ async function generateSingleIcon(
               generateType.plugins && generateType.plugins.length
                 ? await getPlugins(generateType.plugins)
                 : new Array(svgGenerate),
+              new RegExp('svg'),
               hashing
             )
           );
@@ -74,6 +75,7 @@ async function generateSingleIcon(
             generateType.plugins && generateType.plugins.length
               ? await getPlugins(generateType.plugins)
               : new Array(svgToRaster),
+            new RegExp('png|raster'),
             hashing
           );
           break;
@@ -111,11 +113,11 @@ async function generateSingleIcon(
 async function applyGeneratePluginsOnFlavors(
   icon: Icon,
   plugins: GeneratePlugin[],
+  type: RegExp,
   hashing?: boolean
 ): Promise<Flavor[]> {
   let promises: Flavor[] = [];
   if (icon.flavors) {
-    LOGGER.debug(`FLAVORRR ${JSON.stringify(icon.flavors)}`);
     for (const iconFlavor of icon.flavors.values()) {
       LOGGER.debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
       // Check if generate has been run on this flavor already, if it has, it will be saved
@@ -129,7 +131,8 @@ async function applyGeneratePluginsOnFlavors(
         const savedFlavorConfigs = await hasAssetBeenProcessed(
           outputPath,
           flavorName,
-          iconFlavor
+          iconFlavor,
+          type
         );
         if (savedFlavorConfigs && savedFlavorConfigs.length) {
           // Make flavors from the already written config

@@ -18,7 +18,8 @@ import * as path from 'path';
 export async function hasAssetBeenProcessed(
   outputPath: string,
   flavorName: string,
-  flavor: Flavor
+  flavor: Flavor,
+  type: RegExp
 ): Promise<FlavorConfig[] | null> {
   try {
     // Try and open the config file in the output path
@@ -28,8 +29,16 @@ export async function hasAssetBeenProcessed(
       // the generation process
       const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
         (storedFlavor: Flavor) => {
-          const regex = RegExp(`^${flavorName}\\b`);
-          return regex.test(storedFlavor.name);
+          // does the flavor name match
+          const doesFlavorNameMatch = RegExp(`^${flavorName}\\b`).test(
+            storedFlavor.name
+          );
+          const doFlavorTypesMatch = Object.keys(storedFlavor.types).every(
+            flavType => {
+              flavType.match(type);
+            }
+          );
+          return doesFlavorNameMatch && doFlavorTypesMatch;
         }
       );
       if (savedFlavorConfigs.length) {
