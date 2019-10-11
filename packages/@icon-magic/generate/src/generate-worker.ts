@@ -115,6 +115,7 @@ async function applyGeneratePluginsOnFlavors(
 ): Promise<Flavor[]> {
   let promises: Flavor[] = [];
   if (icon.flavors) {
+    LOGGER.debug(`FLAVORRR ${JSON.stringify(icon.flavors)}`);
     for (const iconFlavor of icon.flavors.values()) {
       LOGGER.debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
       // Check if generate has been run on this flavor already, if it has, it will be saved

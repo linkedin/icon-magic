@@ -28,7 +28,7 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "svg": {
           "name": "active-small",
@@ -39,12 +39,18 @@
     {
       "name": "inverse-small",
       "path": "./inverse-small.svg",
-      "types": {}
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "svg": {
+          "name": "inverse-small",
+          "path": "./inverse-small.svg"
+        }
+      }
     },
     {
       "name": "active-small-24x24@1",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1",
@@ -59,7 +65,7 @@
     {
       "name": "active-small-24x24@1.5",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1.5",
@@ -74,7 +80,7 @@
     {
       "name": "active-small-24x24@2",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@2",
@@ -89,7 +95,7 @@
     {
       "name": "active-small-24x24@3",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@3",
@@ -104,7 +110,7 @@
     {
       "name": "active-small-24x24@4",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@4",
@@ -113,6 +119,81 @@
         "webp": {
           "name": "active-small-24x24@4",
           "path": "./active-small-24x24@4.webp"
+        }
+      }
+    },
+    {
+      "name": "inverse-small-24x24@1",
+      "path": "./inverse-small.svg",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "png": {
+          "name": "inverse-small-24x24@1",
+          "path": "./inverse-small-24x24@1.png"
+        },
+        "webp": {
+          "name": "inverse-small-24x24@1",
+          "path": "./inverse-small-24x24@1.webp"
+        }
+      }
+    },
+    {
+      "name": "inverse-small-24x24@1.5",
+      "path": "./inverse-small.svg",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "png": {
+          "name": "inverse-small-24x24@1.5",
+          "path": "./inverse-small-24x24@1.5.png"
+        },
+        "webp": {
+          "name": "inverse-small-24x24@1.5",
+          "path": "./inverse-small-24x24@1.5.webp"
+        }
+      }
+    },
+    {
+      "name": "inverse-small-24x24@2",
+      "path": "./inverse-small.svg",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "png": {
+          "name": "inverse-small-24x24@2",
+          "path": "./inverse-small-24x24@2.png"
+        },
+        "webp": {
+          "name": "inverse-small-24x24@2",
+          "path": "./inverse-small-24x24@2.webp"
+        }
+      }
+    },
+    {
+      "name": "inverse-small-24x24@3",
+      "path": "./inverse-small.svg",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "png": {
+          "name": "inverse-small-24x24@3",
+          "path": "./inverse-small-24x24@3.png"
+        },
+        "webp": {
+          "name": "inverse-small-24x24@3",
+          "path": "./inverse-small-24x24@3.webp"
+        }
+      }
+    },
+    {
+      "name": "inverse-small-24x24@4",
+      "path": "./inverse-small.svg",
+      "generateSourceHash": "989ae26ede34963a5bd33df48976b74e",
+      "types": {
+        "png": {
+          "name": "inverse-small-24x24@4",
+          "path": "./inverse-small-24x24@4.png"
+        },
+        "webp": {
+          "name": "inverse-small-24x24@4",
+          "path": "./inverse-small-24x24@4.webp"
         }
       }
     }
