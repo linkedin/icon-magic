@@ -2,7 +2,8 @@ import { loadConfigFile } from '@icon-magic/config-reader';
 import {
   Flavor,
   FlavorConfig,
-  compareAssetHashes
+  compareAssetHashes,
+  createHash
 } from '@icon-magic/icon-models';
 import * as path from 'path';
 
@@ -35,7 +36,7 @@ export async function hasAssetBeenProcessed(
           );
           const doFlavorTypesMatch = Object.keys(storedFlavor.types).every(
             flavType => {
-              flavType.match(type);
+              return flavType.match(type);
             }
           );
           return doesFlavorNameMatch && doFlavorTypesMatch;
@@ -46,8 +47,15 @@ export async function hasAssetBeenProcessed(
         // the current flavor we are looking at
         let allFlavorsMatch = false;
         for (const config of savedFlavorConfigs) {
+          // If we're in the svg generation step we can create the hash as usual
+          // If we're in the raster step the flavor would be the miniified svg so
+          // the hash will never match, we use it's stored hash instead
+          let flavorHash = createHash((await flavor.getContents()) as string);
+          if (!'svg'.match(type)) {
+            flavorHash = flavor.generateSourceHash || '';
+          }
           allFlavorsMatch = await compareAssetHashes(
-            flavor,
+            flavorHash,
             config.generateSourceHash
           );
           if (!allFlavorsMatch) {
@@ -55,8 +63,7 @@ export async function hasAssetBeenProcessed(
           }
         }
         // Flavors (webp, png, minified svg) with the same source svg already exists, no need to run generate again
-        if (allFlavorsMatch) {
-          return savedFlavorConfigs;
+        if (allFlavorsMatch) {          return savedFlavorConfigs;
         }
       }
     }

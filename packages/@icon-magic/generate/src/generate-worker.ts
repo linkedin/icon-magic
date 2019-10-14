@@ -75,7 +75,7 @@ async function generateSingleIcon(
             generateType.plugins && generateType.plugins.length
               ? await getPlugins(generateType.plugins)
               : new Array(svgToRaster),
-            new RegExp('png|raster'),
+            new RegExp('png|webp'),
             hashing
           );
           break;
@@ -144,7 +144,6 @@ async function applyGeneratePluginsOnFlavors(
                 outputPath,
                 savedFlavorConfig
               );
-              await savedFlavor.getContents();
               promises = promises.concat(savedFlavor);
             }
           );

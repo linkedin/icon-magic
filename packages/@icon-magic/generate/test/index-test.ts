@@ -37,12 +37,12 @@ describe('Generate test', function() {
     );
     // Load the config
     let origOutputIconConfig = JSON.parse(
-      fs.readFileSync(path.resolve(output, '/iconrc.json'), 'utf8')
+      fs.readFileSync(path.resolve(iconPath, 'iconrc.json'), 'utf8')
     );
-    assert.equal(origOutputIconConfig.flavors.length, 12);
+    assert.equal(origOutputIconConfig.flavors.length, 12, 'no hashing, the number of flavors is correct');
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
-      assert.ok(!!flav.generateSourceHash, 'all flavors have hash');
-      assert.ok(Object.keys(flav.types).keys.length, 'flavors have types');
+      assert.ok(flav.generateSourceHash, 'all flavors have hash');
+      assert.ok(Object.keys(flav.types).length, 'flavors have types');
     });
 
     // Change the config
@@ -76,12 +76,12 @@ describe('Generate test', function() {
     // svg was not changed
     assert.equal(width, 24, 'svg should not change');
     origOutputIconConfig = JSON.parse(
-      fs.readFileSync(path.resolve(output, '/iconrc.json'), 'utf8')
+      fs.readFileSync(path.resolve(iconPath, 'iconrc.json'), 'utf8')
     );
-    assert.equal(origOutputIconConfig.flavors.length, 12);
+    assert.equal(origOutputIconConfig.flavors.length, 12, 'hashing true, the number of flavors is correct');
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
-      assert.ok(!!flav.generateSourceHash, 'all flavors have hash');
-      assert.ok(Object.keys(flav.types).keys.length, 'flavors have types');
+      assert.ok(flav.generateSourceHash, 'all flavors have hash');
+      assert.ok(Object.keys(flav.types).length, 'flavors have types');
     });
 
     // Run generate again, this time plugins should run cause hashing is turned off

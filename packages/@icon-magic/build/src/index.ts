@@ -186,8 +186,9 @@ export async function applyBuildPluginsOnVariants(
         // currently looking at
         let allFlavorsMatch = false;
         for (const config of savedFlavorConfigs) {
+          const variantHash = await iconVariant.getContents();
           allFlavorsMatch = await compareAssetHashes(
-            iconVariant,
+            createHash(variantHash),
             config.generateSourceHash
           );
           if (!allFlavorsMatch) {
