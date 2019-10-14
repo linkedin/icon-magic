@@ -11,7 +11,8 @@ const output = path.resolve(FIXTURES, 'out');
 
 describe('Generate test', function() {
   it('runs the generate plugins correctly', async () => {
-    const input = path.resolve(FIXTURES, 'nav-icons/home-2');
+    const input = path.resolve(output, 'home-2/ads/build');
+    const buildInput = `${output}/home-2/ads/build`;
     // generate all the icons
     await generateFromConfigHash(getIconConfigSet(new Array(input)), false);
     const iconPath = `${output}/home-2/ads`;
@@ -39,17 +40,18 @@ describe('Generate test', function() {
     let origOutputIconConfig = JSON.parse(
       fs.readFileSync(path.resolve(iconPath, 'iconrc.json'), 'utf8')
     );
-    assert.equal(origOutputIconConfig.flavors.length, 12, 'no hashing, the number of flavors is correct');
+    assert.equal(
+      origOutputIconConfig.flavors.length,
+      12,
+      'no hashing, the number of flavors is correct'
+    );
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
       assert.ok(flav.generateSourceHash, 'all flavors have hash');
       assert.ok(Object.keys(flav.types).length, 'flavors have types');
     });
 
     // Change the config
-    const iconrcPath = path.resolve(
-      FIXTURES,
-      'nav-icons/home-2/build/iconrc.json'
-    );
+    const iconrcPath = path.resolve(buildInput, 'iconrc.json');
     const iconrc = JSON.parse(fs.readFileSync(iconrcPath, 'utf8'));
     const tempPlugin = [
       {
@@ -78,7 +80,11 @@ describe('Generate test', function() {
     origOutputIconConfig = JSON.parse(
       fs.readFileSync(path.resolve(iconPath, 'iconrc.json'), 'utf8')
     );
-    assert.equal(origOutputIconConfig.flavors.length, 12, 'hashing true, the number of flavors is correct');
+    assert.equal(
+      origOutputIconConfig.flavors.length,
+      12,
+      'hashing true, the number of flavors is correct'
+    );
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
       assert.ok(flav.generateSourceHash, 'all flavors have hash');
       assert.ok(Object.keys(flav.types).length, 'flavors have types');
@@ -94,20 +100,14 @@ describe('Generate test', function() {
     assert.notEqual(width, 24, 'svg should change, width should be removed.');
 
     // Write original iconrc back to disk
-    await fs.copyFile(
-      path.resolve(FIXTURES, 'nav-icons/home-2/build/orig.json'),
-      iconrcPath
-    );
+    await fs.copyFile(path.resolve(buildInput, 'orig.json'), iconrcPath);
 
     // Run generate again, hashing is true BUT the svg has been changed so plugins should run.
     const newSvg = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
       <title>24dp</title>
       <path d="M12,17.13A5.13,5.13,0,0,1,12,6.88V4a8,8,0,1,0,8,8H17.13A5.13,5.13,0,0,1,12,17.13Z" style="opacity: 0.75;isolation: isolate"/>
     </svg>`;
-    const inputSvgPath = path.resolve(
-      FIXTURES,
-      `${input}/build/active-small.svg`
-    );
+    const inputSvgPath = path.resolve(buildInput, `active-small.svg`);
     fs.writeFileSync(inputSvgPath, newSvg);
     await generateFromConfigHash(getIconConfigSet(new Array(input)), true);
     content = fs.readFileSync(`${iconPath}/active-small.svg`, 'utf8');
@@ -120,7 +120,7 @@ describe('Generate test', function() {
     );
     // Write original svg back to disk
     await fs.copyFile(
-      path.resolve(FIXTURES, 'nav-icons/home-2/build/active-small-copy.svg'),
+      path.resolve(buildInput, 'active-small-copy.svg'),
       inputSvgPath
     );
   });

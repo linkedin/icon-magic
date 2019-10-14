@@ -2,9 +2,11 @@ import { loadConfigFile } from '@icon-magic/config-reader';
 import {
   Flavor,
   FlavorConfig,
+  Icon,
   compareAssetHashes,
   createHash
 } from '@icon-magic/icon-models';
+import { readFileSync } from 'fs';
 import * as path from 'path';
 
 /**
@@ -17,6 +19,7 @@ import * as path from 'path';
  * @returns the config of the saved asset, if present
  */
 export async function hasAssetBeenProcessed(
+  icon: Icon,
   outputPath: string,
   flavorName: string,
   flavor: Flavor,
@@ -47,15 +50,11 @@ export async function hasAssetBeenProcessed(
         // the current flavor we are looking at
         let allFlavorsMatch = false;
         for (const config of savedFlavorConfigs) {
-          // If we're in the svg generation step we can create the hash as usual
-          // If we're in the raster step the flavor would be the miniified svg so
-          // the hash will never match, we use it's stored hash instead
-          let flavorHash = createHash((await flavor.getContents()) as string);
-          if (!'svg'.match(type)) {
-            flavorHash = flavor.generateSourceHash || '';
-          }
+          // Check source (build output)
+          const buildOutputPath = path.resolve(icon.getBuildOutputPath(), `${flavor.name}.svg`);
+          const flavorContent = readFileSync(buildOutputPath, 'utf8');
           allFlavorsMatch = await compareAssetHashes(
-            flavorHash,
+            createHash(flavorContent),
             config.generateSourceHash
           );
           if (!allFlavorsMatch) {
@@ -63,7 +62,8 @@ export async function hasAssetBeenProcessed(
           }
         }
         // Flavors (webp, png, minified svg) with the same source svg already exists, no need to run generate again
-        if (allFlavorsMatch) {          return savedFlavorConfigs;
+        if (allFlavorsMatch) {
+          return savedFlavorConfigs;
         }
       }
     }

@@ -10,7 +10,7 @@
       "path": "./inverse-24.svg"
     }
   ],
-  "sourceConfigFile": "../../../../../iconrc.json",
+  "sourceConfigFile": "../../../../../../iconrc.json",
   "sizes": [
     24,
     32
@@ -28,7 +28,7 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "svg": {
           "name": "active-small",
@@ -50,7 +50,7 @@
     {
       "name": "active-small-24x24@1",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1",
@@ -65,7 +65,7 @@
     {
       "name": "active-small-24x24@1.5",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1.5",
@@ -80,7 +80,7 @@
     {
       "name": "active-small-24x24@2",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@2",
@@ -95,7 +95,7 @@
     {
       "name": "active-small-24x24@3",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@3",
@@ -110,7 +110,7 @@
     {
       "name": "active-small-24x24@4",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@4",
@@ -217,7 +217,7 @@
               "colorByNameMatching": [
                 "inverse"
               ],
-              "isFixedDimensions": true
+              "isFixedDimensions": false
             },
             "writeToOutput": false
           }
