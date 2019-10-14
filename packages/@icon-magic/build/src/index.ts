@@ -1,11 +1,15 @@
+import { loadConfigFile } from '@icon-magic/config-reader';
 import {
   Asset,
   BuildPlugin,
   Flavor,
+  FlavorConfig,
   Icon,
   IconConfigHash,
   IconSet,
   applyPluginsOnAsset,
+  compareAssetHashes,
+  createHash,
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
@@ -29,7 +33,10 @@ const LOGGER: Logger = logger('icon-magic:build:index');
  * are added to the icons config.
  * @param iconConfig a map of the iconPaths to it's config json
  */
-export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
+export async function build(
+  iconConfig: IconConfigHash,
+  hashing = true
+): Promise<IconSet> {
   LOGGER.debug('Icon build has begun');
   TIMER.start();
   // Create icons for all icons within the iconConfig
@@ -37,25 +44,42 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
   const outputIconSet: IconSet = new IconSet();
 
   for (const icon of iconSet.hash.values()) {
+    // get the output directory with respect to the current working directory
+    const buildOutputPath = icon.getBuildOutputPath();
+
+    // get the new path for the icon in the hash
+    const iconOutputPath = icon.getIconOutputPath();
+
     // runs the plugins on each icon
     let assets: Asset[];
+    let iconrc = {};
     const buildConfig = icon.build;
+
+    if (hashing) {
+      try {
+        // If build has been run before on this variant, there would be a readable config written
+        // to the build output path
+        iconrc = await loadConfigFile(
+          path.join(buildOutputPath, 'iconrc.json')
+        );
+      } catch (e) {
+        // If we get here then the icon has not been built before, we don't have to
+        // do anything, just let it build.
+      }
+    }
+
     if (buildConfig && buildConfig.plugins && buildConfig.plugins.length) {
       assets = await applyBuildPluginsOnVariants(
         icon,
-        await getPlugins(buildConfig.plugins)
+        await getPlugins(buildConfig.plugins),
+        iconrc
       );
     } else {
       // if there are no build plugins, then move all variants to flavors as is
       assets = icon.variants;
     }
 
-    // get the output directory with respect to the current working directory
-    // and then create a directory with the iconName
-    const buildOutputPath = icon.getBuildOutputPath();
-    const iconOutputPath = icon.getIconOutputPath();
-
-    // create the directory if it doesn't already exist
+    // create the build output directory if it doesn't already exist
     await fs.mkdirp(buildOutputPath);
 
     // in the icon, update the iconPath to be that of the output path
@@ -97,7 +121,7 @@ export async function build(iconConfig: IconConfigHash): Promise<IconSet> {
  * @param icon The icon to which the new asset is to be added
  * @param outputPath The path to which the asset is to be written to on disk
  */
-async function saveAssetAsFlavor(
+export async function saveAssetAsFlavor(
   asset: Asset,
   icon: Icon,
   outputPath: string
@@ -110,10 +134,18 @@ async function saveAssetAsFlavor(
     encoding: 'utf8'
   });
   LOGGER.debug(`Asset ${asset.name} has been written to ${pathToAsset}`);
-
+  const variant = icon.variants.find(
+    (variant: Asset) => variant.name === asset.name
+  );
+  const variantContent = variant ? await variant.getContents() : '';
   // create a new Flavor instance with the asset once the asset is written to
   // disk
-  const flavor = new Flavor(icon.iconPath, asset.getAssetConfig());
+  const flavor = new Flavor(
+    icon.iconPath,
+    Object.assign(asset.getAssetConfig(), {
+      buildSourceHash: createHash(variantContent) // Add the sourceHash of the input variant
+    })
+  );
 
   // set the path to point to the newly created file as it could've been
   // renamed in above if it's name was different from the file name
@@ -122,7 +154,6 @@ async function saveAssetAsFlavor(
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);
-  LOGGER.debug(`Flavor ${flavor.name} has been added to ${icon.iconName}`);
 }
 
 /**
@@ -134,10 +165,53 @@ async function saveAssetAsFlavor(
  */
 export async function applyBuildPluginsOnVariants(
   icon: Icon,
-  plugins: BuildPlugin[]
+  plugins: BuildPlugin[],
+  iconrc?: object
 ): Promise<Asset[]> {
   let assets: Asset[] = [];
   for (const iconVariant of icon.variants) {
+    if (iconrc) {
+      // Find the flavors in the config from the initial run that match the iconVariant
+      // name (the flavors generated from a variant would have names that start with
+      // the iconVariant name)
+      const savedFlavorConfigs: FlavorConfig[] = iconrc['flavors'].filter(
+        (flav: Flavor) => {
+          const regex = RegExp(`^${iconVariant.name}\\b`);
+          return regex.test(flav.name);
+        }
+      );
+      if (savedFlavorConfigs.length) {
+        // If there are flavors that match by name, check to see if the buildSourceHash
+        // i.e the hash from the variant svg they were generated from matches the one we're
+        // currently looking at
+        let allFlavorsMatch = false;
+        for (const config of savedFlavorConfigs) {
+          const variantHash = await iconVariant.getContents();
+          allFlavorsMatch = await compareAssetHashes(
+            createHash(variantHash),
+            config.generateSourceHash
+          );
+          if (!allFlavorsMatch) {
+            break;
+          }
+        }
+        if (allFlavorsMatch) {
+          // This variant has already been built
+          LOGGER.info(
+            `Variant ${iconVariant.name} has already been built, skipping build plugins.`
+          );
+          savedFlavorConfigs.forEach((savedFlavorConfig: FlavorConfig) => {
+            // Make flavors from the already written config and add them
+            const savedFlavor: Flavor = new Flavor(
+              icon.iconPath,
+              savedFlavorConfig
+            );
+            assets = assets.concat(savedFlavor);
+          });
+          continue;
+        }
+      }
+    }
     assets = assets.concat(
       // TODO: fork off a separate node process for each variant here
       await applyPluginsOnAsset(iconVariant, icon, plugins)

@@ -12,13 +12,13 @@
  *   A helper function will need to map the API to the size and render the SVG with the appropriate width, height and viewbox values.
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
-
 import {
   Asset,
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon
+  Icon,
+  createHash
 } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -56,10 +56,16 @@ export const svgGenerate: GeneratePlugin = {
     icon: Icon,
     params: SvgGenerateOptions = {}
   ): Promise<Flavor> => {
+    const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
+    const flavorName: string = path.basename(flavor.name);
+    // Create the output directory
+    const outputPath = icon.getIconOutputPath();
+
+    // If generate hasn't been run create the hash
+    flavor.generateSourceHash = createHash(flavorContent);
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
-    const flavorName: string = path.basename(flavor.name);
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
@@ -155,11 +161,11 @@ export const svgGenerate: GeneratePlugin = {
       ],
       js2svg: { pretty: true, indent: 2 }
     });
-    const asset = await svgo.optimize((await flavor.getContents()) as string); // .svg asset's getContents() returns a string
-    const outputPath = icon.getIconOutputPath();
 
     // write the optimized svg to the output directory
+    const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
     await fs.mkdirp(outputPath);
+
     await fs.writeFile(
       `${path.join(outputPath, flavor.name)}.svg`,
       asset.data,
@@ -176,7 +182,6 @@ export const svgGenerate: GeneratePlugin = {
         path: `./${flavor.name}.svg`
       })
     );
-
     return flavor;
   }
 };

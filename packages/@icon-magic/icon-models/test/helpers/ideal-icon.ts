@@ -99,21 +99,29 @@ export const flavors: FlavorConfig[] = [
   {
     path: './filled-a.svg',
     name: 'filled-a',
+    buildSourceHash: undefined,
+    generateSourceHash: undefined,
     types: sampleExt
   },
   {
     path: './filled-b.svg',
     name: 'filled-b',
+    buildSourceHash: undefined,
+    generateSourceHash: undefined,
     types: sampleExt
   },
   {
     path: './someOtherName-a.svg',
     name: 'someOtherName-a',
+    buildSourceHash: undefined,
+    generateSourceHash: undefined,
     types: sampleExt
   },
   {
     path: './someOtherName-b.svg',
     name: 'someOtherName-b',
+    buildSourceHash: undefined,
+    generateSourceHash: undefined,
     types: sampleExt
   }
 ];

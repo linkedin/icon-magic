@@ -18,7 +18,11 @@ program
   .description(
     'construct flavors of an icon from its variants, after applying the build plugins.'
   )
-  .action(async inputPaths => {
+  .option(
+    '-h, --hashing',
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+  )
+  .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error(
         "No Input Directories were specified.\nDid you mean 'icon-magic build .'?"
@@ -29,7 +33,7 @@ program
     const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    await build(iconSet);
+    await build(iconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);
@@ -40,7 +44,11 @@ program
   .description(
     'generates the flavors of the icon in the extension types that it can be consumed.'
   )
-  .action(async inputPaths => {
+  .option(
+    '-h, --hashing',
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+  )
+  .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error(
         "No Input Directories were specified.\nDid you mean 'icon-magic generate .'?"
@@ -51,7 +59,7 @@ program
     const iconSet = getIconConfigSet(inputPaths);
 
     // generate all the icons
-    await iconGenerate.generateFromConfigHash(iconSet);
+    await iconGenerate.generateFromConfigHash(iconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);
@@ -124,15 +132,19 @@ program
 program
   .command('* [inputPaths...]')
   .description('runs build and generate on all the inputPaths')
-  .action(async inputPaths => {
+  .option(
+    '-h, --hashing',
+    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+  )
+  .action(async (inputPaths, options) => {
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    const outputIconSet = await build(iconSet);
+    const outputIconSet = await build(iconSet, options.hashing);
 
     // generate all the icons
-    await iconGenerate.generate(outputIconSet);
+    await iconGenerate.generate(outputIconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);

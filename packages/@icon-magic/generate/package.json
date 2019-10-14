@@ -10,7 +10,7 @@
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
     "pretest": "yarn run build & yarn run lint",
-    "test": "mocha --opts test/mocha.opts dist/test",
+    "test": "mocha --timeout 50000 --opts test/mocha.opts dist/test",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
@@ -18,6 +18,7 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
+    "@icon-magic/config-reader": "^2.2.0-beta.0",
     "@icon-magic/icon-models": "^2.2.0-beta.0",
     "@icon-magic/imagemin-farm": "^2.2.0-beta.0",
     "@icon-magic/logger": "^2.0.1-beta.0",
@@ -28,7 +29,8 @@
     "workerpool": "^5.0.0"
   },
   "devDependencies": {
-    "@types/svgo": "^1.2.1",
-    "@types/workerpool": "^3.1.0"
+    "@types/svgo": "^1.0.1",
+    "@types/workerpool": "^3.1.0",
+    "xmldom": "^0.1.27"
   }
 }

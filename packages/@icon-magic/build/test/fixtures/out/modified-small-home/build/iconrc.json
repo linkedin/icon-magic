@@ -1,0 +1,33 @@
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "filled",
+      "path": "./filled.svg"
+    },
+    {
+      "name": "modifiedOutline",
+      "path": "./modifiedOutline.svg"
+    }
+  ],
+  "sourceConfigFile": "../../input/nav-icons/small-home/iconrc.json",
+  "iconName": "modified-small-home",
+  "outputPath": "./test/fixtures/out",
+  "flavors": [
+    {
+      "name": "filled",
+      "path": "./build/filled.svg",
+      "buildSourceHash": "a18c253325974cf3f4aaca7d64571011",
+      "types": {}
+    },
+    {
+      "name": "modifiedOutline",
+      "path": "./build/modifiedOutline.svg",
+      "buildSourceHash": "142631995bb91440daadae60f869ce52",
+      "types": {}
+    }
+  ],
+  "build": {
+    "outputPath": "./out"
+  }
+}

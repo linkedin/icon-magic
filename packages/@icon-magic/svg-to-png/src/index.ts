@@ -1,7 +1,7 @@
-import * as fs from "fs-extra";
-import * as path from "path";
+import * as fs from 'fs-extra';
+import * as path from 'path';
 
-import { run } from "./browserPool";
+import { run } from './browserPool';
 
 export interface SVGToPNGOptions {
   width: number;
@@ -9,17 +9,23 @@ export interface SVGToPNGOptions {
   headless?: boolean;
 }
 
-export async function convertFile(fileName: string, options: SVGToPNGOptions): Promise<Buffer> {
+export async function convertFile(
+  fileName: string,
+  options: SVGToPNGOptions
+): Promise<Buffer> {
   if (!path.isAbsolute(fileName)) {
-    throw new Error("svg-to-png expects an absolute filepath");
+    throw new Error('svg-to-png expects an absolute filepath');
   }
   const contents = await fs.readFile(fileName);
   return await convert(contents.toString(), options);
 }
 
-export async function convert(contents: string, options: SVGToPNGOptions): Promise<Buffer> {
+export async function convert(
+  contents: string,
+  options: SVGToPNGOptions
+): Promise<Buffer> {
   if (!contents) {
-    throw new Error("No contents discovered.");
+    throw new Error('No contents discovered.');
   }
   return await run(async (page) => {
     // Page should be bigger than the svg it's taking a screenshot of
@@ -30,14 +36,14 @@ export async function convert(contents: string, options: SVGToPNGOptions): Promi
     });
     await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `));
     return await page.screenshot({
-      encoding: "binary",
+      encoding: 'binary',
       omitBackground: true,
-      type: "png",
+      type: 'png',
       clip: {
         x: 0,
         y: 0,
         width: options.width,
-        height: options.height,
+        height: options.height
       }
     });
   });

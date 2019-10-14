@@ -3,7 +3,8 @@ import {
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon
+  Icon,
+  createHash
 } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger, logger } from '@icon-magic/logger';
@@ -64,9 +65,7 @@ export const svgToRaster: GeneratePlugin = {
         // information for nameSizeMapping
         if (!nameSizeMapping) {
           throw new Error(
-            `${
-              icon.iconPath
-            } does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains useNameSizeMapping: true`
+            `${icon.iconPath} does not have the field "nameSizeMapping" as part of its config's "metadata". This is required since the config contains useNameSizeMapping: true`
           );
         }
         let sizeFromMapping!: AssetSize;
@@ -121,7 +120,7 @@ export const svgToRaster: GeneratePlugin = {
       // home-filled@12 then the resulting name will be
       // home-filled-width-height@12 instead of home-filled@12-width-height
       let res;
-      let assetName;
+      let assetName: string;
       const flavorName = flavor.name;
       if (!params.propCombo.resolutions) {
         res = 1;
@@ -150,19 +149,16 @@ export const svgToRaster: GeneratePlugin = {
         assetName = `${appendDash(flavorName)}${w}x${h}@${res}`;
       }
 
-      // create the icon output path if it doesn't exist already
+      // Get icon output path
       const outputPath = icon.getIconOutputPath();
-      await fs.mkdirp(outputPath);
 
+      // create the icon output path if it doesn't exist already
+      await fs.mkdirp(outputPath);
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
-      await generatePng(
-        (await flavor.getContents()) as string, // .svg asset's getContents() returns a string
-        w * res,
-        h * res,
-        pngOutput
-      );
+      const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
+      await generatePng(flavorContent, w * res, h * res, pngOutput);
 
       // Convert the png to webp
       LOGGER.debug(`Creating webp from ${pngOutput} `);
@@ -179,6 +175,7 @@ export const svgToRaster: GeneratePlugin = {
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
         path: flavor.getPath(),
+        generateSourceHash: createHash(flavorContent),
         types: {
           png: {
             name: assetName,

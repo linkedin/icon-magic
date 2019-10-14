@@ -98,9 +98,7 @@ export class Icon {
     // if there are no valid variants, throw an error
     if (!variants.length) {
       throw new Error(
-        `NoValidVariantsError: ${
-          this.iconPath
-        } does not have any valid variants`
+        `NoValidVariantsError: ${this.iconPath} does not have any valid variants`
       );
     }
 

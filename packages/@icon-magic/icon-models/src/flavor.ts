@@ -19,6 +19,7 @@ export class Flavor extends Asset {
    * @param config config porperties for instantiating the Flavor
    */
   constructor(iconPath: string, config: FlavorConfig) {
+    // only flavors have a sourceHash
     super(iconPath, config);
     if (config.types) {
       //if types is an object, convert it to a map
@@ -56,6 +57,8 @@ export class Flavor extends Asset {
     return {
       name: this.name,
       path: `./${path.relative(this.iconPath, this.getPath())}`,
+      buildSourceHash: this.buildSourceHash,
+      generateSourceHash: this.generateSourceHash,
       types: flavorTypes
     };
   }

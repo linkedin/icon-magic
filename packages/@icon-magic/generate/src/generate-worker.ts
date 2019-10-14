@@ -1,6 +1,7 @@
 import {
   Asset,
   Flavor,
+  FlavorConfig,
   GeneratePlugin,
   Icon,
   IconConfig,
@@ -9,10 +10,12 @@ import {
 } from '@icon-magic/icon-models';
 import { Logger, logger } from '@icon-magic/logger';
 import { existsSync } from 'fs-extra';
+import * as path from 'path';
 import * as workerpool from 'workerpool';
 
 import { svgGenerate } from './plugins/svg-generate';
 import { svgToRaster } from './plugins/svg-to-raster';
+import { hasAssetBeenProcessed } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:generate:index');
 
@@ -30,7 +33,10 @@ const LOGGER: Logger = logger('icon-magic:generate:index');
  * svgGenerate are applied on svg types
  * @param iconConfig mapping of the iconPath to the Icon class
  */
-async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
+async function generateSingleIcon(
+  iconConfig: IconConfig,
+  hashing?: boolean
+): Promise<void> {
   // TODO: this function should take in an instance of Icon but due to an issue
   // in workerpool, I'm using a workaround where we're having to create this
   // instance by taking an iconConfig instead.
@@ -41,9 +47,7 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
   // icon-magic build
   if (!existsSync(icon.getBuildOutputPath())) {
     LOGGER.error(
-      `${
-        icon.iconPath
-      }: Run "icon-magic build" on the icon before running "generate"`
+      `${icon.iconPath}: Run "icon-magic build" on the icon before running "generate"`
     );
   }
   const generateConfig = icon.generate;
@@ -58,7 +62,9 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
               icon,
               generateType.plugins && generateType.plugins.length
                 ? await getPlugins(generateType.plugins)
-                : new Array(svgGenerate)
+                : new Array(svgGenerate),
+              new RegExp('svg'),
+              hashing
             )
           );
           break;
@@ -68,7 +74,9 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
             icon,
             generateType.plugins && generateType.plugins.length
               ? await getPlugins(generateType.plugins)
-              : new Array(svgToRaster)
+              : new Array(svgToRaster),
+            new RegExp('png|webp'),
+            hashing
           );
           break;
         }
@@ -84,12 +92,16 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
 
   // write the icon config to disk
   LOGGER.debug(`Writing ${icon.iconName}'s iconrc.json to disk`);
-  await saveContentToFile(
-    icon.getIconOutputPath(),
-    'iconrc',
-    JSON.stringify(icon.getConfig(), null, 2),
-    'json'
-  );
+  try {
+    await saveContentToFile(
+      icon.getIconOutputPath(),
+      'iconrc',
+      JSON.stringify(icon.getConfig(), null, 2),
+      'json'
+    );
+  } catch (e) {
+    LOGGER.error(`${e}`);
+  }
 }
 
 /**
@@ -100,12 +112,48 @@ async function generateSingleIcon(iconConfig: IconConfig): Promise<void> {
  */
 async function applyGeneratePluginsOnFlavors(
   icon: Icon,
-  plugins: GeneratePlugin[]
+  plugins: GeneratePlugin[],
+  type: RegExp,
+  hashing?: boolean
 ): Promise<Flavor[]> {
   let promises: Flavor[] = [];
   if (icon.flavors) {
     for (const iconFlavor of icon.flavors.values()) {
       LOGGER.debug(`Applying plugins on ${icon.iconName}'s ${iconFlavor.name}`);
+      // Check if generate has been run on this flavor already, if it has, it will be saved
+      // in the iconrc in the output path
+      if (hashing) {
+        // Check if generate has been run on this flavor already
+        const flavorName: string = path.basename(iconFlavor.name);
+        // Create the output directory
+        const outputPath = icon.getIconOutputPath();
+        // Find the flavors in the config from the initial run that match the flavorName
+        const savedFlavorConfigs = await hasAssetBeenProcessed(
+          icon,
+          outputPath,
+          flavorName,
+          iconFlavor,
+          type
+        );
+        if (savedFlavorConfigs && savedFlavorConfigs.length) {
+          // Make flavors from the already written config
+          savedFlavorConfigs.forEach(
+            async (savedFlavorConfig: FlavorConfig) => {
+              // Create new Flavor from the config we retrieved, so it's copied over
+              // when the iconrc is written
+              const savedFlavor: Flavor = new Flavor(
+                outputPath,
+                savedFlavorConfig
+              );
+              promises = promises.concat(savedFlavor);
+            }
+          );
+          LOGGER.info(
+            `${icon.iconName}'s ${flavorName} has been generated. Skipping that step. Turn hashing off if you don't want this.`
+          );
+          continue;
+        }
+      }
       promises = promises.concat(
         // TODO: fork off a separate node process for each variant here
         await applyPluginsOnAsset(iconFlavor, icon, plugins)

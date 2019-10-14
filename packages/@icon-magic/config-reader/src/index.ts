@@ -9,6 +9,7 @@ import { exists, isDirectory } from './helpers/files';
 const CONFIG_FILES = ['iconrc.json', 'iconrc.js'];
 const LOGGER: Logger = logger('icon-magic:config-reader/index');
 
+export * from './config-loader';
 /**
  * Constructs a map of the icon and closest config to the icon traversing up
  * @param inputPaths the set of input paths to check

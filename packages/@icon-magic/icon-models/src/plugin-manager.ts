@@ -7,7 +7,6 @@ import { Icon } from './icon';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
-
 const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
 
 /**
@@ -42,7 +41,11 @@ export async function applyPluginsOnAsset(
 
     // for each input asset, run the plugin and add the results to the matrix
     for (const input of pluginInput) {
-      const output = await applySinglePluginOnAsset(input, icon, plugin);
+      const output = await applySinglePluginOnAsset(
+        input,
+        icon,
+        plugin
+      );
 
       pluginResults[index] = pluginResults[index].concat(output);
     }
@@ -67,16 +70,14 @@ export async function applyPluginsOnAsset(
 async function applySinglePluginOnAsset(
   asset: Asset | Flavor,
   icon: Icon,
-  plugin: BuildPlugin | GeneratePlugin
+  plugin: BuildPlugin | GeneratePlugin,
 ): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
     for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
       []) {
       LOGGER.debug(
-        `applySinglePluginOnFlavor: Applying ${plugin.name} on ${
-          asset.name
-        } with`
+        `applySinglePluginOnFlavor: Applying ${plugin.name} on ${asset.name} with`
       );
       let pluginOutput;
       try {
@@ -101,7 +102,12 @@ async function applySinglePluginOnAsset(
     LOGGER.debug('Running the plugin without iterants');
     let pluginOutput;
     try {
-      pluginOutput = await plugin.fn.call(icon, asset, icon, plugin.params);
+      pluginOutput = await plugin.fn.call(
+        icon,
+        asset,
+        icon,
+        plugin.params
+      );
     } catch (e) {
       LOGGER.error(
         `PluginError: Error while running ${plugin.name} on ${icon.iconPath}`

@@ -12,6 +12,8 @@ export class Asset {
   name: string;
   contents: Content | undefined;
   iconPath: string;
+  buildSourceHash?: string;
+  generateSourceHash?: string;
   protected path: string;
   private LOGGER: Logger;
 
@@ -27,7 +29,7 @@ export class Asset {
     // if iconPath is not absolute, throw an error
     if (!path.isAbsolute(iconPath)) {
       throw new Error(
-        'AssetCreationError: iconPath must always be absolute: ${iconPath)'
+        `AssetCreationError: iconPath must always be absolute: ${iconPath}`
       );
     }
     this.iconPath = iconPath;
@@ -42,6 +44,14 @@ export class Asset {
     // set the contents only if it is passed in the config
     if (config.contents) {
       this.contents = config.contents;
+    }
+
+    // if a source has is passed in, set it on the asset's config
+    if (config.buildSourceHash) {
+      this.buildSourceHash = config.buildSourceHash;
+    }
+    if (config.generateSourceHash) {
+      this.generateSourceHash = config.generateSourceHash;
     }
     this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
@@ -64,10 +74,17 @@ export class Asset {
    * @returns the Asset data that needs to be stored in the config file
    */
   getAssetConfig(): AssetConfig {
-    return {
+    const config: AssetConfig = {
       name: this.name,
-      path: this.path
+      path: this.path,
     };
+    if (this.buildSourceHash) {
+      config.buildSourceHash = this.buildSourceHash;
+    }
+    if (config.generateSourceHash) {
+      this.generateSourceHash = config.generateSourceHash;
+    }
+    return config;
   }
 
   /**
