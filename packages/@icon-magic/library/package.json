@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/library",
-  "version": "2.2.1-beta.0",
+  "version": "2.2.2-beta.0",
   "description": "Icon magic's icon library I/O utilities.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@icon-magic/logger": "^2.0.1-beta.0",
-    "@icon-magic/svg-to-png": "^2.2.1-beta.0",
+    "@icon-magic/svg-to-png": "^2.2.2-beta.0",
     "cli-progress": "^2.1.0",
     "fs-extra": "^7.0.1",
     "png-chunk-text": "^1.0.0",
