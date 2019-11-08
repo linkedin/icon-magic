@@ -982,10 +982,10 @@
   resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-1.3.0.tgz#2cedcf67132ccd45b55f109655e85450b618fbd0"
   integrity sha512-3MkYdqVF0yQFEUMbusfaVvQRQoC6yhOSdUU87/ZSvlJrI+E49s3XanUtJZtLThrvnqACnUryt2lC2ezpV9O/2Q==
 
-"@types/workerpool@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-3.1.0.tgz#8812ad37d73df86b6cf060fbe5697751361bb591"
-  integrity sha512-bJcLkk78Ng2H8dJbIfQu8STOTNZAEGFFz3DS8YMReHo4BDv3pn+HUd3r4/+lopsOmWS9QQb4OdvlpLAc+gaWrw==
+"@types/workerpool@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-5.0.0.tgz#2541e9eb169249b9ae10a87d0e84e486b503917b"
+  integrity sha512-adaPVbZNB2B1FVijSijc1E7pkfujFTM9pClXsvKeahq9KBTcfHTUvGGtUlVeDCxC71TT54AHaObWRwXX62aTpg==
   dependencies:
     "@types/node" "*"
 
