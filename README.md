@@ -158,7 +158,25 @@ Shared tslint config for all icon magic packages.
 
 ### [@icon-magic/library](packages/@icon-magic/library)
 
-[**DEPRECATED**] Type definitions and type conversion primitives for an "icon bundle"
+[**DEPRECATED**] Type definitions and type conversion primitives for an "icon
+bundle"
+
+## Publishing
+Once you have committed a PR, you can publish a new version to npm via the
+following:
+```sh
+yarn lerna publish
+
+```
+
+Select the version you want to publish at. If you're prompted for an OTP, enter
+the OTP. This will also list the set of packages in the monorepo that need to be
+published. You'll get an email once it's published. If, for any reason, you
+don't receive an email, you'll need to go into each package directory and run
+```sh
+npm publish --tag beta
+```
+You can skip the beta tag once we start having non-beta releases.
 
 ### TODO
 
