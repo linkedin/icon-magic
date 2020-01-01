@@ -983,9 +983,9 @@
   integrity sha512-3MkYdqVF0yQFEUMbusfaVvQRQoC6yhOSdUU87/ZSvlJrI+E49s3XanUtJZtLThrvnqACnUryt2lC2ezpV9O/2Q==
 
 "@types/workerpool@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-5.0.0.tgz#2541e9eb169249b9ae10a87d0e84e486b503917b"
-  integrity sha512-adaPVbZNB2B1FVijSijc1E7pkfujFTM9pClXsvKeahq9KBTcfHTUvGGtUlVeDCxC71TT54AHaObWRwXX62aTpg==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-5.0.1.tgz#8d8d1e56779531381da17ea3b640972b21e3ccbc"
+  integrity sha512-X+fNY1+DTYNnMD6NkQeaMeiM8I2GhlaNoUHO3CJB/HyoDjG90e1IWOVhiYPDRVl9tN4C0Jth9eIHo8kWujZS5w==
   dependencies:
     "@types/node" "*"
 
