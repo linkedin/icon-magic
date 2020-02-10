@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/library",
-  "version": "2.2.3-beta.0",
+  "version": "2.2.3",
   "description": "Icon magic's icon library I/O utilities.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
