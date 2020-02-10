@@ -11,7 +11,7 @@ const input = path.resolve(FIXTURES, 'input');
 const output = path.resolve(FIXTURES, 'out');
 const iconSet = configReader.getIconConfigSet(new Array(input));
 
-describe('distribute works as expected', function() {
+describe('distribute works as expected', function () {
   it('Moves all .webp files to the right output directory', async () => {
     await distributeByType(iconSet, output, 'webp', false);
     const iconPath = `${output}/drawable-xxxhdpi`;
@@ -257,6 +257,34 @@ describe('distribute works as expected', function() {
       const iconPath = `${output}/ui-icon/achievement`;
       const files = fs.readdirSync(iconPath);
       assert.ok(files.includes('filled.svg'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
+  it('sprites are always arranged alphabetically', async () => {
+    await distributeByType(iconSet, output, 'svg', true);
+    try {
+      const content = fs.readFileSync(`${output}/test-icons.svg`, 'utf8');
+      const doc = new DOMParser().parseFromString(content, 'svg');
+      const svgs = doc.getElementsByTagName('svg');
+      assert.ok(svgs.length === 3, 'Only 2 variants in sprite');
+      const svgIDs = [
+        'animal-small',
+        'animal-large',
+      ];
+      svgIDs.forEach(id => {
+        assert.ok(
+          doc.getElementById(id),
+          'puts the right variants into sprite'
+        );
+      });
+
+      assert.equal(
+        svgs[1],
+        doc.getElementById('animal-large'),
+        'should be sorted alphabetically'
+      );
     } catch (err) {
       assert.ok(false, err);
     }

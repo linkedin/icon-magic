@@ -6,7 +6,7 @@ import {
 import { Logger, logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
-import { removeResolutionFromName } from './utils';
+import { compareStrings, removeResolutionFromName } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:create-sprite');
 const serializeToString = new XMLSerializer().serializeToString;
@@ -41,11 +41,17 @@ export async function addToSprite(
     // If one exists, grab the document and the containing <svg> element
     ({ DOCUMENT, svgEl } = spriteNames[spriteName]);
   }
-  // Add the svg assets to the containing <svg> element
-  // and ultimately because the containing <svg> el
-  // is within the Document, the asset will also be added
-  // to the Document
-  for (const asset of assets) {
+
+  // Sort assets (variants) within the icon first
+  const sortedAssets = assets.sort((assetOne: Asset, assetTwo: Asset) => {
+    return compareStrings(assetOne.name, assetTwo.name);
+  });
+
+  /** Add the svg assets to the containing <svg> element.
+    * Because the containing <svg> element is within the Document
+    * the asset will also be added to the Document/
+    */
+  for (const asset of sortedAssets) {
     promises.push(
       await appendToSvgDoc(
         asset,

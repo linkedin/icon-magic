@@ -8,7 +8,7 @@ import {
   partitionAssetsForSprite,
   writeSpriteToFile
 } from './create-sprite';
-import { getIconFlavorsByType } from './utils';
+import { compareStrings, getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
 
@@ -120,14 +120,6 @@ async function copyIconAssetSvgs(
  */
 function sortIcons(icons: IterableIterator<Icon>): Array<Icon> {
   return Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
-    const iconNameOne = iconOne.iconName;
-    const iconNameTwo = iconTwo.iconName;
-    if (iconNameOne < iconNameTwo) {
-      return -1;
-    }
-    if (iconNameOne > iconNameTwo) {
-      return 1;
-    }
-    return 0;
+    return compareStrings(iconOne.iconName, iconTwo.iconName);
   });
 }
