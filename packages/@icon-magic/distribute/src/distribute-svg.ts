@@ -8,7 +8,7 @@ import {
   partitionAssetsForSprite,
   writeSpriteToFile
 } from './create-sprite';
-import { getIconFlavorsByType, compareStrings } from './utils';
+import { compareStrings, getIconFlavorsByType } from './utils';
 
 const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
 
