@@ -119,16 +119,7 @@ async function copyIconAssetSvgs(
  * @returns sorted array of icons
  */
 function sortIcons(icons: IterableIterator<Icon>): Array<Icon> {
-  const sortedArr = Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
+  return Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
     return compareStrings(iconOne.iconName, iconTwo.iconName);
   });
-  sortedArr.forEach((icon: Icon) => {
-    // LOGGER.debug(`1: ${JSON.stringify(icon.variants, null, 2)}`);
-    const iconVariants = icon.variants;
-    icon.variants = iconVariants.sort((variantOne, variantTwo) => {
-      return compareStrings(variantOne.name, variantTwo.name);
-    });
-    // LOGGER.debug(`2: ${JSON.stringify(icon.variants, null, 2)}`);
-  });
-  return sortedArr;
 }
