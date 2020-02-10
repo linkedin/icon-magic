@@ -67,3 +67,19 @@ export function getIconFlavorsByType(icon: Icon, type: FlavorType): Asset[] {
 export function removeResolutionFromName(iconName: string): string {
   return iconName.includes('@') ? iconName.replace(/(-)?@[0-9](.[0-9])?/, '') : iconName;
 }
+
+/**
+ * Compares two strings
+ * @param nameOne string to compare
+ * @param nameTwo string to compare
+ * @returns a number from which strings will be sorted against
+ */
+export function compareStrings(nameOne: string, nameTwo: string): number {
+  if (nameOne < nameTwo) {
+    return -1;
+  }
+  if (nameOne > nameTwo) {
+    return 1;
+  }
+  return 0;
+}
