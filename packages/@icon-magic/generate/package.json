@@ -31,6 +31,6 @@
   "devDependencies": {
     "@types/svgo": "^1.0.1",
     "@types/workerpool": "^5.0.0",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.2.1"
   }
 }
