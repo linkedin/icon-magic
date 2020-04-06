@@ -31,28 +31,28 @@ describe('distribute works as expected', function () {
     const iconPath = `${output}/drawable-xxxhdpi`;
     const icons = [
       {
-        iconName: 'ic_ui_icon_filled_1_filled_24x12'
+        iconName: 'ui_icon_filled_1_filled_24x12'
       },
       {
-        iconName: 'ic_uix_icon_filled_2_filled_24x12'
+        iconName: 'uix_icon_filled_2_filled_24x12'
       },
       {
-        iconName: 'ic_uixx_icon_filled_3_filled_24x12'
+        iconName: 'uixx_icon_filled_3_filled_24x12'
       },
       {
-        iconName: 'ic_ui_icon_filled_1_filled_60x60'
+        iconName: 'ui_icon_filled_1_filled_60x60'
       },
       {
-        iconName: 'ic_ui_icon_filled_4_filled_24x12'
+        iconName: 'ui_icon_filled_4_filled_24x12'
       },
       {
-        iconName: 'ic_ui_icon_filled_4_filled_60x60'
+        iconName: 'ui_icon_filled_4_filled_60x60'
       },
       {
-        iconName: 'ic_ui_icon_2_filled_6_filled_24x12'
+        iconName: 'ui_icon_2_filled_6_filled_24x12'
       },
       {
-        iconName: 'ic_ui_icon_2_filled_6_filled_60x60'
+        iconName: 'ui_icon_2_filled_6_filled_60x60'
       }
     ];
     const files = fs.readdirSync(iconPath);
