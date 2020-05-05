@@ -20,7 +20,8 @@ export async function distributeByType(
   iconConfig: IconConfigHash,
   outputPath: string,
   type: ICON_TYPES = 'all',
-  groupByCategory = true
+  groupByCategory = true,
+  outputAsHbs = false,
 ): Promise<void> {
   LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
@@ -34,13 +35,13 @@ export async function distributeByType(
       break;
     }
     case 'svg': {
-      await distributeSvg(iconSet, outputPath, groupByCategory);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs);
       break;
     }
     default: {
       await createImageSet(iconSet, outputPath);
       await distributeByResolution(iconSet, outputPath);
-      await distributeSvg(iconSet, outputPath, groupByCategory);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs);
     }
   }
 }
