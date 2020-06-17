@@ -4,6 +4,11 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DOMParser } from 'xmldom';
 
+/**
+ * Saves svg assets as handlebars files
+ * @param assets SVG assets to convert
+ * @param outputPath path to write to
+ */
 export async function createHbs(
   assets: Asset[],
   outputPath: string,
@@ -19,7 +24,6 @@ export async function createHbs(
     const iconName = id ? id.value : '';
     fs.writeFile(path.join(outputPath, `${iconName}.hbs`), xml, (err) => {
       if (err) throw err;
-      console.log("The file was succesfully saved!");
     });
   }
 }

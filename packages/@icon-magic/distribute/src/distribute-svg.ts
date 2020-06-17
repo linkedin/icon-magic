@@ -55,7 +55,12 @@ export async function distributeSvg(
       !svgConfig.toSprite
     );
     if (outputAsHbs) {
-      await createHbs(assets, outputPath);
+      try {
+        await createHbs(assets, outputPath);
+      }
+      catch(e) {
+        LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+      }
     }
     else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite

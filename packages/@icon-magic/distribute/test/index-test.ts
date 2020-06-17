@@ -262,6 +262,19 @@ describe('distribute works as expected', function () {
     }
   });
 
+  it('creates hbs files', async () => {
+    const iconSetAnimal = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/animal')));
+    await distributeByType(iconSetAnimal, output, 'svg', true, true);
+    try {
+      const files = fs.readdirSync(output);
+      console.log(files);
+      assert.ok(files.includes('animal-small.hbs'));
+      assert.ok(files.includes('animal-large.hbs'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
   it('sprites are always arranged alphabetically', async () => {
     await distributeByType(iconSet, output, 'svg', true);
     try {
