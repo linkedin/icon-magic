@@ -959,10 +959,10 @@
   resolved "https://registry.yarnpkg.com/@types/pretty-time/-/pretty-time-1.1.0.tgz#aa69ab559e3506b245952332d8d5cf8dc4a15d6a"
   integrity sha512-XxHpS0HzYCXyXe68xazMAK4ZCaLiDUeCGtT+zdVhb2LgXX40fGPamFW8aiNYlkf6WCDc176plLyDqfYodc0r6Q==
 
-"@types/puppeteer@^1.10.0":
-  version "1.20.2"
-  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-1.20.2.tgz#b123551fa868b78f1c65ef1cfc0dd5ea1f24234c"
-  integrity sha512-oSFCtftHSfVx8K9XPdNNYs79Zt4pYJs/0NP78ltuGCB25zS3UNGJSiypBfbhbvRC5Dcsh0k1R5Z0i8HHtqQUPQ==
+"@types/puppeteer@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-3.0.0.tgz#24cdcc131e319477608d893f0017e08befd70423"
+  integrity sha512-59+fkfHHXHzX5rgoXIMnZyzum7ZLx/Wc3fhsOduFThpTpKbzzdBHMZsrkKGLunimB4Ds/tI5lXTRLALK8Mmnhg==
   dependencies:
     "@types/node" "*"
 
