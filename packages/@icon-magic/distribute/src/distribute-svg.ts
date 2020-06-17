@@ -57,7 +57,7 @@ export async function distributeSvg(
     if (outputAsHbs) {
       await createHbs(assets, outputPath);
     }
-    if (iconHasSpriteConfig) {
+    else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const iconSpriteNames =

@@ -83,7 +83,7 @@ program
     '[for web] how to group the icons. The only available option for now is `--groupBy category`. \n For sprites, icons are grouped with <defs> tags with IDs matching the category and for non-sprites \n this distributes svgs in folder matching the category.'
   )
   .option(
-    '-t, --outputAsTemplate',
+    '-h --outputAsTemplate',
     '[for web] whether to output the svg as handlebars template.'
   )
   .action(async (inputPaths, options) => {
