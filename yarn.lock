@@ -918,10 +918,10 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/fs-extra@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.1.tgz#91c8fc4c51f6d5dbe44c2ca9ab09310bd00c7918"
-  integrity sha512-B42Sxuaz09MhC3DDeW5kubRcQ5by4iuVQ0cRRWM2lggLzAa/KVom0Aft/208NgMvNQQZ86s5rVcqDdn/SH0/mg==
+"@types/fs-extra@^8.0.0":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.1.1.tgz#1e49f22d09aa46e19b51c0b013cb63d0d923a068"
+  integrity sha512-TcUlBem321DFQzBNuz8p0CLLKp0VvF/XH9E4KHNmgwyp4E3AfgI5cjiIVZWlbfThBop2qxFIh4+LeY6hVWWZ2w==
   dependencies:
     "@types/node" "*"
 
@@ -4127,14 +4127,14 @@ imagemin-optipng@^7.0.0:
     is-png "^2.0.0"
     optipng-bin "^6.0.0"
 
-imagemin-pngcrush@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-6.0.0.tgz#24882d24aafab04227853797f535525814ebbbed"
-  integrity sha512-9Je0uUnzgZGLDDjsJxUlwozHS2aO/NmGRPUKcBzbpiliHI2W40HcRXYUaNNOMePGAWDCYJkJQ0rS5UG1JCguMA==
+imagemin-pngcrush@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-7.0.0.tgz#c29acd9af3287a2a8b91669476a841481eb739b5"
+  integrity sha512-yOp5f8RH2vd2x6B7P8WCprX1Cm3LjXqBu30wy5fJoEBrwwkyx8H2+vz1g/3FkSkldNURHcc0NmJ6r0waUNQTrw==
   dependencies:
     exec-buffer "^3.0.0"
-    is-png "^1.0.0"
-    pngcrush-bin "^4.0.0"
+    is-png "^2.0.0"
+    pngcrush-bin "^5.0.0"
 
 imagemin-zopfli@^6.0.0:
   version "6.0.0"
@@ -6301,10 +6301,10 @@ png-chunks-extract@^1.0.0:
   dependencies:
     crc-32 "^0.3.0"
 
-pngcrush-bin@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-4.0.0.tgz#a2450ce952dc165c290d8b4be37478ad38fca6e7"
-  integrity sha512-SFR9a/OgkuFiiksjM6yevTGvOdn+7JrL5r0j/zCVAZTurfRzh2smwDRYKnPMEwxgVOkwWt/tlVWRJUstSH7RcA==
+pngcrush-bin@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-5.0.1.tgz#8d3bc22f88d5335c187a6a2bf34fa13033bed87e"
+  integrity sha512-fe11NCaVzSrMyteBKuBUFs4g382FHuSOzK6TI/HJdPhEFA4j5QJM0lEhtiZkNempOES7rS+LlN1dXIzU03MXnQ==
   dependencies:
     bin-build "^3.0.0"
     bin-wrapper "^4.0.0"
