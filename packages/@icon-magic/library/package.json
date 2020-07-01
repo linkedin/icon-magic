@@ -25,7 +25,7 @@
     "png-chunk-text": "^1.0.0",
     "png-chunks-encode": "^1.0.0",
     "png-chunks-extract": "^1.0.0",
-    "pngjs": "^3.3.3",
+    "pngjs": "^5.0.0",
     "webp-converter": "^2.1.6"
   },
   "devDependencies": {
