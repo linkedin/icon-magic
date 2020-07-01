@@ -918,10 +918,10 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/fs-extra@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.1.tgz#91c8fc4c51f6d5dbe44c2ca9ab09310bd00c7918"
-  integrity sha512-B42Sxuaz09MhC3DDeW5kubRcQ5by4iuVQ0cRRWM2lggLzAa/KVom0Aft/208NgMvNQQZ86s5rVcqDdn/SH0/mg==
+"@types/fs-extra@^8.0.0":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.1.1.tgz#1e49f22d09aa46e19b51c0b013cb63d0d923a068"
+  integrity sha512-TcUlBem321DFQzBNuz8p0CLLKp0VvF/XH9E4KHNmgwyp4E3AfgI5cjiIVZWlbfThBop2qxFIh4+LeY6hVWWZ2w==
   dependencies:
     "@types/node" "*"
 
@@ -990,9 +990,9 @@
   integrity sha512-3MkYdqVF0yQFEUMbusfaVvQRQoC6yhOSdUU87/ZSvlJrI+E49s3XanUtJZtLThrvnqACnUryt2lC2ezpV9O/2Q==
 
 "@types/workerpool@^5.0.0":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-5.0.1.tgz#8d8d1e56779531381da17ea3b640972b21e3ccbc"
-  integrity sha512-X+fNY1+DTYNnMD6NkQeaMeiM8I2GhlaNoUHO3CJB/HyoDjG90e1IWOVhiYPDRVl9tN4C0Jth9eIHo8kWujZS5w==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@types/workerpool/-/workerpool-5.0.2.tgz#eb4be757f74122a0be06acac0309dc5045638cd3"
+  integrity sha512-wvM9ckFNjipSBaJ/KuMXlOxv65DIoP1jwQKPx8jUBobQVS1QtvMt1l5krXepXR8RwkKThOh+bJiEbIHOuo6ckg==
   dependencies:
     "@types/node" "*"
 
