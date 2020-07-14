@@ -31,7 +31,7 @@ export async function addToSprite(
   // If there's no existing sprite with that name
   if (!spriteNames.hasOwnProperty(spriteName)) {
     // Create a new Document and SVG element for the sprite
-    ({ DOCUMENT, svgEl } = createSVGDoc());
+    ({ DOCUMENT, svgEl } = createSVGDoc(spriteName));
     // Store the Document and the SVGEl
     // We need the Document because we we're using methods like
     // `createElement` and `getElementById` that can only be
@@ -66,9 +66,10 @@ export async function addToSprite(
 
 /**
  * Creates an SVG Document and sets its attributes
+ * @param spriteName name of sprite file
  * @returns object with created SVG Document and its child svg element
  */
-export function createSVGDoc(): { DOCUMENT: Document; svgEl: SVGSVGElement } {
+export function createSVGDoc(spriteName: string): { DOCUMENT: Document; svgEl: SVGSVGElement } {
   LOGGER.debug(`in create svg doc`);
   const DOM = new DOMImplementation();
   const doctype = DOM.createDocumentType(
@@ -84,6 +85,8 @@ export function createSVGDoc(): { DOCUMENT: Document; svgEl: SVGSVGElement } {
   svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');
+  svgEl.setAttribute('id', spriteName);
+
   // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);

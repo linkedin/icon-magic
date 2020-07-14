@@ -141,80 +141,83 @@ describe('distribute works as expected', function () {
     await distributeByType(iconSet, output, 'svg', true);
     const spritePaths = [
       {
-        path: 'icons.svg',
+        path: 'icons',
         id: 'a-home-filled-1',
         category: 'ui-icon'
       },
       {
-        path: 'icons.svg',
+        path: 'icons',
         id: 'point-default',
         category: 'app'
       },
       {
-        path: 'icons.svg',
+        path: 'icons',
         id: 'point-default-2',
         category: 'app'
       },
       {
-        path: 'icons.svg',
+        path: 'icons',
         id: 'ads-default',
         category: 'app'
       },
       {
-        path: 'icons.svg',
+        path: 'icons',
         id: 'ads-default-2',
         category: 'app'
       },
       {
-        path: 'icons-2.svg',
+        path: 'icons-2',
         id: 'b-home-filled-4',
         category: 'ui-icon'
       },
       {
-        path: 'icons-1.svg',
+        path: 'icons-1',
         id: 'c-home-filled-8',
         category: 'ui-icon-2'
       },
       {
-        path: 'icons-1.svg',
+        path: 'icons-1',
         id: 'c-home-filled-88-9',
         category: 'ui-icon-3'
       },
       {
-        path: 'icons-1.svg',
+        path: 'icons-1',
         id: 'c-home-filled-889',
         category: 'ui-icon-2'
       },
       {
-        path: 'icons-2.svg',
+        path: 'icons-2',
         id: 'home-filled-2',
         category: 'uix-icon'
       },
       {
-        path: 'icons-2.svg',
+        path: 'icons-2',
         id: 'home-filled-333',
         category: 'ui-icon'
       },
       {
-        path: 'icons-3.svg',
+        path: 'icons-3',
         id: 'home-filled-333',
         category: 'ui-icon'
       },
       {
-        path: 'icons-3.svg',
+        path: 'icons-3',
         id: 'home-filled-3',
         category: 'uixx-icon'
       },
       {
-        path: 'icons-3.svg',
+        path: 'icons-3',
         id: 'home-filled-33',
         category: 'uixx-icon'
       }
     ];
     spritePaths.forEach(p => {
       try {
-        const content = fs.readFileSync(`${output}/${p.path}`, 'utf8');
+        const content = fs.readFileSync(`${output}/${p.path}.svg`, 'utf8');
         const doc = new DOMParser().parseFromString(content, 'svg');
+        const docIdNode = doc.documentElement.getAttributeNode('id');
+        assert.ok(docIdNode && docIdNode.value === p.path, 'svg has ID');
+
         const defs = doc.getElementById(p.category);
         assert.ok(
           defs && defs.tagName === 'defs',
