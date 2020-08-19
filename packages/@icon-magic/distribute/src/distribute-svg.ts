@@ -3,6 +3,7 @@ import { Logger, logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
+import { createHbs } from './create-icon-template';
 import {
   addToSprite,
   partitionAssetsForSprite,
@@ -22,7 +23,8 @@ const LOGGER: Logger = logger('icon-magic:distribute:distribute-svg');
 export async function distributeSvg(
   iconSet: IconSet,
   outputPath: string,
-  groupByCategory: boolean
+  groupByCategory: boolean,
+  outputAsHbs: boolean,
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
@@ -35,7 +37,6 @@ export async function distributeSvg(
     const assets = getIconFlavorsByType(icon, 'svg');
     const distributeConfig = icon.distribute;
     const svgConfig = distributeConfig && distributeConfig.svg;
-
     // variantsToFilter can be defined on distribute or on distribute.svg
     const iconVariantsToFilter =
       distributeConfig && distributeConfig.variantsToFilter;
@@ -53,8 +54,15 @@ export async function distributeSvg(
       svgConfig &&
       !svgConfig.toSprite
     );
-
-    if (iconHasSpriteConfig) {
+    if (outputAsHbs) {
+      try {
+        await createHbs(assets, outputPath);
+      }
+      catch(e) {
+        LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+      }
+    }
+    else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const iconSpriteNames =

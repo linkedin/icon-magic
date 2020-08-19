@@ -82,6 +82,10 @@ program
     '-g, --groupBy [groupBy]',
     '[for web] how to group the icons. The only available option for now is `--groupBy category`. \n For sprites, icons are grouped with <defs> tags with IDs matching the category and for non-sprites \n this distributes svgs in folder matching the category.'
   )
+  .option(
+    '-h --outputAsTemplate',
+    '[for web] whether to output the svg as handlebars template.'
+  )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error('No Input Directories were specified.\n');
@@ -121,7 +125,8 @@ program
       iconSet,
       options.outputPath,
       options.type,
-      options.groupBy === 'category'
+      options.groupBy === 'category',
+      options.outputAsTemplate
     );
 
     // exit without any errors

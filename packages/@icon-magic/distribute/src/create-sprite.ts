@@ -86,7 +86,7 @@ export function createSVGDoc(spriteName: string): { DOCUMENT: Document; svgEl: S
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');
   svgEl.setAttribute('id', spriteName);
-
+  
   // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);
