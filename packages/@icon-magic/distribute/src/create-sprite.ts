@@ -66,6 +66,7 @@ export async function addToSprite(
 
 /**
  * Creates an SVG Document and sets its attributes
+ * @param spriteName name of sprite file
  * @returns object with created SVG Document and its child svg element
  */
 export function createSVGDoc(spriteName: string): { DOCUMENT: Document; svgEl: SVGSVGElement } {
@@ -85,6 +86,7 @@ export function createSVGDoc(spriteName: string): { DOCUMENT: Document; svgEl: S
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');
   svgEl.setAttribute('id', spriteName);
+  
   // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);
