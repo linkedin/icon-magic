@@ -270,7 +270,6 @@ describe('distribute works as expected', function () {
     await distributeByType(iconSetAnimal, output, 'svg', true, true);
     try {
       const files = fs.readdirSync(output);
-      console.log(files);
       assert.ok(files.includes('animal-small.hbs'));
       assert.ok(files.includes('animal-large.hbs'));
     } catch (err) {

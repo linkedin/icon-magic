@@ -20,8 +20,12 @@ export async function createHbs(
     const contents = await asset.getContents();
     // Parse XML from a string into a DOM Document.
     const xml = doc.parseFromString(contents as string, 'image/svg+xml');
-    const id = xml.documentElement.getAttributeNode('id');
+    const el = xml.documentElement;
+    const id = el.getAttributeNode('id');
     const iconName = id ? id.value : '';
+    el.removeAttribute('id');
+
+    await fs.mkdirp(outputPath);
     fs.writeFile(path.join(outputPath, `${iconName}.hbs`), xml, (err) => {
       if (err) throw err;
     });
