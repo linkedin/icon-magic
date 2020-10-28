@@ -47,6 +47,7 @@ export interface SvgGenerateOptions {
   /* if this is set to true, then set isColored only if the name of the flavor
   contains color in it */
   colorByNameMatching?: string[];
+  classNames?: string[];
 }
 
 export const svgGenerate: GeneratePlugin = {
@@ -66,6 +67,8 @@ export const svgGenerate: GeneratePlugin = {
     // build the attributes object that contains attributes to be added to the svg
     const attributes = { id: `${icon.iconName}-${flavor.name}` };
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
+
+    const classNames = params.classNames;
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
@@ -133,6 +136,11 @@ export const svgGenerate: GeneratePlugin = {
 
     const svgo = new Svgo({
       plugins: [
+        {
+          addClassesToSVGElement: {
+            classNames: classNames
+          }
+        },
         {
           cleanupIDs: {
             prefix: `${icon.category}-${attributes.id}-`

@@ -36,6 +36,8 @@ describe('Generate test', function() {
       2,
       'svg has two paths'
     );
+    assert.equal(svgEl.getAttribute('class'), 'flip', 'Class is added');
+
     // Load the config
     let origOutputIconConfig = JSON.parse(
       fs.readFileSync(path.resolve(iconPath, 'iconrc.json'), 'utf8')
