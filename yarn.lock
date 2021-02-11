@@ -886,10 +886,10 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/cli-progress@^1.8.0":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-1.8.1.tgz#f52f2c15ca85acab99617fd91616936faf070bd3"
-  integrity sha512-W31ZRQPQ1CM42pb5iqs3TzQlMv/RDRsPZ6pTCsl71oLFqFI/TYors3Pukj6tMinlUmXmv+Az5RD/94fZPcxMrw==
+"@types/cli-progress@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.8.0.tgz#f60f6d88ef2d9628876c9e906431ac9f34670975"
+  integrity sha512-2OV7ybuYQc6ju6Xlg8ncQcPA/vVbMTSGS0vygjszi9O7swC63S6f2oAnP4CE+4ppRo7eCQovlj268KySt1MaUQ==
   dependencies:
     "@types/node" "*"
 
