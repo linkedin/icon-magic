@@ -6,7 +6,8 @@
     },
     {
       "name": "someOtherName",
-      "path": "./outline.svg"
+      "path": "./outline.svg",
+      "colorScheme": "dark"
     }
   ],
   "sizes": [24],

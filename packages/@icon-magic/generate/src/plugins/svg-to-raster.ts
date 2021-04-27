@@ -122,6 +122,7 @@ export const svgToRaster: GeneratePlugin = {
       let res;
       let assetName: string;
       const flavorName = flavor.name;
+
       if (!params.propCombo.resolutions) {
         res = 1;
         const resolutionFromName = flavorName.match(/@[0-9|\.]*/);
@@ -171,6 +172,11 @@ export const svgToRaster: GeneratePlugin = {
       LOGGER.debug(`Minifying png: ${pngOutput}`);
       await minify(pngOutput);
 
+      let imageset;
+      if (flavor.imageset) {
+        imageset = `${appendDash(flavor.imageset)}${w}x${h}`;
+      }
+
       // create a new flavor with this sizexresolution combination
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
@@ -179,11 +185,13 @@ export const svgToRaster: GeneratePlugin = {
         types: {
           png: {
             name: assetName,
-            path: `./${assetName}.png`
+            path: `./${assetName}.png`,
+            imageset: imageset
           },
           webp: {
             name: assetName,
-            path: `./${assetName}.webp`
+            path: `./${assetName}.webp`,
+            imageset: imageset
           }
         }
       });

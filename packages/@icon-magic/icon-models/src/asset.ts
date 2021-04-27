@@ -14,6 +14,8 @@ export class Asset {
   iconPath: string;
   buildSourceHash?: string;
   generateSourceHash?: string;
+  imageset?: string;
+  colorScheme?: string;
   protected path: string;
   private LOGGER: Logger;
 
@@ -45,6 +47,12 @@ export class Asset {
     if (config.contents) {
       this.contents = config.contents;
     }
+    if (config.imageset) {
+      this.imageset = config.imageset;
+    }
+    if (config.colorScheme) {
+      this.colorScheme = config.colorScheme;
+    }
 
     // if a source has is passed in, set it on the asset's config
     if (config.buildSourceHash) {
@@ -70,6 +78,10 @@ export class Asset {
     this.path = path;
   }
 
+  setImageSet(imageset: string) {
+    this.imageset = imageset;
+  }
+
   /**
    * @returns the Asset data that needs to be stored in the config file
    */
@@ -83,6 +95,12 @@ export class Asset {
     }
     if (config.generateSourceHash) {
       this.generateSourceHash = config.generateSourceHash;
+    }
+    if (this.imageset) {
+      config.imageset = this.imageset;
+    }
+    if (this.colorScheme) {
+      config.colorScheme = this.colorScheme;
     }
     return config;
   }

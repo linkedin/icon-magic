@@ -1,0 +1,6 @@
+<svg id="company" xmlns="http://www.w3.org/2000/svg" width="2048" height="512" viewBox="0 0 2048 512">
+  <rect width="2048" height="512" style="fill: #e9e5df"/>
+  <rect width="2048" height="512" style="fill: none"/>
+  <rect width="1280" height="512" style="fill: #b9af9f"/>
+  <path d="M2048,0H1451.71a771.52,771.52,0,0,0,0,512H2048Z" style="fill: #d6cec2"/>
+</svg>

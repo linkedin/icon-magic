@@ -1,7 +1,9 @@
 const flavorProperties = {
   name: { type: 'string' },
   path: { type: 'string', minLength: 1 },
-  types: { type: ['object', 'null'] }
+  types: { type: ['object', 'null'] },
+  imageset: { type: ['string', 'null'] },
+  colorScheme: { type: 'string',  enum: ['dark', 'light'] }
 };
 
 const pluginProperties = {
@@ -65,7 +67,9 @@ const distributeConfigProperties = {
 
 const variantProperties = {
   name: { type: 'string' },
-  path: { type: 'string', minLength: 1 }
+  path: { type: 'string', minLength: 1 },
+  imageset: { type: 'string' },
+  colorScheme: { type: 'string',  enum: ['dark', 'light'] }
 };
 
 const generateConfigProperties = {

@@ -1,0 +1,234 @@
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "default",
+      "path": "./default.svg",
+      "imageset": "default"
+    },
+    {
+      "name": "default-on-dark",
+      "path": "./default-on-dark.svg",
+      "imageset": "default"
+    }
+  ],
+  "iconName": "company",
+  "outputPath": "./out/mercado/entity-backgrounds",
+  "flavors": [
+    {
+      "name": "default",
+      "imageset": "default",
+      "types": {
+        "svg": {
+          "name": "default",
+          "path": "./default.svg"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark",
+      "path": "./build/default-on-dark.svg",
+      "imageset": "default",
+      "types": {
+        "svg": {
+          "name": "default-on-dark",
+          "path": "./default-on-dark.svg"
+        }
+      }
+    },
+    {
+      "name": "default-2048x512@1",
+      "path": "./build/default.svg",
+      "types": {
+        "png": {
+          "name": "default-2048x512@1",
+          "path": "./default-2048x512@1.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-2048x512@1",
+          "path": "./default-2048x512@1.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-2048x512@1.5",
+      "path": "./build/default.svg",
+      "types": {
+        "png": {
+          "name": "default-2048x512@1.5",
+          "path": "./default-2048x512@1.5.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-2048x512@1.5",
+          "path": "./default-2048x512@1.5.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-2048x512@2",
+      "path": "./build/default.svg",
+      "types": {
+        "png": {
+          "name": "default-2048x512@2",
+          "path": "./default-2048x512@2.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-2048x512@2",
+          "path": "./default-2048x512@2.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-2048x512@3",
+      "path": "./build/default.svg",
+      "types": {
+        "png": {
+          "name": "default-2048x512@3",
+          "path": "./default-2048x512@3.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-2048x512@3",
+          "path": "./default-2048x512@3.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-2048x512@4",
+      "path": "./build/default.svg",
+      "types": {
+        "png": {
+          "name": "default-2048x512@4",
+          "path": "./default-2048x512@4.png"
+        },
+        "webp": {
+          "name": "default-2048x512@4",
+          "path": "./default-2048x512@4.webp"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark-2048x512@1",
+      "path": "./build/default-on-dark.svg",
+      "types": {
+        "png": {
+          "name": "default-on-dark-2048x512@1",
+          "path": "./default-on-dark-2048x512@1.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-on-dark-2048x512@1",
+          "path": "./default-on-dark-2048x512@1.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark-2048x512@1.5",
+      "path": "./build/default-on-dark.svg",
+      "types": {
+        "png": {
+          "name": "default-on-dark-2048x512@1.5",
+          "path": "./default-on-dark-2048x512@1.5.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-on-dark-2048x512@1.5",
+          "path": "./default-on-dark-2048x512@1.5.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark-2048x512@2",
+      "path": "./build/default-on-dark.svg",
+      "types": {
+        "png": {
+          "name": "default-on-dark-2048x512@2",
+          "path": "./default-on-dark-2048x512@2.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-on-dark-2048x512@2",
+          "path": "./default-on-dark-2048x512@2.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark-2048x512@3",
+      "path": "./build/default-on-dark.svg",
+      "types": {
+        "png": {
+          "name": "default-on-dark-2048x512@3",
+          "path": "./default-on-dark-2048x512@3.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-on-dark-2048x512@3",
+          "path": "./default-on-dark-2048x512@3.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    },
+    {
+      "name": "default-on-dark-2048x512@4",
+      "path": "./build/default-on-dark.svg",
+      "types": {
+        "png": {
+          "name": "default-on-dark-2048x512@4",
+          "path": "./default-on-dark-2048x512@4.png",
+          "imageset": "default-2048x512"
+        },
+        "webp": {
+          "name": "default-on-dark-2048x512@4",
+          "path": "./default-on-dark-2048x512@4.webp",
+          "imageset": "default-2048x512"
+        }
+      }
+    }
+  ],
+  "category": "entity-backgrounds",
+  "generate": {
+    "types": [
+      {
+        "name": "svg",
+        "plugins": [
+          {
+            "name": "svg-generate",
+            "params": {
+              "isFixedDimensions": false,
+              "isColored": true
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
+        "name": "raster",
+        "plugins": [
+          {
+            "name": "svg-to-raster",
+            "iterants": [
+              "sizes",
+              "resolutions"
+            ],
+            "writeToOutput": false
+          }
+        ]
+      }
+    ]
+  },
+  "distribute": {
+    "svg": {
+      "toSprite": false
+    }
+  }
+}

@@ -3,7 +3,15 @@
   "variants": [
     {
       "name": "active-small",
-      "path": "./active-24.svg"
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "light"
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "dark"
     },
     {
       "name": "inverse-small",
@@ -28,11 +36,24 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "imageset": "active-small",
       "types": {
         "svg": {
           "name": "active-small",
           "path": "./active-small.svg"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "imageset": "active-small",
+      "types": {
+        "svg": {
+          "name": "active-small-on-dark",
+          "path": "./active-small-on-dark.svg"
         }
       }
     },
@@ -50,75 +71,170 @@
     {
       "name": "active-small-24x24@1",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1",
-          "path": "./active-small-24x24@1.png"
+          "path": "./active-small-24x24@1.png",
+          "imageset": "active-small-24x24"
         },
         "webp": {
           "name": "active-small-24x24@1",
-          "path": "./active-small-24x24@1.webp"
+          "path": "./active-small-24x24@1.webp",
+          "imageset": "active-small-24x24"
         }
       }
     },
     {
       "name": "active-small-24x24@1.5",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1.5",
-          "path": "./active-small-24x24@1.5.png"
+          "path": "./active-small-24x24@1.5.png",
+          "imageset": "active-small-24x24"
         },
         "webp": {
           "name": "active-small-24x24@1.5",
-          "path": "./active-small-24x24@1.5.webp"
+          "path": "./active-small-24x24@1.5.webp",
+          "imageset": "active-small-24x24"
         }
       }
     },
     {
       "name": "active-small-24x24@2",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@2",
-          "path": "./active-small-24x24@2.png"
+          "path": "./active-small-24x24@2.png",
+          "imageset": "active-small-24x24"
         },
         "webp": {
           "name": "active-small-24x24@2",
-          "path": "./active-small-24x24@2.webp"
+          "path": "./active-small-24x24@2.webp",
+          "imageset": "active-small-24x24"
         }
       }
     },
     {
       "name": "active-small-24x24@3",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@3",
-          "path": "./active-small-24x24@3.png"
+          "path": "./active-small-24x24@3.png",
+          "imageset": "active-small-24x24"
         },
         "webp": {
           "name": "active-small-24x24@3",
-          "path": "./active-small-24x24@3.webp"
+          "path": "./active-small-24x24@3.webp",
+          "imageset": "active-small-24x24"
         }
       }
     },
     {
       "name": "active-small-24x24@4",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@4",
-          "path": "./active-small-24x24@4.png"
+          "path": "./active-small-24x24@4.png",
+          "imageset": "active-small-24x24"
         },
         "webp": {
           "name": "active-small-24x24@4",
-          "path": "./active-small-24x24@4.webp"
+          "path": "./active-small-24x24@4.webp",
+          "imageset": "active-small-24x24"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark-24x24@1",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@1",
+          "path": "./active-small-on-dark-24x24@1.png",
+          "imageset": "active-small-24x24"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@1",
+          "path": "./active-small-on-dark-24x24@1.webp",
+          "imageset": "active-small-24x24"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark-24x24@1.5",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@1.5",
+          "path": "./active-small-on-dark-24x24@1.5.png",
+          "imageset": "active-small-24x24"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@1.5",
+          "path": "./active-small-on-dark-24x24@1.5.webp",
+          "imageset": "active-small-24x24"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark-24x24@2",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@2",
+          "path": "./active-small-on-dark-24x24@2.png",
+          "imageset": "active-small-24x24"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@2",
+          "path": "./active-small-on-dark-24x24@2.webp",
+          "imageset": "active-small-24x24"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark-24x24@3",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@3",
+          "path": "./active-small-on-dark-24x24@3.png",
+          "imageset": "active-small-24x24"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@3",
+          "path": "./active-small-on-dark-24x24@3.webp",
+          "imageset": "active-small-24x24"
+        }
+      }
+    },
+    {
+      "name": "active-small-on-dark-24x24@4",
+      "path": "./active-small.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@4",
+          "path": "./active-small-on-dark-24x24@4.png",
+          "imageset": "active-small-24x24"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@4",
+          "path": "./active-small-on-dark-24x24@4.webp",
+          "imageset": "active-small-24x24"
         }
       }
     },
@@ -217,10 +333,7 @@
               "colorByNameMatching": [
                 "inverse"
               ],
-              "isFixedDimensions": true,
-              "classNames": [
-                "flip"
-              ]
+              "isFixedDimensions": false
             },
             "writeToOutput": false
           }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 512" id="company-default-on-dark" data-supported-dps="2048x512">
+  <path fill="#6e6558" d="M0 0h2048v512H0z"/>
+  <path fill="none" d="M0 0h2048v512H0z"/>
+  <path fill="#958b7b" d="M0 0h1280v512H0z"/>
+  <path d="M2048 0h-596.29a771.52 771.52 0 000 512H2048z" fill="#958b7b" opacity=".5"/>
+</svg>

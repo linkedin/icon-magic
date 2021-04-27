@@ -95,6 +95,11 @@ describe('distribute works as expected', function () {
             files.indexOf('Contents.json') > -1,
             'Contents.json was generated'
           );
+
+          const contentsJsonImages = fs.readJsonSync(path.join(iconPath, 'Contents.json')).images;
+          assert.ok(Array.isArray(contentsJsonImages), 'Contents.json is filled with an array called images');
+          assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `${icon.category}_${icon.iconName}@2.png`));
+
           assert.ok(
             files.indexOf(`${icon.category}_${icon.iconName}@2.png`) > -1,
             `${icon.category}_${icon.iconName}@2.png was created`
@@ -106,6 +111,43 @@ describe('distribute works as expected', function () {
         assert.ok(false, err);
       }
     });
+  });
+
+  it('Moves all dark .png files to the output directory as expected', async () => {
+    const input = path.resolve(FIXTURES, 'input/company');
+    const output = path.resolve(FIXTURES, 'out');
+    const iconSet = configReader.getIconConfigSet(new Array(input));
+
+    await distributeByType(iconSet, output, 'png', false);
+    try {
+      const iconPath = `${output}/entity-backgrounds/entity-backgrounds_company_default_2048x512.imageset`;
+      if (fs.existsSync(iconPath)) {
+        assert.ok(`${iconPath} dir was generated`);
+        const files = fs.readdirSync(iconPath);
+        assert.ok(
+          files.indexOf('Contents.json') > -1,
+          'Contents.json was generated'
+        );
+
+        const contentsJsonImages = fs.readJsonSync(path.join(iconPath, 'Contents.json')).images;
+        assert.ok(Array.isArray(contentsJsonImages), 'Contents.json is filled with an array called images');
+        assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `entity-backgrounds_company_default_on_dark_2048x512@2.png`), 'Dark icons in contents.json');
+        assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `entity-backgrounds_company_default_2048x512@2.png`));
+
+        assert.ok(
+          files.indexOf(`entity-backgrounds_company_default_2048x512@2.png`) > -1,
+          `entity-backgrounds_company_default_2048x512@2.png was created`
+        );
+        assert.ok(
+          files.indexOf(`entity-backgrounds_company_default_on_dark_2048x512@2.png`) > -1,
+          `entity-backgrounds_company_default_on_dark_2048x512@2.png was created`
+        );
+      } else {
+        assert.ok(false, `Missing files for ${iconPath}`);
+      }
+    } catch (err) {
+      assert.ok(false, err);
+    }
   });
 
   it('creates the sprite files', async () => {

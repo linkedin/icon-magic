@@ -59,6 +59,8 @@ export class Flavor extends Asset {
       path: `./${path.relative(this.iconPath, this.getPath())}`,
       buildSourceHash: this.buildSourceHash,
       generateSourceHash: this.generateSourceHash,
+      imageset: this.imageset,
+      colorScheme: this.colorScheme,
       types: flavorTypes
     };
   }

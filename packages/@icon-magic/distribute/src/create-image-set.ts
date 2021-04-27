@@ -47,19 +47,21 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
         continue;
       }
 
-      let assetNameForCatalog = `${icon.iconName}_${path.basename(
-        asset.getPath()
-      )}`.replace(/-/g, '_');
+      const assetPathBasename = path.basename(asset.getPath());
+      let assetNameForCatalog = `${icon.iconName}_${assetPathBasename}`.replace(/-/g, '_');
+      let assetImagesetForCatalog = asset.imageset ?
+        `${icon.iconName}_${asset.imageset}`.replace(/-/g, '_') : `${assetNameForCatalog.split('@')[0]}`;
 
       // if the category is present, prepend it to the name
       if (icon.category) {
         assetNameForCatalog = `${icon.category}_${assetNameForCatalog}`;
+        assetImagesetForCatalog = `${icon.category}_${assetImagesetForCatalog}`;
       }
 
       // strip the resolution from the asset name to get the name of the imageset
       const outputIconDir = path.join(
         iconOutputPath,
-        `${assetNameForCatalog.split('@')[0]}.imageset`
+        `${assetImagesetForCatalog}.imageset`
       );
 
       await fs.mkdirp(outputIconDir);

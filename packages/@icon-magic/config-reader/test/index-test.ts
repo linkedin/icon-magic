@@ -13,7 +13,7 @@ describe('@icon-magic/config-reader/index', function() {
           iconPath: `${FIXTURES}/nav-icons/home`,
           variants: [
             { path: './filled.svg' },
-            { name: 'someOtherName', path: './outline.svg' }
+            { name: 'someOtherName', path: './outline.svg', colorScheme: 'dark' },
           ],
           sizes: [24],
           resolutions: [1],

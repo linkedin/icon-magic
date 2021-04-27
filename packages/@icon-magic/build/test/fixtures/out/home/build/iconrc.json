@@ -3,7 +3,15 @@
   "variants": [
     {
       "name": "filled",
-      "path": "./filled.svg"
+      "path": "./filled.svg",
+      "imageset": "filled",
+      "colorScheme": "light"
+    },
+    {
+      "name": "filled-on-dark",
+      "path": "./filled-on-dark.svg",
+      "imageset": "filled",
+      "colorScheme": "dark"
     },
     {
       "name": "someOtherName",
@@ -15,15 +23,23 @@
   "outputPath": "./test/fixtures/out",
   "flavors": [
     {
-      "name": "filled",
-      "path": "./build/filled.svg",
-      "buildSourceHash": "d5cd56e63be9e001579b9e3b6f349109",
-      "types": {}
-    },
-    {
       "name": "someOtherName",
       "path": "./build/someOtherName.svg",
       "buildSourceHash": "cf1defda2ff988848a129ecf3bf90ae8",
+      "types": {}
+    },
+    {
+      "name": "filled",
+      "path": "./build/filled.svg",
+      "buildSourceHash": "d5cd56e63be9e001579b9e3b6f349109",
+      "imageset": "filled",
+      "types": {}
+    },
+    {
+      "name": "filled-on-dark",
+      "path": "./build/filled-on-dark.svg",
+      "buildSourceHash": "d5cd56e63be9e001579b9e3b6f349109",
+      "imageset": "filled",
       "types": {}
     }
   ],

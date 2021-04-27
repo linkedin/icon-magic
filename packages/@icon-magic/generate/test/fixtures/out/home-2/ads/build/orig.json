@@ -3,7 +3,15 @@
   "variants": [
     {
       "name": "active-small",
-      "path": "./active-24.svg"
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "light"
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "dark"
     },
     {
       "name": "inverse-small",

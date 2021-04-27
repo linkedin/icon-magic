@@ -15,6 +15,8 @@ export interface AssetConfig {
   name?: string;
   path: string;
   contents?: Content;
+  imageset?: string;
+  colorScheme?: string;
   buildSourceHash?: string;
   generateSourceHash?: string;
 }
