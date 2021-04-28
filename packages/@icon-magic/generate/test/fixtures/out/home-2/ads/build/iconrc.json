@@ -72,8 +72,10 @@
               "colorByNameMatching": [
                 "inverse"
               ],
-              "isFixedDimensions": false
-            }
+              "isFixedDimensions": true,
+              "classNames": ["flip"]
+            },
+            "writeToOutput": false
           }
         ]
       },
