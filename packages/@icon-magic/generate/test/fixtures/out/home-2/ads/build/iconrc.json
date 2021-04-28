@@ -60,11 +60,11 @@
             "name": "svg-generate",
             "params": {
               "addSupportedDps": "current",
-              "colorByNameMatching": [
-                "inverse"
-              ],
-              "isFixedDimensions": false
-            }
+              "colorByNameMatching": ["inverse"],
+              "isFixedDimensions": true,
+              "classNames": ["flip"]
+            },
+            "writeToOutput": false
           }
         ]
       },
@@ -73,9 +73,7 @@
         "plugins": [
           {
             "name": "svg-to-raster",
-            "iterants": [
-              "resolutions"
-            ],
+            "iterants": ["resolutions"],
             "params": {
               "useNameSizeMapping": true
             },
