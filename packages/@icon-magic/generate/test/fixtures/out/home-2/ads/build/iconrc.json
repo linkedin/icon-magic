@@ -37,12 +37,14 @@
       "name": "active-small",
       "path": "./active-small.svg",
       "imageset": "active-small",
+      "colorScheme": "light",
       "types": {}
     },
     {
       "name": "active-small-on-dark",
       "path": "./active-small.svg",
       "imageset": "active-small",
+      "colorScheme": "dark",
       "types": {}
     },
     {

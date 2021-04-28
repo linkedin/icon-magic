@@ -9,7 +9,8 @@
     {
       "name": "default-on-dark",
       "path": "./default-on-dark.svg",
-      "imageset": "default"
+      "imageset": "default",
+      "colorScheme": "dark"
     }
   ],
   "iconName": "company",
@@ -18,6 +19,7 @@
     {
       "name": "default",
       "imageset": "default",
+      "colorScheme": "light",
       "types": {
         "svg": {
           "name": "default",
@@ -29,6 +31,7 @@
       "name": "default-on-dark",
       "path": "./build/default-on-dark.svg",
       "imageset": "default",
+      "colorScheme": "dark",
       "types": {
         "svg": {
           "name": "default-on-dark",
@@ -121,7 +124,8 @@
         "png": {
           "name": "default-on-dark-2048x512@1",
           "path": "./default-on-dark-2048x512@1.png",
-          "imageset": "default-2048x512"
+          "imageset": "default-2048x512",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "default-on-dark-2048x512@1",
@@ -137,7 +141,8 @@
         "png": {
           "name": "default-on-dark-2048x512@1.5",
           "path": "./default-on-dark-2048x512@1.5.png",
-          "imageset": "default-2048x512"
+          "imageset": "default-2048x512",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "default-on-dark-2048x512@1.5",
@@ -153,7 +158,8 @@
         "png": {
           "name": "default-on-dark-2048x512@2",
           "path": "./default-on-dark-2048x512@2.png",
-          "imageset": "default-2048x512"
+          "imageset": "default-2048x512",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "default-on-dark-2048x512@2",
@@ -169,7 +175,8 @@
         "png": {
           "name": "default-on-dark-2048x512@3",
           "path": "./default-on-dark-2048x512@3.png",
-          "imageset": "default-2048x512"
+          "imageset": "default-2048x512",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "default-on-dark-2048x512@3",
@@ -185,7 +192,8 @@
         "png": {
           "name": "default-on-dark-2048x512@4",
           "path": "./default-on-dark-2048x512@4.png",
-          "imageset": "default-2048x512"
+          "imageset": "default-2048x512",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "default-on-dark-2048x512@4",

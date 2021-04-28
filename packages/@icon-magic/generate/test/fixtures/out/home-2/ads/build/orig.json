@@ -27,6 +27,15 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
+      "imageset": "active-small",
+      "colorScheme": "light",
+      "types": {}
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-small.svg",
+      "imageset": "active-small",
+      "colorScheme": "dark",
       "types": {}
     },
     {
@@ -51,11 +60,11 @@
             "name": "svg-generate",
             "params": {
               "addSupportedDps": "current",
-              "colorByNameMatching": ["inverse"],
-              "isFixedDimensions": true,
-              "classNames": ["flip"]
-            },
-            "writeToOutput": false
+              "colorByNameMatching": [
+                "inverse"
+              ],
+              "isFixedDimensions": false
+            }
           }
         ]
       },
@@ -64,7 +73,9 @@
         "plugins": [
           {
             "name": "svg-to-raster",
-            "iterants": ["resolutions"],
+            "iterants": [
+              "resolutions"
+            ],
             "params": {
               "useNameSizeMapping": true
             },

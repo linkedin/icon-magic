@@ -131,7 +131,13 @@ describe('distribute works as expected', function () {
 
         const contentsJsonImages = fs.readJsonSync(path.join(iconPath, 'Contents.json')).images;
         assert.ok(Array.isArray(contentsJsonImages), 'Contents.json is filled with an array called images');
-        assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `entity-backgrounds_company_default_on_dark_2048x512@2.png`), 'Dark icons in contents.json');
+        const darkImage = contentsJsonImages.find((entry: { filename: string; }) =>
+          entry.filename === `entity-backgrounds_company_default_on_dark_2048x512@2.png`
+        );
+
+        assert.ok(typeof darkImage === 'object', 'Dark icons in contents.json');
+        assert.ok(darkImage.appearances.length > 0, 'Has appearances array');
+
         assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `entity-backgrounds_company_default_2048x512@2.png`));
 
         assert.ok(

@@ -38,6 +38,7 @@
       "path": "./active-small.svg",
       "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "imageset": "active-small",
+      "colorScheme": "light",
       "types": {
         "svg": {
           "name": "active-small",
@@ -50,6 +51,7 @@
       "path": "./active-small.svg",
       "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "imageset": "active-small",
+      "colorScheme": "dark",
       "types": {
         "svg": {
           "name": "active-small-on-dark",
@@ -76,7 +78,8 @@
         "png": {
           "name": "active-small-24x24@1",
           "path": "./active-small-24x24@1.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "light"
         },
         "webp": {
           "name": "active-small-24x24@1",
@@ -92,7 +95,8 @@
         "png": {
           "name": "active-small-24x24@1.5",
           "path": "./active-small-24x24@1.5.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "light"
         },
         "webp": {
           "name": "active-small-24x24@1.5",
@@ -108,7 +112,8 @@
         "png": {
           "name": "active-small-24x24@2",
           "path": "./active-small-24x24@2.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "light"
         },
         "webp": {
           "name": "active-small-24x24@2",
@@ -124,7 +129,8 @@
         "png": {
           "name": "active-small-24x24@3",
           "path": "./active-small-24x24@3.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "light"
         },
         "webp": {
           "name": "active-small-24x24@3",
@@ -140,7 +146,8 @@
         "png": {
           "name": "active-small-24x24@4",
           "path": "./active-small-24x24@4.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "light"
         },
         "webp": {
           "name": "active-small-24x24@4",
@@ -156,7 +163,8 @@
         "png": {
           "name": "active-small-on-dark-24x24@1",
           "path": "./active-small-on-dark-24x24@1.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "active-small-on-dark-24x24@1",
@@ -172,7 +180,8 @@
         "png": {
           "name": "active-small-on-dark-24x24@1.5",
           "path": "./active-small-on-dark-24x24@1.5.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "active-small-on-dark-24x24@1.5",
@@ -188,7 +197,8 @@
         "png": {
           "name": "active-small-on-dark-24x24@2",
           "path": "./active-small-on-dark-24x24@2.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "active-small-on-dark-24x24@2",
@@ -204,7 +214,8 @@
         "png": {
           "name": "active-small-on-dark-24x24@3",
           "path": "./active-small-on-dark-24x24@3.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "active-small-on-dark-24x24@3",
@@ -220,7 +231,8 @@
         "png": {
           "name": "active-small-on-dark-24x24@4",
           "path": "./active-small-on-dark-24x24@4.png",
-          "imageset": "active-small-24x24"
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
         },
         "webp": {
           "name": "active-small-on-dark-24x24@4",
