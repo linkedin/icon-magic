@@ -19,17 +19,8 @@
     }
   ],
   "sourceConfigFile": "../../../icons/nav/iconrc.json",
-  "sizes": [
-    24,
-    32
-  ],
-  "resolutions": [
-    1,
-    1.5,
-    2,
-    3,
-    4
-  ],
+  "sizes": [24, 32],
+  "resolutions": [1, 1.5, 2, 3, 4],
   "iconName": "ads",
   "outputPath": "./test/fixtures/out/home-2",
   "flavors": [
@@ -72,10 +63,8 @@
               "colorByNameMatching": [
                 "inverse"
               ],
-              "isFixedDimensions": true,
-              "classNames": ["flip"]
-            },
-            "writeToOutput": false
+              "isFixedDimensions": false
+            }
           }
         ]
       },
