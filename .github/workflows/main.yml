@@ -1,0 +1,21 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [8.0x, 10.x, 12.x]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: build
+        run: yarn build
+      - name: test
+        run: yarn test
