@@ -23,23 +23,25 @@
   "outputPath": "./test/fixtures/out",
   "flavors": [
     {
-      "name": "someOtherName",
-      "path": "./build/someOtherName.svg",
-      "buildSourceHash": "cf1defda2ff988848a129ecf3bf90ae8",
-      "types": {}
-    },
-    {
       "name": "filled",
       "path": "./build/filled.svg",
-      "buildSourceHash": "d5cd56e63be9e001579b9e3b6f349109",
+      "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
+      "colorScheme": "light",
       "types": {}
     },
     {
       "name": "filled-on-dark",
       "path": "./build/filled-on-dark.svg",
-      "buildSourceHash": "d5cd56e63be9e001579b9e3b6f349109",
+      "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
+      "colorScheme": "dark",
+      "types": {}
+    },
+    {
+      "name": "someOtherName",
+      "path": "./build/someOtherName.svg",
+      "buildSourceHash": "095461259d3f590f720705024335072e",
       "types": {}
     }
   ],

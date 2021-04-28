@@ -133,9 +133,8 @@ export const svgToRaster: GeneratePlugin = {
             ''
           )}`;
           // don't append `-` if there's name is an empty string
-          assetName = `${appendDash(nameWithoutRes)}${w}x${h}${
-            resolutionFromName[0]
-          }`;
+          assetName = `${appendDash(nameWithoutRes)}${w}x${h}${resolutionFromName[0]
+            }`;
           LOGGER.debug(`resolutionFromName: ${resolutionFromName}`);
           // the resolution is of the form @1 in the name and we need to get the
           // number for raster generation
@@ -186,12 +185,12 @@ export const svgToRaster: GeneratePlugin = {
           png: {
             name: assetName,
             path: `./${assetName}.png`,
-            imageset: imageset
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
           },
           webp: {
             name: assetName,
-            path: `./${assetName}.webp`,
-            imageset: imageset
+            path: `./${assetName}.webp`
           }
         }
       });
@@ -234,7 +233,7 @@ async function generatePng(
  */
 function convertToWebp(pathToPng: string, outputPath: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    webp.cwebp(pathToPng, outputPath, '-m 6 -z 9', function(status: string) {
+    webp.cwebp(pathToPng, outputPath, '-m 6 -z 9', function (status: string) {
       !!~status.indexOf('100') ? resolve(outputPath) : reject();
     });
   });

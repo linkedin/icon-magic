@@ -47,8 +47,18 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
         continue;
       }
 
+      // Example .x/y/23/filled-24x12@2.png -> filled-24x12@2.png
       const assetPathBasename = path.basename(asset.getPath());
+
+      // This will be the name the file is saved as
       let assetNameForCatalog = `${icon.iconName}_${assetPathBasename}`.replace(/-/g, '_');
+
+      /* This will be the folder the files are saved in
+       * Usually for ios every variant gets its own folder
+       * But we want dark and light assets (which are technically separate variants)
+       * to be in the same folder so we use `imageset` if available
+       * `imageset` is a name grouping that's shared across light and dark assets
+      */
       let assetImagesetForCatalog = asset.imageset ?
         `${icon.iconName}_${asset.imageset}`.replace(/-/g, '_') : `${assetNameForCatalog.split('@')[0]}`;
 
@@ -58,7 +68,6 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
         assetImagesetForCatalog = `${icon.category}_${assetImagesetForCatalog}`;
       }
 
-      // strip the resolution from the asset name to get the name of the imageset
       const outputIconDir = path.join(
         iconOutputPath,
         `${assetImagesetForCatalog}.imageset`
@@ -89,7 +98,15 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
         images.push({
           idiom: 'universal',
           scale: getAssetResolutionFromName(asset, true),
-          filename: assetNameForCatalog
+          filename: assetNameForCatalog,
+          ...(asset.colorScheme === 'dark' && {
+            appearances: [
+              {
+                appearance: 'luminosity',
+                value: 'dark'
+              }
+            ]
+          }),
         });
         await writeJSONfile(assetCatalogPath, { images });
       }

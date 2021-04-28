@@ -80,8 +80,7 @@
         },
         "webp": {
           "name": "active-small-24x24@1",
-          "path": "./active-small-24x24@1.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-24x24@1.webp"
         }
       }
     },
@@ -97,8 +96,7 @@
         },
         "webp": {
           "name": "active-small-24x24@1.5",
-          "path": "./active-small-24x24@1.5.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-24x24@1.5.webp"
         }
       }
     },
@@ -114,8 +112,7 @@
         },
         "webp": {
           "name": "active-small-24x24@2",
-          "path": "./active-small-24x24@2.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-24x24@2.webp"
         }
       }
     },
@@ -131,8 +128,7 @@
         },
         "webp": {
           "name": "active-small-24x24@3",
-          "path": "./active-small-24x24@3.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-24x24@3.webp"
         }
       }
     },
@@ -148,8 +144,7 @@
         },
         "webp": {
           "name": "active-small-24x24@4",
-          "path": "./active-small-24x24@4.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-24x24@4.webp"
         }
       }
     },
@@ -165,8 +160,7 @@
         },
         "webp": {
           "name": "active-small-on-dark-24x24@1",
-          "path": "./active-small-on-dark-24x24@1.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-on-dark-24x24@1.webp"
         }
       }
     },
@@ -182,8 +176,7 @@
         },
         "webp": {
           "name": "active-small-on-dark-24x24@1.5",
-          "path": "./active-small-on-dark-24x24@1.5.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-on-dark-24x24@1.5.webp"
         }
       }
     },
@@ -199,8 +192,7 @@
         },
         "webp": {
           "name": "active-small-on-dark-24x24@2",
-          "path": "./active-small-on-dark-24x24@2.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-on-dark-24x24@2.webp"
         }
       }
     },
@@ -216,8 +208,7 @@
         },
         "webp": {
           "name": "active-small-on-dark-24x24@3",
-          "path": "./active-small-on-dark-24x24@3.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-on-dark-24x24@3.webp"
         }
       }
     },
@@ -233,8 +224,7 @@
         },
         "webp": {
           "name": "active-small-on-dark-24x24@4",
-          "path": "./active-small-on-dark-24x24@4.webp",
-          "imageset": "active-small-24x24"
+          "path": "./active-small-on-dark-24x24@4.webp"
         }
       }
     },
