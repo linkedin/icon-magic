@@ -3,7 +3,15 @@
   "variants": [
     {
       "name": "active-small",
-      "path": "./active-24.svg"
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "light"
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-24.svg",
+      "imageset": "active-small",
+      "colorScheme": "dark"
     },
     {
       "name": "inverse-small",
@@ -19,6 +27,15 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
+      "imageset": "active-small",
+      "colorScheme": "light",
+      "types": {}
+    },
+    {
+      "name": "active-small-on-dark",
+      "path": "./active-small.svg",
+      "imageset": "active-small",
+      "colorScheme": "dark",
       "types": {}
     },
     {

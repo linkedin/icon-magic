@@ -101,6 +101,8 @@ export const flavors: FlavorConfig[] = [
     name: 'filled-a',
     buildSourceHash: undefined,
     generateSourceHash: undefined,
+    "colorScheme": undefined,
+    "imageset": undefined,
     types: sampleExt
   },
   {

@@ -122,6 +122,7 @@ export const svgToRaster: GeneratePlugin = {
       let res;
       let assetName: string;
       const flavorName = flavor.name;
+
       if (!params.propCombo.resolutions) {
         res = 1;
         const resolutionFromName = flavorName.match(/@[0-9|\.]*/);
@@ -132,9 +133,8 @@ export const svgToRaster: GeneratePlugin = {
             ''
           )}`;
           // don't append `-` if there's name is an empty string
-          assetName = `${appendDash(nameWithoutRes)}${w}x${h}${
-            resolutionFromName[0]
-          }`;
+          assetName = `${appendDash(nameWithoutRes)}${w}x${h}${resolutionFromName[0]
+            }`;
           LOGGER.debug(`resolutionFromName: ${resolutionFromName}`);
           // the resolution is of the form @1 in the name and we need to get the
           // number for raster generation
@@ -171,6 +171,11 @@ export const svgToRaster: GeneratePlugin = {
       LOGGER.debug(`Minifying png: ${pngOutput}`);
       await minify(pngOutput);
 
+      let imageset;
+      if (flavor.imageset) {
+        imageset = `${appendDash(flavor.imageset)}${w}x${h}`;
+      }
+
       // create a new flavor with this sizexresolution combination
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
         name: assetName,
@@ -179,11 +184,15 @@ export const svgToRaster: GeneratePlugin = {
         types: {
           png: {
             name: assetName,
-            path: `./${assetName}.png`
+            path: `./${assetName}.png`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
           },
           webp: {
             name: assetName,
-            path: `./${assetName}.webp`
+            path: `./${assetName}.webp`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
           }
         }
       });
@@ -226,7 +235,7 @@ async function generatePng(
  */
 function convertToWebp(pathToPng: string, outputPath: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    webp.cwebp(pathToPng, outputPath, '-m 6 -z 9', function(status: string) {
+    webp.cwebp(pathToPng, outputPath, '-m 6 -z 9', function (status: string) {
       !!~status.indexOf('100') ? resolve(outputPath) : reject();
     });
   });

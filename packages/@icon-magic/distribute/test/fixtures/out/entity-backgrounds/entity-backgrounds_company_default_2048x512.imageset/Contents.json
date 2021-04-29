@@ -1,0 +1,52 @@
+{
+  "images": [
+    {
+      "idiom": "universal",
+      "scale": "1x",
+      "filename": "entity-backgrounds_company_default_2048x512@1.png"
+    },
+    {
+      "idiom": "universal",
+      "scale": "2x",
+      "filename": "entity-backgrounds_company_default_2048x512@2.png"
+    },
+    {
+      "idiom": "universal",
+      "scale": "3x",
+      "filename": "entity-backgrounds_company_default_2048x512@3.png"
+    },
+    {
+      "idiom": "universal",
+      "scale": "1x",
+      "filename": "entity-backgrounds_company_default_on_dark_2048x512@1.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    },
+    {
+      "idiom": "universal",
+      "scale": "2x",
+      "filename": "entity-backgrounds_company_default_on_dark_2048x512@2.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    },
+    {
+      "idiom": "universal",
+      "scale": "3x",
+      "filename": "entity-backgrounds_company_default_on_dark_2048x512@3.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    }
+  ]
+}

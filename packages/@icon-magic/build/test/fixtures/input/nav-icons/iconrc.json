@@ -3,7 +3,15 @@
   "variants": [
     {
       "name": "filled",
-      "path": "./filled.svg"
+      "path": "./filled.svg",
+      "imageset": "filled",
+      "colorScheme": "light"
+    },
+    {
+      "name": "filled-on-dark",
+      "path": "./filled-on-dark.svg",
+      "imageset": "filled",
+      "colorScheme": "dark"
     },
     {
       "name": "someOtherName",

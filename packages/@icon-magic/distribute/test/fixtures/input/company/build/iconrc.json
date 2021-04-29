@@ -1,0 +1,79 @@
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "default",
+      "path": "./default.svg"
+    },
+    {
+      "name": "default-on-dark",
+      "path": "./default-on-dark.svg"
+    }
+  ],
+  "sourceConfigFile": "../../../../icons/mercado/entity-backgrounds/iconrc.json",
+  "sizes": [
+    {
+      "width": 2048,
+      "height": 512
+    }
+  ],
+  "resolutions": [
+    1,
+    1.5,
+    2,
+    3,
+    4
+  ],
+  "iconName": "company",
+  "outputPath": "./out/mercado/entity-backgrounds",
+  "flavors": [
+    {
+      "name": "default",
+      "path": "./build/default.svg",
+      "buildSourceHash": "21d3c72293bde8998d93cd443ad8f2f3",
+      "types": {}
+    },
+    {
+      "name": "default-on-dark",
+      "path": "./build/default-on-dark.svg",
+      "buildSourceHash": "7322240a3020f78ce9c856ba3beb3b28",
+      "types": {}
+    }
+  ],
+  "category": "entity-backgrounds",
+  "generate": {
+    "types": [
+      {
+        "name": "svg",
+        "plugins": [
+          {
+            "name": "svg-generate",
+            "params": {
+              "isFixedDimensions": false,
+              "isColored": true
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
+        "name": "raster",
+        "plugins": [
+          {
+            "name": "svg-to-raster",
+            "iterants": [
+              "sizes",
+              "resolutions"
+            ],
+            "writeToOutput": false
+          }
+        ]
+      }
+    ]
+  },
+  "distribute": {
+    "svg": {
+      "toSprite": false
+    }
+  }
+}

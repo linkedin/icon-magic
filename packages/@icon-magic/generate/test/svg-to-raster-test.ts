@@ -16,6 +16,7 @@ const file = fs.readFileSync(
 
 const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
   name: 'filled',
+  imageset: 'filled',
   contents: file,
   path: `${FIXTURES}/nav-icons/home/filled.svg`
 });
@@ -25,7 +26,8 @@ const icon = new Icon({
   variants: [
     {
       path: `${FIXTURES}/nav-icons/home/filled.svg`,
-      name: 'filled'
+      name: 'filled',
+      imageset: 'filled'
     },
     {
       path: `${FIXTURES}/nav-icons/home/outline.svg`,
@@ -45,7 +47,7 @@ const icon = new Icon({
   }
 });
 
-describe('svgToRaster()', function() {
+describe('svgToRaster()', function () {
   it('Creates all the raster assets and updates the icon correctly', async () => {
     console.log('entering svg-generate');
 
@@ -58,11 +60,13 @@ describe('svgToRaster()', function() {
     const flavorWithTypes: FlavorTypeMap = {
       png: {
         name: 'filled-24x12@2',
-        path: './filled-24x12@2.png'
+        path: './filled-24x12@2.png',
+        imageset: 'filled-24x12'
       },
       webp: {
         name: 'filled-24x12@2',
-        path: './filled-24x12@2.webp'
+        path: './filled-24x12@2.webp',
+        imageset: 'filled-24x12'
       }
     };
     const output: Flavor = await svgToRaster.fn(flavor, icon, options);
@@ -80,11 +84,13 @@ describe('svgToRaster()', function() {
     const flavorWithTypes: FlavorTypeMap = {
       png: {
         name: 'filled-60x60@2',
-        path: './filled-60x60@2.png'
+        path: './filled-60x60@2.png',
+        imageset: 'filled-60x60'
       },
       webp: {
         name: 'filled-60x60@2',
-        path: './filled-60x60@2.webp'
+        path: './filled-60x60@2.webp',
+        imageset: 'filled-60x60'
       }
     };
     const output: Flavor = await svgToRaster.fn(flavor, icon, options);
@@ -100,11 +106,13 @@ describe('svgToRaster()', function() {
     const flavorWithTypes: FlavorTypeMap = {
       png: {
         name: 'filled-60x60@1',
-        path: './filled-60x60@1.png'
+        path: './filled-60x60@1.png',
+        imageset: 'filled-60x60'
       },
       webp: {
         name: 'filled-60x60@1',
-        path: './filled-60x60@1.webp'
+        path: './filled-60x60@1.webp',
+        imageset: 'filled-60x60'
       }
     };
     let output: Flavor = await svgToRaster.fn(flavor, icon, options);

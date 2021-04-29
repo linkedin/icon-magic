@@ -9,7 +9,7 @@ import { generateFromConfigHash } from '../src';
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
 const output = path.resolve(FIXTURES, 'out');
 
-describe('Generate test', function() {
+describe('Generate test', function () {
   it('runs the generate plugins correctly', async () => {
     const input = path.resolve(output, 'home-2/ads/build');
     const buildInput = `${output}/home-2/ads/build`;
@@ -44,7 +44,7 @@ describe('Generate test', function() {
     );
     assert.equal(
       origOutputIconConfig.flavors.length,
-      12,
+      18,
       'no hashing, the number of flavors is correct'
     );
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
@@ -84,7 +84,7 @@ describe('Generate test', function() {
     );
     assert.equal(
       origOutputIconConfig.flavors.length,
-      12,
+      18,
       'hashing true, the number of flavors is correct'
     );
     origOutputIconConfig.flavors.forEach((flav: Flavor) => {
