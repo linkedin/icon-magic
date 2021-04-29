@@ -65,7 +65,8 @@ describe('svgToRaster()', function () {
       },
       webp: {
         name: 'filled-24x12@2',
-        path: './filled-24x12@2.webp'
+        path: './filled-24x12@2.webp',
+        imageset: 'filled-24x12'
       }
     };
     const output: Flavor = await svgToRaster.fn(flavor, icon, options);
@@ -88,7 +89,8 @@ describe('svgToRaster()', function () {
       },
       webp: {
         name: 'filled-60x60@2',
-        path: './filled-60x60@2.webp'
+        path: './filled-60x60@2.webp',
+        imageset: 'filled-60x60'
       }
     };
     const output: Flavor = await svgToRaster.fn(flavor, icon, options);
@@ -109,7 +111,8 @@ describe('svgToRaster()', function () {
       },
       webp: {
         name: 'filled-60x60@1',
-        path: './filled-60x60@1.webp'
+        path: './filled-60x60@1.webp',
+        imageset: 'filled-60x60'
       }
     };
     let output: Flavor = await svgToRaster.fn(flavor, icon, options);

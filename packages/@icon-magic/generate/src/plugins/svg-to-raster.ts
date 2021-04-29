@@ -190,7 +190,9 @@ export const svgToRaster: GeneratePlugin = {
           },
           webp: {
             name: assetName,
-            path: `./${assetName}.webp`
+            path: `./${assetName}.webp`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
           }
         }
       });
