@@ -145,7 +145,7 @@ program
 
 // for all other commands or rather, no command and only arguments
 program
-  .command('* [inputPaths...]')
+  .command('* [inputPaths...]', { isDefault: true })
   .description('runs build and generate on all the inputPaths')
   .option(
     '-h, --hashing',
