@@ -12,13 +12,13 @@ import {
   createHash,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { timer } from '@icon-magic/timing';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 const TIMER = timer();
-const LOGGER: Logger = logger('icon-magic:build:index');
+const LOGGER = new Logger('icon-magic:build:index');
 
 /**
  * The build is responsible for constructing all the various flavors that an
@@ -35,8 +35,10 @@ const LOGGER: Logger = logger('icon-magic:build:index');
  */
 export async function build(
   iconConfig: IconConfigHash,
-  hashing = true
+  hashing = true,
+  debug = false
 ): Promise<IconSet> {
+  LOGGER.setDebug(debug);
   LOGGER.debug('Icon build has begun');
   TIMER.start();
   // Create icons for all icons within the iconConfig

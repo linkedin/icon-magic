@@ -1,9 +1,9 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 const importFresh = require('import-fresh');
 
-const LOGGER: Logger = logger('icon-magic:config-reader:config-loader');
+const LOGGER = new Logger('icon-magic:config-reader:config-loader');
 
 /**
  * Loads a JavaScript configuration from a file.

@@ -7,13 +7,13 @@ import {
   createHash
 } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { convert } from '@icon-magic/svg-to-png';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 const webp = require('webp-converter');
-const LOGGER: Logger = logger('icon-magic:generate:svg-to-raster');
+const LOGGER = new Logger('icon-magic:generate:svg-to-raster');
 
 /**
  * Optional values passed into the svg-to-raster plugin

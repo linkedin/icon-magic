@@ -1,4 +1,4 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 
 import { Icon } from './icon';
 import { IconConfigHash, IconSetHash } from './interface';
@@ -22,7 +22,7 @@ export class IconSet {
    */
   constructor(iconConfigHash?: IconConfigHash, skipVariantCheck?: boolean) {
     this.hash = new Map();
-    this.LOGGER = logger('icon-magic:icon-models:icon-set');
+    this.LOGGER = new Logger('icon-magic:icon-models:icon-set');
 
     if (iconConfigHash) {
       // iterate through all the entires and add it to the map

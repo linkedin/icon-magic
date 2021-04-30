@@ -1,5 +1,5 @@
 import { IconConfig, IconConfigHash } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as glob from 'glob';
 import * as path from 'path';
 
@@ -33,7 +33,7 @@ export class Config {
    * @param configFiles Takes in a set of config files
    */
   constructor(configFiles: string[]) {
-    this.LOGGER = logger('icon-magic/config-reader/config');
+    this.LOGGER = new Logger('icon-magic/config-reader/config');
 
     this.iconConfigHash = new Map();
     // For each config file, find the icons and it stands for and add them to the map

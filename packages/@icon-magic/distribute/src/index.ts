@@ -1,11 +1,11 @@
 import { IconConfigHash, IconSet } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 
 import { createImageSet } from './create-image-set';
 import { distributeByResolution } from './distribute-by-resolution';
 import { distributeSvg } from './distribute-svg';
 
-const LOGGER: Logger = logger('icon-magic:distribute:index');
+const LOGGER = new Logger('icon-magic:distribute:index');
 type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
 
 /**
@@ -22,7 +22,9 @@ export async function distributeByType(
   type: ICON_TYPES = 'all',
   groupByCategory = true,
   outputAsHbs = false,
+  debug = false
 ): Promise<void> {
+  LOGGER.setDebug(debug);
   LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
   switch (type) {

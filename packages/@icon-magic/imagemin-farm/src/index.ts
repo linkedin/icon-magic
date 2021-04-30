@@ -1,9 +1,9 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as cluster from 'cluster';
 
 import { minifyFile } from './minify';
 
-const LOGGER: Logger = logger('icon-magic:png-minify');
+const LOGGER = new Logger('icon-magic:png-minify');
 const WORKERS: cluster.Worker[] = [];
 const STATUS: Map<number, WorkerState> = new Map();
 

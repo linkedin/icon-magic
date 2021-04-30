@@ -1,4 +1,4 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -7,7 +7,7 @@ import { Icon } from './icon';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
-const LOGGER: Logger = logger('icon-magic:icon-models:plugin-manager');
+const LOGGER = new Logger('icon-magic:icon-models:plugin-manager');
 
 /**
  * Applies the set of plugins on the given asset and returns all the

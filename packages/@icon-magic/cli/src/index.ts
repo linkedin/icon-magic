@@ -4,11 +4,11 @@ import { build } from '@icon-magic/build';
 import { getIconConfigSet } from '@icon-magic/config-reader';
 import { distributeByType } from '@icon-magic/distribute';
 import * as iconGenerate from '@icon-magic/generate';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as program from 'commander';
 import * as fs from 'fs-extra';
 
-const LOGGER: Logger = logger('@icon-magic/cli/index');
+const LOGGER = new Logger('@icon-magic/cli/index');
 const ICON_TYPES = ['svg', 'png', 'webp', 'all'];
 
 program.version(getVersion(), '-v, --version');
@@ -22,6 +22,9 @@ program
     '-h, --hashing',
     'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
+  .option(
+    '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
+  )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error(
@@ -33,7 +36,7 @@ program
     const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    await build(iconSet, options.hashing);
+    await build(iconSet, options.hashing, options.debug);
 
     // exit without any errors
     process.exit(0);
@@ -48,6 +51,9 @@ program
     '-h, --hashing',
     'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
+  .option(
+    '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
+  )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error(
@@ -59,7 +65,7 @@ program
     const iconSet = getIconConfigSet(inputPaths);
 
     // generate all the icons
-    await iconGenerate.generateFromConfigHash(iconSet, options.hashing);
+    await iconGenerate.generateFromConfigHash(iconSet, options.hashing, options.debug);
 
     // exit without any errors
     process.exit(0);
@@ -85,6 +91,9 @@ program
   .option(
     '-h --outputAsTemplate',
     '[for web] whether to output the svg as handlebars template.'
+  )
+  .option(
+    '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
   )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
@@ -126,7 +135,8 @@ program
       options.outputPath,
       options.type,
       options.groupBy === 'category',
-      options.outputAsTemplate
+      options.outputAsTemplate,
+      options.debug
     );
 
     // exit without any errors
@@ -141,15 +151,18 @@ program
     '-h, --hashing',
     'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
   )
+  .option(
+    '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
+  )
   .action(async (inputPaths, options) => {
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
     // build all the icons
-    const outputIconSet = await build(iconSet, options.hashing);
+    const outputIconSet = await build(iconSet, options.hashing, options.debug);
 
     // generate all the icons
-    await iconGenerate.generate(outputIconSet, options.hashing);
+    await iconGenerate.generate(outputIconSet, options.hashing, options.debug);
 
     // exit without any errors
     process.exit(0);

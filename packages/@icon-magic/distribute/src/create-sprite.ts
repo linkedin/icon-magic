@@ -3,12 +3,12 @@ import {
   SpriteConfig,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { DOMImplementation, DOMParser, XMLSerializer } from 'xmldom';
 
 import { compareStrings, removeResolutionFromName } from './utils';
 
-const LOGGER: Logger = logger('icon-magic:distribute:create-sprite');
+const LOGGER = new Logger('icon-magic:distribute:create-sprite');
 const serializeToString = new XMLSerializer().serializeToString;
 
 /**
@@ -86,7 +86,7 @@ export function createSVGDoc(spriteName: string): { DOCUMENT: Document; svgEl: S
   svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   svgEl.setAttribute('version', '1.1');
   svgEl.setAttribute('id', spriteName);
-  
+
   // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
   LOGGER.debug(`creating svg document ${DOCUMENT}`);

@@ -1,5 +1,5 @@
 import { IconConfigHash } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as glob from 'glob';
 import * as path from 'path';
 
@@ -7,7 +7,7 @@ import { Config } from './config';
 import { exists, isDirectory } from './helpers/files';
 
 const CONFIG_FILES = ['iconrc.json', 'iconrc.js'];
-const LOGGER: Logger = logger('icon-magic:config-reader/index');
+const LOGGER = new Logger('icon-magic:config-reader/index');
 
 export * from './config-loader';
 /**

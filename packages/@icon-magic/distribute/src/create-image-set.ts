@@ -1,11 +1,11 @@
 import { Asset, IconSet } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
 
-const LOGGER: Logger = logger('icon-magic:distribute:create-image-set');
+const LOGGER = new Logger('icon-magic:distribute:create-image-set');
 const IOS_SUPPORTED_RESOLUTIONS = [1, 2, 3];
 
 interface ContentImage {

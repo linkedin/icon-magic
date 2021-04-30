@@ -1,10 +1,10 @@
 import { IconConfigHash, IconSet } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { timer } from '@icon-magic/timing';
 import * as path from 'path';
 import * as workerpool from 'workerpool';
 
-const LOGGER: Logger = logger('icon-magic:generate:index');
+const LOGGER = new Logger('icon-magic:generate:index');
 const TIMER = timer();
 const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
 
@@ -21,9 +21,11 @@ const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
  */
 export async function generate(
   iconSet: IconSet,
-  hashing = true
+  hashing = true,
+  debug = false
 ): Promise<void> {
   TIMER.start();
+  LOGGER.setDebug(debug);
   LOGGER.debug('Icon generation has begun');
 
   LOGGER.debug('Creating the worker pool');
@@ -59,8 +61,9 @@ export async function generate(
  */
 export async function generateFromConfigHash(
   iconConfig: IconConfigHash,
-  hashing = true
+  hashing = true,
+  debug = false
 ): Promise<void> {
   const iconSet = new IconSet(iconConfig, true);
-  return generate(iconSet, hashing);
+  return generate(iconSet, hashing, debug);
 }

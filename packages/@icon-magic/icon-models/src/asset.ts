@@ -1,4 +1,4 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { AssetConfig, Content } from './interface';
@@ -24,7 +24,7 @@ export class Asset {
    * @param config a config object to set the initial properties of the asset
    */
   constructor(iconPath: string, config: AssetConfig) {
-    this.LOGGER = logger('icon-magic:icon-models:asset');
+    this.LOGGER = new Logger('icon-magic:icon-models:asset');
 
     // if iconPath is not absolute, throw an error
     if (!path.isAbsolute(iconPath)) {
