@@ -26,6 +26,7 @@ export interface Logger {
   error: (msg: string) => void;
   debug: (msg: string) => void;
   info: (msg: string) => void;
+  setDebuggingState: (debug: boolean) => void;
 }
 
 /**
@@ -33,15 +34,22 @@ export interface Logger {
  * @param fileName name of the file that's added as a label to the logging data
  */
 export function logger(fileName: string): Logger {
+  let debugState = false;
+
   return {
     error: function(msg: string): void {
       winstonLogger.error({ message: msg, label: fileName });
     },
     debug: function(msg: string): void {
-      winstonLogger.debug({ message: msg, label: fileName });
+      if (debugState) {
+        winstonLogger.debug({ message: msg, label: fileName });
+      }
     },
     info: function(msg: string): void {
       winstonLogger.info({ message: msg, label: fileName });
+    },
+    setDebuggingState: function(debug: boolean): void {
+      debugState = debug;
     }
   };
 }
