@@ -39,7 +39,7 @@ export async function build(
   debug = false
 ): Promise<IconSet> {
   LOGGER.setDebuggingState(debug);
-  LOGGER.debug('Icon build has begun')
+  LOGGER.debug('Icon build has begun');
   TIMER.start();
   // Create icons for all icons within the iconConfig
   const iconSet = new IconSet(iconConfig);
