@@ -76,6 +76,7 @@ icon-magic generate icons/
 
 Options:
 -h, --hashing', Default: `true`. When true, builds only those icon variants that have changed since the previous execution. If false, builds all icons.
+-d, --debug, Default: `false`. When true, will output debbugging info to the command-line.
 
 Given a directory of icons (each icon containing it's own config file consisting
 of all the flavors from the build step), the generate step is responsible for
