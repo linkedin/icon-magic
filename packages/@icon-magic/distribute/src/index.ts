@@ -21,10 +21,8 @@ export async function distributeByType(
   outputPath: string,
   type: ICON_TYPES = 'all',
   groupByCategory = true,
-  outputAsHbs = false,
-  debug = false
+  outputAsHbs = false
 ): Promise<void> {
-  LOGGER.setDebug(debug);
   LOGGER.debug(`entering distribute with ${type}`);
   const iconSet = new IconSet(iconConfig, true);
   switch (type) {

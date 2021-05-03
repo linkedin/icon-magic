@@ -35,8 +35,11 @@ program
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
+    //set the debugState on the Logger Class using the commander flag
+    LOGGER.setDebug(options.debug);
+
     // build all the icons
-    await build(iconSet, options.hashing, options.debug);
+    await build(iconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);
@@ -64,8 +67,11 @@ program
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
+    //set the debugState on the Logger Class using the commander flag
+    LOGGER.setDebug(options.debug);
+
     // generate all the icons
-    await iconGenerate.generateFromConfigHash(iconSet, options.hashing, options.debug);
+    await iconGenerate.generateFromConfigHash(iconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);
@@ -129,6 +135,9 @@ program
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
+    //set the debugState on the Logger Class using the commander flag
+    LOGGER.setDebug(options.debug);
+
     // distribute the icons
     await distributeByType(
       iconSet,
@@ -136,7 +145,6 @@ program
       options.type,
       options.groupBy === 'category',
       options.outputAsTemplate,
-      options.debug
     );
 
     // exit without any errors
@@ -158,11 +166,14 @@ program
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
+    //set the debugState on the Logger Class using the commander flag
+    LOGGER.setDebug(options.debug);
+
     // build all the icons
-    const outputIconSet = await build(iconSet, options.hashing, options.debug);
+    const outputIconSet = await build(iconSet, options.hashing);
 
     // generate all the icons
-    await iconGenerate.generate(outputIconSet, options.hashing, options.debug);
+    await iconGenerate.generate(outputIconSet, options.hashing);
 
     // exit without any errors
     process.exit(0);

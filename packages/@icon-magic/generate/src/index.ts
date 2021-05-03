@@ -21,11 +21,9 @@ const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
  */
 export async function generate(
   iconSet: IconSet,
-  hashing = true,
-  debug = false
+  hashing = true
 ): Promise<void> {
   TIMER.start();
-  LOGGER.setDebug(debug);
   LOGGER.debug('Icon generation has begun');
 
   LOGGER.debug('Creating the worker pool');
@@ -61,9 +59,8 @@ export async function generate(
  */
 export async function generateFromConfigHash(
   iconConfig: IconConfigHash,
-  hashing = true,
-  debug = false
+  hashing = true
 ): Promise<void> {
   const iconSet = new IconSet(iconConfig, true);
-  return generate(iconSet, hashing, debug);
+  return generate(iconSet, hashing);
 }

@@ -36,9 +36,7 @@ const LOGGER = new Logger('icon-magic:build:index');
 export async function build(
   iconConfig: IconConfigHash,
   hashing = true,
-  debug = false
 ): Promise<IconSet> {
-  LOGGER.setDebug(debug);
   LOGGER.debug('Icon build has begun');
   TIMER.start();
   // Create icons for all icons within the iconConfig
