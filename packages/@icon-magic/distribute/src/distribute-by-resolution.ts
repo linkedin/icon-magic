@@ -1,10 +1,10 @@
 import { IconSet } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { getAssetResolutionFromName, getIconFlavorsByType } from './utils';
-const LOGGER: Logger = logger('icon-magic:distribute:distribute-by-resolution');
+const LOGGER = new Logger('icon-magic:distribute:distribute-by-resolution');
 
 const ICON_NAME_PREFIX = 'ic';
 

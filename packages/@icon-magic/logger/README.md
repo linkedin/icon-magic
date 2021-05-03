@@ -16,16 +16,16 @@ Logs are written to the following simulataneously:
 
 ```ts
 // Import the logger module and it's interface
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from "@icon-magic/logger";
 
 // Instantiate by passing the name of the file. This will be a label in the log message
-const LOGGER: logger = logger('icon-magic:icon-models:asset');
+const LOGGER: logger = new Logger("icon-magic:icon-models:asset");
 
 // Log a debug message
-LOGGER.debug('Icon generation has begun');
+LOGGER.debug("Icon generation has begun");
 
 // Log an error message
-LOGGER.error('Oh no! An error has occurred!');
+LOGGER.error("Oh no! An error has occurred!");
 ```
 
 This will print logs of the following format:

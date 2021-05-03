@@ -1,4 +1,4 @@
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
 import { Asset } from './asset';
@@ -50,7 +50,7 @@ export class Icon {
    * have variants anymore
    */
   constructor(config: IconConfig, skipVariantCheck?: boolean) {
-    this.LOGGER = logger('icon-magic:icon-models:icon');
+    this.LOGGER = new Logger('icon-magic:icon-models:icon');
 
     // copy over all the properties in the config
     for (const key of Object.keys(config)) {

@@ -1,10 +1,10 @@
 import { IconConfigHash, IconSet } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { timer } from '@icon-magic/timing';
 import * as path from 'path';
 import * as workerpool from 'workerpool';
 
-const LOGGER: Logger = logger('icon-magic:generate:index');
+const LOGGER = new Logger('icon-magic:generate:index');
 const TIMER = timer();
 const pool = workerpool.pool(path.resolve(__dirname, './generate-worker.js'));
 

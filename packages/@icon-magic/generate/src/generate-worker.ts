@@ -8,7 +8,7 @@ import {
   applyPluginsOnAsset,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import { Logger, logger } from '@icon-magic/logger';
+import { Logger } from '@icon-magic/logger';
 import { existsSync } from 'fs-extra';
 import * as path from 'path';
 import * as workerpool from 'workerpool';
@@ -17,7 +17,7 @@ import { svgGenerate } from './plugins/svg-generate';
 import { svgToRaster } from './plugins/svg-to-raster';
 import { hasAssetBeenProcessed } from './utils';
 
-const LOGGER: Logger = logger('icon-magic:generate:index');
+const LOGGER = new Logger('icon-magic:generate:index');
 
 /**
  * generateSingleIcon transorms the set of .svg flavors of an icon to their

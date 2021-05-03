@@ -57,6 +57,10 @@ icon-magic build .
 icon-magic build icons/
 ```
 
+Options:
+-h, --hashing', Default: `true`. When true, builds only those icon variants that have changed since the previous execution. If false, builds all icons.
+-d, --debug, Default: `false`. When true, will output debbugging info to the command-line.
+
 Given a set of input directories, finds the closest [config file](../config-reader/README.md) (iconrc.json/iconrc.js/icon) and "builds" the icons from it. Refer to
 [@icon-magic/build](../build/README.md) for more details.
 
@@ -69,6 +73,10 @@ icon-magic generate .
 ```
 icon-magic generate icons/
 ```
+
+Options:
+-h, --hashing', Default: `true`. When true, builds only those icon variants that have changed since the previous execution. If false, builds all icons.
+-d, --debug, Default: `false`. When true, will output debbugging info to the command-line.
 
 Given a directory of icons (each icon containing it's own config file consisting
 of all the flavors from the build step), the generate step is responsible for
@@ -89,5 +97,6 @@ Options:
 -o, --outputPath Path to the output directory where the generated assets are to be written to
 -t, --type type of icons format to handle, accepted types are svg|png|webp
 -g, --groupBy [currently the only supported use is for web sprite creation] if to how to group the icons by category
+-d, --debug, when used will output debbugging info to the command-line.
 
 Refer [@icon-magic/distribute](../distribute/README.md) for more details.
