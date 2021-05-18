@@ -37,14 +37,14 @@ interface LoggerInterface {
  */
 export class Logger implements LoggerInterface{
   fileName: string;
-  static debugState: boolean = false;
+  static debugState = false;
   constructor(fileName: string) {
     this.fileName = fileName;
   }
-  error(msg: string = ''): void {
+  error(msg = ''): void {
     winstonLogger.error({ message: msg, label: this.fileName });
   }
-  debug(msg: string = ''): void {
+  debug(msg = ''): void {
     if (Logger.debugState) {
       winstonLogger.debug({ message: msg, label: this.fileName });
     }
