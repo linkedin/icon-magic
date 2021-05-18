@@ -12,6 +12,6 @@
     "tslint-plugin"
   ],
   "dependencies": {
-    "@icon-magic/logger": "^2.0.1-beta.0"
+    "@icon-magic/logger": "^2.2.8-beta.0"
   }
 }
