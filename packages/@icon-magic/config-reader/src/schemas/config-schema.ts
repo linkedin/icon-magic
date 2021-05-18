@@ -3,7 +3,7 @@ const flavorProperties = {
   path: { type: 'string', minLength: 1 },
   types: { type: ['object', 'null'] },
   imageset: { type: ['string', 'null'] },
-  colorScheme: { type: 'string',  enum: ['dark', 'light'] }
+  colorScheme: { type: 'string',  enum: ['dark', 'light', 'mixed'] }
 };
 
 const pluginProperties = {
