@@ -1,0 +1,17 @@
+{
+  "name": "@icon-magic/code-style",
+  "author": "Adam Miller",
+  "description": "Configuration and tools to manage the code style of icon-magic.",
+  "license": "BSD-2-Clause",
+  "version": "2.0.1-beta.0",
+  "main": "configs/tslint.interactive.json",
+  "readme": "README.md",
+  "private": true,
+  "keywords": [
+    "tslint",
+    "tslint-plugin"
+  ],
+  "dependencies": {
+    "@icon-magic/logger": "^2.0.1-beta.0"
+  }
+}
