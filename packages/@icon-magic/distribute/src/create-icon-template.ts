@@ -2,7 +2,10 @@
 import { Asset } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { DOMParser } from 'xmldom';
+import { DOMParser, XMLSerializer } from 'xmldom';
+
+
+const serializeToString = new XMLSerializer().serializeToString;
 
 /**
  * Saves svg assets as handlebars files
@@ -22,7 +25,7 @@ export async function createHbs(
     const xml = doc.parseFromString(contents as string, 'image/svg+xml');
     const id = xml.documentElement.getAttributeNode('id');
     const iconName = id ? id.value : '';
-    fs.writeFile(path.join(outputPath, `${iconName}.hbs`), xml, (err) => {
+    fs.writeFile(path.join(outputPath, `${iconName}.hbs`), serializeToString(xml), (err) => {
       if (err) throw err;
     });
   }
