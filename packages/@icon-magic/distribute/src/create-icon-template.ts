@@ -23,10 +23,16 @@ export async function createHbs(
     const contents = await asset.getContents();
     // Parse XML from a string into a DOM Document.
     const xml = doc.parseFromString(contents as string, 'image/svg+xml');
-    const id = xml.documentElement.getAttributeNode('id');
+    const el = xml.documentElement;
+    const id = el.getAttributeNode('id');
     const iconName = id ? id.value : '';
+    // Strip id
+    el.removeAttribute('id');
+
     // add splattributes to the hbs file
     xml.documentElement.setAttribute('...attributes', '');
+    await fs.mkdirp(outputPath);
+
     // xmldom and other dom substitutions (like jsdom) add ...attributes="" and
     // the string replace below is an ugly hack to remove the empty string
     fs.writeFile(path.join(outputPath, `${iconName}.hbs`), serializeToString(xml).replace(/...attributes=\"\"/g, '...attributes'), (err) => {

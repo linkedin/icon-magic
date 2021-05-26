@@ -56,7 +56,11 @@ export async function distributeSvg(
     );
     if (outputAsHbs) {
       try {
-        await createHbs(assets, outputPath);
+        const destPath =
+        icon.category && groupByCategory
+          ? path.join(outputPath, icon.category)
+          : outputPath;
+        await createHbs(assets, destPath);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
