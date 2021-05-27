@@ -204,6 +204,25 @@
       }
     },
     {
+      "name": "active-small-on-dark-24x24@2",
+      "path": "./active-small.svg",
+      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "types": {
+        "png": {
+          "name": "active-small-on-dark-24x24@2",
+          "path": "./active-small-on-dark-24x24@2.png",
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
+        },
+        "webp": {
+          "name": "active-small-on-dark-24x24@2",
+          "path": "./active-small-on-dark-24x24@2.webp",
+          "imageset": "active-small-24x24",
+          "colorScheme": "dark"
+        }
+      }
+    },
+    {
       "name": "active-small-on-dark-24x24@3",
       "path": "./active-small.svg",
       "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
