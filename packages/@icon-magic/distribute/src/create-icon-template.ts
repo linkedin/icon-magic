@@ -35,9 +35,7 @@ export async function createHbs(
 
     // xmldom and other dom substitutions (like jsdom) add ...attributes="" and
     // the string replace below is an ugly hack to remove the empty string
-    fs.writeFile(path.join(outputPath, `${iconName}.hbs`), serializeToString(xml).replace(/...attributes=\"\"/g, '...attributes'), (err) => {
-      if (err) throw err;
-    });
+    fs.writeFileSync(path.join(outputPath, `${iconName}.hbs`), serializeToString(xml).replace(/...attributes=\"\"/g, '...attributes'));
   }
 }
 
