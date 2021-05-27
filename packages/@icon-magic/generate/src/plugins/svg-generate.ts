@@ -147,9 +147,6 @@ export const svgGenerate: GeneratePlugin = {
           }
         },
         {
-          removeViewBox: params.isFixedDimensions || false
-        },
-        {
           removeDimensions: !params.isFixedDimensions
         },
         {
