@@ -42,7 +42,7 @@ export interface SvgGenerateOptions {
   /* if this is set, the fill of the icon isn't updated but respected */
   isColored?: boolean;
   /* if this is true, then adds a width and height attribute to the svg
-  (defaults to false) */
+  (defaults to false) and no viewBox */
   isFixedDimensions?: boolean;
   /* if this is set to true, then set isColored only if the name of the flavor
   contains color in it */
@@ -140,6 +140,9 @@ export const svgGenerate: GeneratePlugin = {
           addClassesToSVGElement: {
             classNames: classNames
           }
+        },
+        {
+          removeViewBox: false
         },
         {
           cleanupIDs: {
