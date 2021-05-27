@@ -142,12 +142,12 @@ export const svgGenerate: GeneratePlugin = {
           }
         },
         {
+          removeViewBox: false
+        },
+        {
           cleanupIDs: {
             prefix: `${icon.category}-${attributes.id}-`
           }
-        },
-        {
-          removeViewBox: params.isFixedDimensions || false
         },
         {
           removeDimensions: !params.isFixedDimensions
