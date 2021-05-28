@@ -81,7 +81,6 @@ async function applySinglePluginOnAsset(
       );
       let pluginOutput;
       try {
-        LOGGER.debug(`SVG LIGHT DARK inside1`);
         pluginOutput = await plugin.fn.call(
           icon,
           asset,
@@ -103,7 +102,6 @@ async function applySinglePluginOnAsset(
     LOGGER.debug('Running the plugin without iterants');
     let pluginOutput;
     try {
-      LOGGER.debug(`SVG LIGHT DARK inside2`);
       pluginOutput = await plugin.fn.call(
         icon,
         asset,
