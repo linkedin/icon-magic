@@ -97,13 +97,13 @@ export const svgLightDark: GeneratePlugin = {
         // Add <svg> element to SVG Document
         DOCUMENT.appendChild(svgEl);
 
-        let svgLight = lightAsset.data;
-        let svgDark = darkAsset.data;
+        const svgLight = lightAsset.data;
+        const svgDark = darkAsset.data;
 
         // Parse XML from a string into a DOM Document.
         const doc = new DOMParser();
-        const xmlLight = doc.parseFromString(svgLight as string, 'image/svg+xml');
-        const xmlDark = doc.parseFromString(svgDark as string, 'image/svg+xml');
+        const xmlLight = doc.parseFromString(svgLight, 'image/svg+xml');
+        const xmlDark = doc.parseFromString(svgDark, 'image/svg+xml');
 
         svgEl.setAttribute('width', xmlLight.documentElement.getAttribute('width') || '');
         svgEl.setAttribute('height', xmlLight.documentElement.getAttribute('height') || '');
