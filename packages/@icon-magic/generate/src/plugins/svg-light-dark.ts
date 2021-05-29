@@ -32,7 +32,7 @@ export const svgLightDark: GeneratePlugin = {
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
     const imageSet = flavor.imageset;
-    const colorScheme = flavor.colorScheme
+    const colorScheme = flavor.colorScheme;
 
     /*
     - If `imageSet` exists and the `colorScheme` equals `dark, run the plugin.
@@ -44,7 +44,7 @@ export const svgLightDark: GeneratePlugin = {
 
       // if light flavor doesn't exist, exit out of plugin
       if (!lightFlavor) {
-        return flavor
+        return flavor;
       } else {
         const darkFlavorContents = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string (the svg as a string)
         const lightFlavorContents  = (await lightFlavor.getContents()) as string;
@@ -83,7 +83,7 @@ export const svgLightDark: GeneratePlugin = {
 
           const mixedSvgo = new Svgo({
             js2svg: { pretty: true, indent: 2 }
-          })
+          });
 
           const mixedString = serializeToString(mixedParentSvg);
           const mixedAsset = await mixedSvgo.optimize(mixedString); //returns a string
