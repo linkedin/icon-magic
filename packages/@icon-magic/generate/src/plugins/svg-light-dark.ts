@@ -58,6 +58,9 @@ export const svgLightDark: GeneratePlugin = {
               addAttributesToSVGElement: {
                 attributes: [{display: lightToken || "var(--svg-light-display)"}]
               }
+            },
+            {
+              removeViewBox: false
             }
           ],
           js2svg: { pretty: true, indent: 2 }
@@ -69,6 +72,9 @@ export const svgLightDark: GeneratePlugin = {
               addAttributesToSVGElement: {
                 attributes: [{display: darkToken || "var(--svg-dark-display)"}]
               }
+            },
+            {
+              removeViewBox: false
             }
           ],
           js2svg: { pretty: true, indent: 2 }
@@ -82,6 +88,11 @@ export const svgLightDark: GeneratePlugin = {
           const mixedParentSvg = await domSvgParentGenerate(lightAsset, darkAsset);
 
           const mixedSvgo = new Svgo({
+            plugins: [
+              {
+                removeViewBox: false
+              }
+            ],
             js2svg: { pretty: true, indent: 2 }
           });
 
