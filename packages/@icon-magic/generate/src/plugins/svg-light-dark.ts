@@ -108,11 +108,16 @@ export const svgLightDark: GeneratePlugin = {
               encoding: 'utf8'
             }
           );
-          //TODO: I don't see this in the new out config yet, so still working on implementation
-          const flavorArr = icon.getConfig().flavors;
-          if (flavorArr) {
-            flavorArr.push({ name: `${imageSet}-mixed.svg`, path: `./${imageSet}-mixed.svg`, colorScheme: 'mixed' });
-          }
+
+          //Add new mixed flavor to icon.flavors. Is then processed during svg-generate and added to resulting iconrc.json file.
+          icon.flavors.set(
+            `${imageSet}-mixed`,
+            new Flavor(icon.iconPath, {
+              name: `${imageSet}-mixed.svg`,
+              path: `./${imageSet}-mixed.svg`,
+              colorScheme: 'mixed'
+            })
+          );
         }
       }
     }
