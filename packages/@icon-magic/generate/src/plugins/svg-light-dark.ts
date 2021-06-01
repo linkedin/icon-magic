@@ -113,7 +113,7 @@ export const svgLightDark: GeneratePlugin = {
           icon.flavors.set(
             `${imageSet}-mixed`,
             new Flavor(icon.iconPath, {
-              name: `${imageSet}-mixed.svg`,
+              name: `${imageSet}-mixed`,
               path: `./${imageSet}-mixed.svg`,
               colorScheme: 'mixed'
             })
