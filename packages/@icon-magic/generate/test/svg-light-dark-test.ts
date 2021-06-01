@@ -50,7 +50,7 @@ const icon = new Icon({
   sourceConfigFile: `${FIXTURES}/entity-ghosts/group/iconrc.json`
 });
 
-describe('svgGenerate()', function () {
+describe('svgLightDark()', function () {
   it('creates parent svg with light and dark children svgs when `imageSet` exists and the `colorScheme` equals `dark`', async () => {
     const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-light-display)">
