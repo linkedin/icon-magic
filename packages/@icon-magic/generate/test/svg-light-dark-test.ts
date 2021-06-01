@@ -65,7 +65,7 @@ describe('svgGenerate()', function () {
       <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32z" fill="#c37d16"/>
       <path d="M32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e7a33e"/>
     </svg>
-  </svg>`
+  </svg>`;
 
   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {
     lightToken: "var(--svg-light-display)",
