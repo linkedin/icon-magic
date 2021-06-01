@@ -1,4 +1,5 @@
 <svg id="group-accent-1" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<<<<<<< HEAD
   <rect width="128" height="128" style="fill: #eee"/>
   <rect y="64.14" width="128" height="63.86" style="fill: #eee"/>
   <path d="M32,64H0V96A32,32,0,0,0,32,64Z" style="fill: #eee"/>
@@ -7,4 +8,14 @@
   <path d="M32,64H0V32A32.06,32.06,0,0,1,32,64Z" style="fill: #eee"/>
   <path d="M96,64a32.06,32.06,0,0,1,32-32V64Z" style="fill: #eee"/>
   <path d="M64,32A32.06,32.06,0,0,1,96,64H32A32.06,32.06,0,0,1,64,32Z" style="fill: #eee"/>
+=======
+  <rect width="128" height="128" style="fill: #56687a"/>
+  <rect y="64.14" width="128" height="63.86" style="fill: #f8c77e"/>
+  <path d="M32,64H0V96A32,32,0,0,0,32,64Z" style="fill: #c37d16"/>
+  <path d="M96,64a32,32,0,0,0,32,32V64Z" style="fill: #c37d16"/>
+  <path d="M64,96A32,32,0,0,0,96,64H32A32,32,0,0,0,64,96Z" style="fill: #c37d16"/>
+  <path d="M32,64H0V32A32.06,32.06,0,0,1,32,64Z" style="fill: #e7a33e"/>
+  <path d="M96,64a32.06,32.06,0,0,1,32-32V64Z" style="fill: #e7a33e"/>
+  <path d="M64,32A32.06,32.06,0,0,1,96,64H32A32.06,32.06,0,0,1,64,32Z" style="fill: #e7a33e"/>
+>>>>>>> b846671... add text fixtures for svgLightDark
 </svg>
