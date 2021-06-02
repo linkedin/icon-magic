@@ -1,9 +1,9 @@
 /*
-- This plugin will create a master svg with two child svg's.
-- One dark and one light.
-- The children svgs will have a `display` attribute that can be used to set
-which of the two svg's will be visible.
-*/
+ * This plugin will create a master svg with two child svg's.
+ * One dark and one light.
+ * The children svgs will have a `display` attribute that can be used to set
+ * which of the two svg's will be visible.
+ */
 
 import {
   Flavor,
@@ -29,14 +29,14 @@ export const svgLightDark: GeneratePlugin = {
     icon: Icon,
     params: SvgLightDarkOptions = {},
   ): Promise<Flavor> => {
-    // Create the output directory
+    // Get the output directory
     const outputPath = icon.getIconOutputPath();
     const imageSet = flavor.imageset;
     const colorScheme = flavor.colorScheme;
 
     /*
-    - If `imageSet` exists and the `colorScheme` equals `dark, run the plugin.
-    - Plugin will skip the `light` flavors because their data can be collected through the `dark` flavor
+    * If `imageSet` exists and the `colorScheme` equals `dark, run the plugin.
+    * Plugin will skip the `light` flavors because their data can be collected through the `dark` flavor
     */
     if (imageSet && colorScheme === 'dark') {
       // light flavor data
@@ -46,11 +46,10 @@ export const svgLightDark: GeneratePlugin = {
       if (!lightFlavor) {
         return flavor;
       } else {
-        const darkFlavorContents = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string (the svg as a string)
+        const darkFlavorContents = (await flavor.getContents()) as string; // .svg asset's getContents() returns the svg as a string
         const lightFlavorContents  = (await lightFlavor.getContents()) as string;
 
-        const lightToken = params.lightToken;
-        const darkToken = params.darkToken;
+        const { lightToken, darkToken} = params;
 
         const lightSvgo = new Svgo({
           plugins: [
@@ -80,9 +79,9 @@ export const svgLightDark: GeneratePlugin = {
           js2svg: { pretty: true, indent: 2 }
         });
 
-        if (lightFlavorContents){
+        if (lightFlavorContents) {
           // create optimized light/dark svg assets
-          const lightAsset = await lightSvgo.optimize(lightFlavorContents); //returns a string
+          const lightAsset = await lightSvgo.optimize(lightFlavorContents); // .svg asset's getContents() returns a string
           const darkAsset = await darkSvgo.optimize(darkFlavorContents);
 
           const mixedParentSvg = await domSvgParentGenerate(lightAsset, darkAsset);
@@ -97,7 +96,7 @@ export const svgLightDark: GeneratePlugin = {
           });
 
           const mixedString = serializeToString(mixedParentSvg);
-          const mixedAsset = await mixedSvgo.optimize(mixedString); //returns a string
+          const mixedAsset = await mixedSvgo.optimize(mixedString);
 
           // write the parent svg with light/dark children svg's to the output directory
           await fs.ensureDir(outputPath);
@@ -116,7 +115,7 @@ export const svgLightDark: GeneratePlugin = {
             colorScheme: 'mixed'
           });
 
-          //Add new mixed flavor to icon.flavors. Is then processed during svg-generate and added to resulting iconrc.json file.
+          // Add new mixed flavor to icon.flavors. Is then added to resulting iconrc.json file.
           icon.flavors.set(
             `${imageSet}-mixed`,
             mixedFlavor
@@ -129,7 +128,15 @@ export const svgLightDark: GeneratePlugin = {
   }
 };
 
-//TODO: lightAsset type would be `OptimizedSvg` from Svgo interface, but it does not accept this type, I think it is not exported.
+// TODO: lightAsset type would be `OptimizedSvg` from Svgo interface, but it does not accept this type, I think it is not exported.
+
+/**
+ * Takes two OptimizedSvg's from Svgo interface, adds them as children to a
+ * parent SVG Dom element and returns the Dom element
+ * @param lightAsset `OptimizedSvg` from Svgo interface
+ * @param darkAsset `OptimizedSvg` from Svgo interface
+ * @returns SVGSVGElement Dom elment with the two parameters as children.
+ */
 async function domSvgParentGenerate(lightAsset: any, darkAsset: any): Promise<SVGSVGElement> {
   // Create SVG PARENT
   const DOM = new DOMImplementation();
