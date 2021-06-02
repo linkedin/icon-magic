@@ -90,9 +90,11 @@ describe('svgLightDark()', function () {
     darkToken: "var(--svg-dark-display)"
     });
 
+    //result has proper width, height, viewbox, and display properties
     assert.equal(await outputFlavor.getContents(), outputSvg);
-    assert.notEqual(await outputFlavor.getContents(), darkFile);
 
+    //result does not equal original dark flavor
+    assert.notEqual(await outputFlavor.getContents(), darkFile);
   });
 
   it('returns original flavor with no changes when `colorScheme` dos not equal `dark`', async () => {
@@ -101,30 +103,32 @@ describe('svgLightDark()', function () {
       darkToken: "var(--svg-dark-display)"
     });
 
+    //result equals original light flavor
     assert.equal(await outputFlavor.getContents(), lightFile);
   });
 
-  // it('creates parent svg with width, height, and viewbox', async () => {
-  //   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {
-  //     lightToken: "var(--svg-light-display)",
-  //     darkToken: "var(--svg-dark-display)"
-  //     });
-
-  //     console.log(await outputFlavor.getContents().width);
-  // });
-
-  // it('creates light and dark svgs with display property from config', async () => {
-  //   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {
-  //     lightToken: "var(--svg-light-display)",
-  //     darkToken: "var(--svg-dark-display)"
-  //     });
-  // });
+  //TODO: outputSVG and outputFlavor print to console exactly the same.  But test fails, I'm guessing it is an econding issue
 
   // it('creates light and dark svgs with display property even if tags not passed from config', async () => {
-  //   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {
-  //     lightToken: "var(--svg-light-display)",
-  //     darkToken: "var(--svg-dark-display)"
-  //     });
-  // });
+  //   const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
+  //   <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-light-display)">
+  //     <path fill="#e9e5de" d="M0 0h128v128H0z"/>
+  //     <path fill="#e9e5de" d="M0 64.14h128V128H0z"/>
+  //     <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e9e5de"/>
+  //   </svg>
+  //   <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-dark-display)">
+  //     <path fill="#eee" d="M0 0h128v128H0z"/>
+  //     <path fill="#eee" d="M0 64.14h128V128H0z"/>
+  //     <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#eee"/>
+  //   </svg>
+  // </svg>`;
 
+  //   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {});
+
+  //   //result has proper width, height, viewbox, and display properties
+  //   assert.equal(await outputFlavor.getContents(), outputSvg);
+
+  //   //result does not equal original dark flavor
+  //   assert.notEqual(await outputFlavor.getContents(), darkFile);
+  // });
 });
