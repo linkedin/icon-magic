@@ -109,15 +109,19 @@ export const svgLightDark: GeneratePlugin = {
             }
           );
 
+          // Final new Mixed Flavor
+          const mixedFlavor: Flavor = new Flavor(icon.iconPath, {
+            name: `${imageSet}-mixed`,
+            path: `./${imageSet}-mixed.svg`,
+            colorScheme: 'mixed'
+          });
+
           //Add new mixed flavor to icon.flavors. Is then processed during svg-generate and added to resulting iconrc.json file.
           icon.flavors.set(
             `${imageSet}-mixed`,
-            new Flavor(icon.iconPath, {
-              name: `${imageSet}-mixed`,
-              path: `./${imageSet}-mixed.svg`,
-              colorScheme: 'mixed'
-            })
+            mixedFlavor
           );
+          return mixedFlavor;
         }
       }
     }
