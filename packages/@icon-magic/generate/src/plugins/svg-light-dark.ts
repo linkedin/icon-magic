@@ -115,7 +115,11 @@ export const svgLightDark: GeneratePlugin = {
             colorScheme: 'mixed'
           });
 
+<<<<<<< HEAD
           // Add new mixed flavor to icon.flavors. Is then added to resulting iconrc.json file.
+=======
+          //Add new mixed flavor to icon.flavors. Is then processed during svg-generate and added to resulting iconrc.json file.
+>>>>>>> 907189f... add test fixtures and 2 tests for svgLightDark
           icon.flavors.set(
             `${imageSet}-mixed`,
             mixedFlavor
