@@ -18,6 +18,7 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param iconSet set of icons to be moved to the output folder or added to sprite
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param colorScheme array of strings matching the colorScheme attributes of the icon ie: `light`, `dark`, `mixed`.
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -25,6 +26,7 @@ export async function distributeSvg(
   outputPath: string,
   groupByCategory: boolean,
   outputAsHbs: boolean,
+  colorScheme: string[]
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
@@ -33,8 +35,21 @@ export async function distributeSvg(
   const spriteNames: SpriteConfig = {};
   const promises: void[] = [];
   for (const icon of icons) {
-    LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath}`);
+    LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath} with colorScheme: ${colorScheme}`);
     const assets = getIconFlavorsByType(icon, 'svg');
+
+    // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
+    const assetsByColorScheme = assets.filter(asset => {
+      if(asset.colorScheme) {
+        return colorScheme.includes(asset.colorScheme);
+      } else if (asset.colorScheme === undefined){
+        // Light variants can either have colorScheme: `light` or undefined
+        return colorScheme.includes('light');
+      } else {
+        return false;
+      }
+    });
+
     const distributeConfig = icon.distribute;
     const svgConfig = distributeConfig && distributeConfig.svg;
     // variantsToFilter can be defined on distribute or on distribute.svg
@@ -46,8 +61,8 @@ export async function distributeSvg(
     // If icon has defined the assets to go to sprite
     const { assetsToAddToSprite, assetsNoSprite } =
       variantsToFilter && variantsToFilter.length
-        ? partitionAssetsForSprite(assets, variantsToFilter)
-        : { assetsToAddToSprite: assets, assetsNoSprite: assets };
+        ? partitionAssetsForSprite(assetsByColorScheme, variantsToFilter)
+        : { assetsToAddToSprite: assetsByColorScheme, assetsNoSprite: assetsByColorScheme };
 
     const iconHasSpriteConfig = !(
       distributeConfig &&
@@ -60,7 +75,7 @@ export async function distributeSvg(
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-        await createHbs(assets, destPath);
+        await createHbs(assetsByColorScheme, destPath);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);

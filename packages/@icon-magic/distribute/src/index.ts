@@ -14,6 +14,7 @@ type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
  * @param outputPath output directory path to copy the assets to
  * @param type svg, png, webp, all
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param colorScheme array of strings matching the colorScheme attributes of the icon ie: `light`, `dark`, `mixed`.
  * @retuns promise after completion
  */
 export async function distributeByType(
@@ -21,9 +22,10 @@ export async function distributeByType(
   outputPath: string,
   type: ICON_TYPES = 'all',
   groupByCategory = true,
-  outputAsHbs = false
+  outputAsHbs = false,
+  colorScheme: string[] = ['light', 'dark']
 ): Promise<void> {
-  LOGGER.debug(`entering distribute with ${type}`);
+  LOGGER.debug(`entering distribute with ${type} and colorSchemes: ${colorScheme}`);
   const iconSet = new IconSet(iconConfig, true);
   switch (type) {
     case 'png': {
@@ -35,13 +37,13 @@ export async function distributeByType(
       break;
     }
     case 'svg': {
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme);
       break;
     }
     default: {
       await createImageSet(iconSet, outputPath);
       await distributeByResolution(iconSet, outputPath);
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme);
     }
   }
 }
