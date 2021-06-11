@@ -101,6 +101,9 @@ program
   .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
   )
+  .option(
+    '-c, --colorScheme <colorScheme...>', 'With no flag, `light` and `dark` colorSchemes are distributed. Other colorSchemes can be specified with flag'
+  )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
       LOGGER.error('No Input Directories were specified.\n');
@@ -145,6 +148,7 @@ program
       options.type,
       options.groupBy === 'category',
       options.outputAsTemplate,
+      options.colorScheme
     );
 
     // exit without any errors
