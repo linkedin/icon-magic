@@ -187,7 +187,9 @@ export const svgGenerate: GeneratePlugin = {
       'svg',
       new Asset(icon.iconPath, {
         name: flavor.name,
-        path: `./${flavor.name}.svg`
+        path: `./${flavor.name}.svg`,
+        imageset: flavor.imageset,
+        colorScheme: flavor.colorScheme
       })
     );
     return flavor;
