@@ -72,35 +72,39 @@ const icon = new Icon({
 
 describe('svgLightDark()', function () {
   it('creates parent svg with light and dark children svgs when `imageSet` exists and the `colorScheme` equals `dark`', async () => {
-    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
-  <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-light-display)">
-    <path fill="#e9e5de" d="M0 0h128v128H0z"/>
-    <path fill="#e9e5de" d="M0 64.14h128V128H0z"/>
-    <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e9e5de"/>
-  </svg>
-  <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-dark-display)">
-    <path fill="#eee" d="M0 0h128v128H0z"/>
-    <path fill="#eee" d="M0 64.14h128V128H0z"/>
-    <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#eee"/>
-  </svg>
-</svg>`;
+  const outputSvgStripped: string = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--hue-web-svg-display-dark)">
+        <path fill="#eee" d="M0 0h128v128H0z"/>
+        <path fill="#eee" d="M0 64.14h128V128H0z"/>
+        <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#eee"/>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--hue-web-svg-display-light)">
+        <path fill="#e9e5de" d="M0 0h128v128H0z"/>
+        <path fill="#e9e5de" d="M0 64.14h128V128H0z"/>
+        <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e9e5de"/>
+      </svg>
+    </svg>`.replace(/\s+/g, '');
 
   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {
-    lightToken: "var(--svg-light-display)",
-    darkToken: "var(--svg-dark-display)"
+    lightToken: "--hue-web-svg-display-light",
+    darkToken: "--hue-web-svg-display-dark"
     });
 
+    const outputFlavorBuffer = await outputFlavor.getContents();
+    const outputFlavorStringStripped = outputFlavorBuffer.toString('utf-8').replace(/\s+/g, '');
+
     //result has proper width, height, viewbox, and display properties
-    assert.equal(await outputFlavor.getContents(), outputSvg);
+    assert.equal(outputFlavorStringStripped, outputSvgStripped);
 
     //result does not equal original dark flavor
-    assert.notEqual(await outputFlavor.getContents(), darkFile);
+    assert.notEqual(outputFlavorBuffer, darkFile);
   });
 
   it('returns original flavor with no changes when `colorScheme` dos not equal `dark`', async () => {
     const outputFlavor: Flavor = await svgLightDark.fn(lightFlavor, icon, {
-      lightToken: "var(--svg-light-display)",
-      darkToken: "var(--svg-dark-display)"
+      lightToken: "--hue-web-svg-display-light",
+      darkToken: "--hue-web-svg-display-dark"
     });
 
     //result equals original light flavor
@@ -109,26 +113,30 @@ describe('svgLightDark()', function () {
 
   //TODO: outputSVG and outputFlavor print to console exactly the same.  But test fails, I'm guessing it is an econding issue
 
-  // it('creates light and dark svgs with display property even if tags not passed from config', async () => {
-  //   const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
-  //   <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-light-display)">
-  //     <path fill="#e9e5de" d="M0 0h128v128H0z"/>
-  //     <path fill="#e9e5de" d="M0 64.14h128V128H0z"/>
-  //     <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e9e5de"/>
-  //   </svg>
-  //   <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--svg-dark-display)">
-  //     <path fill="#eee" d="M0 0h128v128H0z"/>
-  //     <path fill="#eee" d="M0 64.14h128V128H0z"/>
-  //     <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#eee"/>
-  //   </svg>
-  // </svg>`;
+  it('creates mixed svg with display property even if light/dark tags not passed from config', async () => {
+    const outputSvgStripped: string = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--hue-web-svg-display-dark)">
+        <path fill="#eee" d="M0 0h128v128H0z"/>
+        <path fill="#eee" d="M0 64.14h128V128H0z"/>
+        <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#eee"/>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" display="var(--hue-web-svg-display-light)">
+        <path fill="#e9e5de" d="M0 0h128v128H0z"/>
+        <path fill="#e9e5de" d="M0 64.14h128V128H0z"/>
+        <path d="M32 64H0v32a32 32 0 0032-32zm64 0a32 32 0 0032 32V64zM64 96a32 32 0 0032-32H32a32 32 0 0032 32zM32 64H0V32a32.06 32.06 0 0132 32zm64 0a32.06 32.06 0 0132-32v32zM64 32a32.06 32.06 0 0132 32H32a32.06 32.06 0 0132-32z" fill="#e9e5de"/>
+      </svg>
+    </svg>`.replace(/\s+/g, '');
 
-  //   const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {});
+    const outputFlavor: Flavor = await svgLightDark.fn(darkFlavor, icon, {});
 
-  //   //result has proper width, height, viewbox, and display properties
-  //   assert.equal(await outputFlavor.getContents(), outputSvg);
+    const outputFlavorBuffer = await outputFlavor.getContents();
+    const outputFlavorStringStripped = outputFlavorBuffer.toString('utf-8').replace(/\s+/g, '');
 
-  //   //result does not equal original dark flavor
-  //   assert.notEqual(await outputFlavor.getContents(), darkFile);
-  // });
+    //result has proper width, height, viewbox, and display properties
+    assert.equal(outputFlavorStringStripped, outputSvgStripped);
+
+    //result does not equal original dark flavor
+    assert.notEqual(outputFlavorBuffer, darkFile);
+  });
 });

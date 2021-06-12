@@ -18,7 +18,7 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param iconSet set of icons to be moved to the output folder or added to sprite
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
- * @param colorScheme array of strings matching the colorScheme attributes of the icon ie: `light`, `dark`, `mixed`.
+ * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`.
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -40,14 +40,13 @@ export async function distributeSvg(
 
     // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
     const assetsByColorScheme = assets.filter(asset => {
-      if(asset.colorScheme) {
+      if (asset.colorScheme) {
         return colorScheme.includes(asset.colorScheme);
       } else if (asset.colorScheme === undefined){
         // Light variants can either have colorScheme: `light` or undefined
         return colorScheme.includes('light');
-      } else {
-        return false;
       }
+      return false;
     });
 
     const distributeConfig = icon.distribute;

@@ -55,7 +55,7 @@ export const svgLightDark: GeneratePlugin = {
           plugins: [
             {
               addAttributesToSVGElement: {
-                attributes: [{display: lightToken || "var(--svg-light-display)"}]
+                attributes: [{display: lightToken ? `var(${lightToken})` : "var(--hue-web-svg-display-light)"}]
               }
             },
             {
@@ -69,7 +69,7 @@ export const svgLightDark: GeneratePlugin = {
           plugins: [
             {
               addAttributesToSVGElement: {
-                attributes: [{display: darkToken || "var(--svg-dark-display)"}]
+                attributes: [{display: darkToken ? `var(${darkToken})` : "var(--hue-web-svg-display-dark)"}]
               }
             },
             {
@@ -101,7 +101,7 @@ export const svgLightDark: GeneratePlugin = {
           // write the parent svg with light/dark children svg's to the output directory
           await fs.ensureDir(outputPath);
           await fs.writeFile(
-            `${path.join(outputPath, imageSet)}-mixed.svg`,
+            path.format({dir: outputPath, name: `${imageSet}-mixed`, ext: '.svg'}),
             mixedAsset.data,
             {
               encoding: 'utf8'
@@ -115,7 +115,7 @@ export const svgLightDark: GeneratePlugin = {
             colorScheme: 'mixed'
           });
 
-          // Add new mixed flavor to icon.flavors. Is then added to resulting iconrc.json file.
+          // Add new mixed flavor to icon.flavors. It is then added to resulting iconrc.json file.
           icon.flavors.set(
             `${imageSet}-mixed`,
             mixedFlavor
@@ -128,7 +128,7 @@ export const svgLightDark: GeneratePlugin = {
   }
 };
 
-// TODO: lightAsset type would be `OptimizedSvg` from Svgo interface, but it does not accept this type, I think it is not exported.
+// TODO: lightAsset type would be `OptimizedSvg` from Svgo interface, but it does not accept this type, looks like OptimizedSvg is not exported from Svgo.
 
 /**
  * Takes two OptimizedSvg's from Svgo interface, adds them as children to a
@@ -153,8 +153,6 @@ async function domSvgParentGenerate(lightAsset: any, darkAsset: any): Promise<SV
   // Create SVG element
   const svgEl = DOCUMENT.createElementNS(SVG_NS, 'svg');
   svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-  svgEl.setAttribute('version', '1.1');
 
   // Add <svg> element to SVG Document
   DOCUMENT.appendChild(svgEl);
@@ -171,9 +169,12 @@ async function domSvgParentGenerate(lightAsset: any, darkAsset: any): Promise<SV
   svgEl.setAttribute('height', xmlLight.documentElement.getAttribute('height') || '');
   svgEl.setAttribute('viewBox', xmlLight.documentElement.getAttribute('viewBox') || '');
 
-  // Append the root node of the DOM document to the parent element
-  await svgEl.appendChild(xmlLight.documentElement);
+  /*
+   * Append the root node of the DOM document to the parent element.
+   * Light is after Dark so that is the default CSS style in case the tokens fail for some reason
+  */
   await svgEl.appendChild(xmlDark.documentElement);
+  await svgEl.appendChild(xmlLight.documentElement);
 
   return svgEl;
 }
