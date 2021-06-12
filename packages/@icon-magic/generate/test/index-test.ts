@@ -33,8 +33,8 @@ describe('Generate test', function () {
     assert.equal(width, 24, 'svg has correct width');
     assert.equal(
       svgEl.getElementsByTagName('path').length,
-      2,
-      'svg has two paths'
+      1,
+      'svg has one path'
     );
     assert.equal(svgEl.getAttribute('class'), 'flip', 'Class is added');
 
