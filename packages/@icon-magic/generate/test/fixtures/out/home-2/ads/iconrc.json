@@ -42,7 +42,9 @@
       "types": {
         "svg": {
           "name": "active-small",
-          "path": "./active-small.svg"
+          "path": "./active-small.svg",
+          "imageset": "active-small",
+          "colorScheme": "light"
         }
       }
     },
@@ -55,7 +57,9 @@
       "types": {
         "svg": {
           "name": "active-small-on-dark",
-          "path": "./active-small-on-dark.svg"
+          "path": "./active-small-on-dark.svg",
+          "imageset": "active-small",
+          "colorScheme": "dark"
         }
       }
     },

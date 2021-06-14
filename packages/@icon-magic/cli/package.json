@@ -24,7 +24,7 @@
     "@icon-magic/distribute": "^2.2.10-beta.0",
     "@icon-magic/generate": "^2.2.9-beta.0",
     "@icon-magic/logger": "^2.2.9-beta.0",
-    "commander": "^5.1.0",
+    "commander": "^7.2.0",
     "config-reader": "^0.1.1"
   }
 }
