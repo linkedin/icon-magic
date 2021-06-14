@@ -42,11 +42,9 @@ export async function distributeSvg(
     const assetsByColorScheme = assets.filter(asset => {
       if (asset.colorScheme) {
         return colorScheme.includes(asset.colorScheme);
-      } else if (asset.colorScheme === undefined){
-        // Light variants can either have colorScheme: `light` or undefined
-        return colorScheme.includes('light');
       }
-      return false;
+      // Light variants can either have colorScheme: `light`, null, or undefined
+      return colorScheme.includes('light');
     });
 
     const distributeConfig = icon.distribute;

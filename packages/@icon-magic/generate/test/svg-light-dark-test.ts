@@ -111,8 +111,6 @@ describe('svgLightDark()', function () {
     assert.equal(await outputFlavor.getContents(), lightFile);
   });
 
-  //TODO: outputSVG and outputFlavor print to console exactly the same.  But test fails, I'm guessing it is an econding issue
-
   it('creates mixed svg with display property even if light/dark tags not passed from config', async () => {
     const outputSvgStripped: string = `
     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">

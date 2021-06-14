@@ -45,19 +45,49 @@ export const svgLightDark: GeneratePlugin = {
       // if light flavor doesn't exist, exit out of plugin
       if (!lightFlavor) {
         return flavor;
-      } else {
-        const darkFlavorContents = (await flavor.getContents()) as string; // .svg asset's getContents() returns the svg as a string
-        const lightFlavorContents  = (await lightFlavor.getContents()) as string;
+      }
+      const darkFlavorContents = (await flavor.getContents()) as string; // .svg asset's getContents() returns the svg as a string
+      const lightFlavorContents  = (await lightFlavor.getContents()) as string;
 
-        const { lightToken, darkToken} = params;
+      const { lightToken, darkToken } = params;
 
-        const lightSvgo = new Svgo({
+      const lightSvgo = new Svgo({
+        plugins: [
+          {
+            addAttributesToSVGElement: {
+              attributes: [{display: lightToken ? `var(${lightToken})` : "var(--hue-web-svg-display-light)"}]
+            }
+          },
+          {
+            removeViewBox: false
+          }
+        ],
+        js2svg: { pretty: true, indent: 2 }
+      });
+
+      const darkSvgo = new Svgo({
+        plugins: [
+          {
+            addAttributesToSVGElement: {
+              attributes: [{display: darkToken ? `var(${darkToken})` : "var(--hue-web-svg-display-dark)"}]
+            }
+          },
+          {
+            removeViewBox: false
+          }
+        ],
+        js2svg: { pretty: true, indent: 2 }
+      });
+
+      if (lightFlavorContents) {
+        // create optimized light/dark svg assets
+        const lightAsset = await lightSvgo.optimize(lightFlavorContents); // .svg asset's getContents() returns a string
+        const darkAsset = await darkSvgo.optimize(darkFlavorContents);
+
+        const mixedParentSvg = await generateMixedSvgParent(lightAsset, darkAsset);
+
+        const mixedSvgo = new Svgo({
           plugins: [
-            {
-              addAttributesToSVGElement: {
-                attributes: [{display: lightToken ? `var(${lightToken})` : "var(--hue-web-svg-display-light)"}]
-              }
-            },
             {
               removeViewBox: false
             }
@@ -65,63 +95,32 @@ export const svgLightDark: GeneratePlugin = {
           js2svg: { pretty: true, indent: 2 }
         });
 
-        const darkSvgo = new Svgo({
-          plugins: [
-            {
-              addAttributesToSVGElement: {
-                attributes: [{display: darkToken ? `var(${darkToken})` : "var(--hue-web-svg-display-dark)"}]
-              }
-            },
-            {
-              removeViewBox: false
-            }
-          ],
-          js2svg: { pretty: true, indent: 2 }
+        const mixedString = serializeToString(mixedParentSvg);
+        const mixedAsset = await mixedSvgo.optimize(mixedString);
+
+        // write the parent svg with light/dark children svg's to the output directory
+        await fs.ensureDir(outputPath);
+        await fs.writeFile(
+          path.format({dir: outputPath, name: `${imageSet}-mixed`, ext: '.svg'}),
+          mixedAsset.data,
+          {
+            encoding: 'utf8'
+          }
+        );
+
+        // Final new Mixed Flavor
+        const mixedFlavor: Flavor = new Flavor(icon.iconPath, {
+          name: `${imageSet}-mixed`,
+          path: `./${imageSet}-mixed.svg`,
+          colorScheme: 'mixed'
         });
 
-        if (lightFlavorContents) {
-          // create optimized light/dark svg assets
-          const lightAsset = await lightSvgo.optimize(lightFlavorContents); // .svg asset's getContents() returns a string
-          const darkAsset = await darkSvgo.optimize(darkFlavorContents);
-
-          const mixedParentSvg = await domSvgParentGenerate(lightAsset, darkAsset);
-
-          const mixedSvgo = new Svgo({
-            plugins: [
-              {
-                removeViewBox: false
-              }
-            ],
-            js2svg: { pretty: true, indent: 2 }
-          });
-
-          const mixedString = serializeToString(mixedParentSvg);
-          const mixedAsset = await mixedSvgo.optimize(mixedString);
-
-          // write the parent svg with light/dark children svg's to the output directory
-          await fs.ensureDir(outputPath);
-          await fs.writeFile(
-            path.format({dir: outputPath, name: `${imageSet}-mixed`, ext: '.svg'}),
-            mixedAsset.data,
-            {
-              encoding: 'utf8'
-            }
-          );
-
-          // Final new Mixed Flavor
-          const mixedFlavor: Flavor = new Flavor(icon.iconPath, {
-            name: `${imageSet}-mixed`,
-            path: `./${imageSet}-mixed.svg`,
-            colorScheme: 'mixed'
-          });
-
-          // Add new mixed flavor to icon.flavors. It is then added to resulting iconrc.json file.
-          icon.flavors.set(
-            `${imageSet}-mixed`,
-            mixedFlavor
-          );
-          return mixedFlavor;
-        }
+        // Add new mixed flavor to icon.flavors. It is then added to resulting iconrc.json file.
+        icon.flavors.set(
+          `${imageSet}-mixed`,
+          mixedFlavor
+        );
+        return mixedFlavor;
       }
     }
     return flavor;
@@ -137,7 +136,7 @@ export const svgLightDark: GeneratePlugin = {
  * @param darkAsset `OptimizedSvg` from Svgo interface
  * @returns SVGSVGElement Dom elment with the two parameters as children.
  */
-async function domSvgParentGenerate(lightAsset: any, darkAsset: any): Promise<SVGSVGElement> {
+async function generateMixedSvgParent(lightAsset: any, darkAsset: any): Promise<SVGSVGElement> {
   // Create SVG PARENT
   const DOM = new DOMImplementation();
   const doctype = DOM.createDocumentType(
