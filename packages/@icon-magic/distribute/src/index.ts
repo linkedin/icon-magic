@@ -25,7 +25,7 @@ export async function distributeByType(
   groupByCategory = true,
   outputAsHbs = false,
   colorScheme: string[] = ['light', 'dark'],
-  doNotRemoveSuffix: boolean = false
+  doNotRemoveSuffix = false
 ): Promise<void> {
   LOGGER.debug(`entering distribute with ${type} and colorSchemes: ${colorScheme}`);
   const iconSet = new IconSet(iconConfig, true);
