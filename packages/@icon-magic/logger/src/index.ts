@@ -26,6 +26,7 @@ interface LoggerInterface {
   error(msg: string): void;
   debug(msg: string): void;
   info(msg: string): void;
+  warn(msg: string): void;
   setDebug(debug: boolean): void;
 }
 
@@ -51,6 +52,9 @@ export class Logger implements LoggerInterface{
   }
   info(msg: string): void {
     winstonLogger.info({ message: msg, label: this.fileName });
+  }
+  warn(msg: string): void {
+    winstonLogger.warn({ message: msg, label: this.fileName });
   }
   setDebug(debug: boolean): void {
     Logger.debugState = debug;

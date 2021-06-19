@@ -11,10 +11,12 @@ const serializeToString = new XMLSerializer().serializeToString;
  * Saves svg assets as handlebars files
  * @param assets SVG assets to convert
  * @param outputPath path to write to
+ * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" suffix in file name when distributing to hbs.
  */
 export async function createHbs(
   assets: Asset[],
   outputPath: string,
+  doNotRemoveSuffix: boolean
 ): Promise<void> {
   for (const asset of assets) {
     const doc = new DOMParser();
@@ -25,9 +27,13 @@ export async function createHbs(
     const xml = doc.parseFromString(contents as string, 'image/svg+xml');
     const el = xml.documentElement;
     const id = el.getAttributeNode('id');
-    const iconName = id ? id.value : '';
+    let iconName = id ? id.value : '';
     // Strip id
     el.removeAttribute('id');
+    // Remove the "-mixed" suffix from the name. File will have same name as light version.
+    if (!doNotRemoveSuffix) {
+      iconName = iconName.replace(/-mixed$/, '');
+    }
 
     // add splattributes to the hbs file
     xml.documentElement.setAttribute('...attributes', '');

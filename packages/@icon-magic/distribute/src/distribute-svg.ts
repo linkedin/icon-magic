@@ -19,6 +19,7 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`.
+ * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" suffix in file name when distributing to hbs.
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -26,7 +27,8 @@ export async function distributeSvg(
   outputPath: string,
   groupByCategory: boolean,
   outputAsHbs: boolean,
-  colorScheme: string[]
+  colorScheme: string[],
+  doNotRemoveSuffix: boolean
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
@@ -36,6 +38,10 @@ export async function distributeSvg(
   const promises: void[] = [];
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath} with colorScheme: ${colorScheme}`);
+    if (!doNotRemoveSuffix && colorScheme.includes('mixed')){
+      LOGGER.warn(`Warning: By default the "-mixed" suffix is trimed from the file name when distributed to hbs. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
+    }
+
     const assets = getIconFlavorsByType(icon, 'svg');
 
     // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
@@ -72,7 +78,7 @@ export async function distributeSvg(
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-        await createHbs(assetsByColorScheme, destPath);
+        await createHbs(assetsByColorScheme, destPath, doNotRemoveSuffix);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
