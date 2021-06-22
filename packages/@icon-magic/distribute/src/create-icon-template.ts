@@ -31,7 +31,7 @@ export async function createHbs(
     // Strip id
     el.removeAttribute('id');
     // Remove the "-mixed" suffix from the name. File will have same name as light version.
-    if (!doNotRemoveSuffix) {
+    if (!doNotRemoveSuffix && asset.colorScheme === 'mixed') {
       iconName = iconName.replace(/-mixed$/, '');
     }
 

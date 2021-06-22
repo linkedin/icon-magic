@@ -39,7 +39,7 @@ export async function distributeSvg(
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath} with colorScheme: ${colorScheme}`);
     if (!doNotRemoveSuffix && colorScheme.includes('mixed')){
-      LOGGER.warn(`Warning: By default the "-mixed" suffix is trimed from the file name when distributed to hbs. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
+      LOGGER.warn(`Warning: By default the "-mixed" suffix is trimmed from the file name when distributed to hbs. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
     }
 
     const assets = getIconFlavorsByType(icon, 'svg');
