@@ -103,6 +103,8 @@ program
   )
   .option(
     '-c, --colorScheme <colorScheme...>', 'With no flag, `light` and `dark` colorSchemes are distributed. Other colorSchemes can be specified with flag'
+  )  .option(
+    '-s, --doNotRemoveSuffix', 'When used with --outputAsTemplate, will NOT trim the "-mixed" suffix on the file name'
   )
   .action(async (inputPaths, options) => {
     if (!inputPaths.length) {
@@ -135,6 +137,12 @@ program
       process.exit(1);
     }
 
+    // --doNotRemoveSuffix is only for --outputAsTemplate flag
+    if (options.doNotRemoveSuffix && !options.outputAsTemplate) {
+      LOGGER.error('Option --doNotRemoveSuffix must be used with --outputAsTemplate flag');
+      process.exit(1);
+    }
+
     // Get the iconSet from the inputPaths
     const iconSet = getIconConfigSet(inputPaths);
 
@@ -148,7 +156,8 @@ program
       options.type,
       options.groupBy === 'category',
       options.outputAsTemplate,
-      options.colorScheme
+      options.colorScheme,
+      options.doNotRemoveSuffix
     );
 
     // exit without any errors
