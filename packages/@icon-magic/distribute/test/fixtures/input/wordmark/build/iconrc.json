@@ -1,0 +1,136 @@
+{
+  "iconPath": ".",
+  "variants": [
+    {
+      "name": "medium",
+      "path": "./default.svg"
+    },
+    {
+      "name": "medium-on-dark",
+      "path": "./default-on-dark.svg",
+      "imageset": "medium",
+      "colorScheme": "dark"
+    },
+    {
+      "name": "large",
+      "path": "./default.svg"
+    },
+    {
+      "name": "large-on-dark",
+      "path": "./default-on-dark.svg",
+      "imageset": "large",
+      "colorScheme": "dark"
+    }
+  ],
+  "sourceConfigFile": "../../../../icons/mercado/logos-bugs/wordmark/iconrc.json",
+  "sizes": [
+    {
+      "width": 160,
+      "height": 20
+    },
+    {
+      "width": 192,
+      "height": 24
+    }
+  ],
+  "resolutions": [
+    2,
+    3
+  ],
+  "iconName": "wordmark",
+  "outputPath": "./out/mercado/logos-bugs",
+  "flavors": [
+    {
+      "name": "medium-on-dark",
+      "path": "./build/medium-on-dark.svg",
+      "buildSourceHash": "bdfa1d71d21b07bbcb2de1ccd1584613",
+      "imageset": "medium",
+      "colorScheme": "dark",
+      "types": {}
+    },
+    {
+      "name": "large",
+      "path": "./build/large.svg",
+      "buildSourceHash": "8603b7b23c086b5d3a8f894f8437a6e5",
+      "types": {}
+    },
+    {
+      "name": "large-on-dark",
+      "path": "./build/large-on-dark.svg",
+      "buildSourceHash": "bdfa1d71d21b07bbcb2de1ccd1584613",
+      "imageset": "large",
+      "colorScheme": "dark",
+      "types": {}
+    },
+    {
+      "name": "medium",
+      "path": "./build/medium.svg",
+      "buildSourceHash": "8603b7b23c086b5d3a8f894f8437a6e5",
+      "types": {}
+    }
+  ],
+  "category": "logos-bugs",
+  "metadata": {
+    "nameSizeMapping": {
+      "medium": {
+        "width": 160,
+        "height": 20
+      },
+      "large": {
+        "width": 192,
+        "height": 24
+      }
+    }
+  },
+  "generate": {
+    "types": [
+      {
+        "name": "svg",
+        "plugins": [
+          {
+            "name": "svg-generate",
+            "params": {
+              "addSupportedDps": "current",
+              "isColored": true
+            },
+            "writeToOutput": false
+          },
+          {
+            "name": "svg-light-dark",
+            "params": {
+              "lightToken": "--hue-web-svg-display-light",
+              "darkToken": "--hue-web-svg-display-dark"
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
+        "name": "raster",
+        "plugins": [
+          {
+            "name": "svg-to-raster",
+            "iterants": [
+              "resolutions"
+            ],
+            "params": {
+              "useNameSizeMapping": true
+            },
+            "writeToOutput": false
+          }
+        ]
+      }
+    ]
+  },
+  "distribute": {
+    "svg": {
+      "toSprite": true,
+      "spriteNames": [
+        "mercado-icons"
+      ]
+    },
+    "webp": {
+      "namePrefix": "img"
+    }
+  }
+}

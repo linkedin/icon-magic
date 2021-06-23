@@ -337,6 +337,30 @@ describe('distribute works as expected', function () {
     }
   });
 
+  it('it trims "-mixed" from end of hbs file name', async () => {
+    const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
+    await distributeByType(iconSetWordmark, `${output}/wordmark`, 'svg', false, true, ['mixed'], false);
+    try {
+      const files = fs.readdirSync(`${output}/wordmark`);
+      assert.ok(files.includes('wordmark-large.hbs'));
+      assert.ok(files.includes('wordmark-medium.hbs'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
+  it('it does not trim "-mixed" from end of hbs file name', async () => {
+    const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
+    await distributeByType(iconSetWordmark, `${output}/wordmark/untrimmed`, 'svg', false, true, ['mixed'], true);
+    try {
+      const files = fs.readdirSync(`${output}/wordmark/untrimmed`);
+      assert.ok(files.includes('wordmark-large-mixed.hbs'));
+      assert.ok(files.includes('wordmark-medium-mixed.hbs'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
   it('sprites are always arranged alphabetically', async () => {
     await distributeByType(iconSet, output, 'svg', true);
     try {

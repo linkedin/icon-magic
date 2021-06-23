@@ -1,0 +1,52 @@
+{
+  "images": [
+    {
+      "idiom": "universal",
+      "scale": "1x",
+      "filename": "logos-bugs_wordmark_medium_on_dark_160x20@1.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    },
+    {
+      "idiom": "universal",
+      "scale": "2x",
+      "filename": "logos-bugs_wordmark_medium_on_dark_160x20@2.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    },
+    {
+      "idiom": "universal",
+      "scale": "3x",
+      "filename": "logos-bugs_wordmark_medium_on_dark_160x20@3.png",
+      "appearances": [
+        {
+          "appearance": "luminosity",
+          "value": "dark"
+        }
+      ]
+    },
+    {
+      "idiom": "universal",
+      "scale": "1x",
+      "filename": "logos-bugs_wordmark_medium_160x20@1.png"
+    },
+    {
+      "idiom": "universal",
+      "scale": "2x",
+      "filename": "logos-bugs_wordmark_medium_160x20@2.png"
+    },
+    {
+      "idiom": "universal",
+      "scale": "3x",
+      "filename": "logos-bugs_wordmark_medium_160x20@3.png"
+    }
+  ]
+}
