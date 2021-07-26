@@ -25,8 +25,6 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
   - [@icon-magic/svg-to-png](#icon-magicsvg-to-png)
   - [@icon-magic/logger](#icon-magiclogger)
   - [@icon-magic/code-style](#icon-magiccode-style)
-  - [@icon-magic/server](#icon-magicserver)
-  - [@icon-magic/library](#icon-magiclibrary)
   - [TODO](#todo)
 
 ## Using icon-magic
@@ -151,15 +149,6 @@ Measures execution time.
 ### [@icon-magic/code-style](packages/@icon-magic/code-style)
 
 Shared tslint config for all icon magic packages.
-
-### [@icon-magic/server](packages/@icon-magic/server)
-
-[WIP] API server for adding, modifying and removing icons from a bundle.
-
-### [@icon-magic/library](packages/@icon-magic/library)
-
-[**DEPRECATED**] Type definitions and type conversion primitives for an "icon
-bundle"
 
 ## Publishing
 Once you have committed a PR, you can publish a new version to npm via the
