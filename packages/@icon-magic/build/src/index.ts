@@ -230,7 +230,7 @@ async function getPlugins(plugins: BuildPlugin[]): Promise<BuildPlugin[]> {
   return await Promise.all(
     plugins.map(async plugin => {
       // if the plugin has a function, return the plugin
-      if (plugin.fn) return plugin;
+      if (typeof plugin.fn === 'function') return plugin;
       // import the plugin from ./plugins
       else {
         let pluginFromFile: BuildPlugin;
