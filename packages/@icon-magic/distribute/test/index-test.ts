@@ -1,5 +1,6 @@
 import * as configReader from '@icon-magic/config-reader';
 import * as assert from 'assert';
+import * as recast  from 'ember-template-recast';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DOMParser } from 'xmldom';
@@ -336,6 +337,27 @@ describe('distribute works as expected', function () {
       assert.ok(false, err);
     }
   });
+
+  it('...attributes comes before certain attributes in hbs files', async () => {
+    try {
+      const files = fs.readdirSync(`${output}/its-ui`);
+      assert.ok(files.includes('animal-small.hbs'));
+      assert.ok(files.includes('animal-large.hbs'));
+
+      const content = fs.readFileSync(`${output}/animal-small.hbs`, 'utf8');
+      const ast = recast.parse(content);
+
+      if (ast.body[0].type === 'ElementNode') {
+        const attrs = ast.body[0].attributes;
+        const firstAttr = attrs[0];
+        assert.ok(firstAttr.name === '...attributes');
+      }
+
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
 
   it('it trims "-mixed" from end of hbs file name', async () => {
     const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
