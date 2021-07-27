@@ -1083,10 +1083,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.5.tgz#75a2a8e7d8ab4b230414505d92335d1dcb53a6df"
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
-"@types/svgo@^1.0.1":
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-1.3.6.tgz#9db00a7ddf9b26ad2feb6b834bef1818677845e1"
-  integrity sha512-AZU7vQcy/4WFEuwnwsNsJnFwupIpbllH1++LXScN6uxT1Z4zPzdrWG97w4/I7eFKFTvfy/bHFStWjdBAg2Vjug==
+"@types/svgo@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-2.3.1.tgz#85442587bc72bbfb92f3721020e28d678b8744ec"
+  integrity sha512-L7gdQLO8cfGKksOVtlpS0jwh04SL3W7xe+efuWbNnfSwl3cKSdgX0gLl5VnHDtSAX//xfCbEgB+RSN64tfShqQ==
 
 "@types/workerpool@^6.0.0":
   version "6.0.1"
