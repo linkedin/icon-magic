@@ -172,8 +172,22 @@ async function generateMixedSvgParent(lightAsset: any, darkAsset: any): Promise<
    * Append the root node of the DOM document to the parent element.
    * Light is after Dark so that is the default CSS style in case the tokens fail for some reason
   */
-  await svgEl.appendChild(xmlDark.documentElement);
-  await svgEl.appendChild(xmlLight.documentElement);
+
+  const darkEl = xmlDark.documentElement;
+  const lightEl = xmlLight.documentElement;
+
+  darkEl.removeAttribute('width');
+  darkEl.removeAttribute('height');
+  darkEl.removeAttribute('viewBox');
+  darkEl.removeAttribute('xmlns');
+
+  lightEl.removeAttribute('width');
+  lightEl.removeAttribute('height');
+  lightEl.removeAttribute('viewBox');
+  lightEl.removeAttribute('xmlns');
+
+  await svgEl.appendChild(darkEl);
+  await svgEl.appendChild(lightEl);
 
   return svgEl;
 }
