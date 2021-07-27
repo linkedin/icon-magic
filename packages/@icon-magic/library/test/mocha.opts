@@ -1,7 +1,0 @@
---reporter spec
---require source-map-support/register
---inline-diffs
---exit
---growl
---timeout 300000
-dist/test/*-test.js

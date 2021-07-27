@@ -1,9 +1,9 @@
 
 import { Asset } from '@icon-magic/icon-models';
+import { transform } from 'ember-template-recast';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DOMParser, XMLSerializer } from 'xmldom';
-
 
 const serializeToString = new XMLSerializer().serializeToString;
 
@@ -30,18 +30,33 @@ export async function createHbs(
     let iconName = id ? id.value : '';
     // Strip id
     el.removeAttribute('id');
+
+    const template = serializeToString(xml);
+    const { code } = transform({
+      template,
+      plugin(env) {
+        const { builders: b } = env.syntax;
+
+        return {
+          ElementNode(node) {
+            if (node.tag === 'svg') {
+              // add splattributes to the hbs file
+              node.attributes.unshift(b.attr('...attributes', b.text('')));
+            }
+          },
+        };
+      }
+    });
+
     // Remove the "-mixed" suffix from the name. File will have same name as light version.
     if (!doNotRemoveSuffix && asset.colorScheme === 'mixed') {
       iconName = iconName.replace(/-mixed$/, '');
     }
 
-    // add splattributes to the hbs file
-    xml.documentElement.setAttribute('...attributes', '');
-    await fs.mkdirp(outputPath);
 
     // xmldom and other dom substitutions (like jsdom) add ...attributes="" and
     // the string replace below is an ugly hack to remove the empty string
-    fs.writeFileSync(path.join(outputPath, `${iconName}.hbs`), serializeToString(xml).replace(/...attributes=\"\"/g, '...attributes'));
+    fs.writeFileSync(path.join(outputPath, `${iconName}.hbs`), code);
   }
 }
 
