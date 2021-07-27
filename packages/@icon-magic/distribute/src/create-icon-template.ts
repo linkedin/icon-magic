@@ -39,7 +39,7 @@ export async function createHbs(
 
         return {
           ElementNode(node) {
-            if (node.tag === 'svg') {
+            if (node.tag === 'svg' && node.attributes.find(attr => attr.name === 'xmlns')) {
               // add splattributes to the hbs file
               node.attributes.unshift(b.attr('...attributes', b.text('')));
             }
