@@ -56,7 +56,7 @@ describe('svgGenerate()', function () {
   });
 
   it('does not add data-supported-dps when addSupportedDps is none', async () => {
-    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true"fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
+    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
 
     const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
       addSupportedDps: 'none'
