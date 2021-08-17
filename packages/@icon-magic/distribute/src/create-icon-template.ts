@@ -42,6 +42,13 @@ export async function createHbs(
             if (node.tag === 'svg' && node.attributes.find(attr => attr.name === 'xmlns')) {
               // add splattributes to the hbs file
               node.attributes.unshift(b.attr('...attributes', b.text('')));
+
+              // aria-hidden should be the only attribute before ...attributes
+              const ariaHiddenAttr = node.attributes.find(attr => attr.name === 'aria-hidden');
+              if (ariaHiddenAttr) {
+                node.attributes = node.attributes.filter(a => a !== ariaHiddenAttr);
+                node.attributes.unshift(ariaHiddenAttr);
+              }
             }
           },
         };
