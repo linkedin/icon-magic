@@ -350,7 +350,12 @@ describe('distribute works as expected', function () {
       if (ast.body[0].type === 'ElementNode') {
         const attrs = ast.body[0].attributes;
         const firstAttr = attrs[0];
-        assert.ok(firstAttr.name === '...attributes');
+        const secondAttr = attrs[1];
+        const thirdAttr = attrs[2];
+
+        assert.ok(firstAttr.name === 'aria-hidden');
+        assert.ok(secondAttr.name === 'role');
+        assert.ok(thirdAttr.name === '...attributes');
       }
 
     } catch (err) {
