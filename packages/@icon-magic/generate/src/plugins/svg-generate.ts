@@ -65,7 +65,7 @@ export const svgGenerate: GeneratePlugin = {
     // If generate hasn't been run create the hash
     flavor.generateSourceHash = createHash(flavorContent);
     // build the attributes object that contains attributes to be added to the svg
-    const attributes = { id: `${icon.iconName}-${flavor.name}`, 'aria-hidden': true, 'role': 'none', 'focusable': 'false'};
+    const attributes = { id: `${icon.iconName}-${flavor.name}`, 'aria-hidden': true, 'role': 'none'};
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
 
     const classNames = params.classNames;
