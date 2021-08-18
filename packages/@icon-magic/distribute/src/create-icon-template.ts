@@ -43,12 +43,20 @@ export async function createHbs(
               // add splattributes to the hbs file
               node.attributes.unshift(b.attr('...attributes', b.text('')));
 
-              // aria-hidden should be the only attribute before ...attributes
-              const ariaHiddenAttr = node.attributes.find(attr => attr.name === 'aria-hidden');
-              if (ariaHiddenAttr) {
-                node.attributes = node.attributes.filter(a => a !== ariaHiddenAttr);
-                node.attributes.unshift(ariaHiddenAttr);
-              }
+              const attrsToFront = ['aria-hidden', 'role'].map(attrName => {
+                const attr = node.attributes.find(attr => attr.name === attrName);
+                if (attr) {
+                  node.attributes = node.attributes.filter(a => a !== attr);
+                }
+                return attr;
+              });
+
+              attrsToFront.forEach(attr => {
+                if (attr) {
+                  // tslint complains if I try to add all at once
+                  node.attributes.unshift(attr);
+                }
+              });
             }
           },
         };
