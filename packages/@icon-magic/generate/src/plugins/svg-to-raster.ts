@@ -222,9 +222,10 @@ async function generatePng(
   svg: string,
   width: number,
   height: number,
-  outputPath: string
+  outputPath: string,
+  rtlFlip?: boolean
 ): Promise<void> {
-  const png = await convert(svg, { width, height });
+  const png = await convert(svg, { width, height, rtlFlip });
   await fs.writeFile(outputPath, png);
 }
 
