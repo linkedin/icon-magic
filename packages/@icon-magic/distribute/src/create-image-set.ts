@@ -30,7 +30,7 @@ interface AssetCatalog {
  */
 export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
-    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${icon.rtlFlip}`);
+    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${icon.rtlFlip || false}`);
     const assets = getIconFlavorsByType(icon, 'png');
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS

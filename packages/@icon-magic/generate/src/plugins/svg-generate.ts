@@ -70,7 +70,7 @@ export const svgGenerate: GeneratePlugin = {
 
     const classNames = params.classNames || [];
 
-    if (icon.rtlFlip) {
+    if (icon.rtlFlip && classNames.indexOf("rtl-flip") === -1) {
       classNames.push("rtl-flip");
     }
 
