@@ -73,7 +73,8 @@ describe('distribute works as expected', function () {
       },
       {
         iconName: 'filled_2_filled_24x12',
-        category: 'uix-icon'
+        category: 'uix-icon',
+        "language-direction": "left-to-right"
       },
       {
         iconName: 'filled_3_filled_24x12',
@@ -100,6 +101,12 @@ describe('distribute works as expected', function () {
           const contentsJsonImages = fs.readJsonSync(path.join(iconPath, 'Contents.json')).images;
           assert.ok(Array.isArray(contentsJsonImages), 'Contents.json is filled with an array called images');
           assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `${icon.category}_${icon.iconName}@2.png`));
+
+          if (icon["language-direction"]) {
+            assert.ok(contentsJsonImages.find((entry) => {
+              return entry["language-direction"] === icon["language-direction"];
+            }));
+          }
 
           assert.ok(
             files.indexOf(`${icon.category}_${icon.iconName}@2.png`) > -1,
