@@ -104,7 +104,6 @@ describe('distribute works as expected', function () {
 
           if (icon["language-direction"]) {
             assert.ok(contentsJsonImages.find((entry) => {
-              console.log("entry", entry);
               return entry["language-direction"] === icon["language-direction"];
             }));
           }
