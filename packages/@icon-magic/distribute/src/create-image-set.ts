@@ -12,6 +12,7 @@ interface ContentImage {
   idiom: string;
   scale: string;
   filename: string;
+  "language-direction"?: string;
 }
 
 // TODO: populate this interface as needed
@@ -29,7 +30,7 @@ interface AssetCatalog {
  */
 export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
-    LOGGER.debug(`Creating imageSet for ${icon.iconName}`);
+    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${icon.rtlFlip}`);
     const assets = getIconFlavorsByType(icon, 'png');
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
@@ -99,6 +100,7 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
           idiom: 'universal',
           scale: getAssetResolutionFromName(asset, true),
           filename: assetNameForCatalog,
+          ...(icon.rtlFlip && { "language-direction": "left-to-right" }),
           ...(asset.colorScheme === 'dark' && {
             appearances: [
               {

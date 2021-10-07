@@ -167,7 +167,8 @@ const topLevelConfigProperties = {
   },
   metadata: {
     type: 'object'
-  }
+  },
+  rtlFlip:{ type: 'boolean'}
 };
 
 export const configSchema = {

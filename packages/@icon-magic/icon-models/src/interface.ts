@@ -129,6 +129,7 @@ export type IconConfig = {
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
   metadata?: MetaData;
+  rtlFlip?: boolean;
 };
 
 /**
