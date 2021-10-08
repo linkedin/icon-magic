@@ -53,6 +53,10 @@ export const svgToRaster: GeneratePlugin = {
     icon: Icon,
     params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
+    // if flavor is mixed, just return flavor because png and webp do not use them
+    if (flavor.colorScheme === "mixed") {
+      return flavor;
+    }
     // get the size and resolution from the params passed in
     if (params.propCombo) {
       let w: number;
@@ -159,6 +163,20 @@ export const svgToRaster: GeneratePlugin = {
       LOGGER.debug(`Creating ${pngOutput}`);
       const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
       await generatePng(flavorContent, w * res, h * res, pngOutput);
+
+      if (icon.rtlFlip) {
+        const flipPngOutput = `${path.join(outputPath, assetName)}-flipped.png`;
+        LOGGER.debug(`Creating ${flipPngOutput}`);
+        const flipFlavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
+        await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
+
+        // Convert the flipped png to flipped webp
+        LOGGER.debug(`Creating flipped webp from ${flipPngOutput} `);
+        await convertToWebp(
+          flipPngOutput,
+          `${path.join(outputPath, assetName)}-flipped.webp`
+        );
+      }
 
       // Convert the png to webp
       LOGGER.debug(`Creating webp from ${pngOutput} `);

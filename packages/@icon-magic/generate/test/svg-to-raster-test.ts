@@ -14,12 +14,23 @@ const file = fs.readFileSync(
   path.resolve(`${FIXTURES}/nav-icons/home/filled.svg`).toString()
 );
 
+// const flipFile = fs.readFileSync(
+//   path.resolve(`${FIXTURES}/system-icons/arrow-right/medium.svg`).toString()
+// );
+
 const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
   name: 'filled',
   imageset: 'filled',
   contents: file,
   path: `${FIXTURES}/nav-icons/home/filled.svg`
 });
+
+// const flipFlavor: Flavor = new Flavor(`${FIXTURES}/system-icons/arrow-right/medium.svg`, {
+//   name: 'medium',
+//   imageset: 'default',
+//   contents: flipFile,
+//   path: `${FIXTURES}/nav-icons/home/filled.svg`
+// });
 
 const icon = new Icon({
   iconPath: `${FIXTURES}/nav-icons/home`,
@@ -37,6 +48,7 @@ const icon = new Icon({
   sizes: [8, 16],
   resolutions: [1, 2, 3],
   outputPath: `/${FIXTURES}/out`,
+  rtlFlip: true,
   iconName: 'home',
   sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
   metadata: {
@@ -46,6 +58,27 @@ const icon = new Icon({
     }
   }
 });
+
+// const flipIcon = new Icon({
+//   iconPath: `${FIXTURES}/system-icons/arrow-right`,
+//   variants: [
+//     {
+//       path: `${FIXTURES}/system-icons/arrow-right/medium.svg`,
+//       name: 'medium',
+//       imageset: 'default'
+//     },
+//     {
+//       path: `${FIXTURES}/nav-icons/home/outline.svg`,
+//       name: 'someOtherName'
+//     }
+//   ],
+//   sizes: [16],
+//   resolutions: [1, 2],
+//   outputPath: `/${FIXTURES}/out`,
+//   rtlFlip: true,
+//   iconName: 'arrow-right',
+//   sourceConfigFile: `${FIXTURES}/system-icons/iconrc.json`,
+// });
 
 describe('svgToRaster()', function () {
   it('Creates all the raster assets and updates the icon correctly', async () => {
@@ -208,4 +241,31 @@ describe('svgToRaster()', function () {
     const output: Flavor = await svgToRaster.fn(flavor2, icon, options);
     assert.deepEqual(flavorWithTypes2, output.getConfig().types);
   });
+
+  //NOTE This test is failing
+  // it('Creates the proper flipped pngs and webps', async () => {
+  //   console.log('testing flipped icons');
+
+    // const options: SvgToRasterOptions = {
+    //   propCombo: {
+    //     sizes: { width: 24, height: 12 },
+    //     resolutions: 2
+    //   }
+    // };
+  //   const flavorWithFlips: FlavorTypeMap = {
+  //     png: {
+  //       name: 'medium-16x16@2',
+  //       path: './medium-16x16@2.png',
+  //       imageset: 'medium-16x16'
+  //     },
+  //     webp: {
+  //       name: 'medium-16x16@2',
+  //       path: './medium-16x16@2.webp',
+  //       imageset: 'medium-16x16'
+  //     }
+  //   };
+  //   const output: Flavor = await svgToRaster.fn(flipFlavor, flipIcon);
+
+  //   assert.deepEqual(flavorWithFlips, output.getConfig().types);
+  // });
 });
