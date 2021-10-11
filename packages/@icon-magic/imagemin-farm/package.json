@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/imagemin-farm",
-  "version": "2.3.0-beta.0",
+  "version": "2.4.0-beta.0",
   "description": "Icon magic image minification farm.",
   "main": "dist/src/index.js",
   "author": "Adam Miller <adam@pages.me>",
