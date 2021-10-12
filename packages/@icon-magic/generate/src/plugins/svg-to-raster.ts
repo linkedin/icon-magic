@@ -171,15 +171,19 @@ export const svgToRaster: GeneratePlugin = {
         await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
 
         // Convert the flipped png to flipped webp
-        LOGGER.debug(`Creating flipped webp from ${flipPngOutput} `);
+        LOGGER.debug(`Creating flipped webp from ${flipPngOutput}`);
         await convertToWebp(
           flipPngOutput,
           `${path.join(outputPath, assetName)}-flipped.webp`
         );
+
+        // Delete flipped png asset (only need flipped webP for android)
+        LOGGER.debug(`Deleting flipped png: ${flipPngOutput}`);
+        fs.removeSync(flipPngOutput);
       }
 
       // Convert the png to webp
-      LOGGER.debug(`Creating webp from ${pngOutput} `);
+      LOGGER.debug(`Creating webp from ${pngOutput}`);
       await convertToWebp(
         pngOutput,
         `${path.join(outputPath, assetName)}.webp`

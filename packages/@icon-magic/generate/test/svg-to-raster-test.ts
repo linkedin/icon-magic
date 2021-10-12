@@ -9,14 +9,15 @@ import {
 } from './../src/plugins/svg-to-raster';
 
 const FIXTURES = path.resolve(__dirname, '..', '..', 'test', 'fixtures');
+const output = path.resolve(FIXTURES, 'out');
 
 const file = fs.readFileSync(
   path.resolve(`${FIXTURES}/nav-icons/home/filled.svg`).toString()
 );
 
-// const flipFile = fs.readFileSync(
-//   path.resolve(`${FIXTURES}/system-icons/arrow-right/medium.svg`).toString()
-// );
+const flipFile = fs.readFileSync(
+  path.resolve(`${FIXTURES}/system-icons/arrow-left/medium.svg`).toString()
+);
 
 const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
   name: 'filled',
@@ -25,12 +26,12 @@ const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
   path: `${FIXTURES}/nav-icons/home/filled.svg`
 });
 
-// const flipFlavor: Flavor = new Flavor(`${FIXTURES}/system-icons/arrow-right/medium.svg`, {
-//   name: 'medium',
-//   imageset: 'default',
-//   contents: flipFile,
-//   path: `${FIXTURES}/nav-icons/home/filled.svg`
-// });
+const flipFlavor: Flavor = new Flavor(`${FIXTURES}/system-icons/arrow-left/medium.svg`, {
+  name: 'medium',
+  imageset: 'default',
+  contents: flipFile,
+  path: `${FIXTURES}/system-icons/arrow-left/medium.svg.svg`
+});
 
 const icon = new Icon({
   iconPath: `${FIXTURES}/nav-icons/home`,
@@ -48,7 +49,6 @@ const icon = new Icon({
   sizes: [8, 16],
   resolutions: [1, 2, 3],
   outputPath: `/${FIXTURES}/out`,
-  rtlFlip: true,
   iconName: 'home',
   sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
   metadata: {
@@ -59,26 +59,26 @@ const icon = new Icon({
   }
 });
 
-// const flipIcon = new Icon({
-//   iconPath: `${FIXTURES}/system-icons/arrow-right`,
-//   variants: [
-//     {
-//       path: `${FIXTURES}/system-icons/arrow-right/medium.svg`,
-//       name: 'medium',
-//       imageset: 'default'
-//     },
-//     {
-//       path: `${FIXTURES}/nav-icons/home/outline.svg`,
-//       name: 'someOtherName'
-//     }
-//   ],
-//   sizes: [16],
-//   resolutions: [1, 2],
-//   outputPath: `/${FIXTURES}/out`,
-//   rtlFlip: true,
-//   iconName: 'arrow-right',
-//   sourceConfigFile: `${FIXTURES}/system-icons/iconrc.json`,
-// });
+const flipIcon = new Icon({
+  iconPath: `${FIXTURES}/system-icons/arrow-left`,
+  variants: [
+    {
+      path: `${FIXTURES}/system-icons/arrow-left/medium.svg`,
+      name: 'medium',
+      imageset: 'default'
+    },
+    {
+      path: `${FIXTURES}/nav-icons/home/outline.svg`,
+      name: 'someOtherName'
+    }
+  ],
+  sizes: [16],
+  resolutions: [1, 2],
+  outputPath: `/${FIXTURES}/out`,
+  rtlFlip: true,
+  iconName: 'arrow-left',
+  sourceConfigFile: `${FIXTURES}/system-icons/iconrc.json`,
+});
 
 describe('svgToRaster()', function () {
   it('Creates all the raster assets and updates the icon correctly', async () => {
@@ -242,30 +242,44 @@ describe('svgToRaster()', function () {
     assert.deepEqual(flavorWithTypes2, output.getConfig().types);
   });
 
-  //NOTE This test is failing
-  // it('Creates the proper flipped pngs and webps', async () => {
-  //   console.log('testing flipped icons');
+  it('Creates the proper flipped webps and no flipped pngs', async () => {
+    const options: SvgToRasterOptions = {
+      propCombo: {
+        sizes: { width: 24, height: 12 },
+        resolutions: 2
+      }
+    };
 
-    // const options: SvgToRasterOptions = {
-    //   propCombo: {
-    //     sizes: { width: 24, height: 12 },
-    //     resolutions: 2
-    //   }
-    // };
-  //   const flavorWithFlips: FlavorTypeMap = {
-  //     png: {
-  //       name: 'medium-16x16@2',
-  //       path: './medium-16x16@2.png',
-  //       imageset: 'medium-16x16'
-  //     },
-  //     webp: {
-  //       name: 'medium-16x16@2',
-  //       path: './medium-16x16@2.webp',
-  //       imageset: 'medium-16x16'
-  //     }
-  //   };
-  //   const output: Flavor = await svgToRaster.fn(flipFlavor, flipIcon);
+    await svgToRaster.fn(flipFlavor, flipIcon, options);
 
-  //   assert.deepEqual(flavorWithFlips, output.getConfig().types);
-  // });
+    const iconPath = `${output}/arrow-left`;
+
+    const flavors = [
+      {
+        name: 'medium-24x12@2-flipped'
+      },
+      {
+        name: 'medium-24x12@2'
+      }
+    ];
+
+    const files = fs.readdirSync(iconPath);
+
+    flavors.forEach(flavor => {
+      assert.ok(
+        files.includes(`${flavor.name}.webp`),
+        `includes ${flavor.name}.webp`
+      );
+    });
+
+    assert.ok(
+      files.includes(`medium-24x12@2.png`),
+      `correctly includes un-flipped png`
+    );
+
+    assert.ok(
+      files.indexOf(`medium-24x12@2-flipped.png`) === -1,
+      `correctly does not include flipped png`
+    );
+  });
 });
