@@ -65,6 +65,26 @@ describe('distribute works as expected', function () {
     });
   });
 
+  it('distributes flipped and unflipped .webp files to the right output directories', async () => {
+    await distributeByType(iconSet, output, 'webp', false);
+    const iconPath = `${output}/drawable-xxxhdpi`;
+    const flipIconPath = `${output}/drawable-ldrtl-xxxhdpi`;
+    const iconName = 'ic_ui_icon_arrow_left_medium_24x12';
+
+    const file = fs.readdirSync(iconPath);
+    const flipFile = fs.readdirSync(flipIconPath);
+
+    assert.ok(
+      file.includes(`${iconName}.webp`),
+      `includes unflipped ${iconName}.webp`
+    );
+
+    assert.ok(
+      flipFile.includes(`${iconName}.webp`),
+      `includes flipped ${iconName}.webp`
+    );
+  });
+
   it('Moves all .png files to the output directory', async () => {
     const icons = [
       {

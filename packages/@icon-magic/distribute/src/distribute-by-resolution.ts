@@ -29,9 +29,23 @@ export async function distributeByResolution(
       // the output folder is the folder by resolution
       outputIconDir = path.join(outputPath, getAssetResolutionFromName(asset));
 
+      const regexEnd = /-flipped$/;
+
+      // Boolean to see if asset name ends with "-flipped"
+      const regexMatch = asset.name.match(regexEnd);
+
+      // if icon name ends with "-flipped", use the -ldrtl- directory name from utils
+      if (regexMatch && regexMatch.length > 0) {
+        outputIconDir = path.join(outputPath, getAssetResolutionFromName(asset, false, true));
+      }
+
       // get the asset name by prepending the icon name
       // also making both of them kebab case
       let assetName = asset.name.split('@')[0];
+
+      // remove the -flipped suffix so that regular and rtl webP have the same name
+      assetName = assetName.replace(regexEnd, '');
+
       const iconName = icon.iconName;
       assetName = `${iconName}_${assetName}${path.extname(asset.getPath())}`;
 

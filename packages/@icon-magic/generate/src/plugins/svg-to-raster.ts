@@ -165,7 +165,8 @@ export const svgToRaster: GeneratePlugin = {
       await generatePng(flavorContent, w * res, h * res, pngOutput);
 
       if (icon.rtlFlip) {
-        const flipPngOutput = `${path.join(outputPath, assetName)}-flipped.png`;
+        assetName = `${assetName}-flipped`;
+        const flipPngOutput = `${path.join(outputPath, assetName)}.png`;
         LOGGER.debug(`Creating ${flipPngOutput}`);
         const flipFlavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
         await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
@@ -174,7 +175,7 @@ export const svgToRaster: GeneratePlugin = {
         LOGGER.debug(`Creating flipped webp from ${flipPngOutput}`);
         await convertToWebp(
           flipPngOutput,
-          `${path.join(outputPath, assetName)}-flipped.webp`
+          `${path.join(outputPath, assetName)}.webp`
         );
 
         // Delete flipped png asset (only need flipped webP for android)

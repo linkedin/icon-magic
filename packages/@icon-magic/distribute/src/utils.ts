@@ -10,33 +10,34 @@ import { Asset, Flavor, FlavorType, Icon } from '@icon-magic/icon-models';
  */
 export function getAssetResolutionFromName(
   asset: Asset,
-  getAsScale?: Boolean
+  getAsScale?: Boolean,
+  rtlFlip?: Boolean
 ): string {
   let resolution;
   let scale;
   switch (true) {
     case /@1.5/.test(asset.name): {
-      resolution = 'drawable-hdpi';
+      resolution = rtlFlip ? 'drawable-ldrtl-hdpi' : 'drawable-hdpi';
       scale = '1.5x';
       break;
     }
     case /@1/.test(asset.name): {
-      resolution = 'drawable-mdpi';
+      resolution = rtlFlip ? 'drawable-ldrtl-mdpi' : 'drawable-mdpi';
       scale = '1x';
       break;
     }
     case /@2/.test(asset.name): {
-      resolution = 'drawable-xhdpi';
+      resolution = rtlFlip ? 'drawable-ldrtl-xhdpi' : 'drawable-xhdpi';
       scale = '2x';
       break;
     }
     case /@3/.test(asset.name): {
-      resolution = 'drawable-xxhdpi';
+      resolution = rtlFlip ? 'drawable-ldrtl-xxhdpi' : 'drawable-xxhdpi';
       scale = '3x';
       break;
     }
     default: {
-      resolution = 'drawable-xxxhdpi';
+      resolution = rtlFlip ? 'drawable-ldrtl-xxxhdpi' : 'drawable-xxxhdpi';
       scale = '4x';
       break;
     }

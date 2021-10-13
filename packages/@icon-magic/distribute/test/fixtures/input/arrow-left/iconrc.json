@@ -1,0 +1,32 @@
+{
+  "iconName": "arrow-left",
+  "variants": [
+    {
+      "path": "./medium.svg"
+    }
+  ],
+  "category": "ui-icon",
+  "iconPath": ".",
+  "flavors": [
+    {
+      "name": "medium-24x12",
+      "path": "./medium.svg",
+      "types": {
+        "webp": {
+          "name": "medium-24x12",
+          "path": "./medium-24x12@2.webp"
+        }
+      }
+    },
+    {
+      "name": "medium-24x12-flipped",
+      "path": "./medium.svg",
+      "types": {
+        "webp": {
+          "name": "medium-24x12-flipped",
+          "path": "./medium-24x12@2-flipped.webp"
+        }
+      }
+    }
+  ]
+}
