@@ -7,7 +7,6 @@
   ],
   "category": "ui-icon",
   "iconPath": ".",
-  "rtlFlip": true,
   "flavors": [
     {
       "name": "filled-24x12",
@@ -47,5 +46,8 @@
       "toSprite": true,
       "spriteNames": ["icons-2"]
     }
+  },
+  "metadata": {
+    "rtlFlip": true
   }
 }

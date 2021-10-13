@@ -75,9 +75,11 @@ const flipIcon = new Icon({
   sizes: [16],
   resolutions: [1, 2],
   outputPath: `/${FIXTURES}/out`,
-  rtlFlip: true,
   iconName: 'arrow-left',
   sourceConfigFile: `${FIXTURES}/system-icons/iconrc.json`,
+  metadata: {
+    rtlFlip: true
+  }
 });
 
 describe('svgToRaster()', function () {

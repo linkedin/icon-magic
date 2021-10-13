@@ -158,15 +158,17 @@ export const svgToRaster: GeneratePlugin = {
 
       // create the icon output path if it doesn't exist already
       await fs.mkdirp(outputPath);
+
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
       const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
       await generatePng(flavorContent, w * res, h * res, pngOutput);
 
-      if (icon.rtlFlip) {
-        assetName = `${assetName}-flipped`;
-        const flipPngOutput = `${path.join(outputPath, assetName)}.png`;
+      const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
+
+      if (rtlFlip) {
+        const flipPngOutput = `${path.join(outputPath, assetName)}-flipped.png`;
         LOGGER.debug(`Creating ${flipPngOutput}`);
         const flipFlavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
         await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
@@ -175,7 +177,7 @@ export const svgToRaster: GeneratePlugin = {
         LOGGER.debug(`Creating flipped webp from ${flipPngOutput}`);
         await convertToWebp(
           flipPngOutput,
-          `${path.join(outputPath, assetName)}.webp`
+          `${path.join(outputPath, assetName)}-flipped.webp`
         );
 
         // Delete flipped png asset (only need flipped webP for android)
@@ -201,7 +203,7 @@ export const svgToRaster: GeneratePlugin = {
 
       // create a new flavor with this sizexresolution combination
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
-        name: assetName,
+        name: rtlFlip ? `${assetName}-flipped` : assetName,
         path: flavor.getPath(),
         generateSourceHash: createHash(flavorContent),
         types: {
@@ -211,12 +213,20 @@ export const svgToRaster: GeneratePlugin = {
             imageset: imageset,
             colorScheme: flavor.colorScheme
           },
-          webp: {
+          ...(!rtlFlip && { webp: {
             name: assetName,
             path: `./${assetName}.webp`,
             imageset: imageset,
             colorScheme: flavor.colorScheme
           }
+        }),
+          ...(rtlFlip && { webp: {
+            name: `${assetName}-flipped`,
+            path: `./${assetName}-flipped.webp`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
+            }
+          })
         }
       });
       return flavorWithRasterAssets;

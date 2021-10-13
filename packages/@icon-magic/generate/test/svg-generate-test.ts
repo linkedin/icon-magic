@@ -57,14 +57,14 @@ const iconFlip = new Icon({
   sizes: [8, 16],
   resolutions: [1, 2, 3],
   outputPath: `/${FIXTURES}/out`,
-  rtlFlip: true,
   iconName: 'home',
   sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
   metadata: {
     nameSizeMapping: {
       filled: 8,
       outline: 16
-    }
+    },
+    rtlFlip: true
   }
 });
 

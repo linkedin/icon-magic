@@ -68,9 +68,11 @@ export const svgGenerate: GeneratePlugin = {
     const attributes = { id: `${icon.iconName}-${flavor.name}`, 'aria-hidden': true, 'role': 'none'};
     let setCurrentColor = true; // by default, sets the colour of the icon to take the currentColor
 
+    const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
+
     const classNames = params.classNames || [];
 
-    if (icon.rtlFlip && classNames.indexOf("rtl-flip") === -1) {
+    if (rtlFlip && classNames.indexOf("rtl-flip") === -1) {
       classNames.push("rtl-flip");
     }
 

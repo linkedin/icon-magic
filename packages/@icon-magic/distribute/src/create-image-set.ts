@@ -30,7 +30,8 @@ interface AssetCatalog {
  */
 export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
-    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${icon.rtlFlip || false}`);
+    const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
+    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${rtlFlip || false}`);
     const assets = getIconFlavorsByType(icon, 'png');
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
@@ -100,7 +101,7 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
           idiom: 'universal',
           scale: getAssetResolutionFromName(asset, true),
           filename: assetNameForCatalog,
-          ...(icon.rtlFlip && { "language-direction": "left-to-right" }),
+          ...(rtlFlip && { "language-direction": "left-to-right" }),
           ...(asset.colorScheme === 'dark' && {
             appearances: [
               {
