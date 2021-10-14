@@ -15,14 +15,8 @@
         "webp": {
           "name": "medium-24x12",
           "path": "./medium-24x12@2.webp"
-        }
-      }
-    },
-    {
-      "name": "medium-24x12-flipped",
-      "path": "./medium.svg",
-      "types": {
-        "webp": {
+        },
+        "webpFlip": {
           "name": "medium-24x12-flipped",
           "path": "./medium-24x12@2-flipped.webp"
         }

@@ -203,7 +203,7 @@ export const svgToRaster: GeneratePlugin = {
 
       // create a new flavor with this sizexresolution combination
       const flavorWithRasterAssets: Flavor = new Flavor(icon.iconPath, {
-        name: rtlFlip ? `${assetName}-flipped` : assetName,
+        name: assetName,
         path: flavor.getPath(),
         generateSourceHash: createHash(flavorContent),
         types: {
@@ -213,14 +213,13 @@ export const svgToRaster: GeneratePlugin = {
             imageset: imageset,
             colorScheme: flavor.colorScheme
           },
-          ...(!rtlFlip && { webp: {
+          webp: {
             name: assetName,
             path: `./${assetName}.webp`,
             imageset: imageset,
             colorScheme: flavor.colorScheme
-          }
-        }),
-          ...(rtlFlip && { webp: {
+          },
+          ...(rtlFlip && { webpFlip: {
             name: `${assetName}-flipped`,
             path: `./${assetName}-flipped.webp`,
             imageset: imageset,

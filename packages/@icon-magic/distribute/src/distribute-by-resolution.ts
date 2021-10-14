@@ -21,7 +21,11 @@ export async function distributeByResolution(
 ) {
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`distributeByResolution for ${icon.iconName}`);
-    const assets = getIconFlavorsByType(icon, 'webp');
+
+    const flippedAssets = getIconFlavorsByType(icon, 'webpFlip');
+    const regularAssets = getIconFlavorsByType(icon, 'webp');
+    const assets = [...flippedAssets, ...regularAssets];
+
     let outputIconDir;
     // copy all assets to the output icon directory
     const promises = [];
