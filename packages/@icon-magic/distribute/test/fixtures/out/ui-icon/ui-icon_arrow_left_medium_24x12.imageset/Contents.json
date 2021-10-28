@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "idiom": "universal",
+      "scale": "4x",
+      "filename": "ui-icon_arrow_left_medium_24x12@2_rtl.png",
+      "language-direction": "right-to-left"
+    },
+    {
+      "idiom": "universal",
+      "scale": "4x",
+      "filename": "ui-icon_arrow_left_medium_24x12@2.png",
+      "language-direction": "left-to-right"
+    }
+  ]
+}

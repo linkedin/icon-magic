@@ -16,11 +16,22 @@
           "name": "medium-24x12",
           "path": "./medium-24x12@2.webp"
         },
+        "png": {
+          "name": "medium-24x12",
+          "path": "./medium-24x12@2.png"
+        },
         "webpFlip": {
-          "name": "medium-24x12-flipped",
-          "path": "./medium-24x12@2-flipped.webp"
+          "name": "medium-24x12-rtl",
+          "path": "./medium-24x12@2-rtl.webp"
+        },
+        "pngFlip": {
+          "name": "medium-24x12-rtl",
+          "path": "./medium-24x12@2-rtl.png"
         }
       }
     }
-  ]
+  ],
+  "metadata": {
+    "rtlFlip": true
+  }
 }

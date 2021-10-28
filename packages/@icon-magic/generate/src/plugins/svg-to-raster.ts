@@ -168,21 +168,17 @@ export const svgToRaster: GeneratePlugin = {
       const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
 
       if (rtlFlip) {
-        const flipPngOutput = `${path.join(outputPath, assetName)}-flipped.png`;
+        const flipPngOutput = `${path.join(outputPath, assetName)}-rtl.png`;
         LOGGER.debug(`Creating ${flipPngOutput}`);
         const flipFlavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
         await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
 
-        // Convert the flipped png to flipped webp
-        LOGGER.debug(`Creating flipped webp from ${flipPngOutput}`);
+        // Convert the rtl png to rtl webp
+        LOGGER.debug(`Creating rtl webp from ${flipPngOutput}`);
         await convertToWebp(
           flipPngOutput,
-          `${path.join(outputPath, assetName)}-flipped.webp`
+          `${path.join(outputPath, assetName)}-rtl.webp`
         );
-
-        // Delete flipped png asset (only need flipped webP for android)
-        LOGGER.debug(`Deleting flipped png: ${flipPngOutput}`);
-        fs.removeSync(flipPngOutput);
       }
 
       // Convert the png to webp
@@ -220,8 +216,15 @@ export const svgToRaster: GeneratePlugin = {
             colorScheme: flavor.colorScheme
           },
           ...(rtlFlip && { webpFlip: {
-            name: `${assetName}-flipped`,
-            path: `./${assetName}-flipped.webp`,
+            name: `${assetName}-rtl`,
+            path: `./${assetName}-rtl.webp`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
+            }
+          }),
+          ...(rtlFlip && { pngFlip: {
+            name: `${assetName}-rtl`,
+            path: `./${assetName}-rtl.png`,
             imageset: imageset,
             colorScheme: flavor.colorScheme
             }

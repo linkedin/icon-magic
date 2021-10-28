@@ -22,9 +22,9 @@ export async function distributeByResolution(
   for (const icon of iconSet.hash.values()) {
     LOGGER.debug(`distributeByResolution for ${icon.iconName}`);
 
-    const flippedAssets = getIconFlavorsByType(icon, 'webpFlip');
+    const rtlAssets = getIconFlavorsByType(icon, 'webpFlip');
     const regularAssets = getIconFlavorsByType(icon, 'webp');
-    const assets = [...flippedAssets, ...regularAssets];
+    const assets = [...rtlAssets, ...regularAssets];
 
     let outputIconDir;
     // copy all assets to the output icon directory
@@ -33,12 +33,12 @@ export async function distributeByResolution(
       // the output folder is the folder by resolution
       outputIconDir = path.join(outputPath, getAssetResolutionFromName(asset));
 
-      const regexEnd = /-flipped$/;
+      const regexEnd = /-rtl$/;
 
-      // Boolean to see if asset name ends with "-flipped"
+      // Boolean to see if asset name ends with "-rtl"
       const regexMatch = asset.name.match(regexEnd);
 
-      // if icon name ends with "-flipped", use the -ldrtl- directory name from utils
+      // if icon name ends with "-rtl", use the -ldrtl- directory name from utils
       if (regexMatch && regexMatch.length > 0) {
         outputIconDir = path.join(outputPath, getAssetResolutionFromName(asset, false, true));
       }
@@ -47,7 +47,7 @@ export async function distributeByResolution(
       // also making both of them kebab case
       let assetName = asset.name.split('@')[0];
 
-      // remove the -flipped suffix so that regular and rtl webP have the same name
+      // remove the -rtl suffix so that regular and rtl webP have the same name
       assetName = assetName.replace(regexEnd, '');
 
       const iconName = icon.iconName;

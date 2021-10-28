@@ -244,7 +244,7 @@ describe('svgToRaster()', function () {
     assert.deepEqual(flavorWithTypes2, output.getConfig().types);
   });
 
-  it('Creates the proper flipped webps and no flipped pngs', async () => {
+  it('Creates the proper rtl webps and pngs', async () => {
     const options: SvgToRasterOptions = {
       propCombo: {
         sizes: { width: 24, height: 12 },
@@ -258,7 +258,7 @@ describe('svgToRaster()', function () {
 
     const flavors = [
       {
-        name: 'medium-24x12@2-flipped'
+        name: 'medium-24x12@2-rtl'
       },
       {
         name: 'medium-24x12@2'
@@ -276,12 +276,14 @@ describe('svgToRaster()', function () {
 
     assert.ok(
       files.includes(`medium-24x12@2.png`),
-      `correctly includes un-flipped png`
+      `correctly includes regular-ltr png`
     );
 
-    assert.ok(
-      files.indexOf(`medium-24x12@2-flipped.png`) === -1,
-      `correctly does not include flipped png`
-    );
+    flavors.forEach(flavor => {
+      assert.ok(
+        files.includes(`${flavor.name}.png`),
+        `includes ${flavor.name}.png`
+      );
+    });
   });
 });

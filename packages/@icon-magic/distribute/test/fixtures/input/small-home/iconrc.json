@@ -32,8 +32,5 @@
       "toSprite": true,
       "spriteNames": ["icons-2"]
     }
-  },
-  "metadata": {
-    "rtlFlip": true
   }
 }

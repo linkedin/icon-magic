@@ -32,7 +32,9 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
     const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
     LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${rtlFlip || false}`);
-    const assets = getIconFlavorsByType(icon, 'png');
+    const rtlAssets = getIconFlavorsByType(icon, 'pngFlip');
+    const regularAssets = getIconFlavorsByType(icon, 'png');
+    const assets = [...rtlAssets, ...regularAssets];
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
     let iconOutputPath = outputPath;
@@ -101,7 +103,8 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
           idiom: 'universal',
           scale: getAssetResolutionFromName(asset, true),
           filename: assetNameForCatalog,
-          ...(rtlFlip && { "language-direction": "left-to-right" }),
+          ...(rtlFlip && regularAssets.includes(asset) && { "language-direction": "left-to-right" }),
+          ...(rtlFlip && rtlAssets.includes(asset) && { "language-direction": "right-to-left" }),
           ...(asset.colorScheme === 'dark' && {
             appearances: [
               {
