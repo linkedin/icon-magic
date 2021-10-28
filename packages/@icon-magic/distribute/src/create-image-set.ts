@@ -145,7 +145,12 @@ async function writeJSONfile(filePath: string, data: object): Promise<void> {
  * @param asset the asset to check if it's in a supported resolution
  */
 function isSupportedResolution(asset: Asset) {
-  const assetResolution = Number(asset.name.split('@').pop());
+  let assetNameEnd = asset.name.split('@').pop();
+  LOGGER.debug(`Name: ${asset.name}, assetEnd1st: ${assetNameEnd}`);
+  if (assetNameEnd) {
+    assetNameEnd = assetNameEnd.replace(/-rtl$/, '');
+  }
+  const assetResolution = Number(assetNameEnd);
   return assetResolution
     ? IOS_SUPPORTED_RESOLUTIONS.includes(Number(assetResolution))
     : true;
