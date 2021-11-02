@@ -53,6 +53,10 @@ export const svgToRaster: GeneratePlugin = {
     icon: Icon,
     params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
+    // if flavor is mixed, just return flavor because png and webp do not use them
+    if (flavor.colorScheme === "mixed") {
+      return flavor;
+    }
     // get the size and resolution from the params passed in
     if (params.propCombo) {
       let w: number;
@@ -154,14 +158,31 @@ export const svgToRaster: GeneratePlugin = {
 
       // create the icon output path if it doesn't exist already
       await fs.mkdirp(outputPath);
+
       // First, we generate the png and store it in the output directory
       const pngOutput = `${path.join(outputPath, assetName)}.png`;
       LOGGER.debug(`Creating ${pngOutput}`);
       const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
       await generatePng(flavorContent, w * res, h * res, pngOutput);
 
+      const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
+
+      if (rtlFlip) {
+        const flipPngOutput = `${path.join(outputPath, assetName)}-rtl.png`;
+        LOGGER.debug(`Creating ${flipPngOutput}`);
+        const flipFlavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
+        await generatePng(flipFlavorContent, w * res, h * res, flipPngOutput, true);
+
+        // Convert the rtl png to rtl webp
+        LOGGER.debug(`Creating rtl webp from ${flipPngOutput}`);
+        await convertToWebp(
+          flipPngOutput,
+          `${path.join(outputPath, assetName)}-rtl.webp`
+        );
+      }
+
       // Convert the png to webp
-      LOGGER.debug(`Creating webp from ${pngOutput} `);
+      LOGGER.debug(`Creating webp from ${pngOutput}`);
       await convertToWebp(
         pngOutput,
         `${path.join(outputPath, assetName)}.webp`
@@ -193,7 +214,21 @@ export const svgToRaster: GeneratePlugin = {
             path: `./${assetName}.webp`,
             imageset: imageset,
             colorScheme: flavor.colorScheme
-          }
+          },
+          ...(rtlFlip && { webpFlip: {
+            name: `${assetName}-rtl`,
+            path: `./${assetName}-rtl.webp`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
+            }
+          }),
+          ...(rtlFlip && { pngFlip: {
+            name: `${assetName}-rtl`,
+            path: `./${assetName}-rtl.png`,
+            imageset: imageset,
+            colorScheme: flavor.colorScheme
+            }
+          })
         }
       });
       return flavorWithRasterAssets;
@@ -222,9 +257,10 @@ async function generatePng(
   svg: string,
   width: number,
   height: number,
-  outputPath: string
+  outputPath: string,
+  rtlFlip?: boolean
 ): Promise<void> {
-  const png = await convert(svg, { width, height });
+  const png = await convert(svg, { width, height, rtlFlip });
   await fs.writeFile(outputPath, png);
 }
 

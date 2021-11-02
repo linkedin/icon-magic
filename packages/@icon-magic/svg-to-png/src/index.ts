@@ -6,6 +6,7 @@ import { run } from './browserPool';
 export interface SVGToPNGOptions {
   width: number;
   height: number;
+  rtlFlip?: boolean;
   headless?: boolean;
 }
 
@@ -34,7 +35,7 @@ export async function convert(
       height: Math.round(options.height) + 100,
       deviceScaleFactor: 1,
     });
-    await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0;" `));
+    await page.setContent(contents.toString().replace('<svg', `<svg style="width: ${options.width}px; height: ${options.height}px; position: fixed; top:0; left: 0; ${options.rtlFlip ? 'transform: scaleX(-1);' : ''}" `));
     return await page.screenshot({
       encoding: 'binary',
       omitBackground: true,

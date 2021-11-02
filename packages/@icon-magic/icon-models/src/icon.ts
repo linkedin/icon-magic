@@ -39,7 +39,6 @@ export class Icon {
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
   metadata?: MetaData;
-  rtlFlip?: boolean;
 
   /**
    * Creates an Icon instance by creating sub classes for it's variants and
@@ -150,8 +149,7 @@ export class Icon {
       sizes: this.sizes,
       resolutions: this.resolutions,
       iconName: this.iconName,
-      outputPath: this.outputPath,
-      rtlFlip: this.rtlFlip
+      outputPath: this.outputPath
     };
 
     // fill out the variant data by getting the config from each
@@ -186,9 +184,6 @@ export class Icon {
     }
     if (this.distribute) {
       config.distribute = this.distribute;
-    }
-    if (this.rtlFlip) {
-      config.rtlFlip = this.rtlFlip;
     }
 
     // return the object

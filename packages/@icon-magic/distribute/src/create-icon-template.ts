@@ -66,9 +66,10 @@ export async function createHbs(
       iconName = iconName.replace(/-mixed$/, '');
     }
 
+    // create the output directory if it doesn't already exist
+    await fs.mkdirp(outputPath);
 
-    // xmldom and other dom substitutions (like jsdom) add ...attributes="" and
-    // the string replace below is an ugly hack to remove the empty string
+    // write the new hbs template file to disk
     fs.writeFileSync(path.join(outputPath, `${iconName}.hbs`), code);
   }
 }

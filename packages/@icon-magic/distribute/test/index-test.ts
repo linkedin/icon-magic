@@ -65,7 +65,29 @@ describe('distribute works as expected', function () {
     });
   });
 
+  it('distributes rtl and regular-ltr .webp files to the right output directories', async () => {
+    await distributeByType(iconSet, output, 'webp', false);
+    const iconPath = `${output}/drawable-xxxhdpi`;
+    const flipIconPath = `${output}/drawable-ldrtl-xxxhdpi`;
+    const iconName = 'ic_ui_icon_arrow_left_medium_24x12';
+
+    const file = fs.readdirSync(iconPath);
+    const flipFile = fs.readdirSync(flipIconPath);
+
+    assert.ok(
+      file.includes(`${iconName}.webp`),
+      `includes regular-ltr ${iconName}.webp`
+    );
+
+    assert.ok(
+      flipFile.includes(`${iconName}.webp`),
+      `includes rtl ${iconName}.webp`
+    );
+  });
+
   it('Moves all .png files to the output directory', async () => {
+    const LTR = "left-to-right";
+    const RTL = "right-to-left";
     const icons = [
       {
         iconName: 'filled_1_filled_24x12',
@@ -73,8 +95,7 @@ describe('distribute works as expected', function () {
       },
       {
         iconName: 'filled_2_filled_24x12',
-        category: 'uix-icon',
-        "language-direction": "left-to-right"
+        category: 'uix-icon'
       },
       {
         iconName: 'filled_3_filled_24x12',
@@ -82,6 +103,10 @@ describe('distribute works as expected', function () {
       },
       {
         iconName: 'filled_1_filled_60x60',
+        category: 'ui-icon'
+      },
+      {
+        iconName: 'arrow_left_medium_24x12',
         category: 'ui-icon'
       }
     ];
@@ -102,9 +127,22 @@ describe('distribute works as expected', function () {
           assert.ok(Array.isArray(contentsJsonImages), 'Contents.json is filled with an array called images');
           assert.ok(contentsJsonImages.find((entry: { filename: string; }) => entry.filename === `${icon.category}_${icon.iconName}@2.png`));
 
-          if (icon["language-direction"]) {
-            assert.ok(contentsJsonImages.find((entry) => {
-              return entry["language-direction"] === icon["language-direction"];
+          const arrowRtlImages = contentsJsonImages.filter((entry) => entry.filename === `ui-icon_arrow_left_medium_24x12@2_rtl`);
+          const arrowLtrImages = contentsJsonImages.filter((entry) => entry.filename === `ui-icon_arrow_left_medium_24x12@2`);
+
+          // If array with RTL arrow image exists
+          if (arrowRtlImages.length > 1) {
+            assert.ok(arrowRtlImages.find((entry) => {
+              // language-direction property is set correctly to rtl
+              return entry["language-direction"] === RTL;
+            }));
+          }
+
+          // If array with LTR arrow image exists
+          if (arrowLtrImages.length > 1) {
+            assert.ok(arrowLtrImages.find((entry) => {
+              // language-direction property is set correctly to ltr
+              return entry["language-direction"] === LTR;
             }));
           }
 

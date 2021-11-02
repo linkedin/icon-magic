@@ -30,8 +30,11 @@ interface AssetCatalog {
  */
 export async function createImageSet(iconSet: IconSet, outputPath: string) {
   for (const icon of iconSet.hash.values()) {
-    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${icon.rtlFlip || false}`);
-    const assets = getIconFlavorsByType(icon, 'png');
+    const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
+    LOGGER.debug(`Creating imageSet for ${icon.iconName}, rtl: ${rtlFlip || false}`);
+    const rtlAssets = getIconFlavorsByType(icon, 'pngFlip');
+    const regularAssets = getIconFlavorsByType(icon, 'png');
+    const assets = [...rtlAssets, ...regularAssets];
     const promises = [];
     const ASSET_CATALOG = 'Contents.json'; // as defined for iOS
     let iconOutputPath = outputPath;
@@ -100,7 +103,8 @@ export async function createImageSet(iconSet: IconSet, outputPath: string) {
           idiom: 'universal',
           scale: getAssetResolutionFromName(asset, true),
           filename: assetNameForCatalog,
-          ...(icon.rtlFlip && { "language-direction": "left-to-right" }),
+          ...(rtlFlip && regularAssets.includes(asset) && { "language-direction": "left-to-right" }),
+          ...(rtlFlip && rtlAssets.includes(asset) && { "language-direction": "right-to-left" }),
           ...(asset.colorScheme === 'dark' && {
             appearances: [
               {
@@ -141,7 +145,14 @@ async function writeJSONfile(filePath: string, data: object): Promise<void> {
  * @param asset the asset to check if it's in a supported resolution
  */
 function isSupportedResolution(asset: Asset) {
-  const assetResolution = Number(asset.name.split('@').pop());
+  // Pops the end of the asset name (after the "@"). Examples: "2" or "2-rtl".
+  let assetNameEnd = asset.name.split('@').pop();
+
+  // removes the "-rtl" suffix if it exists. Leaving only the number as a string.
+  if (assetNameEnd) {
+    assetNameEnd = assetNameEnd.replace(/-rtl$/, '');
+  }
+  const assetResolution = Number(assetNameEnd);
   return assetResolution
     ? IOS_SUPPORTED_RESOLUTIONS.includes(Number(assetResolution))
     : true;
