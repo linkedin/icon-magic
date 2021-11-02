@@ -145,8 +145,10 @@ async function writeJSONfile(filePath: string, data: object): Promise<void> {
  * @param asset the asset to check if it's in a supported resolution
  */
 function isSupportedResolution(asset: Asset) {
+  // results in the end of the name after the "@". Examples: "2" or "2-rtl".
   let assetNameEnd = asset.name.split('@').pop();
-  LOGGER.debug(`Name: ${asset.name}, assetEnd1st: ${assetNameEnd}`);
+
+  // removes the "-rtl" suffix if it exists. Leaving on the number as a string.
   if (assetNameEnd) {
     assetNameEnd = assetNameEnd.replace(/-rtl$/, '');
   }
