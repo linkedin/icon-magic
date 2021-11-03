@@ -56,7 +56,8 @@ export type PluginFunctionType<T> = (
 export interface Plugin<T> {
   name: string;
   fn: PluginFunctionType<T>;
-  iterants?: Iterant; // the config properßties on which it needs to reculrsively iterate through
+  iterants?: Iterant; // the config properties on which it needs to recursively iterate through
+  assetIterants?: Iterant; // properties on a variant that a plugin can recursively iterate through
   params?: object;
   writeToOutput?: boolean; // Do not set unless for debugging the plugin. By default, this is set to true for the last plugin of each step - build, generate, etc
 }
