@@ -19,6 +19,7 @@ export interface AssetConfig {
   colorScheme?: string;
   buildSourceHash?: string;
   generateSourceHash?: string;
+  sizes?: AssetSize[];
 }
 
 interface SVGOptions {
