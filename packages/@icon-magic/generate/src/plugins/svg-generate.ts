@@ -116,7 +116,7 @@ export const svgGenerate: GeneratePlugin = {
         break; // do nothing
       default:
         // also 'all'
-        dataSupportedDps = getSupportedSizes(icon.sizes);
+        dataSupportedDps = flavor.sizes ? getSupportedSizes(flavor.sizes) : getSupportedSizes(icon.sizes);
     }
     // set the attribute only if it's present
     if (dataSupportedDps) {

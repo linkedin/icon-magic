@@ -119,7 +119,7 @@ export type IconConfig = {
   iconPath: string;
   variants: AssetConfig[];
   sourceConfigFile: string;
-  sizes: AssetSize[];
+  sizes?: AssetSize[];
   resolutions: AssetResolution[];
   iconName?: string;
   labels?: string[];
