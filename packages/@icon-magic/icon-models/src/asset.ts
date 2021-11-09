@@ -1,7 +1,7 @@
 import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
-import { AssetConfig, Content } from './interface';
+import { AssetConfig, AssetSize, Content } from './interface';
 import { getFileContents } from './utils/files';
 
 /**
@@ -16,6 +16,7 @@ export class Asset {
   generateSourceHash?: string;
   imageset?: string;
   colorScheme?: string;
+  sizes!: AssetSize[];
   protected path: string;
   private LOGGER: Logger;
 
@@ -61,6 +62,10 @@ export class Asset {
     if (config.generateSourceHash) {
       this.generateSourceHash = config.generateSourceHash;
     }
+
+    if (config.sizes) {
+      this.sizes = config.sizes;
+    }
     this.LOGGER.debug(`Asset ${this.name} created in ${this.iconPath}`);
   }
 
@@ -101,6 +106,9 @@ export class Asset {
     }
     if (this.colorScheme) {
       config.colorScheme = this.colorScheme;
+    }
+    if (this.sizes) {
+      config.sizes = this.sizes;
     }
     return config;
   }

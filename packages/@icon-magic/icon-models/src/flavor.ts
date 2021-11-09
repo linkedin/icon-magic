@@ -61,7 +61,8 @@ export class Flavor extends Asset {
       generateSourceHash: this.generateSourceHash,
       imageset: this.imageset,
       colorScheme: this.colorScheme,
-      types: flavorTypes
+      types: flavorTypes,
+      sizes: this.sizes
     };
   }
 }

@@ -87,11 +87,13 @@ export const build: BuildConfig = {
 export const variants: AssetConfig[] = [
   {
     path: './filled.svg',
-    name: 'filled'
+    name: 'filled',
+    sizes: [32, 44]
   },
   {
     path: './outline.svg',
-    name: 'someOtherName'
+    name: 'someOtherName',
+    sizes: [32, 44]
   }
 ];
 

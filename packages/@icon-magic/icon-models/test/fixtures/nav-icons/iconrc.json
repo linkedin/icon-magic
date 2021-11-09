@@ -2,11 +2,13 @@
   "iconPath": "*",
   "variants": [
     {
-      "path": "./filled.svg"
+      "path": "./filled.svg",
+      "sizes": [32]
     },
     {
       "name": "someOtherName",
-      "path": "./outline.svg"
+      "path": "./outline.svg",
+      "sizes": [32]
     }
   ],
   "build": {

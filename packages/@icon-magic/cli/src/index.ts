@@ -183,10 +183,10 @@ program
     LOGGER.setDebug(options.debug);
 
     // build all the icons
-    const outputIconSet = await build(iconSet, options.hashing);
+    const outputIconSet = await build(iconSet, false);
 
     // generate all the icons
-    await iconGenerate.generate(outputIconSet, options.hashing);
+    await iconGenerate.generate(outputIconSet, false);
 
     // exit without any errors
     process.exit(0);
