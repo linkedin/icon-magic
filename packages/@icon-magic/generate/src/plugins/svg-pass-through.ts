@@ -28,10 +28,7 @@ export const svgPassThrough: GeneratePlugin = {
       'svg',
       new Asset(icon.iconPath, {
         name: flavor.name,
-        path: `./${flavor.name}.svg`,
-        imageset: flavor.imageset,
-        colorScheme: flavor.colorScheme,
-        sizes: flavor.sizes
+        path: `./${flavor.name}.svg`
       })
     );
     return flavor;

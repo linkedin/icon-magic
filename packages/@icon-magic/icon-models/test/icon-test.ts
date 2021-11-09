@@ -12,30 +12,12 @@ describe('@icon-magic/icon-models/icon', function() {
   it('getContents()', async () => {
     const icon = new Icon(idealIcon);
     const iconContent = await icon.variants[0].getContents();
-    assert.strictEqual(iconContent, outlineSvg);
+    assert.equal(iconContent, outlineSvg);
   });
 
   it('Icon to config conversion works correctly', async () => {
     const icon = new Icon(idealIcon);
-    assert.deepStrictEqual(icon.getConfig().variants, idealIcon.variants);
-  });
-
-  it('Icon to config conversion works correctly even when the flavor has the size', async () => {
-    const modifiedIcon = JSON.parse(JSON.stringify(idealIcon));
-
-    Object.assign(modifiedIcon, {
-      variants: [
-        {
-          name: "filled",
-          path: './filled.svg',
-          sizes: [32]
-        }
-      ]
-    });
-
-    const icon = new Icon(modifiedIcon as IconConfig);
-
-    assert.deepStrictEqual(icon.getConfig().variants, modifiedIcon.variants);
+    assert.deepEqual(icon.getConfig().variants, idealIcon.variants);
   });
 
   it('skips a variant if it does not exit', async () => {

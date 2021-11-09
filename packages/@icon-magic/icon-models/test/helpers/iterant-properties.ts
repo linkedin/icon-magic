@@ -46,35 +46,3 @@ export const complexIterantProps = [
     sizes: 24
   }
 ];
-
-export const assetIterantProps = [
-  {
-    iterant3: {
-      a: 'object here'
-    },
-    resolutions: 1,
-    sizes: 11
-  },
-  {
-    iterant3: {
-      a: 'object here'
-    },
-    resolutions: 2,
-    sizes: 11
-  },
-  {
-    iterant3: {
-      a: 'object here'
-    },
-    resolutions: 1,
-    sizes: 13
-  },
-  {
-    iterant3: {
-      a: 'object here'
-    },
-    resolutions: 2,
-    sizes: 13
-  }
-];
-

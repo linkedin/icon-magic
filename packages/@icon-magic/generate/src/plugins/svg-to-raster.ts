@@ -48,7 +48,6 @@ export interface SvgToRasterOptions {
 export const svgToRaster: GeneratePlugin = {
   name: 'svg-to-raster',
   iterants: ['sizes', 'resolutions'],
-  assetIterants: ['sizes'],
   fn: async (
     flavor: Flavor,
     icon: Icon,
@@ -208,30 +207,26 @@ export const svgToRaster: GeneratePlugin = {
             name: assetName,
             path: `./${assetName}.png`,
             imageset: imageset,
-            colorScheme: flavor.colorScheme,
-            sizes: flavor.sizes
+            colorScheme: flavor.colorScheme
           },
           webp: {
             name: assetName,
             path: `./${assetName}.webp`,
             imageset: imageset,
-            colorScheme: flavor.colorScheme,
-            sizes: flavor.sizes
+            colorScheme: flavor.colorScheme
           },
           ...(rtlFlip && { webpFlip: {
             name: `${assetName}-rtl`,
             path: `./${assetName}-rtl.webp`,
             imageset: imageset,
-            colorScheme: flavor.colorScheme,
-            sizes: flavor.sizes
+            colorScheme: flavor.colorScheme
             }
           }),
           ...(rtlFlip && { pngFlip: {
             name: `${assetName}-rtl`,
             path: `./${assetName}-rtl.png`,
             imageset: imageset,
-            colorScheme: flavor.colorScheme,
-            sizes: flavor.sizes
+            colorScheme: flavor.colorScheme
             }
           })
         }

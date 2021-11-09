@@ -17,13 +17,6 @@ const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
   path: `${FIXTURES}/nav-icons/home/filled.svg`
 });
 
-const flavorWithSize: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
-  name: 'filled',
-  contents: file,
-  path: `${FIXTURES}/nav-icons/home/filled.svg`,
-  sizes: [8]
-});
-
 const icon = new Icon({
   iconPath: `${FIXTURES}/out/home`,
   variants: [
@@ -75,26 +68,6 @@ const iconFlip = new Icon({
   }
 });
 
-const iconWithVariantSizes = new Icon({
-  iconPath: `${FIXTURES}/out/home`,
-  variants: [
-    {
-      path: `${FIXTURES}/nav-icons/home/filled.svg`,
-      name: 'filled',
-      sizes: [32]
-    },
-    {
-      path: `${FIXTURES}/nav-icons/home/outline.svg`,
-      name: 'someOtherName',
-      sizes: [32]
-    }
-  ],
-  resolutions: [1, 2, 3],
-  outputPath: `/${FIXTURES}/out`,
-  iconName: 'home',
-  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`
-});
-
 describe('svgGenerate()', function () {
   it('adds only current size when addSupportedDps is current', async () => {
     const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
@@ -126,16 +99,6 @@ describe('svgGenerate()', function () {
     const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
       addSupportedDps: 'all'
     });
-    const svgFromOutputFlavor = outputFlavor.types.get('svg');
-    if (svgFromOutputFlavor) {
-      assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);
-    }
-  });
-
-  it('adds data-supported-dps when addSupportedDps is not set and the size is passed through the variant', async () => {
-    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
-
-    const outputFlavor: Flavor = await svgGenerate.fn(flavorWithSize, iconWithVariantSizes, {});
     const svgFromOutputFlavor = outputFlavor.types.get('svg');
     if (svgFromOutputFlavor) {
       assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);
