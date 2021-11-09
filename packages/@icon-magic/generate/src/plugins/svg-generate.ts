@@ -70,6 +70,7 @@ export const svgGenerate: GeneratePlugin = {
 
     const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
 
+    // Pushing an empty string by default svgo plugin complains if the array is empty
     const classNames = params.classNames || [''];
 
     if (rtlFlip && classNames.indexOf("rtl-flip") === -1) {
@@ -116,6 +117,7 @@ export const svgGenerate: GeneratePlugin = {
         break; // do nothing
       default:
         // also 'all'
+        // Check first if the flavor has the size, otherwise use the icon size
         dataSupportedDps = flavor.sizes ? getSupportedSizes(flavor.sizes) : getSupportedSizes(icon.sizes);
     }
     // set the attribute only if it's present
@@ -140,7 +142,7 @@ export const svgGenerate: GeneratePlugin = {
       attributes['fill'] = 'currentColor';
     }
 
-    const svgoConfig = {
+    const svgo = new Svgo({
       plugins: [
         {
           addClassesToSVGElement: {
@@ -174,9 +176,7 @@ export const svgGenerate: GeneratePlugin = {
         { removeRasterImages: true }
       ],
       js2svg: { pretty: true, indent: 2 }
-    }
-
-    const svgo = new Svgo(svgoConfig);
+    });
 
     // write the optimized svg to the output directory
     const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string

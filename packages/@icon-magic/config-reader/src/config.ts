@@ -42,11 +42,8 @@ export class Config {
       const configJson = loadConfigFile(configFile);
       try {
         validateConfigSchema(configJson);
-        console.log(configJson)
         this.LOGGER.debug(`Configuration in ${configFile} is valid`);
       } catch (err) {
-        console.debug(err);
-
         throw new Error(`Configuration in ${configFile} is invalid:\n${err}`);
       }
 
