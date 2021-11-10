@@ -23,26 +23,26 @@
   "outputPath": "./test/fixtures/out",
   "flavors": [
     {
+      "name": "someOtherName",
+      "path": "./build/someOtherName.svg",
+      "types": {},
+      "buildSourceHash": "095461259d3f590f720705024335072e"
+    },
+    {
       "name": "filled",
       "path": "./build/filled.svg",
+      "types": {},
       "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
-      "colorScheme": "light",
-      "types": {}
+      "colorScheme": "light"
     },
     {
       "name": "filled-on-dark",
       "path": "./build/filled-on-dark.svg",
+      "types": {},
       "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
-      "colorScheme": "dark",
-      "types": {}
-    },
-    {
-      "name": "someOtherName",
-      "path": "./build/someOtherName.svg",
-      "buildSourceHash": "095461259d3f590f720705024335072e",
-      "types": {}
+      "colorScheme": "dark"
     }
   ],
   "build": {

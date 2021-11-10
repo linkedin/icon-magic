@@ -20,12 +20,12 @@ describe('@icon-magic/icon-models/flavor', function() {
       path.isAbsolute(flavor.getPath()),
       'always returns an absolute path'
     );
-    assert.equal(
+    assert.strictEqual(
       flavor.getPath(),
       path.join(`${FIXTURES}/nav-icons/home/filled-a.svg`),
       'is resolved with respect to the iconPath'
     );
-    assert.deepEqual(
+    assert.deepStrictEqual(
       filledContent.trim(),
       await flavor.getContents(),
       'reads the file correctly'
@@ -38,7 +38,7 @@ describe('@icon-magic/icon-models/flavor', function() {
       assert.ok(asset instanceof Asset, 'creates assets for each type value');
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       flavor.getConfig(),
       flavors[0],
       'config is the original content'

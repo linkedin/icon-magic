@@ -74,6 +74,9 @@ export const svgGenerate: GeneratePlugin = {
     const classNames = params.classNames || [''];
 
     if (rtlFlip && classNames.indexOf("rtl-flip") === -1) {
+      // Remove that empty string
+      classNames.pop();
+      // and then push the right class
       classNames.push("rtl-flip");
     }
 
