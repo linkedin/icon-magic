@@ -165,6 +165,11 @@ export function getAllPropCombinations(icon: Icon, iterants: Iterant, asset?: As
   // override with the asset iterants, if present
   if (asset && assetIterants) {
     for (const iterant of assetIterants) {
+      if (!asset.hasOwnProperty(iterant)) {
+        throw new Error(
+          `Could not find ${iterant} in the config file of asset ${asset.name} of ${icon.iconName}`
+        );
+      }
       let iterantValues = asset[iterant];
       if (!(iterantValues instanceof Array)) {
         iterantValues = new Array(iterantValues);
