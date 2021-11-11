@@ -144,7 +144,7 @@ export class Icon {
     // copy all properties have to be defined
     const config: IconConfig = {
       iconPath: '.', // we assume that the config will be written to the icon directory itself
-      variants: [], // by instantiaing variants to be an empty array
+      variants: [], // by instantiating variants to be an empty array
       sourceConfigFile: path.relative(this.iconPath, this.sourceConfigFile), // again, we resolve this path w.r.t. the icon directory
       sizes: this.sizes,
       resolutions: this.resolutions,

@@ -39,7 +39,7 @@ export interface SpriteConfig {
 }
 
 export type Iterant = string[];
-export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip';
+export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip' | 'svgWithImage';
 export type FlavorTypeMap = { [K in FlavorType]?: AssetConfig };
 
 export interface FlavorConfig extends AssetConfig {
@@ -97,9 +97,12 @@ export interface GenerateConfig {
  * Properties related to the distribution of the icon
  */
 export interface DistributeConfig {
-  variantsToFilter: string[];
+  variantsToFilter?: string[];
   svg?: SVGOptions;
   webp?: WebpOptions;
+  svgWithImage?: {
+    pathToTheImageAsset: string;
+  };
 }
 
 /**

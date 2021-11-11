@@ -154,7 +154,7 @@ export const svgGenerate: GeneratePlugin = {
       },
       {
         convertColors: {
-          currentColor: setCurrentColor ? true : false
+          currentColor: setCurrentColor ? true : false // this also converts fills within the svg paths
         }
       },
       {
