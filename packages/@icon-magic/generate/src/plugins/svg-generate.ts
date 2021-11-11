@@ -140,7 +140,7 @@ export const svgGenerate: GeneratePlugin = {
       attributes['fill'] = 'currentColor';
     }
 
-    let svgoPlugins: Svgo.PluginConfig[] = [
+    const svgoPlugins: Svgo.PluginConfig[] = [
       {
         removeViewBox: false
       },
@@ -173,7 +173,7 @@ export const svgGenerate: GeneratePlugin = {
         addClassesToSVGElement: {
           className: classNames
         }
-      })
+      });
     }
 
     const svgo = new Svgo({
