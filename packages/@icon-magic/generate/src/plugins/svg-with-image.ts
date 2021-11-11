@@ -61,8 +61,7 @@ export const svgWithImage: GeneratePlugin = {
         name: flavor.name,
         path: `./${flavor.name}-with-image.svg`,
         imageset: flavor.imageset,
-        colorScheme: flavor.colorScheme,
-        sizes: flavor.sizes
+        colorScheme: flavor.colorScheme
       })
     );
 
