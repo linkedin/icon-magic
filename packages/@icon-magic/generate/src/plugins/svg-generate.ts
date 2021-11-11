@@ -140,39 +140,44 @@ export const svgGenerate: GeneratePlugin = {
       attributes['fill'] = 'currentColor';
     }
 
+    const svgoPlugins: Svgo.PluginConfig[] = [
+      {
+        removeViewBox: false
+      },
+      {
+        cleanupIDs: {
+          prefix: `${icon.category}-${attributes.id}-`
+        }
+      },
+      {
+        removeDimensions: !params.isFixedDimensions
+      },
+      {
+        convertColors: {
+          currentColor: setCurrentColor ? true : false
+        }
+      },
+      {
+        removeAttrs: { attrs: '(data.*)' }
+      },
+      {
+        addAttributesToSVGElement: {
+          attributes: [attributes]
+        }
+      },
+      { removeRasterImages: true }
+    ];
+
+    if (classNames.length) {
+      svgoPlugins.push({
+        addClassesToSVGElement: {
+          className: classNames
+        }
+      });
+    }
+
     const svgo = new Svgo({
-      plugins: [
-        {
-          addClassesToSVGElement: {
-            classNames: classNames
-          }
-        },
-        {
-          removeViewBox: false
-        },
-        {
-          cleanupIDs: {
-            prefix: `${icon.category}-${attributes.id}-`
-          }
-        },
-        {
-          removeDimensions: !params.isFixedDimensions
-        },
-        {
-          convertColors: {
-            currentColor: setCurrentColor ? true : false // this also converts fills within the svg paths
-          }
-        },
-        {
-          removeAttrs: { attrs: '(data.*)' }
-        },
-        {
-          addAttributesToSVGElement: {
-            attributes: [attributes]
-          }
-        },
-        { removeRasterImages: true }
-      ],
+      plugins: svgoPlugins,
       js2svg: { pretty: true, indent: 2 }
     });
 
