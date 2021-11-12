@@ -70,9 +70,13 @@ export const svgGenerate: GeneratePlugin = {
 
     const rtlFlip = icon.metadata && icon.metadata.rtlFlip;
 
-    const classNames = params.classNames || [];
+    // Pushing an empty string by default svgo plugin complains if the array is empty
+    const classNames = params.classNames || [''];
 
     if (rtlFlip && classNames.indexOf("rtl-flip") === -1) {
+      // Remove that empty string
+      classNames.pop();
+      // and then push the right class
       classNames.push("rtl-flip");
     }
 
@@ -116,7 +120,8 @@ export const svgGenerate: GeneratePlugin = {
         break; // do nothing
       default:
         // also 'all'
-        dataSupportedDps = getSupportedSizes(icon.sizes);
+        // Check first if the flavor has the size, otherwise use the icon size
+        dataSupportedDps = flavor.sizes ? getSupportedSizes(flavor.sizes) : getSupportedSizes(icon.sizes);
     }
     // set the attribute only if it's present
     if (dataSupportedDps) {
@@ -183,15 +188,6 @@ export const svgGenerate: GeneratePlugin = {
 
     // write the optimized svg to the output directory
     const asset = await svgo.optimize(flavorContent); // .svg asset's getContents() returns a string
-    await fs.mkdirp(outputPath);
-
-    await fs.writeFile(
-      `${path.join(outputPath, flavor.name)}.svg`,
-      asset.data,
-      {
-        encoding: 'utf8'
-      }
-    );
 
     // Create a new svg asset type and add it to the flavor
     flavor.types.set(
@@ -200,8 +196,19 @@ export const svgGenerate: GeneratePlugin = {
         name: flavor.name,
         path: `./${flavor.name}.svg`,
         imageset: flavor.imageset,
-        colorScheme: flavor.colorScheme
+        colorScheme: flavor.colorScheme,
+        sizes: flavor.sizes
       })
+    );
+
+    await fs.mkdirp(outputPath);
+
+    await fs.writeFile(
+      `${path.join(outputPath, flavor.name)}.svg`,
+      asset.data,
+      {
+        encoding: 'utf8'
+      }
     );
     return flavor;
   }

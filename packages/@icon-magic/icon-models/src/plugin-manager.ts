@@ -74,7 +74,7 @@ async function applySinglePluginOnAsset(
 ): Promise<Flavor[]> {
   let output: Flavor[] = new Array();
   if (plugin.iterants) {
-    for (const propCombo of getAllPropCombinations(icon, plugin.iterants) ||
+    for (const propCombo of getAllPropCombinations(icon, plugin.iterants, asset, plugin.assetIterants) ||
       []) {
       LOGGER.debug(
         `applySinglePluginOnFlavor: Applying ${plugin.name} on ${asset.name} with`
@@ -146,8 +146,9 @@ async function applySinglePluginOnAsset(
  * @returns an array of objects, where the keys are the iterant names and values
  * are iterant values
  */
-export function getAllPropCombinations(icon: Icon, iterants: Iterant) {
+export function getAllPropCombinations(icon: Icon, iterants: Iterant, asset?: Asset, assetIterants?: Iterant) {
   const props = {};
+  // add icon properties into the prop combinator object
   for (const iterant of iterants) {
     if (!icon.hasOwnProperty(iterant)) {
       throw new Error(
@@ -160,5 +161,22 @@ export function getAllPropCombinations(icon: Icon, iterants: Iterant) {
     }
     props[iterant] = iterantValues;
   }
+
+  // override with the asset iterants, if present
+  if (asset && assetIterants) {
+    for (const iterant of assetIterants) {
+      if (!asset.hasOwnProperty(iterant)) {
+        throw new Error(
+          `Could not find ${iterant} in the config file of asset ${asset.name} of ${icon.iconName}`
+        );
+      }
+      let iterantValues = asset[iterant];
+      if (!(iterantValues instanceof Array)) {
+        iterantValues = new Array(iterantValues);
+      }
+      props[iterant] = iterantValues;
+    }
+  }
+
   return propCombinator(props);
 }

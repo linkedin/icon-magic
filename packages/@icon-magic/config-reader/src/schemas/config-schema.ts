@@ -1,19 +1,37 @@
+const assetSizeProperties = {
+  type: 'array',
+  minItems: 1,
+  items: {
+    type: ['number', 'object'],
+    properties: {
+      width: { type: 'number' },
+      height: { type: 'number' }
+    },
+    required: ['width', 'height'],
+    additionalProperties: false
+  }
+};
+
 const flavorProperties = {
   name: { type: 'string' },
   path: { type: 'string', minLength: 1 },
   types: { type: ['object', 'null'] },
   imageset: { type: ['string', 'null'] },
-  colorScheme: { type: 'string',  enum: ['dark', 'light', 'mixed'] }
+  colorScheme: { type: 'string',  enum: ['dark', 'light', 'mixed'] },
+  sizes: assetSizeProperties
+};
+
+const iterantProperties = {
+  type: ['array'],
+  items: {
+    type: 'string'
+  }
 };
 
 const pluginProperties = {
   name: { type: 'string' },
-  iterants: {
-    type: ['array'],
-    items: {
-      type: 'string'
-    }
-  },
+  iterants: iterantProperties,
+  assetIterants: iterantProperties,
   params: ['object'],
   writeToOutput: {
     type: 'boolean',
@@ -69,8 +87,10 @@ const variantProperties = {
   name: { type: 'string' },
   path: { type: 'string', minLength: 1 },
   imageset: { type: 'string' },
-  colorScheme: { type: 'string',  enum: ['dark', 'light'] }
+  colorScheme: { type: 'string',  enum: ['dark', 'light'] },
+  sizes: assetSizeProperties
 };
+
 
 const generateConfigProperties = {
   outputPath: {
@@ -122,19 +142,7 @@ const topLevelConfigProperties = {
       additionalProperties: false
     }
   },
-  sizes: {
-    type: 'array',
-    minItems: 1,
-    items: {
-      type: ['number', 'object'],
-      properties: {
-        width: { type: 'number' },
-        height: { type: 'number' }
-      },
-      required: ['width', 'height'],
-      additionalProperties: false
-    }
-  },
+  sizes: assetSizeProperties,
   resolutions: {
     type: 'array',
     minItems: 1,

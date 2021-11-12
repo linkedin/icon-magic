@@ -15,15 +15,15 @@
   "outputPath": "./test/fixtures/out",
   "flavors": [
     {
-      "name": "modifiedOutline",
-      "path": "./build/modifiedOutline.svg",
-      "buildSourceHash": "142631995bb91440daadae60f869ce52",
-      "types": {}
-    },
-    {
       "name": "filled",
       "path": "./build/filled.svg",
       "buildSourceHash": "a18c253325974cf3f4aaca7d64571011",
+      "types": {}
+    },
+    {
+      "name": "modifiedOutline",
+      "path": "./build/modifiedOutline.svg",
+      "buildSourceHash": "142631995bb91440daadae60f869ce52",
       "types": {}
     }
   ],

@@ -87,11 +87,13 @@ export const build: BuildConfig = {
 export const variants: AssetConfig[] = [
   {
     path: './filled.svg',
-    name: 'filled'
+    name: 'filled',
+    sizes: [32, 44]
   },
   {
     path: './outline.svg',
-    name: 'someOtherName'
+    name: 'someOtherName',
+    sizes: [32, 44]
   }
 ];
 
@@ -99,31 +101,21 @@ export const flavors: FlavorConfig[] = [
   {
     path: './filled-a.svg',
     name: 'filled-a',
-    buildSourceHash: undefined,
-    generateSourceHash: undefined,
-    "colorScheme": undefined,
-    "imageset": undefined,
     types: sampleExt
   },
   {
     path: './filled-b.svg',
     name: 'filled-b',
-    buildSourceHash: undefined,
-    generateSourceHash: undefined,
     types: sampleExt
   },
   {
     path: './someOtherName-a.svg',
     name: 'someOtherName-a',
-    buildSourceHash: undefined,
-    generateSourceHash: undefined,
     types: sampleExt
   },
   {
     path: './someOtherName-b.svg',
     name: 'someOtherName-b',
-    buildSourceHash: undefined,
-    generateSourceHash: undefined,
     types: sampleExt
   }
 ];
