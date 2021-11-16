@@ -10,7 +10,7 @@
  * The plugin returns the asset flavor with added custom element asset type and
  * automatically writes the output (javascript files) to the output directory.
  */
-import {
+ import {
   Asset,
   Flavor,
   GeneratePlugin,
