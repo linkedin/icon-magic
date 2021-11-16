@@ -2,7 +2,7 @@
  * Convert a string from kebab-case to camelCase
  * @param s string to convert to camel case
  */
-export function kebabToCamel(s: string): string {
+ export function kebabToCamel(s: string): string {
   return s.replace(/(\-\w)/g, m => {
     return m[1].toUpperCase();
   });
