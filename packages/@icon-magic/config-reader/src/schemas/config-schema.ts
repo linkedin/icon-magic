@@ -73,6 +73,9 @@ const distributeConfigProperties = {
         type: ['string', 'null']
       }
     }
+  },
+  customElement: {
+    type: ['object', null],
   }
 };
 
@@ -95,7 +98,7 @@ const generateConfigProperties = {
       properties: {
         name: {
           type: 'string',
-          enum: ['svg', 'raster']
+          enum: ['svg', 'raster', 'customElement']
         },
         plugins: {
           type: ['array', 'null'],

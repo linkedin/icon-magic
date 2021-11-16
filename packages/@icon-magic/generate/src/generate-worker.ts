@@ -11,6 +11,7 @@ import * as workerpool from 'workerpool';
 
 import { svgGenerate } from './plugins/svg-generate';
 import { svgToRaster } from './plugins/svg-to-raster';
+import { svgToCustomElement } from './plugins/svg-to-custom-element';
 
 const LOGGER = new Logger('icon-magic:generate:index');
 
@@ -67,6 +68,17 @@ async function generateSingleIcon(
               ? await getPlugins(generateType.plugins)
               : new Array(svgToRaster),
             new RegExp('png|webp'),
+            hashing
+          );
+          break;
+        }
+        case 'customElement': {
+          await applyGeneratePluginsOnFlavors(
+            icon,
+            generateType.plugins && generateType.plugins.length
+              ? await getPlugins(generateType.plugins)
+              : new Array(svgToCustomElement),
+            new RegExp('customElement'),
             hashing
           );
           break;
