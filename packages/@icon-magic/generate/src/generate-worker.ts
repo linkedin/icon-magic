@@ -12,6 +12,7 @@ import * as workerpool from 'workerpool';
 import { svgGenerate } from './plugins/svg-generate';
 import { svgToRaster } from './plugins/svg-to-raster';
 import { svgToCustomElement } from './plugins/svg-to-custom-element';
+import { kebabToCamel } from './utils';
 
 const LOGGER = new Logger('icon-magic:generate:index');
 
@@ -153,16 +154,6 @@ async function getPlugins(
       }
     })
   );
-}
-
-/**
- * Convert a string from kebab-case to camelCase
- * @param s string to convert to camel case
- */
-function kebabToCamel(s: string): string {
-  return s.replace(/(\-\w)/g, m => {
-    return m[1].toUpperCase();
-  });
 }
 
 workerpool.worker({ generateSingleIcon });
