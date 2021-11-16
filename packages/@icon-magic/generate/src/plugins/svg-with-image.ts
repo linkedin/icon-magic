@@ -3,7 +3,6 @@
  */
 
 import {
-  Asset,
   Flavor,
   GeneratePlugin,
   Icon
@@ -36,34 +35,20 @@ export const svgWithImage: GeneratePlugin = {
 
     const xmlFlavorDoc = doc.parseFromString(flavorContents, 'image/svg+xml');
 
-    let xmlFlavorEl = xmlFlavorDoc.documentElement;
+    const xmlFlavorEl = xmlFlavorDoc.documentElement;
 
-    // remove all the child nodes from this element
-    while (xmlFlavorEl.firstChild) {
-      //The list is LIVE so it will re-index each call
-      xmlFlavorEl.removeChild(xmlFlavorEl.firstChild);
-    }
+    // Create an empty clone of the outer SVG
+    const svgWithImg = xmlFlavorEl.cloneNode(false);
 
     // create the image node
-    let imageNode  = xmlFlavorDoc.createElement('image');
+    const imageNode  = xmlFlavorDoc.createElement('image');
     imageNode.setAttribute('href', path.format({dir: path.join(params.pathToTheImageAsset, icon.iconName), name: flavor.name, ext: '.svg'}));
     // blank alt text is needed so this doesn't call out an error with screen
     // readers
     imageNode.setAttribute('alt', '');
 
     // add it to the original svg wrapper
-    xmlFlavorEl.appendChild(imageNode);
-
-    // Create a new svg asset type and add it to the flavor
-    flavor.types.set(
-      'svgWithImage',
-      new Asset(icon.iconPath, {
-        name: flavor.name,
-        path: `./${flavor.name}-with-image.svg`,
-        imageset: flavor.imageset,
-        colorScheme: flavor.colorScheme
-      })
-    );
+    svgWithImg.appendChild(imageNode);
 
     const outputPath = icon.getIconOutputPath();
 
@@ -71,13 +56,29 @@ export const svgWithImage: GeneratePlugin = {
 
     await fs.writeFile(
       path.format({dir: outputPath, name: `${flavor.name}-with-image`, ext: '.svg'}),
-      serializeToString(xmlFlavorEl),
+      serializeToString(svgWithImg),
       {
         encoding: 'utf8'
       }
     );
 
-    return flavor;
+    // Final new flavor with image
+    const withImageFlavor: Flavor = new Flavor(icon.iconPath, {
+      name: `${flavor.name}-with-image`,
+      path: `./${flavor.name}-with-image.svg`,
+      colorScheme: flavor.colorScheme || undefined,
+      imageset: flavor.imageset ? `${flavor.imageset}-with-image` : undefined
+    });
+
+    withImageFlavor.types.set('svg', withImageFlavor);
+
+    // Add new the flavor to icon.flavors. It is then added to resulting iconrc.json file.
+    icon.flavors.set(
+      `${flavor.name}-with-image`,
+      withImageFlavor
+    );
+
+    return withImageFlavor;
   }
 };
 

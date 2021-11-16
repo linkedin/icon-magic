@@ -12,8 +12,7 @@
  *   A helper function will need to map the API to the size and render the SVG with the appropriate width, height and viewbox values.
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
-import {
-  Asset,
+ import {
   AssetSize,
   Flavor,
   GeneratePlugin,
@@ -193,17 +192,27 @@ export const svgGenerate: GeneratePlugin = {
       }
     );
 
-    // Create a new svg asset type and add it to the flavor
-    flavor.types.set(
-      'svg',
-      new Asset(icon.iconPath, {
-        name: flavor.name,
-        path: `./${flavor.name}.svg`,
-        imageset: flavor.imageset,
-        colorScheme: flavor.colorScheme
-      })
+    // Final new flavor generated flavor
+    const generatedFlavor: Flavor = new Flavor(icon.iconPath, {
+      name: `${flavor.name}`,
+      path: `./${flavor.name}.svg`,
+      colorScheme: flavor.colorScheme,
+      imageset: flavor.imageset,
+      buildSourceHash: flavor.buildSourceHash,
+      generateSourceHash: flavor.generateSourceHash
+    });
+
+    generatedFlavor.types.set('svg', generatedFlavor);
+
+    // Add new the flavor to icon.flavors. It is then added to resulting
+    // iconrc.json file.
+
+    icon.flavors.set(
+      `${flavor.name}`,
+      generatedFlavor
     );
-    return flavor;
+
+    return generatedFlavor;
   }
 };
 

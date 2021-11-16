@@ -71,7 +71,7 @@ const icon = new Icon({
 });
 
 describe('svgLightDark()', function () {
-  it('creates parent svg with light and dark children svgs when `imageSet` exists and the `colorScheme` equals `dark`', async () => {
+  it('creates parent svg with light and dark children svgs when `imageset` exists and the `colorScheme` equals `dark`', async () => {
   const outputSvgStripped: string = `
     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
       <svg display="var(--hue-web-svg-display-dark)">

@@ -39,7 +39,7 @@ export interface SpriteConfig {
 }
 
 export type Iterant = string[];
-export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip' | 'svgWithImage';
+export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip' | 'svgWithImage' | 'svgMixed';
 export type FlavorTypeMap = { [K in FlavorType]?: AssetConfig };
 
 export interface FlavorConfig extends AssetConfig {
@@ -75,7 +75,7 @@ export interface BuildConfig {
  * Supported types for generation are svg and raster
  * Raster here represents .png and .webp
  */
-export type GenerateType = 'svg' | 'raster';
+export type GenerateType = 'svg' | 'raster' ;
 
 /**
  * Properties related to a single generation type

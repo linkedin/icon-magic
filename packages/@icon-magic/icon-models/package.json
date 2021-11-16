@@ -10,7 +10,7 @@
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
     "pretest": "yarn run build & yarn run lint",
-    "test": "mocha --opts test/mocha.opts dist/test",
+    "test": "mocha --opts test/mocha.opts dist/test/plugin-manager-test.js",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",
