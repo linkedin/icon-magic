@@ -27,7 +27,11 @@ const sampleExt: FlavorTypeMap = {
   webp: {
     name: 'filled-a.webp',
     path: './filled-a.webp'
-  }
+  },
+  customElement: {
+    name: 'filled-a.js',
+    path: './filled-a.js'
+  },
 };
 
 const buildPlugins: BuildPlugin[] = [
@@ -71,6 +75,10 @@ export const generate: GenerateConfig = {
   types: [
     {
       name: 'svg',
+      plugins: []
+    },
+    {
+      name: 'customElement',
       plugins: []
     },
     {

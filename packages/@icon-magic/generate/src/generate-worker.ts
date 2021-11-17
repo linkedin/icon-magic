@@ -10,8 +10,8 @@ import { existsSync } from 'fs-extra';
 import * as workerpool from 'workerpool';
 
 import { svgGenerate } from './plugins/svg-generate';
-import { svgToRaster } from './plugins/svg-to-raster';
 import { svgToCustomElement } from './plugins/svg-to-custom-element';
+import { svgToRaster } from './plugins/svg-to-raster';
 import { kebabToCamel } from './utils';
 
 const LOGGER = new Logger('icon-magic:generate:index');

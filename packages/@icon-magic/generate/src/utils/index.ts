@@ -1,7 +1,6 @@
 /**
  * Convert a string from kebab-case to camelCase
- * @param {string} s string to convert to camel case
- * @returns {string} camelCased string
+ * @param s string to convert to camel case
  */
 export function kebabToCamel(s: string): string {
   return s.replace(/(\-\w)/g, m => {
@@ -11,8 +10,7 @@ export function kebabToCamel(s: string): string {
 
 /**
  * Remove newline, tabs, and whitespaces between html tags
- * @param {string} markup - HTML tags
- * @returns {string}
+ * @param markup - HTML tags
  */
 export function stripSpacesBetweenTags(markup: string): string {
   return markup.replace(/\n/g, '')

@@ -16,9 +16,10 @@ import {
   Icon,
   createHash,
 } from '@icon-magic/icon-models';
+import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { Logger } from '@icon-magic/logger';
+
 import { kebabToCamel, stripSpacesBetweenTags } from '../utils';
 
 const LOGGER = new Logger('icon-magic:generate:svg-to-custom-element');
@@ -26,9 +27,8 @@ const CUSTOM_ELEMENT_NAME_PREFIX = 'icon-magic-';
 
 /**
  * Get file contents
- * @param {string} elName - name of the custom element
- * @param {string} svgData - svg to render on a web page
- * @returns {string}
+ * @param elName - name of the custom element
+ * @param svgData - svg to render on a web page
  */
 const getFileContent = (elName: string, svgData: string): string => {
   const elNameInCamelCase = kebabToCamel(elName);
