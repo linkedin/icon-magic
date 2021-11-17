@@ -73,9 +73,6 @@ const distributeConfigProperties = {
         type: ['string', 'null']
       }
     }
-  },
-  customElement: {
-    type: ['object', null],
   }
 };
 
