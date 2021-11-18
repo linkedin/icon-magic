@@ -13,7 +13,7 @@ export function kebabToCamel(s: string): string {
  * @param markup - HTML tags
  */
 export function stripSpacesBetweenTags(markup: string): string {
-  return markup.replace(/\n/g, '')
+  return markup && markup.replace(/\n/g, '')
     .replace(/>[\t ]+</g, '><')
     .trim();
 }
