@@ -75,7 +75,7 @@
           {
             "name": "svg-to-custom-element",
             "params": {
-              "namePrefix": "test-prefix"
+              "namePrefix": "test-prefix-"
             },
             "writeToOutput": false
           }
