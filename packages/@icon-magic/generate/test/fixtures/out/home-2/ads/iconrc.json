@@ -36,7 +36,7 @@
     {
       "name": "active-small",
       "path": "./active-small.svg",
-      "generateSourceHash": "1ec7f0ce834cec52c4cae0776738d13e",
+      "generateSourceHash": "a883cc6b76b19a46b2a131996a7f7850",
       "imageset": "active-small",
       "colorScheme": "light",
       "types": {
@@ -76,7 +76,7 @@
     {
       "name": "inverse-small",
       "path": "./inverse-small.svg",
-      "generateSourceHash": "f0696c00383efe2655644892e7d14d87",
+      "generateSourceHash": "bb29ccc861876911957448374e070efd",
       "types": {
         "svg": {
           "name": "inverse-small",
@@ -88,7 +88,7 @@
     {
       "name": "active-small-24x24@1",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1",
@@ -107,7 +107,7 @@
     {
       "name": "active-small-24x24@1.5",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@1.5",
@@ -126,7 +126,7 @@
     {
       "name": "active-small-24x24@2",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@2",
@@ -145,7 +145,7 @@
     {
       "name": "active-small-24x24@3",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@3",
@@ -164,7 +164,7 @@
     {
       "name": "active-small-24x24@4",
       "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-24x24@4",
@@ -370,10 +370,7 @@
               "colorByNameMatching": [
                 "inverse"
               ],
-              "isFixedDimensions": true,
-              "classNames": [
-                "flip"
-              ]
+              "isFixedDimensions": false
             },
             "writeToOutput": false
           }
