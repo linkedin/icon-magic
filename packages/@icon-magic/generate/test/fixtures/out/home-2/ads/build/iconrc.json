@@ -70,6 +70,18 @@
         ]
       },
       {
+        "name": "customElement",
+        "plugins": [
+          {
+            "name": "svg-to-custom-element",
+            "params": {
+              "namePrefix": "li-web-"
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
         "name": "raster",
         "plugins": [
           {
