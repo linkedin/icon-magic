@@ -37,7 +37,7 @@ const icon = new Icon({
 describe('svgToCustomElement()', function () {
   it('Creates custom element asset and updates icon correctly', async () => {
     const options: CustomElementGenerateOptions = {
-      namePrefix: "li-web-"
+      namePrefix: "test-prefix-"
     };
     const expectedFlavor: FlavorTypeMap = {
       customElement: {
@@ -52,17 +52,17 @@ describe('svgToCustomElement()', function () {
  * Usage:
  *
  * JS
- * import liWebHomeFilled './li-web-home-filled';
- * liWebHomeFilled();
+ * import testPrefixHomeFilled './test-prefix-home-filled';
+ * testPrefixHomeFilled();
  *
  * HTML
- * <li-web-home-filled></li-web-home-filled>
+ * <test-prefix-home-filled></test-prefix-home-filled>
  */
 export default function () {
   // Can't register the same tag more than once. Throws DOMException.
-  if (window && !window.customElements.get('li-web-home-filled')) {
+  if (window && !window.customElements.get('test-prefix-home-filled')) {
     window.customElements.define(
-      'li-web-home-filled',
+      'test-prefix-home-filled',
       class extends HTMLElement {
         // when the element is inserted into DOM
         connectedCallback() {
