@@ -70,7 +70,7 @@ export class Flavor extends Asset {
       for (const [key, asset] of this.types) {
         flavorTypes[key] = asset.getAssetConfig();
       }
-      config.types = flavorTypes
+      config.types = flavorTypes;
     }
     return config;
   }

@@ -1,7 +1,7 @@
 import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
-import { Asset, Flavor, FlavorConfig, hasAssetBeenProcessed, Icon } from '.';
+import { Asset, Flavor, FlavorConfig, Icon, hasAssetBeenProcessed } from '.';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
@@ -73,7 +73,9 @@ export async function applyPluginOnAssets(icon: Icon, plugin: BuildPlugin | Gene
         iconFlavor,
         type
       );
+
       if (savedFlavorConfigs && savedFlavorConfigs.length) {
+        console.log('GETTING HERE FOR WHEN HASHING IS TRUE');
         let promises: Flavor[] = [];
         // Make flavors from the already written config
         savedFlavorConfigs.forEach(
@@ -177,7 +179,7 @@ async function applySinglePluginOnAsset(
     //the type instead of the actual flavor. However, that won't be required if
     //we end up addressing this issue https://github.com/linkedin/icon-magic/issues/319
     for (const outputFlavor of output) {
-      let svgTypeFlavor = outputFlavor.types.get('svg');
+      const svgTypeFlavor = outputFlavor.types ? outputFlavor.types.get('svg') : null;
       if (svgTypeFlavor) {
         promises.push(
           saveContentToFile(
