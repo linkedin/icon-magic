@@ -150,7 +150,7 @@ export async function saveAssetAsFlavor(
   // set the path to point to the newly created file as it could've been
   // renamed in above if it's name was different from the file name
   // the path should always be relative to the iconPath
-  flavor.setPath(path.relative(icon.iconPath, pathToAsset));
+  flavor.setPath(path.relative(outputPath, pathToAsset));
 
   // push this asset as a flavor onto the icon
   icon.flavors.set(flavor.name, flavor);

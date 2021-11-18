@@ -73,7 +73,7 @@ export const svgLightDark: GeneratePlugin = {
 
         // set the appropriate display tokens for light and dark displays
         const { lightToken, darkToken } = params;
-        darkEl.setAttribute('display', (darkToken? `var(${darkToken})` : `var(--svg-display-light)`));
+        darkEl.setAttribute('display', (darkToken? `var(${darkToken})` : `var(--svg-display-dark)`));
         lightEl.setAttribute('display', (lightToken? `var(${lightToken})` : `var(--svg-display-light)`));
 
         // append to the wrapper SVG

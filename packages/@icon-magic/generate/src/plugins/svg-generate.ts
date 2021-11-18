@@ -58,6 +58,7 @@ export const svgGenerate: GeneratePlugin = {
   ): Promise<Flavor> => {
     const flavorContent = (await flavor.getContents()) as string; // .svg asset's getContents() returns a string
     const flavorName: string = path.basename(flavor.name);
+
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
 

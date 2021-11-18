@@ -1,4 +1,4 @@
-<svg id="group-accent-1" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><svg display="var(--svg-display-light)">
+<svg id="group-accent-1" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><svg display="var(--svg-display-dark)">
   <rect width="128" height="128" style="fill: #eee"/>
   <rect y="64.14" width="128" height="63.86" style="fill: #eee"/>
   <path d="M32,64H0V96A32,32,0,0,0,32,64Z" style="fill: #eee"/>
