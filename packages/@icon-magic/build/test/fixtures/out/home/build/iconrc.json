@@ -24,24 +24,24 @@
   "flavors": [
     {
       "name": "filled",
-      "path": "./build/filled.svg",
+      "path": "./filled.svg",
       "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
       "colorScheme": "light",
       "types": {}
     },
     {
-      "name": "filled-on-dark",
-      "path": "./build/filled-on-dark.svg",
+      "name": "someOtherName",
+      "path": "./someOtherName.svg",
       "buildSourceHash": "095461259d3f590f720705024335072e",
-      "imageset": "filled",
-      "colorScheme": "dark",
       "types": {}
     },
     {
-      "name": "someOtherName",
-      "path": "./build/someOtherName.svg",
+      "name": "filled-on-dark",
+      "path": "./filled-on-dark.svg",
       "buildSourceHash": "095461259d3f590f720705024335072e",
+      "imageset": "filled",
+      "colorScheme": "dark",
       "types": {}
     }
   ],

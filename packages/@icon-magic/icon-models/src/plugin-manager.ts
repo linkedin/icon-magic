@@ -75,18 +75,17 @@ export async function applyPluginOnAssets(icon: Icon, plugin: BuildPlugin | Gene
       );
 
       if (savedFlavorConfigs && savedFlavorConfigs.length) {
-        console.log('GETTING HERE FOR WHEN HASHING IS TRUE');
-        let promises: Flavor[] = [];
         // Make flavors from the already written config
         savedFlavorConfigs.forEach(
           async (savedFlavorConfig: FlavorConfig) => {
             // Create new Flavor from the config we retrieved, so it's copied over
             // when the iconrc is written
-            const savedFlavor: Flavor = new Flavor(
-              outputPath,
-              savedFlavorConfig
-            );
-            promises = promises.concat(savedFlavor);
+            if (savedFlavorConfig.name) {
+              icon.flavors.set(savedFlavorConfig.name, new Flavor(
+                outputPath,
+                savedFlavorConfig
+              ));
+            }
           }
         );
         LOGGER.info(
@@ -101,8 +100,6 @@ export async function applyPluginOnAssets(icon: Icon, plugin: BuildPlugin | Gene
       icon,
       plugin
     );
-
-    console.log(`JUST FINISHED APPLYING ${plugin.name} on ${iconFlavor.name}`);
   }
 }
 
