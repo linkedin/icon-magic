@@ -224,11 +224,7 @@
     },
     {
       "name": "active-small-on-dark-24x24@2",
-      "path": "./active-small-on-dark.svg",
       "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
-      "types": {
-        "png": {
-          "name": "active-small-on-dark-24x24@2",
           "path": "./active-small-on-dark-24x24@2.png",
           "imageset": "active-small-24x24",
           "colorScheme": "dark"
@@ -387,18 +383,6 @@
             "name": "svg-to-custom-element",
             "params": {
               "namePrefix": "test-prefix-"
-            },
-            "writeToOutput": false
-          }
-        ]
-      },
-      {
-        "name": "customElement",
-        "plugins": [
-          {
-            "name": "svg-to-custom-element",
-            "params": {
-              "namePrefix": "li-web-"
             },
             "writeToOutput": false
           }
