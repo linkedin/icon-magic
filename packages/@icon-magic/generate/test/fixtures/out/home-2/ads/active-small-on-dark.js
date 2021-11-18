@@ -5,17 +5,17 @@
  * Usage:
  *
  * JS
- * import liWebAdsActiveSmallOnDark './li-web-ads-active-small-on-dark';
- * liWebAdsActiveSmallOnDark();
+ * import testPrefixAdsActiveSmallOnDark './test-prefix-ads-active-small-on-dark';
+ * testPrefixAdsActiveSmallOnDark();
  *
  * HTML
- * <li-web-ads-active-small-on-dark></li-web-ads-active-small-on-dark>
+ * <test-prefix-ads-active-small-on-dark></test-prefix-ads-active-small-on-dark>
  */
 export default function () {
   // Can't register the same tag more than once. Throws DOMException.
-  if (window && !window.customElements.get('li-web-ads-active-small-on-dark')) {
+  if (window && !window.customElements.get('test-prefix-ads-active-small-on-dark')) {
     window.customElements.define(
-      'li-web-ads-active-small-on-dark',
+      'test-prefix-ads-active-small-on-dark',
       class extends HTMLElement {
         // when the element is inserted into DOM
         connectedCallback() {

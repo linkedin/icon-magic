@@ -382,7 +382,7 @@
           {
             "name": "svg-to-custom-element",
             "params": {
-              "namePrefix": "li-web-"
+              "namePrefix": "test-prefix-"
             },
             "writeToOutput": false
           }
