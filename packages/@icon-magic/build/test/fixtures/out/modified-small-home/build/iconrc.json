@@ -16,13 +16,13 @@
   "flavors": [
     {
       "name": "filled",
-      "path": "./filled.svg",
+      "path": "./build/filled.svg",
       "buildSourceHash": "a18c253325974cf3f4aaca7d64571011",
       "types": {}
     },
     {
       "name": "modifiedOutline",
-      "path": "./modifiedOutline.svg",
+      "path": "./build/modifiedOutline.svg",
       "buildSourceHash": "142631995bb91440daadae60f869ce52",
       "types": {}
     }

@@ -10,7 +10,7 @@
     "start": "yarn run watch",
     "watch": "watch 'yarn run test' './src' './test' --wait=1",
     "pretest": "yarn run build & yarn run lint",
-    "test": "mocha --timeout 50000 --opts test/mocha.opts dist/test/svg-generate-test.js",
+    "test": "mocha --timeout 50000 --opts test/mocha.opts dist/test",
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "postbuild": "cp -r ./test/fixtures ./dist/test",

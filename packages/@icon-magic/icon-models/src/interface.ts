@@ -39,7 +39,7 @@ export interface SpriteConfig {
 }
 
 export type Iterant = string[];
-export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip' | 'svgWithImage' | 'svgMixed';
+export type FlavorType = 'svg' | 'png' | 'webp' | 'webpFlip' | 'pngFlip' | 'svgWithImage';
 export type FlavorTypeMap = { [K in FlavorType]?: AssetConfig };
 
 export interface FlavorConfig extends AssetConfig {

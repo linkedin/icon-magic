@@ -62,14 +62,6 @@ const distributeConfigProperties = {
         type: ['string', 'null']
       }
     }
-  },
-  svgWithImage: {
-    type: ['object', null],
-    properties: {
-      pathToTheImageAsset: {
-        type: ['string']
-      }
-    }
   }
 };
 
