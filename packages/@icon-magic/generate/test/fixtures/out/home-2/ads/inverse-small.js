@@ -5,17 +5,17 @@
  * Usage:
  *
  * JS
- * import liWebAdsInverseSmall './li-web-ads-inverse-small';
- * liWebAdsInverseSmall();
+ * import testPrefixAdsInverseSmall './test-prefix-ads-inverse-small';
+ * testPrefixAdsInverseSmall();
  *
  * HTML
- * <li-web-ads-inverse-small></li-web-ads-inverse-small>
+ * <test-prefix-ads-inverse-small></test-prefix-ads-inverse-small>
  */
 export default function () {
   // Can't register the same tag more than once. Throws DOMException.
-  if (window && !window.customElements.get('li-web-ads-inverse-small')) {
+  if (window && !window.customElements.get('test-prefix-ads-inverse-small')) {
     window.customElements.define(
-      'li-web-ads-inverse-small',
+      'test-prefix-ads-inverse-small',
       class extends HTMLElement {
         // when the element is inserted into DOM
         connectedCallback() {
