@@ -25,7 +25,7 @@ export const svgWithImage: GeneratePlugin = {
   ): Promise<Flavor> => {
 
     if (!params.pathToTheImageAsset) {
-      throw new Error(`SVGImageError: ${icon.iconPath}'s iconrc.json does not contain pathToTheImageAsset in the distribute plugin`);
+      throw new Error(`SVGWithImageError: ${icon.iconPath}'s iconrc.json does not contain pathToTheImageAsset in the distribute plugin`);
     }
 
     const flavorContents = (await flavor.getContents()) as string;
