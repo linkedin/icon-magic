@@ -14,7 +14,6 @@ import {
   Flavor,
   GeneratePlugin,
   Icon,
-  createHash,
 } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
@@ -91,9 +90,6 @@ export const svgToCustomElement: GeneratePlugin = {
     const customElementName = `${prefix}${icon.iconName}-${flavorName}`;
     const fileContent = getFileContent(customElementName, svgData);
     const filePath = `${path.join(outputPath, flavorName)}.js`;
-
-    // If generate hasn't been run create the hash
-    flavor.generateSourceHash = createHash(fileContent);
 
     // Write the custom element to the output directory
     LOGGER.debug(`Creating ${filePath}`);
