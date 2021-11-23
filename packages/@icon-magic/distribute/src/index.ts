@@ -15,7 +15,8 @@ type ICON_TYPES = 'svg' | 'png' | 'webp' | 'all';
  * @param type svg, png, webp, all
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @param colorScheme array of strings matching the colorScheme attributes of the icon ie: `light`, `dark`, `mixed`.
- * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" suffix in file name when distributing to hbs.
+ * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and
+ * "-with-image" suffixes in file name when distributing to hbs.
  * @retuns promise after completion
  */
 export async function distributeByType(
@@ -25,6 +26,7 @@ export async function distributeByType(
   groupByCategory = true,
   outputAsHbs = false,
   colorScheme: string[] = ['light', 'dark'],
+  withEmbeddedImage = false,
   doNotRemoveSuffix = false
 ): Promise<void> {
   LOGGER.debug(`entering distribute with ${type} and colorSchemes: ${colorScheme}`);
@@ -39,13 +41,13 @@ export async function distributeByType(
       break;
     }
     case 'svg': {
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
       break;
     }
     default: {
       await createImageSet(iconSet, outputPath);
       await distributeByResolution(iconSet, outputPath);
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
     }
   }
 }

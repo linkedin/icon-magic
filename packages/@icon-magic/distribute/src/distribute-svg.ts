@@ -19,7 +19,7 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
  * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`.
- * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" suffix in file name when distributing to hbs.
+ * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and "-with-image" suffixes in file name when distributing to hbs.
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -28,6 +28,7 @@ export async function distributeSvg(
   groupByCategory: boolean,
   outputAsHbs: boolean,
   colorScheme: string[],
+  withEmbeddedImage: boolean,
   doNotRemoveSuffix: boolean
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
@@ -43,15 +44,20 @@ export async function distributeSvg(
     }
 
     const assets = getIconFlavorsByType(icon, 'svg');
-
     // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
-    const assetsByColorScheme = assets.filter(asset => {
+    let assetsToDistribute = assets.filter(asset => {
       if (asset.colorScheme) {
         return colorScheme.includes(asset.colorScheme);
       }
       // Light variants can either have colorScheme: `light`, null, or undefined
       return colorScheme.includes('light');
     });
+    if (withEmbeddedImage) {
+      // filter down to only the assets that contain embedded images in them
+      assetsToDistribute = assetsToDistribute.filter(asset => {
+        return asset.name.match(/-with-image/) ? true : false;
+      });
+    }
 
     const distributeConfig = icon.distribute;
     const svgConfig = distributeConfig && distributeConfig.svg;
@@ -64,21 +70,22 @@ export async function distributeSvg(
     // If icon has defined the assets to go to sprite
     const { assetsToAddToSprite, assetsNoSprite } =
       variantsToFilter && variantsToFilter.length
-        ? partitionAssetsForSprite(assetsByColorScheme, variantsToFilter)
-        : { assetsToAddToSprite: assetsByColorScheme, assetsNoSprite: assetsByColorScheme };
+        ? partitionAssetsForSprite(assetsToDistribute, variantsToFilter)
+        : { assetsToAddToSprite: assetsToDistribute, assetsNoSprite: assetsToDistribute };
 
     const iconHasSpriteConfig = !(
       distributeConfig &&
       svgConfig &&
       !svgConfig.toSprite
     );
+
     if (outputAsHbs) {
       try {
         const destPath =
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-        await createHbs(assetsByColorScheme, destPath, doNotRemoveSuffix);
+        await createHbs(assetsToDistribute, destPath, doNotRemoveSuffix);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
@@ -111,6 +118,7 @@ export async function distributeSvg(
       await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
     }
   }
+
   await Promise.all(promises).then(async () => {
     // After we've gone through all the icons, write the sprites to a file
     await writeSpriteToFile(spriteNames, outputPath);

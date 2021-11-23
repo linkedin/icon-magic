@@ -19,8 +19,8 @@ program
     'construct flavors of an icon from its variants, after applying the build plugins.'
   )
   .option(
-    '-h, --hashing',
-    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+    '-nc, --noCache',
+    'When set, turns off caching and builds all the icon variants whether or not the source has been updated from the previous execution'
   )
   .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
@@ -39,7 +39,7 @@ program
     LOGGER.setDebug(options.debug);
 
     // build all the icons
-    await build(iconSet, options.hashing);
+    await build(iconSet, !options.noCache);
 
     // exit without any errors
     process.exit(0);
@@ -51,8 +51,8 @@ program
     'generates the flavors of the icon in the extension types that it can be consumed.'
   )
   .option(
-    '-h, --hashing',
-    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+    '-nc, --noCache',
+    'When set, turns off caching and generates all the icon variants whether or not the source has been updated from the previous execution'
   )
   .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
@@ -71,7 +71,7 @@ program
     LOGGER.setDebug(options.debug);
 
     // generate all the icons
-    await iconGenerate.generateFromConfigHash(iconSet, options.hashing);
+    await iconGenerate.generateFromConfigHash(iconSet, !options.noCache);
 
     // exit without any errors
     process.exit(0);
@@ -95,7 +95,7 @@ program
     '[for web] how to group the icons. The only available option for now is `--groupBy category`. \n For sprites, icons are grouped with <defs> tags with IDs matching the category and for non-sprites \n this distributes svgs in folder matching the category.'
   )
   .option(
-    '-h --outputAsTemplate',
+    '-hbs, --outputAsTemplate',
     '[for web] whether to output the svg as handlebars template.'
   )
   .option(
@@ -103,7 +103,11 @@ program
   )
   .option(
     '-c, --colorScheme <colorScheme...>', 'With no flag, `light` and `dark` colorSchemes are distributed. Other colorSchemes can be specified with flag'
-  )  .option(
+  )
+  .option(
+    '-i, --withEmbeddedImage', '[for web] Filters only those assets with embedded images with them'
+  )
+  .option(
     '-s, --doNotRemoveSuffix', 'When used with --outputAsTemplate, will NOT trim the "-mixed" suffix on the file name'
   )
   .action(async (inputPaths, options) => {
@@ -157,6 +161,7 @@ program
       options.groupBy === 'category',
       options.outputAsTemplate,
       options.colorScheme,
+      options.withEmbeddedImage,
       options.doNotRemoveSuffix
     );
 
@@ -169,8 +174,8 @@ program
   .command('* [inputPaths...]', { isDefault: true })
   .description('runs build and generate on all the inputPaths')
   .option(
-    '-h, --hashing',
-    'When true(default), builds only those icon variants that have changed since the previous execution. If false, builds all icons'
+    '-nc, --noCache',
+    'When set, turns off caching and builds and generates all the icon variants whether or not the source has been updated from the previous execution'
   )
   .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
@@ -183,10 +188,10 @@ program
     LOGGER.setDebug(options.debug);
 
     // build all the icons
-    const outputIconSet = await build(iconSet, options.hashing);
+    const outputIconSet = await build(iconSet, !options.noCache);
 
     // generate all the icons
-    await iconGenerate.generate(outputIconSet, options.hashing);
+    await iconGenerate.generate(outputIconSet, !options.noCache);
 
     // exit without any errors
     process.exit(0);
