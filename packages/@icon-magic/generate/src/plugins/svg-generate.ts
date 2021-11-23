@@ -193,9 +193,10 @@ export const svgGenerate: GeneratePlugin = {
       }
     );
 
-    // Final new flavor generated flavor
+    // Final new flavor to add to the icon. This is largely similar to the input
+    // flavor but contains an entry for types.svg and the path to be flavor.name.svg
     const generatedFlavor: Flavor = new Flavor(icon.iconPath, {
-      name: `${flavor.name}`,
+      name: flavor.name,
       path: `./${flavor.name}.svg`,
       colorScheme: flavor.colorScheme,
       imageset: flavor.imageset,
@@ -207,7 +208,6 @@ export const svgGenerate: GeneratePlugin = {
 
     // Add new the flavor to icon.flavors. It is then added to resulting
     // iconrc.json file.
-
     icon.flavors.set(
       `${flavor.name}`,
       generatedFlavor
