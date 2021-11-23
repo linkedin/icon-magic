@@ -13,6 +13,18 @@ const output = path.resolve(FIXTURES, 'out');
 const iconSet = configReader.getIconConfigSet(new Array(input));
 
 describe('distribute works as expected', function () {
+  it('Moves all -with-image.svg files to the right output directory', async () => {
+    const iconSetAnimal = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/animal-with-embedded-images')));
+    await distributeByType(iconSetAnimal, output, 'svg', true, false, ['light', 'dark'], true);
+    try {
+      const files = fs.readdirSync(`${output}/its-ui-with-embedded-images/animal`);
+      assert.ok(files.includes('small.svg'));
+      assert.ok(files.includes('large.svg'));
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
   it('Moves all .webp files to the right output directory', async () => {
     await distributeByType(iconSet, output, 'webp', false);
     const iconPath = `${output}/drawable-xxxhdpi`;

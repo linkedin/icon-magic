@@ -61,6 +61,6 @@ export async function generateFromConfigHash(
   iconConfig: IconConfigHash,
   hashing = true
 ): Promise<void> {
-  const iconSet = new IconSet(iconConfig, true);
+  const iconSet = new IconSet(iconConfig, hashing);
   return generate(iconSet, hashing);
 }

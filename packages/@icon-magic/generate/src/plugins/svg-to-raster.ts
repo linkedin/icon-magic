@@ -53,8 +53,8 @@ export const svgToRaster: GeneratePlugin = {
     icon: Icon,
     params: SvgToRasterOptions = {}
   ): Promise<Flavor> => {
-    // if flavor is mixed, just return flavor because png and webp do not use them
-    if (flavor.colorScheme === "mixed") {
+    // if flavor is mixed or with an image, just return flavor because png and webp do not use them
+    if (flavor.colorScheme === "mixed" || flavor.name.match(/with-image/g)) {
       return flavor;
     }
     // get the size and resolution from the params passed in
@@ -231,6 +231,9 @@ export const svgToRaster: GeneratePlugin = {
           })
         }
       });
+
+      icon.flavors.set(assetName, flavorWithRasterAssets);
+
       return flavorWithRasterAssets;
     }
     return flavor;

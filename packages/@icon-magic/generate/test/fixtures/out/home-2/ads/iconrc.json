@@ -43,6 +43,7 @@
         "svg": {
           "name": "active-small",
           "path": "./active-small.svg",
+          "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
           "imageset": "active-small",
           "colorScheme": "light"
         }
@@ -50,14 +51,15 @@
     },
     {
       "name": "active-small-on-dark",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "imageset": "active-small",
       "colorScheme": "dark",
       "types": {
         "svg": {
           "name": "active-small-on-dark",
           "path": "./active-small-on-dark.svg",
+          "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
           "imageset": "active-small",
           "colorScheme": "dark"
         }
@@ -70,7 +72,8 @@
       "types": {
         "svg": {
           "name": "inverse-small",
-          "path": "./inverse-small.svg"
+          "path": "./inverse-small.svg",
+          "generateSourceHash": "989ae26ede34963a5bd33df48976b74e"
         }
       }
     },
@@ -171,8 +174,8 @@
     },
     {
       "name": "active-small-on-dark-24x24@1",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-on-dark-24x24@1",
@@ -190,8 +193,8 @@
     },
     {
       "name": "active-small-on-dark-24x24@1.5",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-on-dark-24x24@1.5",
@@ -209,8 +212,8 @@
     },
     {
       "name": "active-small-on-dark-24x24@2",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-on-dark-24x24@2",
@@ -228,8 +231,8 @@
     },
     {
       "name": "active-small-on-dark-24x24@3",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-on-dark-24x24@3",
@@ -247,8 +250,8 @@
     },
     {
       "name": "active-small-on-dark-24x24@4",
-      "path": "./active-small.svg",
-      "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
+      "path": "./active-small-on-dark.svg",
+      "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
       "types": {
         "png": {
           "name": "active-small-on-dark-24x24@4",

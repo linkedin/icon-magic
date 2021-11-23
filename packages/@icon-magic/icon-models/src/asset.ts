@@ -93,8 +93,8 @@ export class Asset {
     if (this.buildSourceHash) {
       config.buildSourceHash = this.buildSourceHash;
     }
-    if (config.generateSourceHash) {
-      this.generateSourceHash = config.generateSourceHash;
+    if (this.generateSourceHash) {
+      config.generateSourceHash = this.generateSourceHash;
     }
     if (this.imageset) {
       config.imageset = this.imageset;

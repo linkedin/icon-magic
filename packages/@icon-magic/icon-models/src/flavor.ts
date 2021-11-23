@@ -47,21 +47,31 @@ export class Flavor extends Asset {
    */
   getConfig(): FlavorConfig {
     let flavorTypes;
+
+    const config: FlavorConfig = {
+      name: this.name,
+      path: `./${path.relative(this.iconPath, this.getPath())}`,
+    };
+    if (this.buildSourceHash) {
+      config.buildSourceHash = this.buildSourceHash;
+    }
+    if (this.generateSourceHash) {
+      config.generateSourceHash = this.generateSourceHash;
+    }
+    if (this.imageset) {
+      config.imageset = this.imageset;
+    }
+    if (this.colorScheme) {
+      config.colorScheme = this.colorScheme;
+    }
     // return only flavor data
     if (this.types) {
       flavorTypes = {};
       for (const [key, asset] of this.types) {
         flavorTypes[key] = asset.getAssetConfig();
       }
+      config.types = flavorTypes;
     }
-    return {
-      name: this.name,
-      path: `./${path.relative(this.iconPath, this.getPath())}`,
-      buildSourceHash: this.buildSourceHash,
-      generateSourceHash: this.generateSourceHash,
-      imageset: this.imageset,
-      colorScheme: this.colorScheme,
-      types: flavorTypes
-    };
+    return config;
   }
 }

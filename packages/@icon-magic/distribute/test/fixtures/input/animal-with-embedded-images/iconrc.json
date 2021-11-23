@@ -1,0 +1,62 @@
+{
+  "iconName": "animal",
+  "variants": [
+    {
+      "name": "small",
+      "path": "./small.svg"
+    },
+    {
+      "name": "large",
+      "path": "./large.svg"
+    }
+  ],
+  "category": "its-ui-with-embedded-images",
+  "iconPath": ".",
+  "flavors": [
+    {
+      "name": "small",
+      "path": "./small.svg",
+      "types": {
+        "svg": {
+          "name": "small",
+          "path": "./small.svg"
+        }
+      }
+    },
+    {
+      "name": "large",
+      "path": "./large.svg",
+      "types": {
+        "svg": {
+          "name": "large",
+          "path": "./large.svg"
+        }
+      }
+    },
+    {
+      "name": "small-with-image",
+      "path": "./small-with-image.svg",
+      "types": {
+        "svg": {
+          "name": "small-with-image",
+          "path": "./small-with-image.svg"
+        }
+      }
+    },
+    {
+      "name": "large-with-image",
+      "path": "./large-with-image.svg",
+      "types": {
+        "svg": {
+          "name": "large-with-image",
+          "path": "./large-with-image.svg"
+        }
+      }
+    }
+  ],
+  "distribute": {
+    "svg": {
+      "toSprite": false
+    }
+  }
+}

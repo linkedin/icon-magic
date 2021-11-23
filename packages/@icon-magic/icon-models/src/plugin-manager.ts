@@ -1,9 +1,7 @@
 import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
-import { Asset } from './asset';
-import { Flavor } from './flavor';
-import { Icon } from './icon';
+import { Asset, Flavor, FlavorConfig, Icon, hasAssetBeenProcessed } from '.';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';
@@ -53,6 +51,58 @@ export async function applyPluginsOnAsset(
   // return the contents of the last result
   return pluginResults[plugins.length - 1];
 }
+
+export async function applyPluginOnAssets(icon: Icon, plugin: BuildPlugin | GeneratePlugin, type: RegExp, hashing: boolean) {
+  // make a deep clone of the flavors so it doesn't change if the plugin alters
+  //flavors on the icon
+  const originalFlavors = [...icon.flavors.values()];
+
+  // iterate over all the plugins, applying them one at a time
+  for (const iconFlavor of originalFlavors)  {
+
+    if (hashing) {
+      // Check if generate has been run on this flavor already
+      const flavorName: string = path.basename(iconFlavor.name);
+      // Create the output directory
+      const outputPath = icon.getIconOutputPath();
+      // Find the flavors in the config from the initial run that match the flavorName
+      const savedFlavorConfigs = await hasAssetBeenProcessed(
+        icon,
+        outputPath,
+        flavorName,
+        iconFlavor,
+        type
+      );
+
+      if (savedFlavorConfigs && savedFlavorConfigs.length) {
+        // Make flavors from the already written config
+        savedFlavorConfigs.forEach(
+          async (savedFlavorConfig: FlavorConfig) => {
+            // Create new Flavor from the config we retrieved, so it's copied over
+            // when the iconrc is written
+            if (savedFlavorConfig.name) {
+              icon.flavors.set(savedFlavorConfig.name, new Flavor(
+                outputPath,
+                savedFlavorConfig
+              ));
+            }
+          }
+        );
+        LOGGER.info(
+          `${icon.iconName}'s ${flavorName} has been generated. Skipping that step. Turn hashing off if you don't want this.`
+        );
+        continue;
+      }
+    }
+
+    await applySinglePluginOnAsset(
+      iconFlavor,
+      icon,
+      plugin
+    );
+  }
+}
+
 
 /**
  * This is the most basic plugin application function It applies one plugin on
@@ -121,13 +171,18 @@ async function applySinglePluginOnAsset(
 
   const promises = [];
   if (plugin.writeToOutput) {
+    // This feature is incorrect when the plugin returns the same flavor with
+    //appended as it needs to iterate over the types and print the content of
+    //the type instead of the actual flavor. However, that won't be required if
+    //we end up addressing this issue https://github.com/linkedin/icon-magic/issues/319
     for (const outputFlavor of output) {
-      if (outputFlavor.contents) {
+      const svgTypeFlavor = outputFlavor.types ? outputFlavor.types.get('svg') : null;
+      if (svgTypeFlavor) {
         promises.push(
           saveContentToFile(
-            path.join(icon.iconPath, 'tmp'),
-            outputFlavor.name,
-            outputFlavor.contents,
+            path.join(icon.iconPath, 'tmp', plugin.name),
+            svgTypeFlavor.name,
+            await svgTypeFlavor.getContents(),
             'svg'
           )
         );
