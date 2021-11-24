@@ -46,10 +46,6 @@
           "generateSourceHash": "8fcc934cb3787add8b392cf97a51e58e",
           "imageset": "active-small",
           "colorScheme": "light"
-        },
-        "customElement": {
-          "name": "active-small",
-          "path": "./active-small.js"
         }
       }
     },
@@ -66,10 +62,6 @@
           "generateSourceHash": "c8ac410f89396c735e31215f5597bd86",
           "imageset": "active-small",
           "colorScheme": "dark"
-        },
-        "customElement": {
-          "name": "active-small-on-dark",
-          "path": "./active-small-on-dark.js"
         }
       }
     },
@@ -82,10 +74,6 @@
           "name": "inverse-small",
           "path": "./inverse-small.svg",
           "generateSourceHash": "989ae26ede34963a5bd33df48976b74e"
-        },
-        "customElement": {
-          "name": "inverse-small",
-          "path": "./inverse-small.js"
         }
       }
     },
@@ -378,18 +366,6 @@
               "classNames": [
                 "flip"
               ]
-            },
-            "writeToOutput": false
-          }
-        ]
-      },
-      {
-        "name": "customElement",
-        "plugins": [
-          {
-            "name": "svg-to-custom-element",
-            "params": {
-              "namePrefix": "test-prefix-"
             },
             "writeToOutput": false
           }
