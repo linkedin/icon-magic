@@ -4,7 +4,7 @@ import {
   IconConfig,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import {applyPluginOnAssets} from '@icon-magic/icon-models';
+import { applyPluginOnAssets } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';
 import { existsSync } from 'fs-extra';
 import * as workerpool from 'workerpool';
