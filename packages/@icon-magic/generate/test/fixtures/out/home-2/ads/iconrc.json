@@ -82,6 +82,10 @@
           "name": "inverse-small",
           "path": "./inverse-small.svg",
           "generateSourceHash": "989ae26ede34963a5bd33df48976b74e"
+        },
+        "customElement": {
+          "name": "inverse-small",
+          "path": "./inverse-small.js"
         }
       }
     },
