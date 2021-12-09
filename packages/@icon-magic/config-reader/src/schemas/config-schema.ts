@@ -58,6 +58,9 @@ const distributeConfigProperties = {
         properties: {
           imageHrefHelper: {
             type: ['string', null]
+          },
+          pathToTheImageAsset: {
+            type: ['string', null]
           }
         }
       }

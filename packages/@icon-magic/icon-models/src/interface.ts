@@ -26,7 +26,8 @@ interface SVGOptions {
   spriteNames?: string[];
   variantsToFilter: string[];
   outputAsHbs: {
-    imageHrefHelper: string;
+    imageHrefHelper?: string;
+    pathToTheImageAsset?: string;
   }
 }
 
