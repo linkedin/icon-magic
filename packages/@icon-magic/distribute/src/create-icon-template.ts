@@ -1,6 +1,6 @@
 
 import { Asset } from '@icon-magic/icon-models';
-import { transform } from 'ember-template-recast';
+import { transform, AST } from 'ember-template-recast';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DOMParser, XMLSerializer } from 'xmldom';
@@ -17,6 +17,7 @@ const serializeToString = new XMLSerializer().serializeToString;
 export async function createHbs(
   assets: Asset[],
   outputPath: string,
+  imageHrefHelper: string|undefined,
   doNotRemoveSuffix: boolean
 ): Promise<void> {
   for (const asset of assets) {
@@ -56,8 +57,17 @@ export async function createHbs(
               if (ariaHiddenAttr) {
                 node.attributes.unshift(ariaHiddenAttr);
               }
+            } else if (imageHrefHelper && node.tag === 'image') {
+              const imgHrefAttr = node.attributes.find(attr => attr.name === 'href');
+              node.attributes = node.attributes.filter(a => a !== imgHrefAttr);
+
+              if (imgHrefAttr) {
+                // replace the href to include the helper
+                const imageHrefValue = imgHrefAttr.value as AST.TextNode;
+                node.attributes.unshift(b.attr('href', b.mustache(b.path("get-asset-url"), [b.string(imageHrefValue.chars)], b.hash([]))));
+              }
             }
-          },
+          }
         };
       }
     });

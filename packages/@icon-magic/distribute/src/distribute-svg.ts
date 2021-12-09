@@ -81,11 +81,12 @@ export async function distributeSvg(
 
     if (outputAsHbs) {
       try {
+        const imageHrefHelper = distributeConfig.imageHrefHelper;
         const destPath =
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-        await createHbs(assetsToDistribute, destPath, doNotRemoveSuffix);
+        await createHbs(assetsToDistribute, destPath, imageHrefHelper, doNotRemoveSuffix);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
