@@ -65,7 +65,7 @@ export async function createHbs(
               if (imgHrefAttr) {
                 // replace the href to include the helper
                 const imageHrefValue = imgHrefAttr.value as AST.TextNode;
-                node.attributes.unshift(b.attr('href', b.mustache(b.path("get-asset-url"), [b.string(pathToTheImageAsset ? path.join(pathToTheImageAsset, imageHrefValue.chars) : imageHrefValue.chars)], b.hash([]))));
+                node.attributes.unshift(b.attr('href', b.mustache(b.path(imageHrefHelper), [b.string(pathToTheImageAsset ? path.join(pathToTheImageAsset, imageHrefValue.chars) : imageHrefValue.chars)], b.hash([]))));
               }
             }
           }
