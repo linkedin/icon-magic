@@ -28,7 +28,7 @@ interface SVGOptions {
   outputAsHbs: {
     imageHrefHelper?: string;
     pathToTheImageAsset?: string;
-  }
+  };
 }
 
 interface WebpOptions {
