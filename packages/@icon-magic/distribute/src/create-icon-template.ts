@@ -1,6 +1,6 @@
 
 import { Asset } from '@icon-magic/icon-models';
-import { transform, AST } from 'ember-template-recast';
+import { AST, transform } from 'ember-template-recast';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DOMParser, XMLSerializer } from 'xmldom';
