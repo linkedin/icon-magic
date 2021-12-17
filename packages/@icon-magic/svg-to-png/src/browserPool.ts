@@ -24,8 +24,8 @@ async function init(options: puppeteer.LaunchOptions): Promise<boolean> {
 }
 
 let idx = 0;
-export async function run<K=any>(func: (page: puppeteer.Page) => Promise<K>): Promise<K> {
-  hasBeenInit = init({ headless: true }); // Ensure pool is init
+export async function run<K>(func: (page: puppeteer.Page) => Promise<K>): Promise<K> {
+  hasBeenInit = init({}); // Ensure pool is init
   await hasBeenInit;
   let res: K;
   const index = idx;
