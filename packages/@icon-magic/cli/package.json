@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/cli",
-  "version": "2.4.0-beta.0",
+  "version": "2.6.0-beta.0",
   "description": "Icon magic CLI package.",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",

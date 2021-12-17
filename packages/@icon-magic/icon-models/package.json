@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/icon-models",
-  "version": "2.4.0-beta.0",
+  "version": "2.6.0-beta.0",
   "description": "Icon magic provides classes for the icon and iconSet",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",

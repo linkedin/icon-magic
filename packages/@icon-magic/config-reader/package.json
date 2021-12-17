@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/config-reader",
-  "version": "2.4.0-beta.0",
+  "version": "2.6.0-beta.0",
   "description": "Icon magic config parsing/reading/writing package.",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
