@@ -14,10 +14,16 @@ const svgFile = fs.readFileSync(
   path.resolve(`${FIXTURES}/nav-icons/home/filled.svg`).toString(),
   'utf8'
 );
-const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home/filled.svg`, {
+const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home`, {
   name: 'filled',
   contents: svgFile,
-  path: `${FIXTURES}/nav-icons/home/filled.svg`
+  path: `${FIXTURES}/nav-icons/home/filled.svg`,
+  types: {
+    svg: {
+      name: 'filled.svg',
+      path: './filled.svg'
+    },
+  },
 });
 const icon = new Icon({
   iconPath: `${FIXTURES}/nav-icons/home`,
@@ -37,9 +43,13 @@ const icon = new Icon({
 describe('svgToCustomElement()', function () {
   it('Creates custom element asset and updates icon correctly', async () => {
     const options: CustomElementGenerateOptions = {
-      namePrefix: "test-prefix-"
+      namePrefix: 'test-prefix-',
     };
     const expectedFlavor: FlavorTypeMap = {
+      svg: {
+        name: 'filled.svg',
+        path: './filled.svg',
+      },
       customElement: {
         name: 'filled',
         path: './filled.js',
@@ -74,12 +84,12 @@ export default function () {
 }
 `;
     const outputFlavor: Flavor = await svgToCustomElement.fn(flavor, icon, options);
-    assert.deepStrictEqual(expectedFlavor, outputFlavor.getConfig().types);
+    assert.deepStrictEqual(outputFlavor.getConfig().types, expectedFlavor);
     const outputCustomElement = fs.readFileSync(
       path.resolve(`${output}/home/filled.js`).toString(),
       'utf8'
     );
-    assert.strictEqual(expectedCustomElement, outputCustomElement);
+    assert.strictEqual(outputCustomElement, expectedCustomElement);
   });
 
   it('Creates custom element asset with default prefix when param is missing', async () => {
@@ -89,5 +99,15 @@ export default function () {
       'utf8'
     );
     assert.ok(/icon-magic-home-filled/.test(outputCustomElement));
+  });
+
+  it('Does not set custom element flavor if svg flavor is missing', async () => {
+    const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home`, {
+      name: 'filled',
+      path: `${FIXTURES}/nav-icons/home/filled.svg`,
+      types: {},
+    });
+    const outputFlavor: Flavor = await svgToCustomElement.fn(flavor, icon);
+    assert.deepStrictEqual(outputFlavor.getConfig().types, {});
   });
 });

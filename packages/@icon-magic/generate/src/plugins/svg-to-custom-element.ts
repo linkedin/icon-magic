@@ -6,8 +6,9 @@
  * The resulting assets define and register custom elements to CustomElementRegistry
  * via window.customElements.
  *
- * This plugin returns flavor with added custom element asset type and
- * automatically writes the output to the output directory.
+ * The input of this plugin is the svg to be converted to custom element.
+ * The plugin returns the asset flavor with added custom element asset type and
+ * automatically writes the output (javascript files) to the output directory.
  */
 import {
   Asset,
@@ -25,7 +26,7 @@ const LOGGER = new Logger('icon-magic:generate:svg-to-custom-element');
 const CUSTOM_ELEMENT_NAME_PREFIX = 'icon-magic-';
 
 /**
- * Get file contents
+ * Get javascript file contents for creating custom element
  * @param elName - name of the custom element
  * @param svgData - svg to render on a web page
  */
@@ -72,8 +73,13 @@ export const svgToCustomElement: GeneratePlugin = {
     icon: Icon,
     params: CustomElementGenerateOptions = {}
   ): Promise<Flavor> => {
-    // Get contents of .svg asset as a string
-    let svgData = (await flavor.getContents()) as string;
+    // Get svg flavor
+    const svgFlavor = flavor.types.get('svg');
+    if (svgFlavor === undefined) {
+      return flavor;
+    }
+    // Get contents of svg asset as a string
+    let svgData = (await svgFlavor.getContents()) as string;
     svgData = stripSpacesBetweenTags(svgData);
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
