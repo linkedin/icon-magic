@@ -23,11 +23,11 @@
   "outputPath": "./test/fixtures/out",
   "flavors": [
     {
-      "name": "filled",
-      "path": "./build/filled.svg",
+      "name": "filled-on-dark",
+      "path": "./build/filled-on-dark.svg",
       "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
-      "colorScheme": "light",
+      "colorScheme": "dark",
       "types": {}
     },
     {
@@ -37,11 +37,11 @@
       "types": {}
     },
     {
-      "name": "filled-on-dark",
-      "path": "./build/filled-on-dark.svg",
+      "name": "filled",
+      "path": "./build/filled.svg",
       "buildSourceHash": "095461259d3f590f720705024335072e",
       "imageset": "filled",
-      "colorScheme": "dark",
+      "colorScheme": "light",
       "types": {}
     }
   ],
