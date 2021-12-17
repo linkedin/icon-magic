@@ -46,6 +46,6 @@ export async function convert(
         width: options.width,
         height: options.height
       }
-    });
+    }) as Buffer; // Buffer is returned when encoding is set to 'binary'
   });
 }
