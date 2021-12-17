@@ -39,7 +39,7 @@ const buildConfigProperties = {
 
 const distributeConfigProperties = {
   variantsToFilter: {
-    type: ['array', 'null']
+    type: ['array', 'null'],
   },
   svg: {
     type: ['object', null],
@@ -53,6 +53,17 @@ const distributeConfigProperties = {
       variantsToFilter: {
         type: ['array', 'null']
       },
+      outputAsHbs: {
+        type: ['object', null],
+        properties: {
+          imageHrefHelper: {
+            type: ['string', null]
+          },
+          pathToTheImageAsset: {
+            type: ['string', null]
+          }
+        }
+      }
     }
   },
   webp: {

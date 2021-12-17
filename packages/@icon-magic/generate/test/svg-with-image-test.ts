@@ -46,37 +46,20 @@ const icon = new Icon({
 });
 
 describe('svgWithImage()', function () {
-  it('creates an svg with an image tag referencing the pathToTheImageAsset', async () => {
-
-    const pathToTheImageAsset = 'mockOutputPathForSvgImageAsset';
+  it('creates an svg with an image tag referencing the iconName and flavor name', async () => {
 
     const outputSvgStripped: string = `
     <svg id="group-accent-1" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-      <image href="${pathToTheImageAsset}/group/accent-1.svg" alt=""/>
+      <image href="group/accent-1.svg" alt=""/>
     </svg>
     `.replace(/\s+/g, '');
 
-    const outputFlavor: Flavor = await svgWithImage.fn(lightFlavor, icon, {
-      pathToTheImageAsset
-    });
+    const outputFlavor: Flavor = await svgWithImage.fn(lightFlavor, icon, {});
 
     const outputFlavorBuffer = await outputFlavor.getContents();
     const outputFlavorStringStripped = outputFlavorBuffer.toString('utf-8').replace(/\s+/g, '');
 
     //result has the image tag embedded with a path to the svg
     assert.strictEqual(outputFlavorStringStripped, outputSvgStripped);
-  });
-
-
-
-  it('throws an error if pathToTheImageAsset is not defined in the config', async () => {
-    let error = null;
-    try {
-      await svgWithImage.fn(lightFlavor, icon, {});
-    }
-    catch (err) {
-      error = err;
-    }
-    assert.ok(/SVGWithImageError/.test(error));
   });
 });

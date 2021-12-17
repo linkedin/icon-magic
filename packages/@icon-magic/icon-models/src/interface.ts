@@ -25,6 +25,10 @@ interface SVGOptions {
   toSprite?: boolean;
   spriteNames?: string[];
   variantsToFilter: string[];
+  outputAsHbs: {
+    imageHrefHelper?: string;
+    pathToTheImageAsset?: string;
+  };
 }
 
 interface WebpOptions {

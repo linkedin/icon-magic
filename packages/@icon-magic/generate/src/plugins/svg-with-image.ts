@@ -12,21 +12,15 @@ import * as path from 'path';
 import { DOMParser, XMLSerializer } from 'xmldom';
 
 const serializeToString = new XMLSerializer().serializeToString;
-export interface SvgImageOptions {
-  pathToTheImageAsset?: string;
-}
+export interface SvgImageOptions {}
 
 export const svgWithImage: GeneratePlugin = {
   name: 'svg-with-image',
   fn: async (
     flavor: Flavor,
     icon: Icon,
-    params: SvgImageOptions = {},
+    _params: SvgImageOptions = {},
   ): Promise<Flavor> => {
-
-    if (!params.pathToTheImageAsset) {
-      throw new Error(`SVGWithImageError: ${icon.iconPath}'s iconrc.json does not contain pathToTheImageAsset in the distribute plugin`);
-    }
 
     const flavorContents = (await flavor.getContents()) as string;
 
@@ -42,7 +36,7 @@ export const svgWithImage: GeneratePlugin = {
 
     // create the image node
     const imageNode  = xmlFlavorDoc.createElement('image');
-    imageNode.setAttribute('href', path.format({dir: path.join(params.pathToTheImageAsset, icon.iconName), name: flavor.name, ext: '.svg'}));
+    imageNode.setAttribute('href', path.format({dir: icon.iconName, name: flavor.name, ext: '.svg'}));
     // blank alt text is needed so this doesn't call out an error with screen
     // readers
     imageNode.setAttribute('alt', '');
