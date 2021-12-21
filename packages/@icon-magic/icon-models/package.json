@@ -1,6 +1,6 @@
 {
   "name": "@icon-magic/icon-models",
-  "version": "2.6.0-beta.0",
+  "version": "3.0.0-beta.0",
   "description": "Icon magic provides classes for the icon and iconSet",
   "main": "dist/src/index.js",
   "author": "Ramitha Chitloor <rchitloor@linkedin.com>",
@@ -18,7 +18,7 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/logger": "^2.3.0-beta.0",
-    "@icon-magic/config-reader": "^2.3.0-beta.0"
+    "@icon-magic/config-reader": "^2.3.0-beta.0",
+    "@icon-magic/logger": "^2.3.0-beta.0"
   }
 }
