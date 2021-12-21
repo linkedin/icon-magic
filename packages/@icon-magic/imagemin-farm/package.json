@@ -18,11 +18,12 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/logger": "^2.3.0-beta.0",
+    "@icon-magic/logger": "^2.7.0-beta.0",
     "imagemin": "^7.0.0",
     "imagemin-advpng": "^6.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-pngcrush": "^6.0.0",
     "imagemin-zopfli": "^7.0.0"
-  }
+  },
+  "gitHead": "ae6b18600f9d034f0ca64e47189304b6fcdfa8ac"
 }

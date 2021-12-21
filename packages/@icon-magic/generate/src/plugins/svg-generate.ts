@@ -13,11 +13,13 @@
  * - colored/black - if it is a colored icon, then set style="fill: currentColor"
  */
  import {
+  createHash
+} from '@icon-magic/config-reader';
+import {
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon,
-  createHash
+  Icon
 } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';

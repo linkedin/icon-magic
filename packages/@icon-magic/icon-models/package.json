@@ -18,7 +18,7 @@
     "lintfix": "tslint -t msbuild --project . -c tslint.json --fix"
   },
   "dependencies": {
-    "@icon-magic/config-reader": "^2.3.0-beta.0",
-    "@icon-magic/logger": "^2.3.0-beta.0"
-  }
+    "@icon-magic/logger": "^2.7.0-beta.0"
+  },
+  "gitHead": "ae6b18600f9d034f0ca64e47189304b6fcdfa8ac"
 }

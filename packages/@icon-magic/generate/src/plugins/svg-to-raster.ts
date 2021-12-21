@@ -1,10 +1,12 @@
 import {
+  createHash
+} from '@icon-magic/config-reader';
+import {
   AssetResolution,
   AssetSize,
   Flavor,
   GeneratePlugin,
-  Icon,
-  createHash
+  Icon
 } from '@icon-magic/icon-models';
 import { minify } from '@icon-magic/imagemin-farm';
 import { Logger } from '@icon-magic/logger';

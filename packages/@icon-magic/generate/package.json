@@ -32,5 +32,6 @@
     "@types/svgo": "^1.0.1",
     "@types/workerpool": "^6.0.0",
     "xmldom": "^0.5.0"
-  }
+  },
+  "gitHead": "ae6b18600f9d034f0ca64e47189304b6fcdfa8ac"
 }

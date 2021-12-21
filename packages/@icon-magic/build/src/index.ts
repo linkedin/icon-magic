@@ -1,5 +1,9 @@
 import { loadConfigFile } from '@icon-magic/config-reader';
 import {
+  compareAssetHashes,
+  createHash
+} from '@icon-magic/config-reader';
+import {
   Asset,
   BuildPlugin,
   Flavor,
@@ -8,8 +12,6 @@ import {
   IconConfigHash,
   IconSet,
   applyPluginsOnAsset,
-  compareAssetHashes,
-  createHash,
   saveContentToFile
 } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';

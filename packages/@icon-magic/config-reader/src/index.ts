@@ -10,6 +10,9 @@ const CONFIG_FILES = ['iconrc.json', 'iconrc.js'];
 const LOGGER = new Logger('icon-magic:config-reader/index');
 
 export * from './config-loader';
+export * from './helpers/hash';
+export * from './helpers/files';
+
 /**
  * Constructs a map of the icon and closest config to the icon traversing up
  * @param inputPaths the set of input paths to check

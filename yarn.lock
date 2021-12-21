@@ -104,25 +104,6 @@
   resolved "https://registry.yarnpkg.com/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@icon-magic/config-reader@^2.3.0-beta.0":
-  version "2.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@icon-magic/config-reader/-/config-reader-2.3.0-beta.0.tgz#0f40c702dcff165aefcecefd2914104d2f37065e"
-  integrity sha512-bDbypnfbN/IwbuoRuDYkQrhtPW8nrjQiyMFwRKDdLPDUyUktRsQ0KjPpm2aW9XhYWgCX24rYm/ANbOlXEv1VOA==
-  dependencies:
-    "@icon-magic/icon-models" "^2.3.0-beta.0"
-    "@icon-magic/logger" "^2.3.0-beta.0"
-    "@types/glob" "^7.1.1"
-    ajv "^6.9.2"
-    glob "^7.1.3"
-    import-fresh "^3.0.0"
-
-"@icon-magic/icon-models@^2.3.0-beta.0":
-  version "2.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@icon-magic/icon-models/-/icon-models-2.3.0-beta.0.tgz#5410292891b5a2478b2f0cf29bd8748696356328"
-  integrity sha512-hLHeU6ruxwuLxIikLVXQ61IEQS3gbQXDtXGjpFbTSux4Bv1He14rZ2Ll1VySLP9c8DECJF6TfGOkQgimCP1Rqw==
-  dependencies:
-    "@icon-magic/logger" "^2.3.0-beta.0"
-
 "@lerna/add@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-4.0.0.tgz#c36f57d132502a57b9e7058d1548b7a565ef183f"

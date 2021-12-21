@@ -1,7 +1,8 @@
+import { hasAssetBeenProcessed } from '@icon-magic/config-reader';
 import { Logger } from '@icon-magic/logger';
 import * as path from 'path';
 
-import { Asset, Flavor, FlavorConfig, Icon, hasAssetBeenProcessed } from '.';
+import { Asset, Flavor, FlavorConfig, Icon } from '.';
 import { BuildPlugin, GeneratePlugin, Iterant } from './interface';
 import { saveContentToFile } from './utils/files';
 import { propCombinator } from './utils/prop-combinator';

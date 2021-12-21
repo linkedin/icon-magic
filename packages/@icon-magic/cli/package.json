@@ -20,11 +20,12 @@
     "icon-magic": "dist/src/index.js"
   },
   "dependencies": {
-    "@icon-magic/build": "^2.6.0-beta.0",
-    "@icon-magic/distribute": "^2.6.0-beta.0",
-    "@icon-magic/generate": "^2.6.0-beta.0",
-    "@icon-magic/logger": "^2.3.0-beta.0",
+    "@icon-magic/build": "^2.7.0-beta.0",
+    "@icon-magic/distribute": "^2.7.0-beta.0",
+    "@icon-magic/generate": "^2.7.0-beta.0",
+    "@icon-magic/logger": "^2.7.0-beta.0",
     "commander": "^7.2.0",
     "config-reader": "^0.1.1"
-  }
+  },
+  "gitHead": "ae6b18600f9d034f0ca64e47189304b6fcdfa8ac"
 }

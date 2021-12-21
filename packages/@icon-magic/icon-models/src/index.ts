@@ -7,4 +7,3 @@ export { applyPluginsOnAsset, applyPluginOnAssets } from './plugin-manager';
 export * from './interface';
 
 export * from './utils/files';
-export * from './utils/hash';
