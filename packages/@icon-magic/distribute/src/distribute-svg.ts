@@ -41,18 +41,45 @@ export async function distributeSvg(
   for (const icon of icons) {
     LOGGER.debug(`calling distributeSvg on ${icon.iconName}: ${icon.iconPath} with colorScheme: ${colorScheme}`);
     if (!doNotRemoveSuffix && colorScheme.includes('mixed')){
-      LOGGER.warn(`Warning: By default the "-mixed" suffix is trimmed from the file name when distributed to hbs. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
+      LOGGER.debug(`Warning: By default the "-mixed" suffix is trimmed from the file name when distributed to hbs or to one directory. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
     }
 
     const assets = getIconFlavorsByType(icon, 'svg');
-    // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
-    let assetsToDistribute = assets.filter(asset => {
-      if (asset.colorScheme) {
-        return colorScheme.includes(asset.colorScheme);
+    // Further filter the icons by matching the assets's colorScheme to the
+    // commander option --colorScheme
+
+    let lightAssets = assets.filter(asset => asset.colorScheme ? asset.colorScheme === 'light' : true); // Light variants can either have colorScheme: `light`, null, or undefined
+    let darkAssets = assets.filter(asset => asset.colorScheme === 'dark');
+    let mixedAssets = assets.filter(asset => asset.colorScheme === 'mixed');
+
+    let assetsToDistribute: Asset[] = [];
+
+    colorScheme.forEach(value => {
+      switch(value) {
+        case 'light': {
+          assetsToDistribute = assetsToDistribute.concat(...lightAssets);
+          break;
+        }
+        case 'dark': {
+          assetsToDistribute = assetsToDistribute.concat(...darkAssets);
+          break;
+        }
+        case 'mixed': {
+          assetsToDistribute = assetsToDistribute.concat(...mixedAssets);
+          break;
+        }
+        case 'default': {
+          if (mixedAssets.length) {
+            assetsToDistribute = assetsToDistribute.concat(...mixedAssets);
+          } else {
+            assetsToDistribute = assetsToDistribute.concat(...lightAssets);
+            assetsToDistribute = assetsToDistribute.concat(...darkAssets);
+          }
+          break;
+        }
       }
-      // Light variants can either have colorScheme: `light`, null, or undefined
-      return colorScheme.includes('light');
-    });
+    })
+
     if (withEmbeddedImage) {
       // filter down to only the assets that contain embedded images in them
       assetsToDistribute = assetsToDistribute.filter(asset => {
@@ -85,14 +112,15 @@ export async function distributeSvg(
       !svgConfig.toSprite
     );
 
+    const destPath =
+        icon.category && groupByCategory
+          ? path.join(outputPath, icon.category)
+          : outputPath;
+
     if (outputAsHbs) {
       try {
         const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
         const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
-        const destPath =
-        icon.category && groupByCategory
-          ? path.join(outputPath, icon.category)
-          : outputPath;
         await createHbs(assetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
       }
       catch(e) {
@@ -100,11 +128,10 @@ export async function distributeSvg(
       }
     }
     else if (outputToOneDirectory) {
-      const destPath =
-      icon.category && groupByCategory
-        ? path.join(outputPath, icon.category)
-        : outputPath;
-      await copyIconAssetSvgs(icon.iconName, assetsToDistribute, destPath, outputToOneDirectory);
+      // this comes before the check for the sprite config and therefore does
+      // not respect the value of the config.spriteNames and distributes
+      // assets similar to outputAsHbs above
+      await copyIconAssetSvgs(icon.iconName, assetsToDistribute, destPath, true, true);
     }
     else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
@@ -126,11 +153,7 @@ export async function distributeSvg(
       // Just copy the files to the output
       // If the groupByCategory flag is available,
       // put them in a folder that matches the icon category
-      const destPath =
-        icon.category && groupByCategory
-          ? path.join(outputPath, icon.category)
-          : outputPath;
-      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath, outputToOneDirectory);
+      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath, false, false);
     }
   }
 
@@ -150,16 +173,20 @@ async function copyIconAssetSvgs(
   iconName: string,
   assets: Asset[],
   outputPath: string,
-  outputToOneDirectory:boolean = false
+  outputToOneDirectory:boolean = false,
+  stripSuffix = true
 ) {
-
   let outputIconDir = outputToOneDirectory ? outputPath : path.join(outputPath, iconName);
 
   await fs.mkdirp(outputIconDir);
   // copy all assets to the output icon directory
   const promises = [];
   for (const asset of assets) {
-    const assetName = outputToOneDirectory ? `${iconName}-${path.basename(asset.getPath())}` : path.basename(asset.getPath());
+    let assetName = outputToOneDirectory ? `${iconName}-${path.basename(asset.getPath())}` : path.basename(asset.getPath());
+    if (stripSuffix) {
+      assetName = assetName.replace(/-mixed.svg$/, '.svg');
+      assetName = assetName.replace(/-with-image/, '')
+    }
     promises.push(
       fs.copy(
         asset.getPath(),
