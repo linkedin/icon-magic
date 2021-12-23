@@ -30,7 +30,7 @@ export async function distributeSvg(
   outputToOneDirectory: boolean,
   colorScheme: string[],
   withEmbeddedImage: boolean,
-  doNotRemoveSuffix: boolean
+  doNotRemoveSuffix: boolean = true
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
@@ -131,7 +131,7 @@ export async function distributeSvg(
       // this comes before the check for the sprite config and therefore does
       // not respect the value of the config.spriteNames and distributes
       // assets similar to outputAsHbs above
-      await copyIconAssetSvgs(icon.iconName, assetsToDistribute, destPath, true, true);
+      await copyIconAssetSvgs(icon.iconName, assetsToDistribute, destPath, true, !doNotRemoveSuffix);
     }
     else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
@@ -153,7 +153,7 @@ export async function distributeSvg(
       // Just copy the files to the output
       // If the groupByCategory flag is available,
       // put them in a folder that matches the icon category
-      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath, false, false);
+      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath, false, !doNotRemoveSuffix);
     }
   }
 
