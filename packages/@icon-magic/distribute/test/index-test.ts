@@ -15,7 +15,7 @@ const iconSet = configReader.getIconConfigSet(new Array(input));
 describe('distribute works as expected', function () {
   it('Moves all -with-image.svg files to the right output directory', async () => {
     const iconSetAnimal = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/animal-with-embedded-images')));
-    await distributeByType(iconSetAnimal, output, 'svg', true, false, ['light', 'dark'], true);
+    await distributeByType(iconSetAnimal, output, 'svg', true, false, false, ['light', 'dark'], true);
     try {
       const files = fs.readdirSync(`${output}/its-ui-with-embedded-images/animal`);
       assert.ok(files.includes('small.svg'));
@@ -423,7 +423,7 @@ describe('distribute works as expected', function () {
 
   it('it trims "-mixed" from end of hbs file name', async () => {
     const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
-    await distributeByType(iconSetWordmark, `${output}/wordmark`, 'svg', false, true, ['mixed'], false);
+    await distributeByType(iconSetWordmark, `${output}/wordmark`, 'svg', false, false, true, ['mixed'], false);
     try {
       const files = fs.readdirSync(`${output}/wordmark`);
       assert.ok(files.includes('wordmark-large.hbs'));
@@ -435,7 +435,7 @@ describe('distribute works as expected', function () {
 
   it('it does not trim "-mixed" from end of hbs file name', async () => {
     const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
-    await distributeByType(iconSetWordmark, `${output}/wordmark/untrimmed`, 'svg', false, true, ['mixed'], true);
+    await distributeByType(iconSetWordmark, `${output}/wordmark/untrimmed`, 'svg', false, false, true, ['mixed'], true);
     try {
       const files = fs.readdirSync(`${output}/wordmark/untrimmed`);
       assert.ok(files.includes('wordmark-large-mixed.hbs'));

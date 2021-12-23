@@ -25,6 +25,7 @@ export async function distributeByType(
   type: ICON_TYPES = 'all',
   groupByCategory = true,
   outputAsHbs = false,
+  outputToOneDirectory= false,
   colorScheme: string[] = ['light', 'dark'],
   withEmbeddedImage = false,
   doNotRemoveSuffix = false
@@ -41,13 +42,13 @@ export async function distributeByType(
       break;
     }
     case 'svg': {
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, outputToOneDirectory, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
       break;
     }
     default: {
       await createImageSet(iconSet, outputPath);
       await distributeByResolution(iconSet, outputPath);
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, outputToOneDirectory, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
     }
   }
 }

@@ -99,6 +99,10 @@ program
     '[for web] whether to output the svg as handlebars template.'
   )
   .option(
+    '-oned, --outputToOneDirectory',
+    '[for web] whether to output all the svgs to a single directory'
+  )
+  .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
   )
   .option(
@@ -160,6 +164,7 @@ program
       options.type,
       options.groupBy === 'category',
       options.outputAsTemplate,
+      options.outputToOneDirectory,
       options.colorScheme,
       options.withEmbeddedImage,
       options.doNotRemoveSuffix

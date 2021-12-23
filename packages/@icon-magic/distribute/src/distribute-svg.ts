@@ -27,6 +27,7 @@ export async function distributeSvg(
   outputPath: string,
   groupByCategory: boolean,
   outputAsHbs: boolean,
+  outputToOneDirectory: boolean,
   colorScheme: string[],
   withEmbeddedImage: boolean,
   doNotRemoveSuffix: boolean
@@ -56,6 +57,11 @@ export async function distributeSvg(
       // filter down to only the assets that contain embedded images in them
       assetsToDistribute = assetsToDistribute.filter(asset => {
         return asset.name.match(/-with-image/) ? true : false;
+      });
+    } else {
+      // return only the assets without the suffix
+      assetsToDistribute = assetsToDistribute.filter(asset => {
+        return asset.name.match(/-with-image/) ? false : true;
       });
     }
 
@@ -93,6 +99,13 @@ export async function distributeSvg(
         LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
       }
     }
+    else if (outputToOneDirectory) {
+      const destPath =
+      icon.category && groupByCategory
+        ? path.join(outputPath, icon.category)
+        : outputPath;
+      await copyIconAssetSvgs(icon.iconName, assetsToDistribute, destPath, outputToOneDirectory);
+    }
     else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
@@ -117,7 +130,7 @@ export async function distributeSvg(
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath);
+      await copyIconAssetSvgs(icon.iconName, assetsNoSprite, destPath, outputToOneDirectory);
     }
   }
 
@@ -136,17 +149,21 @@ export async function distributeSvg(
 async function copyIconAssetSvgs(
   iconName: string,
   assets: Asset[],
-  outputPath: string
+  outputPath: string,
+  outputToOneDirectory:boolean = false
 ) {
-  const outputIconDir = path.join(outputPath, iconName);
+
+  let outputIconDir = outputToOneDirectory ? outputPath : path.join(outputPath, iconName);
+
   await fs.mkdirp(outputIconDir);
   // copy all assets to the output icon directory
   const promises = [];
   for (const asset of assets) {
+    const assetName = outputToOneDirectory ? `${iconName}-${path.basename(asset.getPath())}` : path.basename(asset.getPath());
     promises.push(
       fs.copy(
         asset.getPath(),
-        path.join(outputIconDir, path.basename(asset.getPath()))
+        path.join(outputIconDir, assetName)
       )
     );
   }
