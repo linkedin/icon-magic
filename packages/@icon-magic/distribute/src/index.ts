@@ -27,7 +27,8 @@ export async function distributeByType(
   outputAsHbs = false,
   colorScheme: string[] = ['light', 'dark'],
   withEmbeddedImage = false,
-  doNotRemoveSuffix = false
+  doNotRemoveSuffix = false,
+  outputAsCustomElement = false
 ): Promise<void> {
   LOGGER.debug(`entering distribute with ${type} and colorSchemes: ${colorScheme}`);
   const iconSet = new IconSet(iconConfig, true);
@@ -41,13 +42,13 @@ export async function distributeByType(
       break;
     }
     case 'svg': {
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix, outputAsCustomElement);
       break;
     }
     default: {
       await createImageSet(iconSet, outputPath);
       await distributeByResolution(iconSet, outputPath);
-      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix);
+      await distributeSvg(iconSet, outputPath, groupByCategory, outputAsHbs, colorScheme, withEmbeddedImage, doNotRemoveSuffix, outputAsCustomElement);
     }
   }
 }
