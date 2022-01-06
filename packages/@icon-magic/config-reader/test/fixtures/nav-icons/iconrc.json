@@ -23,6 +23,10 @@
         "plugins": []
       },
       {
+        "name": "customElement",
+        "plugins": []
+      },
+      {
         "name": "raster",
         "plugins": []
       }

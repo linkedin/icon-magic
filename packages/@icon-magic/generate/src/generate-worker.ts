@@ -4,13 +4,15 @@ import {
   IconConfig,
   saveContentToFile
 } from '@icon-magic/icon-models';
-import {applyPluginOnAssets} from '@icon-magic/icon-models';
+import { applyPluginOnAssets } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';
 import { existsSync } from 'fs-extra';
 import * as workerpool from 'workerpool';
 
 import { svgGenerate } from './plugins/svg-generate';
+import { svgToCustomElement } from './plugins/svg-to-custom-element';
 import { svgToRaster } from './plugins/svg-to-raster';
+import { kebabToCamel } from './utils';
 
 const LOGGER = new Logger('icon-magic:generate:index');
 
@@ -67,6 +69,17 @@ async function generateSingleIcon(
               ? await getPlugins(generateType.plugins)
               : new Array(svgToRaster),
             new RegExp('png|webp'),
+            hashing
+          );
+          break;
+        }
+        case 'customElement': {
+          await applyGeneratePluginsOnFlavors(
+            icon,
+            generateType.plugins && generateType.plugins.length
+              ? await getPlugins(generateType.plugins)
+              : new Array(svgToCustomElement),
+            new RegExp('customElement'),
             hashing
           );
           break;
@@ -141,16 +154,6 @@ async function getPlugins(
       }
     })
   );
-}
-
-/**
- * Convert a string from kebab-case to camelCase
- * @param s string to convert to camel case
- */
-function kebabToCamel(s: string): string {
-  return s.replace(/(\-\w)/g, m => {
-    return m[1].toUpperCase();
-  });
 }
 
 workerpool.worker({ generateSingleIcon });

@@ -22,6 +22,7 @@ describe('@icon-magic/config-reader/index', function() {
             outputPath: './out',
             types: [
               { name: 'svg', plugins: [] },
+              { name: 'customElement', plugins: [] },
               { name: 'raster', plugins: [] }
             ]
           },
@@ -44,6 +45,7 @@ describe('@icon-magic/config-reader/index', function() {
             outputPath: './out',
             types: [
               { name: 'svg', plugins: [] },
+              { name: 'customElement', plugins: [] },
               { name: 'raster', plugins: [] }
             ]
           },
@@ -53,6 +55,6 @@ describe('@icon-magic/config-reader/index', function() {
     ]);
     const configSet = getIconConfigSet([FIXTURES]);
 
-    assert.deepEqual(configSet, new Map(expectedOutput));
+    assert.deepStrictEqual(configSet, new Map(expectedOutput));
   });
 });

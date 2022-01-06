@@ -95,7 +95,7 @@ const generateConfigProperties = {
       properties: {
         name: {
           type: 'string',
-          enum: ['svg', 'raster']
+          enum: ['svg', 'raster', 'customElement']
         },
         plugins: {
           type: ['array', 'null'],
