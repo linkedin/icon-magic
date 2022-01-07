@@ -46,7 +46,6 @@ export async function distributeSvg(
     }
 
     const svgAssetsToDistribute = getAssetsToDistribute(icon, 'svg', colorScheme, withEmbeddedImage);
-
     const distributeConfig = icon.distribute;
     const svgConfig = distributeConfig && distributeConfig.svg;
     // variantsToFilter can be defined on distribute or on distribute.svg
@@ -85,7 +84,7 @@ export async function distributeSvg(
       try {
         const customElementAssetsToDistribute = getAssetsToDistribute(icon, 'customElement', colorScheme, withEmbeddedImage);
         const destPath = icon.category && groupByCategory ? path.join(outputPath, icon.category) : outputPath;
-        await createCustomElement(customElementAssetsToDistribute, destPath, doNotRemoveSuffix);
+        await createCustomElement(customElementAssetsToDistribute, destPath, icon, doNotRemoveSuffix);
       }
       catch(e) {
         LOGGER.debug(`There was an issue creating the custom element js file: ${e}`);

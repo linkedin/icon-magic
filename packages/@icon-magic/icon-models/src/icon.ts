@@ -11,7 +11,8 @@ import {
   FlavorConfig,
   GenerateConfig,
   IconConfig,
-  MetaData
+  MetaData,
+  GeneratedMetadata
 } from './interface';
 import { exists, isTypeSVG } from './utils/files';
 
@@ -39,6 +40,7 @@ export class Icon {
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
   metadata?: MetaData;
+  generatedMetadata?: GeneratedMetadata;
 
   /**
    * Creates an Icon instance by creating sub classes for it's variants and
@@ -176,6 +178,9 @@ export class Icon {
     if (this.metadata) {
       config.metadata = this.metadata;
     }
+    if (this.generatedMetadata) {
+      config.generatedMetadata = this.generatedMetadata;
+    }
     if (this.build) {
       config.build = this.build;
     }
@@ -188,5 +193,12 @@ export class Icon {
 
     // return the object
     return config;
+  }
+
+  /**
+   * Sets the generated metadata passed in
+   */
+   setGeneratedMetadata(generatedMetadata: GeneratedMetadata) {
+    this.generatedMetadata = generatedMetadata;
   }
 }

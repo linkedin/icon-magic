@@ -21,6 +21,9 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { kebabToCamel, stripSpacesBetweenTags } from '../utils';
+import { DOMParser, XMLSerializer } from 'xmldom';
+
+const serializeToString = new XMLSerializer().serializeToString;
 
 const LOGGER = new Logger('icon-magic:generate:svg-to-custom-element');
 const CUSTOM_ELEMENT_NAME_PREFIX = 'icon-magic-';
@@ -62,6 +65,20 @@ export default function () {
 `;
 };
 
+const normalizeSvgData = (svgData: string): string => {
+  // Parse XML from a string into a DOM Document
+  const doc = new DOMParser();
+  const xml = doc.parseFromString(svgData, 'image/svg+xml');
+  /* Strip id since it can cause id collisions if used multiple times
+     on a webpage. Instead use custom element name as a selector.
+   */
+  xml.documentElement.removeAttribute('id');
+  svgData = serializeToString(xml);
+  svgData = stripSpacesBetweenTags(svgData);
+
+  return svgData;
+};
+
 export interface CustomElementGenerateOptions {
   namePrefix?: string;
 }
@@ -80,7 +97,8 @@ export const svgToCustomElement: GeneratePlugin = {
     }
     // Get contents of svg asset as a string
     let svgData = (await svgFlavor.getContents()) as string;
-    svgData = stripSpacesBetweenTags(svgData);
+    svgData = normalizeSvgData(svgData);
+
     // Create the output directory
     const outputPath = icon.getIconOutputPath();
 
@@ -114,8 +132,18 @@ export const svgToCustomElement: GeneratePlugin = {
       new Asset(icon.iconPath, {
         name: flavorName,
         path: `./${flavorName}.js`,
+        colorScheme: flavor.colorScheme,
       })
     );
+
+    /* Add metadata to icon to be shared across icon distribution.
+       It is then added to resulting iconrc.json file.
+     */
+    icon.setGeneratedMetadata({
+      customElement: {
+        namePrefix: prefix,
+      }
+    });
 
     return flavor;
   },

@@ -84,7 +84,7 @@ export type GenerateType = 'svg' | 'raster' | 'customElement';
 /**
  * Properties related to a single generation type
  */
-interface GenerateTypeConfig {
+export interface GenerateTypeConfig {
   name: GenerateType;
   plugins?: GeneratePlugin[];
 }
@@ -115,6 +115,14 @@ export interface MetaData {
 }
 
 /**
+ * An object containing any generated meta information
+ * about the icon to be shared with distribute scripts.
+ */
+export interface GeneratedMetadata {
+  customElement?: { [namePrefix: string]: string };
+}
+
+/**
  * Properties related to an Icon
  * This should represent the config schema at all times
  */
@@ -134,6 +142,7 @@ export type IconConfig = {
   distribute?: DistributeConfig;
   metadata?: MetaData;
   rtlFlip?: boolean;
+  generatedMetadata?: GeneratedMetadata;
 };
 
 /**
