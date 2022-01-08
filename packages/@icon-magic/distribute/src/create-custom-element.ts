@@ -1,14 +1,14 @@
-
 import { Asset, Icon } from '@icon-magic/icon-models';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 /**
- * Saves svg assets as custom element js files
- * @param assets SVG assets to convert
+ * Saves custom element assets as js files
+ * @param assets custom element assets to be saved
  * @param outputPath path to write to
+ * @param icon icon from which custom element assets are derived
  * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and
- * "-with-image" suffix in file name when distributing to hbs.
+ *        "-with-image" suffix in file name
  */
 export async function createCustomElement(
   assets: Asset[],

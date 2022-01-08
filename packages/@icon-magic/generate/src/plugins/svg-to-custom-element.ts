@@ -19,9 +19,9 @@
 import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { DOMParser, XMLSerializer } from 'xmldom';
 
 import { kebabToCamel, stripSpacesBetweenTags } from '../utils';
-import { DOMParser, XMLSerializer } from 'xmldom';
 
 const serializeToString = new XMLSerializer().serializeToString;
 
