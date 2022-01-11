@@ -162,6 +162,14 @@ function sortIcons(icons: IterableIterator<Icon>): Array<Icon> {
   });
 }
 
+/**
+ * Get the list of assets that needs to be distributed.
+ * @param icon to be moved to the output folder or added to sprite
+ * @param type to which to filter the icon's flavors by
+ * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`
+ * @param withEmbeddedImage true if icon is embedded with image
+ * @returns list of assets to be distributed
+ */
 function getAssetsToDistribute(icon: Icon, type: FlavorType, colorScheme: string[], withEmbeddedImage: boolean) {
   const assets = getIconFlavorsByType(icon, type);
   // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme

@@ -8,7 +8,7 @@ import { kebabToCamel } from './utils';
  * Saves custom element assets as js files
  * @param assets custom element assets to be saved
  * @param outputPath path to write to
- * @param icon icon from which custom element assets are derived
+ * @param icon from which custom element assets are derived
  * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and
  *        "-with-image" suffix in file name
  */
@@ -25,7 +25,7 @@ export async function createCustomElement(
     let fileName = customElementName;
     let fileContents = (await asset.getContents()) as string;
 
-    // Remove the "-mixed" suffix from the name. File will have same name as light version.
+    // Remove "-mixed" and "-with-image" suffix from the name. File will have same name as light version.
     if (!doNotRemoveSuffix && asset.colorScheme === 'mixed') {
       fileName = fileName.replace(/-mixed$/, '');
       fileName = fileName.replace(/-with-image/, '');

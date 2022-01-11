@@ -486,7 +486,7 @@ describe('distribute works as expected', function () {
     }
   });
 
-  it('it trims "-mixed" from end of custom element js file name', async () => {
+  it('it trims "-mixed" from end of custom element js file name and updates file contents', async () => {
     const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
     await distributeByType(iconSetWordmark, `${output}/wordmark`, 'svg', false, true, ['mixed'], false, false, true);
     try {
@@ -502,7 +502,7 @@ describe('distribute works as expected', function () {
     }
   });
 
-  it('it does not trim "-mixed" from end of custom element js file name', async () => {
+  it('it does not trim "-mixed" from end of custom element js file name and does not update file contents', async () => {
     const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
     await distributeByType(iconSetWordmark, `${output}/wordmark/untrimmed`, 'svg', false, true, ['mixed'], false, true, true);
     try {

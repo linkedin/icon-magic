@@ -145,7 +145,7 @@ program
       process.exit(1);
     }
 
-    // --doNotRemoveSuffix is only for --outputAsTemplate and outputAsCustomElement flags
+    // --doNotRemoveSuffix is only for --outputAsTemplate and --outputAsCustomElement flags
     if (options.doNotRemoveSuffix && !(options.outputAsTemplate || options.outputAsCustomElement)) {
       LOGGER.error('Option --doNotRemoveSuffix must be used with --outputAsTemplate or outputAsCustomElement flag');
       process.exit(1);
