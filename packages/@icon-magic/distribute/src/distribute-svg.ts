@@ -1,10 +1,10 @@
-import { Asset, Icon, IconSet, SpriteConfig, FlavorType } from '@icon-magic/icon-models';
+import { Asset, FlavorType, Icon, IconSet, SpriteConfig } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { createHbs } from './create-icon-template';
 import { createCustomElement } from './create-custom-element';
+import { createHbs } from './create-icon-template';
 import {
   addToSprite,
   partitionAssetsForSprite,

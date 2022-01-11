@@ -65,6 +65,12 @@ export default function () {
 `;
 };
 
+/**
+ * To prepare the contents of svg for custom element.
+ *
+ * @param svgData Contents of svg
+ * @returns normalized contents of svg
+ */
 const normalizeSvgData = (svgData: string): string => {
   // Parse XML from a string into a DOM Document
   const doc = new DOMParser();
