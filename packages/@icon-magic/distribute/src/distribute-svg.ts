@@ -66,31 +66,32 @@ export async function distributeSvg(
       !svgConfig.toSprite
     );
 
-    if (outputAsHbs) {
-      try {
-        const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
-        const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
-        const destPath =
-        icon.category && groupByCategory
-          ? path.join(outputPath, icon.category)
-          : outputPath;
-        await createHbs(svgAssetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
+    if (outputAsHbs || outputAsCustomElement) {
+      if (outputAsHbs) {
+        try {
+          const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
+          const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
+          const destPath =
+          icon.category && groupByCategory
+            ? path.join(outputPath, icon.category)
+            : outputPath;
+          await createHbs(svgAssetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
+        }
+        catch(e) {
+          LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+        }
       }
-      catch(e) {
-        LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+      if (outputAsCustomElement) {
+        try {
+          const customElementAssetsToDistribute = getAssetsToDistribute(icon, 'customElement', colorScheme, withEmbeddedImage);
+          const destPath = icon.category && groupByCategory ? path.join(outputPath, icon.category) : outputPath;
+          await createCustomElement(customElementAssetsToDistribute, destPath, icon, doNotRemoveSuffix);
+        }
+        catch(e) {
+          LOGGER.debug(`There was an issue creating the custom element js file: ${e}`);
+        }
       }
-    }
-    else if (outputAsCustomElement) {
-      try {
-        const customElementAssetsToDistribute = getAssetsToDistribute(icon, 'customElement', colorScheme, withEmbeddedImage);
-        const destPath = icon.category && groupByCategory ? path.join(outputPath, icon.category) : outputPath;
-        await createCustomElement(customElementAssetsToDistribute, destPath, icon, doNotRemoveSuffix);
-      }
-      catch(e) {
-        LOGGER.debug(`There was an issue creating the custom element js file: ${e}`);
-      }
-    }
-    else if (iconHasSpriteConfig) {
+    } else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const iconSpriteNames =

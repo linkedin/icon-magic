@@ -472,4 +472,49 @@ describe('distribute works as expected', function () {
       assert.ok(false, err);
     }
   });
+
+  it('creates custom element files', async () => {
+    const iconSetAnimal = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/animal')));
+    await distributeByType(iconSetAnimal, output, 'svg', false, true, ['light'], false, false, true);
+    try {
+      const files = fs.readdirSync(output);
+      assert.ok(files.includes('test-prefix-animal-small.js'));
+      assert.ok(files.includes('test-prefix-animal-large.js'));
+      // const content = fs.readFileSync(`${output}/test-prefix-animal-small.js`, 'utf8');
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
+  it('it trims "-mixed" from end of custom element js file name', async () => {
+    const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
+    await distributeByType(iconSetWordmark, `${output}/wordmark`, 'svg', false, true, ['mixed'], false, false, true);
+    try {
+      const files = fs.readdirSync(`${output}/wordmark`);
+      assert.ok(files.includes('test-prefix-wordmark-large.js'));
+      assert.ok(files.includes('test-prefix-wordmark-medium.js'));
+
+      const content = fs.readFileSync(`${output}/wordmark/test-prefix-wordmark-large.js`, 'utf8');
+      assert.strictEqual(/test-prefix-wordmark-large-mixed/.test(content), false);
+      assert.strictEqual(/testPrefixWordmarkLargeMixed/.test(content), false);
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
+
+  it('it does not trim "-mixed" from end of custom element js file name', async () => {
+    const iconSetWordmark = configReader.getIconConfigSet(new Array(path.resolve(FIXTURES, 'input/wordmark')));
+    await distributeByType(iconSetWordmark, `${output}/wordmark/untrimmed`, 'svg', false, true, ['mixed'], false, true, true);
+    try {
+      const files = fs.readdirSync(`${output}/wordmark/untrimmed`);
+      assert.ok(files.includes('test-prefix-wordmark-large-mixed.js'));
+      assert.ok(files.includes('test-prefix-wordmark-medium-mixed.js'));
+
+      const content = fs.readFileSync(`${output}/wordmark/untrimmed/test-prefix-wordmark-large-mixed.js`, 'utf8');
+      assert.strictEqual(/test-prefix-wordmark-large-mixed/.test(content), true);
+      assert.strictEqual(/testPrefixWordmarkLargeMixed/.test(content), true);
+    } catch (err) {
+      assert.ok(false, err);
+    }
+  });
 });

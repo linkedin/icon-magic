@@ -10,9 +10,9 @@ import {
   DistributeConfig,
   FlavorConfig,
   GenerateConfig,
+  GeneratedMetadata,
   IconConfig,
-  MetaData,
-  GeneratedMetadata
+  MetaData
 } from './interface';
 import { exists, isTypeSVG } from './utils/files';
 
