@@ -19,8 +19,11 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param iconSet set of icons to be moved to the output folder or added to sprite
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param outputAsHbs whether to distribute svg assets as handlebar files
  * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`.
+ * @param withEmbeddedImage (for web) whether to filter only those assets with embedded images
  * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and "-with-image" suffixes in file name when distributing to hbs.
+ * @param outputAsCustomElement whether to distribute svg assets as custom element js files
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -67,14 +70,14 @@ export async function distributeSvg(
     );
 
     if (outputAsHbs || outputAsCustomElement) {
+      const destPath =
+        icon.category && groupByCategory
+          ? path.join(outputPath, icon.category)
+          : outputPath;
       if (outputAsHbs) {
         try {
           const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
           const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
-          const destPath =
-          icon.category && groupByCategory
-            ? path.join(outputPath, icon.category)
-            : outputPath;
           await createHbs(svgAssetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
         }
         catch(e) {
@@ -84,7 +87,6 @@ export async function distributeSvg(
       if (outputAsCustomElement) {
         try {
           const customElementAssetsToDistribute = getAssetsToDistribute(icon, 'customElement', colorScheme, withEmbeddedImage);
-          const destPath = icon.category && groupByCategory ? path.join(outputPath, icon.category) : outputPath;
           await createCustomElement(customElementAssetsToDistribute, destPath, icon, doNotRemoveSuffix);
         }
         catch(e) {
