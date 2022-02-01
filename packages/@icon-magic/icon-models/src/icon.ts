@@ -196,9 +196,12 @@ export class Icon {
   }
 
   /**
-   * Sets the generated metadata passed in
+   * Adds the incoming generated metadata to the existing one.
+   * Prefer adding over setting/resetting to avoid overriding
+   * the generated metadata of other plugins.
+   * @param generatedMetadata Additional generated metadata
    */
-   setGeneratedMetadata(generatedMetadata: GeneratedMetadata) {
-    this.generatedMetadata = generatedMetadata;
+   addGeneratedMetadata(generatedMetadata: GeneratedMetadata) {
+    this.generatedMetadata = Object.assign({}, this.generatedMetadata, generatedMetadata);
   }
 }

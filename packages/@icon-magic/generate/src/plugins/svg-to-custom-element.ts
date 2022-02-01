@@ -145,7 +145,7 @@ export const svgToCustomElement: GeneratePlugin = {
     /* Add metadata to icon to be shared across icon distribution.
        It is then added to resulting iconrc.json file.
      */
-    icon.setGeneratedMetadata({
+    icon.addGeneratedMetadata({
       customElement: {
         namePrefix: prefix,
       }
