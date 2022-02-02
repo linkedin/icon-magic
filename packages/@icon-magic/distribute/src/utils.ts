@@ -84,3 +84,13 @@ export function compareStrings(nameOne: string, nameTwo: string): number {
   }
   return 0;
 }
+
+/**
+ * Convert a string from kebab-case to camelCase
+ * @param s string to convert to camel case
+ */
+ export function kebabToCamel(s: string): string {
+  return s.replace(/(\-\w)/g, m => {
+    return m[1].toUpperCase();
+  });
+}

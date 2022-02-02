@@ -53,6 +53,11 @@
           "path": "./medium-on-dark.svg",
           "imageset": "medium",
           "colorScheme": "dark"
+        },
+        "customElement": {
+          "name": "medium-on-dark",
+          "path": "./medium-on-dark.js",
+          "colorScheme": "dark"
         }
       }
     },
@@ -65,6 +70,10 @@
         "svg": {
           "name": "large",
           "path": "./large.svg"
+        },
+        "customElement": {
+          "name": "large",
+          "path": "./large.js"
         }
       }
     },
@@ -81,6 +90,11 @@
           "path": "./large-on-dark.svg",
           "imageset": "large",
           "colorScheme": "dark"
+        },
+        "customElement": {
+          "name": "large-on-dark",
+          "path": "./large-on-dark.js",
+          "colorScheme": "dark"
         }
       }
     },
@@ -93,6 +107,10 @@
         "svg": {
           "name": "medium",
           "path": "./medium.svg"
+        },
+        "customElement": {
+          "name": "medium",
+          "path": "./medium.js"
         }
       }
     },
@@ -106,6 +124,11 @@
           "name": "medium-mixed",
           "path": "./medium-mixed.svg",
           "colorScheme": "mixed"
+        },
+        "customElement": {
+          "name": "medium-mixed",
+          "path": "./medium-mixed.js",
+          "colorScheme": "mixed"
         }
       }
     },
@@ -118,6 +141,11 @@
         "svg": {
           "name": "large-mixed",
           "path": "./large-mixed.svg",
+          "colorScheme": "mixed"
+        },
+        "customElement": {
+          "name": "large-mixed",
+          "path": "./large-mixed.js",
           "colorScheme": "mixed"
         }
       }
@@ -338,6 +366,11 @@
         "width": 192,
         "height": 24
       }
+    }
+  },
+  "generatedMetadata": {
+    "customElement": {
+      "namePrefix": "test-prefix-"
     }
   },
   "generate": {

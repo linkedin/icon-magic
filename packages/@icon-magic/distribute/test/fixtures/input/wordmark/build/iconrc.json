@@ -82,6 +82,11 @@
       }
     }
   },
+  "generatedMetadata": {
+    "customElement": {
+      "namePrefix": "test-prefix-"
+    }
+  },
   "generate": {
     "types": [
       {
@@ -100,6 +105,18 @@
             "params": {
               "lightToken": "--hue-web-svg-display-light",
               "darkToken": "--hue-web-svg-display-dark"
+            },
+            "writeToOutput": false
+          }
+        ]
+      },
+      {
+        "name": "customElement",
+        "plugins": [
+          {
+            "name": "svg-to-custom-element",
+            "params": {
+              "namePrefix": "test-prefix-"
             },
             "writeToOutput": false
           }

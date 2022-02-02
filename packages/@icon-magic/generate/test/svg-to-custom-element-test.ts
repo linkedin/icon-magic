@@ -1,4 +1,4 @@
-import { Flavor, FlavorTypeMap, Icon } from '@icon-magic/icon-models';
+import { Flavor, FlavorTypeMap, GeneratedMetadata, Icon } from '@icon-magic/icon-models';
 import * as assert from 'assert';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -41,7 +41,7 @@ const icon = new Icon({
 });
 
 describe('svgToCustomElement()', function () {
-  it('Creates custom element asset and updates icon correctly', async () => {
+  it('Creates normalized custom element asset and updates icon correctly', async () => {
     const options: CustomElementGenerateOptions = {
       namePrefix: 'test-prefix-',
     };
@@ -76,7 +76,7 @@ export default function () {
       class extends HTMLElement {
         // when the element is inserted into DOM
         connectedCallback() {
-          this.innerHTML = '<svg  id="Layer_1"  data-name="Layer 1"  xmlns="http://www.w3.org/2000/svg"  width="32"  height="32"  viewBox="0 0 32 32"><title>32dp</title><path d="M28,13.36L16.64,6.19a1.2,1.2,0,0,0-1.28,0L4,13.34l1,1.59,2-1.25V25a1,1,0,0,0,1,1h6V21h4v5h6a1,1,0,0,0,1-1V13.67L27,15Z" style="fill: #737373"/></svg>';
+          this.innerHTML = '<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>32dp</title><path d="M28,13.36L16.64,6.19a1.2,1.2,0,0,0-1.28,0L4,13.34l1,1.59,2-1.25V25a1,1,0,0,0,1,1h6V21h4v5h6a1,1,0,0,0,1-1V13.67L27,15Z" style="fill: #737373"/></svg>';
         }
       }
     );
@@ -109,5 +109,42 @@ export default function () {
     });
     const outputFlavor: Flavor = await svgToCustomElement.fn(flavor, icon);
     assert.deepStrictEqual(outputFlavor.getConfig().types, {});
+  });
+
+  it('Creates custom element asset with color scheme', async () => {
+    const flavor: Flavor = new Flavor(`${FIXTURES}/nav-icons/home`, {
+      name: 'filled',
+      path: `${FIXTURES}/nav-icons/home/filled.svg`,
+      colorScheme: 'dark',
+      types: {
+        svg: {
+          name: 'filled',
+          path: './filled.svg',
+        },
+      },
+    });
+    const expectedFlavor: FlavorTypeMap = {
+      svg: {
+        name: 'filled',
+        path: './filled.svg',
+      },
+      customElement: {
+        name: 'filled',
+        path: './filled.js',
+        colorScheme: 'dark',
+      }
+    };
+    const outputFlavor: Flavor = await svgToCustomElement.fn(flavor, icon);
+    assert.deepStrictEqual(outputFlavor.getConfig().types, expectedFlavor);
+  });
+
+  it('Adds generated metadata to Icon', async () => {
+    const generatedMetadata: GeneratedMetadata = {
+      customElement: {
+        namePrefix: 'icon-magic-',
+      }
+    };
+    await svgToCustomElement.fn(flavor, icon);
+    assert.deepStrictEqual(icon.generatedMetadata, generatedMetadata);
   });
 });
