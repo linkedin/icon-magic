@@ -94,9 +94,14 @@ icon-magic distribute inputPath --outputPath
 ```
 
 Options:
--o, --outputPath Path to the output directory where the generated assets are to be written to
--t, --type type of icons format to handle, accepted types are svg|png|webp
--g, --groupBy [currently the only supported use is for web sprite creation] if to how to group the icons by category
--d, --debug, when used will output debbugging info to the command-line.
+- -o, --outputPath Path to the output directory where the generated assets are to be written to
+- -t, --type type of icons format to handle, accepted types are svg|png|webp
+- -g, --groupBy [currently the only supported use is for web sprite creation] if to how to group the icons by category
+- -hbs, --outputAsTemplate [for web] whether to output the svg as handlebars template
+- -ce, --outputAsCustomElement [for web] whether to output the svg as HTML custom element
+- -d, --debug Default is false. When true, will log debugging info to the command-line
+- -c, --colorScheme <colorScheme...> With no flag, `light` and `dark` colorSchemes are distributed. Other colorSchemes can be specified with flag
+- -i, --withEmbeddedImage [for web] Filters only those assets with embedded images with them
+- -s, --doNotRemoveSuffix When used with --outputAsTemplate, will NOT trim the `-mixed` suffix on the file name
 
 Refer [@icon-magic/distribute](../distribute/README.md) for more details.
