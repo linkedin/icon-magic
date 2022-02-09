@@ -5,6 +5,7 @@ Automated icon build system for iOS, Android and Web. Takes in icons (SVGs) and 
 
 - Optimize SVG and adds or removes properties as indicated.
 - Generates images in `png` and `webp` formats from the original SVG and minifies them.
+- Generates icons in the form of [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) in `js` format for web framework agnostic consumption
 - Creates the necessary files for platform (`ios|android|web`) consumption
 - Delivers the generated assets to an indicated destination
 
