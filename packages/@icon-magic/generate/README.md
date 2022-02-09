@@ -109,4 +109,4 @@ metatadata.
 
 This plugin converts `.svg` to `.js` that contain [HTML Custom Element](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) to render the given SVG on a web page. The resulting assets define and register custom elements to CustomElementRegistry via `window.customElements`. The input of this plugin is the svg to be converted to custom element. The plugin returns the asset flavor with added custom element asset type and automatically writes the output (javascript files) to the output directory.
 
-For more details on the interfaces, refer to [@icon-magic/icon-models](https://github.com/linkedin/icon-magic/tree/master/packages/%40icon-magic/icon-models).
+For more details on the interfaces, refer to [@icon-magic/icon-models](../icon-models/README.md).
