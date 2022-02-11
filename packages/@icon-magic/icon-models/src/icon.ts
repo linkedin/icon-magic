@@ -10,6 +10,7 @@ import {
   DistributeConfig,
   FlavorConfig,
   GenerateConfig,
+  GeneratedMetadata,
   IconConfig,
   MetaData
 } from './interface';
@@ -39,6 +40,7 @@ export class Icon {
   generate?: GenerateConfig;
   distribute?: DistributeConfig;
   metadata?: MetaData;
+  generatedMetadata?: GeneratedMetadata;
 
   /**
    * Creates an Icon instance by creating sub classes for it's variants and
@@ -176,6 +178,9 @@ export class Icon {
     if (this.metadata) {
       config.metadata = this.metadata;
     }
+    if (this.generatedMetadata) {
+      config.generatedMetadata = this.generatedMetadata;
+    }
     if (this.build) {
       config.build = this.build;
     }
@@ -188,5 +193,15 @@ export class Icon {
 
     // return the object
     return config;
+  }
+
+  /**
+   * Adds the incoming generated metadata to the existing one.
+   * Prefer adding over setting/resetting to avoid overriding
+   * the generated metadata of other plugins.
+   * @param generatedMetadata Additional generated metadata
+   */
+   addGeneratedMetadata(generatedMetadata: GeneratedMetadata) {
+    this.generatedMetadata = Object.assign({}, this.generatedMetadata, generatedMetadata);
   }
 }

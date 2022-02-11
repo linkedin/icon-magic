@@ -1,8 +1,9 @@
-import { Asset, Icon, IconSet, SpriteConfig } from '@icon-magic/icon-models';
+import { Asset, FlavorType, Icon, IconSet, SpriteConfig } from '@icon-magic/icon-models';
 import { Logger } from '@icon-magic/logger';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
+import { createCustomElement } from './create-custom-element';
 import { createHbs } from './create-icon-template';
 import {
   addToSprite,
@@ -18,8 +19,11 @@ const LOGGER = new Logger('icon-magic:distribute:distribute-svg');
  * @param iconSet set of icons to be moved to the output folder or added to sprite
  * @param outputPath path to move to
  * @param groupByCategory (for sprite creation) whether to group by the category attribute
+ * @param outputAsHbs whether to distribute svg assets as handlebar files
  * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`.
+ * @param withEmbeddedImage (for web) whether to filter only those assets with embedded images
  * @param doNotRemoveSuffix boolean, when true will keep the "-mixed" and "-with-image" suffixes in file name when distributing to hbs.
+ * @param outputAsCustomElement whether to distribute svg assets as custom element js files
  * @returns promise after completion
  */
 export async function distributeSvg(
@@ -29,7 +33,8 @@ export async function distributeSvg(
   outputAsHbs: boolean,
   colorScheme: string[],
   withEmbeddedImage: boolean,
-  doNotRemoveSuffix: boolean
+  doNotRemoveSuffix: boolean,
+  outputAsCustomElement: boolean
 ): Promise<void> {
   // Sort icons so it looks pretty in .diff
   const icons = sortIcons(iconSet.hash.values());
@@ -43,22 +48,7 @@ export async function distributeSvg(
       LOGGER.warn(`Warning: By default the "-mixed" suffix is trimmed from the file name when distributed to hbs. The file name will be the SAME as the light variant. Use the --doNotRemoveSuffix flag to keep the "-mixed" in the file name.`);
     }
 
-    const assets = getIconFlavorsByType(icon, 'svg');
-    // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
-    let assetsToDistribute = assets.filter(asset => {
-      if (asset.colorScheme) {
-        return colorScheme.includes(asset.colorScheme);
-      }
-      // Light variants can either have colorScheme: `light`, null, or undefined
-      return colorScheme.includes('light');
-    });
-    if (withEmbeddedImage) {
-      // filter down to only the assets that contain embedded images in them
-      assetsToDistribute = assetsToDistribute.filter(asset => {
-        return asset.name.match(/-with-image/) ? true : false;
-      });
-    }
-
+    const svgAssetsToDistribute = getAssetsToDistribute(icon, 'svg', colorScheme, withEmbeddedImage);
     const distributeConfig = icon.distribute;
     const svgConfig = distributeConfig && distributeConfig.svg;
     // variantsToFilter can be defined on distribute or on distribute.svg
@@ -70,8 +60,8 @@ export async function distributeSvg(
     // If icon has defined the assets to go to sprite
     const { assetsToAddToSprite, assetsNoSprite } =
       variantsToFilter && variantsToFilter.length
-        ? partitionAssetsForSprite(assetsToDistribute, variantsToFilter)
-        : { assetsToAddToSprite: assetsToDistribute, assetsNoSprite: assetsToDistribute };
+        ? partitionAssetsForSprite(svgAssetsToDistribute, variantsToFilter)
+        : { assetsToAddToSprite: svgAssetsToDistribute, assetsNoSprite: svgAssetsToDistribute };
 
     const iconHasSpriteConfig = !(
       distributeConfig &&
@@ -79,21 +69,31 @@ export async function distributeSvg(
       !svgConfig.toSprite
     );
 
-    if (outputAsHbs) {
-      try {
-        const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
-        const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
-        const destPath =
+    if (outputAsHbs || outputAsCustomElement) {
+      const destPath =
         icon.category && groupByCategory
           ? path.join(outputPath, icon.category)
           : outputPath;
-        await createHbs(assetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
+      if (outputAsHbs) {
+        try {
+          const imageHrefHelper = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.imageHrefHelper;
+          const pathToTheImageAsset = svgConfig && svgConfig.outputAsHbs && svgConfig.outputAsHbs.pathToTheImageAsset;
+          await createHbs(svgAssetsToDistribute, destPath, imageHrefHelper, pathToTheImageAsset, doNotRemoveSuffix);
+        }
+        catch(e) {
+          LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+        }
       }
-      catch(e) {
-        LOGGER.debug(`There was an issue creating the hbs file: ${e}`);
+      if (outputAsCustomElement) {
+        try {
+          const customElementAssetsToDistribute = getAssetsToDistribute(icon, 'customElement', colorScheme, withEmbeddedImage);
+          await createCustomElement(customElementAssetsToDistribute, destPath, icon, doNotRemoveSuffix);
+        }
+        catch(e) {
+          LOGGER.debug(`There was an issue creating the custom element js file: ${e}`);
+        }
       }
-    }
-    else if (iconHasSpriteConfig) {
+    } else if (iconHasSpriteConfig) {
       // By default, if there is no distribute config, add to the sprite
       // Default spriteName is `icons`
       const iconSpriteNames =
@@ -162,4 +162,31 @@ function sortIcons(icons: IterableIterator<Icon>): Array<Icon> {
   return Array.from(icons).sort((iconOne: Icon, iconTwo: Icon) => {
     return compareStrings(iconOne.iconName, iconTwo.iconName);
   });
+}
+
+/**
+ * Get the list of assets that needs to be distributed.
+ * @param icon to be moved to the output folder or added to sprite
+ * @param type to which to filter the icon's flavors by
+ * @param colorScheme array of strings matching the colorScheme attributes of the icon i.e: `light`, `dark`, `mixed`
+ * @param withEmbeddedImage true if icon is embedded with image
+ * @returns list of assets to be distributed
+ */
+function getAssetsToDistribute(icon: Icon, type: FlavorType, colorScheme: string[], withEmbeddedImage: boolean) {
+  const assets = getIconFlavorsByType(icon, type);
+  // Further filter the icons by matching the assets's colorScheme to the commander option --colorScheme
+  let assetsToDistribute = assets.filter(asset => {
+    if (asset.colorScheme) {
+      return colorScheme.includes(asset.colorScheme);
+    }
+    // Light variants can either have colorScheme: `light`, null, or undefined
+    return colorScheme.includes('light');
+  });
+  if (withEmbeddedImage) {
+    // filter down to only the assets that contain embedded images in them
+    assetsToDistribute = assetsToDistribute.filter(asset => {
+      return asset.name.match(/-with-image/) ? true : false;
+    });
+  }
+  return assetsToDistribute;
 }

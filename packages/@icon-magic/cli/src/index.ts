@@ -99,6 +99,10 @@ program
     '[for web] whether to output the svg as handlebars template.'
   )
   .option(
+    '-ce, --outputAsCustomElement',
+    '[for web] whether to output the svg as HTML custom element.'
+  )
+  .option(
     '-d, --debug', 'Default is false.  When true, will log debugging info to the command-line'
   )
   .option(
@@ -141,9 +145,9 @@ program
       process.exit(1);
     }
 
-    // --doNotRemoveSuffix is only for --outputAsTemplate flag
-    if (options.doNotRemoveSuffix && !options.outputAsTemplate) {
-      LOGGER.error('Option --doNotRemoveSuffix must be used with --outputAsTemplate flag');
+    // --doNotRemoveSuffix is only for --outputAsTemplate and --outputAsCustomElement flags
+    if (options.doNotRemoveSuffix && !(options.outputAsTemplate || options.outputAsCustomElement)) {
+      LOGGER.error('Option --doNotRemoveSuffix must be used with --outputAsTemplate or outputAsCustomElement flag');
       process.exit(1);
     }
 
@@ -162,7 +166,8 @@ program
       options.outputAsTemplate,
       options.colorScheme,
       options.withEmbeddedImage,
-      options.doNotRemoveSuffix
+      options.doNotRemoveSuffix,
+      options.outputAsCustomElement
     );
 
     // exit without any errors

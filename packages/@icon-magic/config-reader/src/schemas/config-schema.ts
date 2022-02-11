@@ -178,7 +178,10 @@ const topLevelConfigProperties = {
   },
   metadata: {
     type: 'object'
-  }
+  },
+  generatedMetadata: {
+    type: 'object'
+  },
 };
 
 export const configSchema = {
