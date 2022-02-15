@@ -40,10 +40,11 @@ export interface SvgGenerateOptions {
   addSupportedDps?: AddSupportedDpsValues;
   /* if this is set, the fill of the icon isn't updated but respected */
   isColored?: boolean;
-  /* if this is true, will not remove the current width and height attributes (defaults to false) */
+  /* if this is true, will first look for nameSizeMapping and use those widths and heights attributes. If nameSizeMapping does
+  not exist, it will use the current width and height attributes in the svg asset (defaults to false) */
   isFixedDimensions?: boolean;
   /* if this and isFixedDimensions are true, will use the nameSizeMapping config to add width and height attributes to the svg (defaults to false) */
-  useNameSizeMapForWidthHeight?: boolean;
+  // useNameSizeMapForWidthHeight?: boolean;
   /* if this is set to true, then set isColored only if the name of the flavor
   contains color in it */
   colorByNameMatching?: string[];
@@ -80,8 +81,9 @@ export const svgGenerate: GeneratePlugin = {
     // get the mapping object from the metadata for use in dataSupportedDps and useMapForWidthHeight.
     const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
-    // assign value of param or else set to false if undefined. This will be used to add or replace width and height.
-    const useMapForWidthHeight = params.useNameSizeMapForWidthHeight ?? false;
+    // will be used by svgo to remove width and height. If needed, will add width and height from nameSizeMapping.
+    // turn into a boolean in case it was undefined.
+    let isFixedDimensions = !!params.isFixedDimensions;
 
     let dataSupportedDps;
     switch (params.addSupportedDps) {
@@ -134,31 +136,28 @@ export const svgGenerate: GeneratePlugin = {
     }
 
 
-    if (params.isFixedDimensions && useMapForWidthHeight) {
+    if (isFixedDimensions) {
+        if (nameSizeMapping) {
+          const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
 
-        // if the metadata doesn't contain nameSizeMapping, throw an error
-        if (!nameSizeMapping) {
-          throw new Error(
-            `SVGGenerateError: ${icon.iconPath} does not have the field "nameSizeMapping" as part of its config's "metadata". This is required when using useNameSizeMapForWidthHeight since the config contains the names and sizes.`
-          );
-        }
+          if (!flavorSize) {
+            throw new Error(
+              `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
+            );
+          }
 
-        const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
-
-        if (!flavorSize) {
-          throw new Error(
-            `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
-          );
-        }
-
-        attributes['width'] =
-        typeof flavorSize === 'number'
-          ? flavorSize
-          : flavorSize.width;
-        attributes['height'] =
+          attributes['width'] =
           typeof flavorSize === 'number'
             ? flavorSize
-            : flavorSize.height;
+            : flavorSize.width;
+          attributes['height'] =
+            typeof flavorSize === 'number'
+              ? flavorSize
+              : flavorSize.height;
+
+          // this is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
+          isFixedDimensions = false;
+        }
     }
 
     const svgoPlugins: Svgo.PluginConfig[] = [
@@ -171,7 +170,7 @@ export const svgGenerate: GeneratePlugin = {
         }
       },
       {
-        removeDimensions: !params.isFixedDimensions || useMapForWidthHeight
+        removeDimensions: !isFixedDimensions
       },
       {
         convertColors: {
