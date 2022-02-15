@@ -81,10 +81,6 @@ export const svgGenerate: GeneratePlugin = {
     // get the mapping object from the metadata for use in dataSupportedDps and useMapForWidthHeight.
     const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
-    // will be used by svgo to remove width and height. If needed, will add width and height from nameSizeMapping.
-    // turn into a boolean in case it was undefined.
-    let isFixedDimensions = !!params.isFixedDimensions;
-
     let dataSupportedDps;
     switch (params.addSupportedDps) {
       case AddSupportedDpsValues.CURRENT:
@@ -135,29 +131,33 @@ export const svgGenerate: GeneratePlugin = {
       attributes['fill'] = 'currentColor';
     }
 
+    // will be passed to svgo to remove dimensions
+    // turn into a boolean in case it was undefined.
+    let isFixedDimensions = !!params.isFixedDimensions;
 
-    if (isFixedDimensions) {
-        if (nameSizeMapping) {
-          const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
+    // if true will add width and height from nameSizeMapping.
+    const shouldAddWidthHeight = isFixedDimensions && nameSizeMapping;
 
-          if (!flavorSize) {
-            throw new Error(
-              `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
-            );
-          }
+    if (shouldAddWidthHeight) {
+        const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
 
-          attributes['width'] =
+        if (!flavorSize) {
+          throw new Error(
+            `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
+          );
+        }
+
+        attributes['width'] =
+        typeof flavorSize === 'number'
+          ? flavorSize
+          : flavorSize.width;
+        attributes['height'] =
           typeof flavorSize === 'number'
             ? flavorSize
-            : flavorSize.width;
-          attributes['height'] =
-            typeof flavorSize === 'number'
-              ? flavorSize
-              : flavorSize.height;
+            : flavorSize.height;
 
-          // this is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
-          isFixedDimensions = false;
-        }
+        // this is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
+        isFixedDimensions = false;
     }
 
     const svgoPlugins: Svgo.PluginConfig[] = [
