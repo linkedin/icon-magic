@@ -156,7 +156,7 @@ export const svgGenerate: GeneratePlugin = {
             ? flavorSize
             : flavorSize.height;
 
-        // this is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
+        // this would result in {removeDimensions: true} in svgo. This is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
         isFixedDimensions = false;
     }
 
