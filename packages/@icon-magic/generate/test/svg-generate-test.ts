@@ -68,6 +68,25 @@ const iconFlip = new Icon({
   }
 });
 
+const iconNoMapping = new Icon({
+  iconPath: `${FIXTURES}/out/home`,
+  variants: [
+    {
+      path: `${FIXTURES}/nav-icons/home/filled.svg`,
+      name: 'filled'
+    },
+    {
+      path: `${FIXTURES}/nav-icons/home/outline.svg`,
+      name: 'someOtherName'
+    }
+  ],
+  sizes: [8, 16],
+  resolutions: [1, 2, 3],
+  outputPath: `/${FIXTURES}/out`,
+  iconName: 'home',
+  sourceConfigFile: `${FIXTURES}/nav-icons/iconrc.json`,
+});
+
 describe('svgGenerate()', function () {
   it('adds only current size when addSupportedDps is current', async () => {
     const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
@@ -129,10 +148,22 @@ describe('svgGenerate()', function () {
     }
   });
 
-  it('Does not remove width and height if isFixedDimensions is true', async () => {
-    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8 16x16" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
+  it('Removes width and height if isFixedDimensions is false', async () => {
+    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8 16x16" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
 
     const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
+      isFixedDimensions: false
+    });
+    const svgFromOutputFlavor = outputFlavor.types.get('svg');
+    if (svgFromOutputFlavor) {
+      assert.equal(await svgFromOutputFlavor.getContents(), outputSvg);
+    }
+  });
+
+  it('Keeps width and height from svg if isFixedDimensions is true and there is NO nameSizeMapping', async () => {
+    const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8 16x16" fill="currentColor">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
+
+    const outputFlavor: Flavor = await svgGenerate.fn(flavor, iconNoMapping, {
       isFixedDimensions: true
     });
     const svgFromOutputFlavor = outputFlavor.types.get('svg');
@@ -141,12 +172,11 @@ describe('svgGenerate()', function () {
     }
   });
 
-  it('Adds width and height from nameSizeMapping if isFixedDimensions and useNameSizeMapForWidthHeight are true', async () => {
+  it('Adds width and height from nameSizeMapping if isFixedDimensions is true and nameSizeMapping exists', async () => {
     const outputSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="home-filled" aria-hidden="true" role="none" data-supported-dps="8x8 16x16" fill="currentColor" width="8" height="8">\n  <path d="M28 13.36L16.64 6.19a1.2 1.2 0 00-1.28 0L4 13.34l1 1.59 2-1.25V25a1 1 0 001 1h6v-5h4v5h6a1 1 0 001-1V13.67L27 15z" fill="currentColor"/>\n</svg>`;
 
     const outputFlavor: Flavor = await svgGenerate.fn(flavor, icon, {
-      isFixedDimensions: true,
-      useNameSizeMapForWidthHeight: true
+      isFixedDimensions: true
     });
     const svgFromOutputFlavor = outputFlavor.types.get('svg');
     if (svgFromOutputFlavor) {
