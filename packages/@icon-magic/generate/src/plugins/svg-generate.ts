@@ -40,9 +40,11 @@ export interface SvgGenerateOptions {
   addSupportedDps?: AddSupportedDpsValues;
   /* if this is set, the fill of the icon isn't updated but respected */
   isColored?: boolean;
-  /* if this is true, then adds a width and height attribute to the svg
-  (defaults to false) and no viewBox */
+  /* if this is true, will first look for nameSizeMapping and use those widths and heights attributes. If nameSizeMapping does
+  not exist, it will use the current width and height attributes in the svg asset (defaults to false) */
   isFixedDimensions?: boolean;
+  /* if this and isFixedDimensions are true, will use the nameSizeMapping config to add width and height attributes to the svg (defaults to false) */
+  // useNameSizeMapForWidthHeight?: boolean;
   /* if this is set to true, then set isColored only if the name of the flavor
   contains color in it */
   colorByNameMatching?: string[];
@@ -76,11 +78,12 @@ export const svgGenerate: GeneratePlugin = {
       classNames.push("rtl-flip");
     }
 
+    // get the mapping object from the metadata for use in dataSupportedDps and useMapForWidthHeight.
+    const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
+
     let dataSupportedDps;
     switch (params.addSupportedDps) {
       case AddSupportedDpsValues.CURRENT:
-        // get the mapping object from the metadata
-        const nameSizeMapping = icon.metadata && icon.metadata.nameSizeMapping;
 
         // if the metadata doesn't contain nameSizeMapping, throw an error
         if (!nameSizeMapping) {
@@ -89,19 +92,7 @@ export const svgGenerate: GeneratePlugin = {
           );
         }
 
-        // get the size from the mapping that is passed in. This is a pattern
-        // matching of the key and not necessarily the key itself
-        // once a pattern is matched, we check to see if it's the longest
-        // matching key to ensure that the correct size is obtained from the name
-        let flavorSize;
-        let matchedLength = 0;
-        for (const key in nameSizeMapping) {
-          const regExMatch = flavorName.match(key);
-          if (regExMatch && matchedLength < regExMatch[0].length) {
-            matchedLength = regExMatch[0].length;
-            flavorSize = nameSizeMapping[key];
-          }
-        }
+        const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
 
         if (!flavorSize) {
           throw new Error(
@@ -140,6 +131,35 @@ export const svgGenerate: GeneratePlugin = {
       attributes['fill'] = 'currentColor';
     }
 
+    // will be passed to svgo to remove dimensions
+    // turn into a boolean in case it was undefined.
+    let isFixedDimensions = !!params.isFixedDimensions;
+
+    // if true will add width and height from nameSizeMapping.
+    const shouldAddWidthHeight = isFixedDimensions && nameSizeMapping;
+
+    if (shouldAddWidthHeight) {
+        const flavorSize = getSizeFromMap(nameSizeMapping, flavorName);
+
+        if (!flavorSize) {
+          throw new Error(
+            `SVGGenerateError: ${flavorName} of ${icon.iconPath} does not match a key in "nameSizeMapping"`
+          );
+        }
+
+        attributes['width'] =
+        typeof flavorSize === 'number'
+          ? flavorSize
+          : flavorSize.width;
+        attributes['height'] =
+          typeof flavorSize === 'number'
+            ? flavorSize
+            : flavorSize.height;
+
+        // this would result in {removeDimensions: true} in svgo. This is needed because svgo does not replace the width and height in place. It requires the removal of width and height and then appends the new width and height attributes.
+        isFixedDimensions = false;
+    }
+
     const svgoPlugins: Svgo.PluginConfig[] = [
       {
         removeViewBox: false
@@ -150,7 +170,7 @@ export const svgGenerate: GeneratePlugin = {
         }
       },
       {
-        removeDimensions: !params.isFixedDimensions
+        removeDimensions: !isFixedDimensions
       },
       {
         convertColors: {
@@ -231,3 +251,21 @@ function getSupportedSizes(sizes: AssetSize[]): String {
     })
     .join(' ');
 }
+
+// get the size from the mapping that is passed in. This is a pattern
+// matching of the key and not necessarily the key itself
+// once a pattern is matched, we check to see if it's the longest
+// matching key to ensure that the correct size is obtained from the name
+function getSizeFromMap(nameSizeMap: Object, name: string): AssetSize {
+  let flavorSize;
+  let matchedLength = 0;
+  for (const key in nameSizeMap) {
+    const regExMatch = name.match(key);
+    if (regExMatch && matchedLength < regExMatch[0].length) {
+      matchedLength = regExMatch[0].length;
+      flavorSize = nameSizeMap[key];
+    }
+  }
+  return flavorSize;
+}
+
