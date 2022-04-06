@@ -53,7 +53,6 @@ process.on('exit', clean);
 //catches ctrl+c event
 process.on('SIGINT', clean);
 process.on('SIGABRT', clean);
-process.on('SIGKILL', clean);
 
 // catches "kill pid" (for example: nodemon restart)
 process.on('SIGUSR1', clean);
