@@ -1,9 +1,9 @@
 import * as debug from "debug";
-import * as os from "os";
+// import * as os from "os";
 import * as puppeteer from "puppeteer";
 
 const DEBUG = debug('icon-magic:svg-to-png');
-const NUM_CPUS = os.cpus().length - 1;
+const NUM_CPUS = 1;
 let WIN_POOL: puppeteer.Browser[] = [];
 let PAGE_POOL: Promise<puppeteer.Page>[] = [];
 let hasBeenInit: false | Promise<boolean> = false;
@@ -52,6 +52,8 @@ process.on('exit', clean);
 
 //catches ctrl+c event
 process.on('SIGINT', clean);
+process.on('SIGABRT', clean);
+process.on('SIGKILL', clean);
 
 // catches "kill pid" (for example: nodemon restart)
 process.on('SIGUSR1', clean);
