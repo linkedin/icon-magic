@@ -1,9 +1,8 @@
 import * as debug from "debug";
-// import * as os from "os";
 import * as puppeteer from "puppeteer";
 
 const DEBUG = debug('icon-magic:svg-to-png');
-const NUM_CPUS = 1;
+const NUM_CPUS = 1; // should ideally be os.cpus().length - 1 TODO: Investigate more on memory leak issue when this is set
 let WIN_POOL: puppeteer.Browser[] = [];
 let PAGE_POOL: Promise<puppeteer.Page>[] = [];
 let hasBeenInit: false | Promise<boolean> = false;
