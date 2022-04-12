@@ -187,6 +187,10 @@ function getAssetsToDistribute(icon: Icon, type: FlavorType, colorScheme: string
     assetsToDistribute = assetsToDistribute.filter(asset => {
       return asset.name.match(/-with-image/) ? true : false;
     });
+  } else {
+    assetsToDistribute = assetsToDistribute.filter(asset => {
+      return asset.name.match(/-with-image/) ? true : false;
+    });
   }
   return assetsToDistribute;
 }
