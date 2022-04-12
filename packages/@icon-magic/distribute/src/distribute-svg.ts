@@ -189,7 +189,7 @@ function getAssetsToDistribute(icon: Icon, type: FlavorType, colorScheme: string
     });
   } else {
     assetsToDistribute = assetsToDistribute.filter(asset => {
-      return asset.name.match(/-with-image/) ? true : false;
+      return asset.name.match(/-with-image/) ? false : true;
     });
   }
   return assetsToDistribute;
