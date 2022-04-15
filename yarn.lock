@@ -3363,14 +3363,14 @@ imagemin-optipng@^8.0.0:
     is-png "^2.0.0"
     optipng-bin "^7.0.0"
 
-imagemin-pngcrush@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-6.0.0.tgz#24882d24aafab04227853797f535525814ebbbed"
-  integrity sha512-9Je0uUnzgZGLDDjsJxUlwozHS2aO/NmGRPUKcBzbpiliHI2W40HcRXYUaNNOMePGAWDCYJkJQ0rS5UG1JCguMA==
+imagemin-pngcrush@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-pngcrush/-/imagemin-pngcrush-7.0.0.tgz#c29acd9af3287a2a8b91669476a841481eb739b5"
+  integrity sha512-yOp5f8RH2vd2x6B7P8WCprX1Cm3LjXqBu30wy5fJoEBrwwkyx8H2+vz1g/3FkSkldNURHcc0NmJ6r0waUNQTrw==
   dependencies:
     exec-buffer "^3.0.0"
-    is-png "^1.0.0"
-    pngcrush-bin "^4.0.0"
+    is-png "^2.0.0"
+    pngcrush-bin "^5.0.0"
 
 imagemin-zopfli@^7.0.0:
   version "7.0.0"
@@ -3674,11 +3674,6 @@ is-plain-object@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-5.0.0.tgz#4427f50ab3429e9025ea7d52e9043a9ef4159344"
   integrity sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==
-
-is-png@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-png/-/is-png-1.1.0.tgz#d574b12bf275c0350455570b0e5b57ab062077ce"
-  integrity sha1-1XSxK/J1wDUEVVcLDltXqwYgd84=
 
 is-png@^2.0.0:
   version "2.0.0"
@@ -5257,14 +5252,13 @@ pkg-dir@4.2.0, pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-pngcrush-bin@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-4.0.0.tgz#a2450ce952dc165c290d8b4be37478ad38fca6e7"
-  integrity sha512-SFR9a/OgkuFiiksjM6yevTGvOdn+7JrL5r0j/zCVAZTurfRzh2smwDRYKnPMEwxgVOkwWt/tlVWRJUstSH7RcA==
+pngcrush-bin@^5.0.0:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/pngcrush-bin/-/pngcrush-bin-5.0.2.tgz#6319bbc7f76ad9e95ed5a5f80494f8cd77cd9a08"
+  integrity sha512-Tuafr/1cm7umMCkuwoXz2l311eUakE/kzv3u+zj9a6EeNGCZfK4ph3VeDdCv/WQ00u8UgO3bGbO3aJYhEAFXyg==
   dependencies:
     bin-build "^3.0.0"
     bin-wrapper "^4.0.0"
-    logalot "^2.0.0"
 
 pngjs@3.x.x:
   version "3.4.0"
